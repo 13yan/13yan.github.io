@@ -1,0 +1,117 @@
+{
+  "updatedAt": "2026-06-26T09:00:00+08:00",
+  "reports": [
+    {
+      "id": "20260626",
+      "label": "2026年6月第4周（数据截止6月26日）",
+      "date": "2026-06-26",
+      "dirName": "2026/2026年6月第4周（数据截止6月26日）",
+      "hasData": true,
+      "highlight": "巨量引擎发布Q3抖音小游戏暑期激励政策；跃动小子霸榜微信，赵云与阿斗霸榜抖音6天",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 48,
+        "categories": 14
+      }
+    },
+    {
+      "id": "20260618",
+      "label": "2026年6月第3周（数据截止6月18日）",
+      "date": "2026-06-18",
+      "dirName": "2026/2026年6月第3周（数据截止6月18日）",
+      "hasData": true,
+      "highlight": "本周各平台均无新政策发布",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 43,
+        "categories": 13
+      }
+    },
+    {
+      "id": "20260612",
+      "label": "2026年6月第2周（数据截止6月12日）",
+      "date": "2026-06-12",
+      "dirName": "2026/2026年6月第2周（数据截止6月12日）",
+      "hasData": true,
+      "highlight": "本周各平台均无新政策发布",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 49,
+        "categories": 13
+      }
+    },
+    {
+      "id": "20260605",
+      "label": "2026年6月第1周（数据截止6月5日）",
+      "date": "2026-06-05",
+      "dirName": "2026/2026年6月第1周（数据截止6月5日）",
+      "hasData": true,
+      "highlight": "本周各平台均无新政策发布，多个激励政策将于6月30日截止",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 47,
+        "categories": 14
+      }
+    },
+    {
+      "id": "20260529",
+      "label": "2026年5月第5周（数据截止5月29日）",
+      "date": "2026-05-29",
+      "dirName": "2026/2026年5月第5周（数据截止5月29日）",
+      "hasData": true,
+      "highlight": "模拟经营品类持续领跑，双平台合计29款上榜",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 46,
+        "categories": 17
+      }
+    },
+    {
+      "id": "20260522",
+      "label": "2026年5月第4周（数据截止5月22日）",
+      "date": "2026-05-22",
+      "dirName": "2026/2026年5月第4周（数据截止5月22日）",
+      "hasData": true,
+      "highlight": "塔防品类供给旺盛，多款融合玩法新游上榜",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 46,
+        "categories": 17
+      }
+    },
+    {
+      "id": "20260515",
+      "label": "2026年5月第3周（数据截止5月15日）",
+      "date": "2026-05-15",
+      "dirName": "2026/2026年5月第3周（数据截止5月15日）",
+      "hasData": true,
+      "highlight": "ARPG品类在抖音端占比持续提升，内容营销驱动增长",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 46,
+        "categories": 17
+      }
+    },
+    {
+      "id": "20260509",
+      "label": "2026年5月第2周（数据截止5月09日）",
+      "date": "2026-05-09",
+      "dirName": "2026/2026年5月第2周（数据截止5月9日）",
+      "hasData": true,
+      "highlight": "模拟经营和塔防持续领跑双平台，跨平台发行趋势明显",
+      "stats": {
+        "wxCount": 100,
+        "dyCount": 100,
+        "crossPlatform": 46,
+        "categories": 17
+      }
+    }
+  ]
+}
