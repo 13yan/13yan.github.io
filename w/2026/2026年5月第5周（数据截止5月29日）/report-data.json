@@ -1,0 +1,2504 @@
+{
+  "label": "2026年5月第5周（数据截止5月29日）",
+  "date": "2026年5月29日",
+  "weekTag": "2026年5月第5周（数据截止5月29日）",
+  "banner": {
+    "wechat": 100,
+    "douyin": 100,
+    "cross": 46,
+    "category": 17
+  },
+  "summary": [
+    {
+      "icon": "市场格局",
+      "title": "【市场格局】",
+      "desc": "双平台畅销榜Top100中46款游戏跨平台上榜。《三国：冰河时代》同时登顶微信和抖音畅销榜，验证SLG品类在小游戏渠道的LTV潜力。模拟经营微信13款、抖音14款上线，持续为最稳定品类。",
+      "tags": [
+        "市场格局"
+      ]
+    },
+    {
+      "icon": "重大事件",
+      "title": "【本周重大事件】",
+      "desc": "微信小游戏开发者大会（5.27）发布史上最大力度政策：IAP首发新游最高5000万流水不分成+2000万激励金；IAA最高90%分成；PC高性能模式；AI智能体、动态反外挂、安全升级三大方向。5月26日158款游戏版号获批。",
+      "tags": [
+        "重大事件",
+        "政策"
+      ],
+      "tagType": "red"
+    },
+    {
+      "icon": "模拟经营",
+      "title": "【模拟经营聚焦】",
+      "desc": "飙升游戏—微信：我的休闲时光(↑27)、造化仙府(↑26)、梦幻经理人(↑15)。抖音：时光杂货店(↑22)、空格之境(↑21)、宫廷风云(新进榜)。二合+融合玩法持续主导。题材多元化：修仙、怀旧、体育、宫廷。",
+      "tags": [
+        "品类聚焦"
+      ]
+    },
+    {
+      "icon": "核心关注",
+      "title": "【核心关注】",
+      "desc": "PC端第二增长曲线（独占用户40%/ARPU超移动130%）；抖音历史任务金激活5月发放；苹果税降至15%~25%+微小iOS支付跑通；AI务实落地（AIM+增390%/直玩转化率提3倍）。",
+      "tags": [
+        "核心关注"
+      ],
+      "tagType": "blue"
+    }
+  ],
+  "top20Insight": "《三国：冰河时代》双平台登顶。微信Top20：模拟经营5席、塔防4席。抖音Top20：6款周变化≥5位，竞争更活跃。双平台共同头部5款：三国冰河时代、我的花园世界、向僵尸开炮、无尽冬日、疯狂水世界。",
+  "wechatTop20": [
+    [
+      "三国：冰河时代",
+      1,
+      "SLG/策略",
+      "霸榜2天"
+    ],
+    [
+      "QQ经典农场",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "永远的蔚蓝星球",
+      0,
+      "塔防",
+      "─"
+    ],
+    [
+      "疯狂水世界",
+      1,
+      "SLG/策略",
+      "↑1"
+    ],
+    [
+      "向僵尸开炮",
+      1,
+      "塔防",
+      "↑1"
+    ],
+    [
+      "我的花园世界",
+      1,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "无尽冬日",
+      1,
+      "SLG/策略",
+      "─"
+    ],
+    [
+      "灵画师",
+      1,
+      "ARPG",
+      "─"
+    ],
+    [
+      "跃动小子",
+      0,
+      "放置RPG",
+      "─"
+    ],
+    [
+      "奔奔王国",
+      0,
+      "塔防",
+      "─"
+    ],
+    [
+      "占城大师",
+      1,
+      "塔防",
+      "─"
+    ],
+    [
+      "保卫向日葵",
+      0,
+      "塔防",
+      "─"
+    ],
+    [
+      "西游降妖记",
+      0,
+      "ARPG",
+      "─"
+    ],
+    [
+      "烈焰觉醒",
+      0,
+      "ARPG",
+      "─"
+    ],
+    [
+      "神器传说",
+      0,
+      "放置RPG",
+      "─"
+    ],
+    [
+      "道友来挖宝",
+      0,
+      "放置RPG",
+      "─"
+    ],
+    [
+      "腾讯欢乐斗地主",
+      0,
+      "棋牌",
+      "─"
+    ],
+    [
+      "寻道大千",
+      0,
+      "卡牌RPG",
+      "─"
+    ],
+    [
+      "浪漫餐厅",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "向往的生活",
+      1,
+      "模拟经营",
+      "─"
+    ]
+  ],
+  "douyinTop20": [
+    [
+      "三国：冰河时代",
+      1,
+      "SLG/策略",
+      "霸榜3天"
+    ],
+    [
+      "灵画师",
+      1,
+      "ARPG",
+      "↑1"
+    ],
+    [
+      "我的花园世界",
+      1,
+      "模拟经营",
+      "↑1"
+    ],
+    [
+      "向僵尸开炮",
+      1,
+      "塔防",
+      "↑5"
+    ],
+    [
+      "无尽冬日",
+      1,
+      "SLG/策略",
+      "↑2"
+    ],
+    [
+      "疯狂水世界",
+      1,
+      "SLG/策略",
+      "↑4"
+    ],
+    [
+      "占城大师",
+      1,
+      "塔防",
+      "─"
+    ],
+    [
+      "指尖幻影",
+      0,
+      "塔防",
+      "─"
+    ],
+    [
+      "跃动小子",
+      0,
+      "放置RPG",
+      "─"
+    ],
+    [
+      "浪漫餐厅",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "时尚百货城",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "梦幻消除战",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "狱国争霸",
+      0,
+      "SLG/策略",
+      "─"
+    ],
+    [
+      "传奇之业",
+      0,
+      "ARPG",
+      "─"
+    ],
+    [
+      "超能下蛋鸭",
+      0,
+      "放置RPG",
+      "─"
+    ],
+    [
+      "向往的生活",
+      1,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "四季合合",
+      0,
+      "合成消除",
+      "─"
+    ],
+    [
+      "杜拉拉升职记",
+      0,
+      "模拟经营",
+      "─"
+    ],
+    [
+      "妖怪金手指",
+      0,
+      "卡牌RPG",
+      "─"
+    ],
+    [
+      "空格之境",
+      0,
+      "模拟经营",
+      "─"
+    ]
+  ],
+  "simOverview": "微信上榜13款，Top10内2款，Top20内4款。抖音上榜13款，Top10内2款，Top20内5款。",
+  "simulation": {
+    "wxCount": 13,
+    "dyCount": 13,
+    "wxTop10": 2,
+    "wxTop20": 4,
+    "dyTop10": 2,
+    "dyTop20": 5,
+    "wxReps": "QQ经典农场(#2)、我的花园世界(#8)、向往的生活(#18)、浪漫餐厅(#20)",
+    "dyReps": "我的花园世界(#3)、浪漫餐厅(#7)、时尚百货城(#12)、杜拉拉升职记(#17)",
+    "games": [
+      {
+        "name": "QQ经典农场",
+        "company": "腾讯",
+        "mergePlay": "社交+偷菜",
+        "theme": "田园农场",
+        "wxRank": 2,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "我的花园世界",
+        "company": "厦门麟贝互娱",
+        "mergePlay": "二合+模拟经营",
+        "theme": "花园种花",
+        "wxRank": 8,
+        "dyRank": 3,
+        "diff": "抖音领先5位"
+      },
+      {
+        "name": "向往的生活",
+        "company": "深圳必凡娱乐",
+        "mergePlay": "二合+田园综艺IP",
+        "theme": "田园综艺",
+        "wxRank": 18,
+        "dyRank": 20,
+        "diff": "微信领先2位"
+      },
+      {
+        "name": "浪漫餐厅",
+        "company": "北京柠檬微趣",
+        "mergePlay": "合成+剧情经营",
+        "theme": "餐厅改造",
+        "wxRank": 20,
+        "dyRank": 7,
+        "diff": "抖音领先13位"
+      },
+      {
+        "name": "肥鹅美食街",
+        "company": "北京豪腾创想",
+        "mergePlay": "二合+模拟经营",
+        "theme": "美食街",
+        "wxRank": 24,
+        "dyRank": 46,
+        "diff": "微信领先22位"
+      },
+      {
+        "name": "时尚百货城",
+        "company": "深圳爱的番茄",
+        "mergePlay": "模拟经营+连锁",
+        "theme": "商场经营",
+        "wxRank": 34,
+        "dyRank": 12,
+        "diff": "抖音领先22位"
+      },
+      {
+        "name": "造化仙府",
+        "company": "上海沛炫网络",
+        "mergePlay": "修仙模拟经营",
+        "theme": "修仙",
+        "wxRank": 44,
+        "dyRank": 40,
+        "diff": "抖音领先4位"
+      },
+      {
+        "name": "肥鹅健身房",
+        "company": "北京豪腾创想",
+        "mergePlay": "二合+模拟经营",
+        "theme": "健身房",
+        "wxRank": 53,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "空格之境",
+        "company": "江西启游互动",
+        "mergePlay": "二合+纺织经营",
+        "theme": "江南纺织",
+        "wxRank": 70,
+        "dyRank": 88,
+        "diff": "微信领先18位"
+      },
+      {
+        "name": "织梦森林",
+        "company": "安徽雷虎网络",
+        "mergePlay": "二合+模拟经营",
+        "theme": "森林种树",
+        "wxRank": 73,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "我的休闲时光",
+        "company": "广州卓动信息",
+        "mergePlay": "放置经营+装修",
+        "theme": "休闲生活",
+        "wxRank": 76,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "梦幻经理人",
+        "company": "上海望伯纳乌",
+        "mergePlay": "模拟经营+体育",
+        "theme": "足球经理",
+        "wxRank": 79,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "这城有良田",
+        "company": "上海益玩网络",
+        "mergePlay": "模拟经营+种田",
+        "theme": "古代种田",
+        "wxRank": 81,
+        "dyRank": "-",
+        "diff": "仅微信"
+      },
+      {
+        "name": "杜拉拉升职记",
+        "company": "苏州沁游网络",
+        "mergePlay": "模拟养成+剧情换装",
+        "theme": "都市职场",
+        "wxRank": "-",
+        "dyRank": 17,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "时光杂货店",
+        "company": "安徽雷虎网络",
+        "mergePlay": "模拟经营+怀旧",
+        "theme": "90年代怀旧",
+        "wxRank": "-",
+        "dyRank": 67,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "时光大爆炸",
+        "company": "安徽盈趣网络",
+        "mergePlay": "模拟经营+RPG",
+        "theme": "穿越经营",
+        "wxRank": "-",
+        "dyRank": 82,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "此生无白",
+        "company": "苏州沁游网络",
+        "mergePlay": "都市经营+穿搭",
+        "theme": "现代都市",
+        "wxRank": "-",
+        "dyRank": 86,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "最强祖师",
+        "company": "霍尔果斯星嘉网络",
+        "mergePlay": "放置RPG",
+        "theme": "修仙宗门",
+        "wxRank": "-",
+        "dyRank": 91,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "大丰收",
+        "company": "北京米兜科技",
+        "mergePlay": "休闲模拟经营",
+        "theme": "农场丰收",
+        "wxRank": "-",
+        "dyRank": 95,
+        "diff": "仅抖音"
+      },
+      {
+        "name": "宫廷风云",
+        "company": "苏州沁游网络",
+        "mergePlay": "换装养成+经营",
+        "theme": "古风宫廷",
+        "wxRank": "-",
+        "dyRank": 100,
+        "diff": "仅抖音"
+      }
+    ]
+  },
+  "simConclusion": "模拟经营是双平台最稳定品类，用户生命周期长、付费模型健康。二合+模拟经营占比超40%。微信端社交裂变（QQ经典农场）驱动自然量；抖音端剧情/题材差异化（杜拉拉升职记、时光杂货店）吸量能力更强。",
+  "charts": {
+    "cats": [
+      "模拟经营",
+      "塔防",
+      "ARPG",
+      "卡牌RPG",
+      "放置RPG",
+      "SLG/策略",
+      "消除",
+      "棋牌",
+      "MMO",
+      "合成消除",
+      "益智",
+      "动作",
+      "射击",
+      "休闲",
+      "其他"
+    ],
+    "wx": [
+      13,
+      10,
+      15,
+      10,
+      8,
+      6,
+      3,
+      5,
+      3,
+      3,
+      3,
+      1,
+      1,
+      7,
+      2
+    ],
+    "dy": [
+      14,
+      14,
+      14,
+      8,
+      10,
+      5,
+      3,
+      1,
+      3,
+      3,
+      4,
+      2,
+      1,
+      8,
+      2
+    ]
+  },
+  "catDesc": "微信Top100：模拟经营13款、塔防10款、ARPG 15款、卡牌RPG 10款为四大支柱。抖音Top100：模拟经营14款、ARPG 14款、塔防14款位居前三。",
+  "surgeData": [
+    [
+      "魔灵纪元",
+      "抖音",
+      "放置RPG",
+      "↑61",
+      "郑州信跃网络科技有限公司",
+      "单周飙升黑马，抖音内容营销爆发",
+      "bg-gold"
+    ],
+    [
+      "英雄没有闪",
+      "抖音",
+      "ARPG",
+      "↑34",
+      "厦门盈趣信息技术有限公司",
+      "2D卡通放置ARPG",
+      "bg-gold"
+    ],
+    [
+      "我的休闲时光",
+      "微信",
+      "模拟经营",
+      "↑27",
+      "广州卓动信息科技有限公司",
+      "放置经营+装修"
+    ],
+    [
+      "造化仙府",
+      "微信",
+      "模拟经营",
+      "↑26",
+      "上海游族信息技术有限公司",
+      "修仙题材模拟经营"
+    ],
+    [
+      "时光杂货店",
+      "抖音",
+      "模拟经营",
+      "↑22",
+      "安徽盈趣网络科技有限公司",
+      "90年代怀旧题材"
+    ],
+    [
+      "空格之境",
+      "抖音",
+      "模拟经营",
+      "↑21",
+      "江西启游互动科技有限公司",
+      "二合+纺织经营"
+    ],
+    [
+      "宫廷风云",
+      "抖音",
+      "模拟经营",
+      "NEW",
+      "苏州沁游网络科技有限公司",
+      "古风宫廷换装经营"
+    ],
+    [
+      "三国杀",
+      "抖音",
+      "卡牌",
+      "↑24",
+      "杭州游卡网络技术有限公司",
+      "经典IP长线运营"
+    ]
+  ],
+  "surgeConclusion": "剧情驱动、融合创新玩法（背包合成+肉鸽、放置卡牌+题材跨界）是本周飙升的核心动力。",
+  "trends": [
+    "🚀 SLG品类双平台霸榜，LTV潜力被验证",
+    "🛡️ 塔防品类供给旺盛，融合玩法成主流",
+    "🏗️ 模拟经营长线最稳健，IAA最高90%分成新政利好",
+    "🔄 跨平台发行成标配，与独占策略需权衡",
+    "🎬 抖音端内容营销效应显著，与微信获量逻辑差异明显",
+    "🎯 本周政策红利集中释放，2026年是入局小游戏最佳窗口期",
+    "💻 PC端成为第二增长曲线，PC+移动双端策略成标配",
+    "🤖 AI务实落地元年，小游戏核心护城河仍是社交关系链",
+    "📜 版号供给持续高位，5月158款过审"
+  ],
+  "top100": {
+    "wx": [
+      {
+        "rank": 1,
+        "name": "三国：冰河时代",
+        "category": "SLG/策略",
+        "company": "欢游互动（北京）科技有限公司",
+        "change": "霸榜2天",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 2,
+        "name": "QQ经典农场",
+        "category": "模拟经营",
+        "company": "深圳市腾讯计算机系统有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 3,
+        "name": "永远的蔚蓝星球",
+        "category": "塔防",
+        "company": "广州颂悦信息技术有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 4,
+        "name": "疯狂水世界",
+        "category": "SLG/策略",
+        "company": "益世界网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 5,
+        "name": "向僵尸开炮",
+        "category": "塔防",
+        "company": "海南盛昌网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 6,
+        "name": "占城大师",
+        "category": "塔防",
+        "company": "武汉芯丰信息科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 7,
+        "name": "无尽冬日",
+        "category": "SLG/策略",
+        "company": "点点互动（北京）科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 8,
+        "name": "我的花园世界",
+        "category": "模拟经营",
+        "company": "厦门麟贝互娱科技有限公司",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 9,
+        "name": "灵画师",
+        "category": "ARPG",
+        "company": "广州光游网络科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 10,
+        "name": "西游降妖记",
+        "category": "ARPG",
+        "company": "--",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 11,
+        "name": "道友来挖宝",
+        "category": "放置RPG",
+        "company": "深圳雷霆信息技术有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 12,
+        "name": "保卫向日葵",
+        "category": "塔防",
+        "company": "深圳市一起梦游科技有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 13,
+        "name": "跃动小子",
+        "category": "放置RPG",
+        "company": "波克科技集团有限公司",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 14,
+        "name": "奔奔王国",
+        "category": "塔防",
+        "company": "福州点点松云网络有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 15,
+        "name": "神器传说",
+        "category": "放置RPG",
+        "company": "深圳全民互动科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 16,
+        "name": "腾讯欢乐斗地主",
+        "category": "棋牌",
+        "company": "深圳市腾讯计算机系统有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 17,
+        "name": "城主别慌张",
+        "category": "ARPG",
+        "company": "广州冠游信息科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 18,
+        "name": "向往的生活",
+        "category": "模拟经营",
+        "company": "深圳市必凡娱乐科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 19,
+        "name": "掌上谈兵",
+        "category": "卡牌",
+        "company": "郑州林凡网络科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 20,
+        "name": "浪漫餐厅",
+        "category": "模拟经营",
+        "company": "北京柠檬微趣科技股份有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 21,
+        "name": "寻道大千",
+        "category": "卡牌RPG",
+        "company": "三七互娱网络科技集团股份有限",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 22,
+        "name": "冒险岛：枫之新篇",
+        "category": "ARPG",
+        "company": "广东星辉天拓互动娱乐有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 23,
+        "name": "梦幻消除战",
+        "category": "消除",
+        "company": "广州喜势网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 24,
+        "name": "肥鹅美食街",
+        "category": "模拟经营",
+        "company": "北京豪腾创想科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 25,
+        "name": "原始征途",
+        "category": "MMO",
+        "company": "巨人网络集团股份有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 26,
+        "name": "生存33天",
+        "category": "SLG/策略",
+        "company": "广州三七网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 27,
+        "name": "青云诀之伏魔",
+        "category": "MMO",
+        "company": "海南元游信息技术有限公司",
+        "change": "17",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 28,
+        "name": "次神：光之觉醒",
+        "category": "卡牌RPG",
+        "company": "在线途游（北京）科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 29,
+        "name": "开心消消乐",
+        "category": "消除",
+        "company": "乐元素科技北京股份有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 30,
+        "name": "雷霆战机：集结",
+        "category": "射击",
+        "company": "北京爱乐游文化发展有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 31,
+        "name": "雀神广东麻将",
+        "category": "棋牌",
+        "company": "上海锋兮网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 32,
+        "name": "武侠大明星",
+        "category": "割草RPG",
+        "company": "海南盛昌网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 33,
+        "name": "斗破苍穹",
+        "category": "卡牌RPG",
+        "company": "上海繁树网络科技有限公司",
+        "change": "6",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 34,
+        "name": "时尚百货城",
+        "category": "模拟经营",
+        "company": "深圳市爱的番茄科技有限公司",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 35,
+        "name": "三国：天命再临",
+        "category": "SLG/策略",
+        "company": "--",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 36,
+        "name": "大话西游归来",
+        "category": "MMO",
+        "company": "上海以尚网络技术有限公司",
+        "change": "10",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 37,
+        "name": "机智逃脱",
+        "category": "益智",
+        "company": "深圳市安立讯科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 38,
+        "name": "百炼英雄",
+        "category": "ARPG",
+        "company": "深圳市九九互动科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 39,
+        "name": "迷雾大陆",
+        "category": "ARPG",
+        "company": "北京豪腾创想科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 40,
+        "name": "口袋奇兵",
+        "category": "SLG/策略",
+        "company": "北京江娱互动科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 41,
+        "name": "无限轮回",
+        "category": "ARPG",
+        "company": "海南易多量科技有限公司",
+        "change": "6",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 42,
+        "name": "佣兵小镇",
+        "category": "放置RPG",
+        "company": "成都天象互动文化传播有限公司",
+        "change": "4",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 43,
+        "name": "时空猎人·觉醒",
+        "category": "动作",
+        "company": "江西贪玩信息技术有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 44,
+        "name": "造化仙府",
+        "category": "模拟经营",
+        "company": "上海沛炫网络科技有限公司",
+        "change": "26",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 45,
+        "name": "超能下蛋鸭",
+        "category": "放置RPG",
+        "company": "世熠网络科技（上海）有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 46,
+        "name": "咻咻勇者",
+        "category": "ARPG",
+        "company": "深圳市紫晓互动科技有限公司",
+        "change": "5",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 47,
+        "name": "剑侠世界：起源",
+        "category": "ARPG",
+        "company": "成都西山居世游科技有限公司",
+        "change": "5",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 48,
+        "name": "四季合合",
+        "category": "合成消除",
+        "company": "青岛蓝飞互娱科技股份有限公司",
+        "change": "6",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 49,
+        "name": "天龙八部2：飞龙战天",
+        "category": "MMO",
+        "company": "江西贪玩信息技术有限公司",
+        "change": "5",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 50,
+        "name": "逆转回合",
+        "category": "卡牌RPG",
+        "company": "厦门游力信息科技有限公司",
+        "change": "11",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 51,
+        "name": "欢乐战三国",
+        "category": "卡牌RPG",
+        "company": "深圳市奥创互娱科技有限公司",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 52,
+        "name": "微乐四川麻将",
+        "category": "棋牌",
+        "company": "家乡互动厦门网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 53,
+        "name": "肥鹅健身房",
+        "category": "模拟经营",
+        "company": "北京豪腾创想科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 54,
+        "name": "王者征途",
+        "category": "MMO",
+        "company": "上海巨人统平网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 55,
+        "name": "王者之弈",
+        "category": "竞技",
+        "company": "海南椰路信息科技有限公司",
+        "change": "16",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 56,
+        "name": "天龙八部荣耀版",
+        "category": "MMO",
+        "company": "成都初心互动科技有限公司",
+        "change": "6",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 57,
+        "name": "指尖无双",
+        "category": "卡牌RPG",
+        "company": "福州蓝琥珀网络科技有限公司",
+        "change": "16",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 58,
+        "name": "元梦之星",
+        "category": "动作",
+        "company": "深圳市腾讯计算机系统有限公司",
+        "change": "15",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 59,
+        "name": "梦幻西游网页版",
+        "category": "放置RPG",
+        "company": "上海以尚网络技术有限公司",
+        "change": "4",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 60,
+        "name": "最强斗王",
+        "category": "卡牌RPG",
+        "company": "广西天牛信息技术有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 61,
+        "name": "手机反恐特别行动",
+        "category": "射击",
+        "company": "成都疾风劲趣科技有限公司",
+        "change": "18",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 62,
+        "name": "我的防线",
+        "category": "塔防",
+        "company": "杭州烈酷科技有限公司",
+        "change": "4",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 63,
+        "name": "小兵打天下",
+        "category": "塔防",
+        "company": "杭州淞羽网络科技有限公司",
+        "change": "6",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 64,
+        "name": "源星战域",
+        "category": "ARPG",
+        "company": "海南青时信息技术有限公司",
+        "change": "23",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 65,
+        "name": "出征吧！勇士",
+        "category": "塔防",
+        "company": "广州奥贝游网络科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 66,
+        "name": "咸鱼之王",
+        "category": "卡牌RPG",
+        "company": "北京豪腾嘉科科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 67,
+        "name": "英雄没有闪",
+        "category": "ARPG",
+        "company": "广州盈心网络科技有限公司",
+        "change": "12",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 68,
+        "name": "指尖王国",
+        "category": "竞技",
+        "company": "深圳市掌娱趣科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 69,
+        "name": "欢乐麻将",
+        "category": "棋牌",
+        "company": "深圳市腾讯计算机系统有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 70,
+        "name": "空格之境",
+        "category": "模拟经营",
+        "company": "江西启游互动科技有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 71,
+        "name": "勇者联盟",
+        "category": "ARPG",
+        "company": "广州爱游网络科技有限公司",
+        "change": "14",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 72,
+        "name": "遗弃之地",
+        "category": "塔防",
+        "company": "北京豪腾创想科技有限公司",
+        "change": "12",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 73,
+        "name": "织梦森林",
+        "category": "模拟经营",
+        "company": "安徽雷虎网络科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 74,
+        "name": "六六英雄",
+        "category": "益智",
+        "company": "北京紫辰乐游科技有限公司",
+        "change": "10",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 75,
+        "name": "奇遇西行",
+        "category": "卡牌RPG",
+        "company": "广州焜耀网络科技有限公司",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 76,
+        "name": "我的休闲时光",
+        "category": "模拟经营",
+        "company": "广州卓动信息科技有限公司",
+        "change": "27",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 77,
+        "name": "三国杀",
+        "category": "卡牌",
+        "company": "杭州游卡网络技术有限公司",
+        "change": "18",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 78,
+        "name": "微乐捉鸡麻将",
+        "category": "棋牌",
+        "company": "家乡互动厦门网络科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 79,
+        "name": "梦幻经理人",
+        "category": "模拟经营",
+        "company": "上海望伯纳乌科技有限公司",
+        "change": "15",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 80,
+        "name": "天天斗地主真人版",
+        "category": "棋牌",
+        "company": "深圳市禅游科技股份有限公司",
+        "change": "5",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 81,
+        "name": "这城有良田",
+        "category": "模拟经营",
+        "company": "上海益玩网络科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 82,
+        "name": "三国：谋定天下",
+        "category": "SLG/策略",
+        "company": "浙江华娱网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 83,
+        "name": "绝世仙王",
+        "category": "MMO",
+        "company": "上海风派网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 84,
+        "name": "一路狂飙",
+        "category": "塔防",
+        "company": "世熠网络科技（上海）有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 85,
+        "name": "微乐斗地主",
+        "category": "棋牌",
+        "company": "家乡互动厦门网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 86,
+        "name": "羊了个羊：星球",
+        "category": "消除",
+        "company": "北京简游科技有限公司",
+        "change": "4",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 87,
+        "name": "月之村",
+        "category": "益智",
+        "company": "北京简游互娱科技有限公司",
+        "change": "6",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 88,
+        "name": "鱼吃鱼",
+        "category": "益智",
+        "company": "广州德道科技有限公司",
+        "change": "22",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 89,
+        "name": "热血江湖传",
+        "category": "ARPG",
+        "company": "江西贪玩信息技术有限公司",
+        "change": "10",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 90,
+        "name": "爪爪大乱斗",
+        "category": "益智",
+        "company": "安徽盈趣网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 91,
+        "name": "新弹弹堂",
+        "category": "卡牌RPG",
+        "company": "深圳第七大道科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 92,
+        "name": "楚新钓",
+        "category": "放置RPG",
+        "company": "海南易多量科技有限公司",
+        "change": "9",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 93,
+        "name": "主宰世界",
+        "category": "SLG/策略",
+        "company": "广州四三九九信息科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 94,
+        "name": "财神十三张",
+        "category": "棋牌",
+        "company": "厦门游成互动网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 95,
+        "name": "街机恐龙",
+        "category": "动作",
+        "company": "湖南草花互动科技有限股份公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 96,
+        "name": "一步两步",
+        "category": "放置RPG",
+        "company": "厦门光环信息科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 97,
+        "name": "重生：我觉醒无限异能",
+        "category": "ARPG",
+        "company": "--",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 98,
+        "name": "掼蛋",
+        "category": "棋牌",
+        "company": "杭州边锋网络技术有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 99,
+        "name": "女神国度",
+        "category": "ARPG",
+        "company": "成都星邦互娱网络科技集团有限",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 100,
+        "name": "多乐够级",
+        "category": "棋牌",
+        "company": "北京蓝色创想网络科技有限责任",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      }
+    ],
+    "dy": [
+      {
+        "rank": 1,
+        "name": "三国：冰河时代",
+        "category": "SLG/策略",
+        "company": "欢游互动（北京）科技有限公司",
+        "change": "霸榜3天",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 2,
+        "name": "灵画师",
+        "category": "ARPG",
+        "company": "广州光游网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 3,
+        "name": "我的花园世界",
+        "category": "模拟经营",
+        "company": "海南途趣科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 4,
+        "name": "向僵尸开炮",
+        "category": "塔防",
+        "company": "海南盛昌网络科技有限公司",
+        "change": "5",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 5,
+        "name": "无尽冬日",
+        "category": "SLG/策略",
+        "company": "上海青笛科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 6,
+        "name": "疯狂水世界",
+        "category": "SLG/策略",
+        "company": "益世界网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 7,
+        "name": "浪漫餐厅",
+        "category": "模拟经营",
+        "company": "北京柠檬曲奇科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 8,
+        "name": "占城大师",
+        "category": "塔防",
+        "company": "武汉多趣信息技术有限公司",
+        "change": "4",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 9,
+        "name": "梦幻消除战",
+        "category": "消除",
+        "company": "广州喜势网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 10,
+        "name": "超能下蛋鸭",
+        "category": "放置RPG",
+        "company": "世熠网络科技（上海）有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 11,
+        "name": "四季合合",
+        "category": "合成消除",
+        "company": "青岛蓝飞互娱科技股份有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 12,
+        "name": "时尚百货城",
+        "category": "模拟经营",
+        "company": "深圳市爱的番茄科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 13,
+        "name": "传奇之业",
+        "category": "ARPG",
+        "company": "杭州悦昭网络科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 14,
+        "name": "跃动小子",
+        "category": "放置RPG",
+        "company": "柏项网络科技（上海）有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 15,
+        "name": "保卫向日葵",
+        "category": "塔防",
+        "company": "深圳市一起梦游科技有限公司",
+        "change": "5",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 16,
+        "name": "永远的蔚蓝星球",
+        "category": "塔防",
+        "company": "广州颂悦信息技术有限公司",
+        "change": "5",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 17,
+        "name": "杜拉拉升职记",
+        "category": "模拟经营",
+        "company": "苏州沁游网络科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 18,
+        "name": "奔奔王国",
+        "category": "塔防",
+        "company": "福州点点松禾科技有限公司",
+        "change": "12",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 19,
+        "name": "生存33天",
+        "category": "SLG/策略",
+        "company": "广州龙畅网络科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 20,
+        "name": "向往的生活",
+        "category": "模拟经营",
+        "company": "深圳市必凡娱乐科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 21,
+        "name": "次神光之觉醒",
+        "category": "卡牌RPG",
+        "company": "北京雪境科技有限公司",
+        "change": "6",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 22,
+        "name": "神器传说",
+        "category": "放置RPG",
+        "company": "深圳市拾光筑梦文化传媒有限公",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 23,
+        "name": "狱国争霸",
+        "category": "SLG/策略",
+        "company": "北京智诚互娱科技有限公司",
+        "change": "9",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 24,
+        "name": "手机反恐特别行动",
+        "category": "射击",
+        "company": "成都疾风劲趣科技有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 25,
+        "name": "最强斗王",
+        "category": "卡牌RPG",
+        "company": "广西天牛信息技术有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 26,
+        "name": "指尖幻影",
+        "category": "放置RPG",
+        "company": "海南异界科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 27,
+        "name": "妖怪金手指",
+        "category": "塔防",
+        "company": "霍尔果斯天翔信息技术有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 28,
+        "name": "三国大冒险",
+        "category": "卡牌RPG",
+        "company": "广州天纵信息技术有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 29,
+        "name": "武侠大明星",
+        "category": "割草RPG",
+        "company": "海南临游科技有限公司",
+        "change": "13",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 30,
+        "name": "抓大鹅",
+        "category": "消除",
+        "company": "青岛蓝飞互娱科技股份有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 31,
+        "name": "爆裂守卫",
+        "category": "塔防",
+        "company": "邯郸太空船信息科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 32,
+        "name": "王者之弈",
+        "category": "竞技",
+        "company": "海南椰路信息科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 33,
+        "name": "不服来通关",
+        "category": "益智",
+        "company": "长沙游品科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 34,
+        "name": "奇遇西行",
+        "category": "卡牌RPG",
+        "company": "广州焜耀网络科技有限公司",
+        "change": "11",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 35,
+        "name": "烈焰觉醒",
+        "category": "ARPG",
+        "company": "杭州悦妙网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 36,
+        "name": "羊了个羊：星球",
+        "category": "消除",
+        "company": "北京简游科技有限公司天津分公",
+        "change": "3",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 37,
+        "name": "魔灵纪元",
+        "category": "放置RPG",
+        "company": "郑州信跃网络科技有限公司",
+        "change": "61",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 38,
+        "name": "佣兵小镇",
+        "category": "放置RPG",
+        "company": "成都爱奇艺影视文化有限公司",
+        "change": "2",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 39,
+        "name": "我的防线",
+        "category": "塔防",
+        "company": "杭州烈酷科技有限公司",
+        "change": "1",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 40,
+        "name": "造化仙府",
+        "category": "模拟经营",
+        "company": "上海沛炫网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 41,
+        "name": "斗破苍穹",
+        "category": "卡牌RPG",
+        "company": "上海繁树网络科技有限公司",
+        "change": "6",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 42,
+        "name": "战龙之怒",
+        "category": "其他",
+        "company": "杭州悦玩互娱网络科技有限公司",
+        "change": "6",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 43,
+        "name": "佛系消消消",
+        "category": "消除",
+        "company": "厦门行上网络科技有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 44,
+        "name": "掼蛋",
+        "category": "棋牌",
+        "company": "杭州边锋网络技术有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 45,
+        "name": "梦幻西游网页版",
+        "category": "放置RPG",
+        "company": "广州网易计算机系统有限公司",
+        "change": "18",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 46,
+        "name": "肥鹅美食街",
+        "category": "模拟经营",
+        "company": "北京豪腾创想科技有限公司",
+        "change": "5",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 47,
+        "name": "英雄大对决",
+        "category": "塔防",
+        "company": "重庆煌秀信息技术有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 48,
+        "name": "多乐升级",
+        "category": "棋牌",
+        "company": "北京蓝色创想网络科技有限责任",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 49,
+        "name": "勇者突围",
+        "category": "动作",
+        "company": "广州轻游信息科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 50,
+        "name": "救救我鸭",
+        "category": "益智",
+        "company": "北京起跃文化有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 51,
+        "name": "一路狂飙",
+        "category": "塔防",
+        "company": "世熠网络科技（上海）有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 52,
+        "name": "英雄没有闪",
+        "category": "ARPG",
+        "company": "广州盈心网络科技有限公司",
+        "change": "34",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 53,
+        "name": "遗弃之地",
+        "category": "塔防",
+        "company": "北京智诚互娱科技有限公司",
+        "change": "18",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 54,
+        "name": "元气蛋蛋王",
+        "category": "放置RPG",
+        "company": "深圳澎云科技有限公司",
+        "change": "8",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 55,
+        "name": "炽烈战歌",
+        "category": "ARPG",
+        "company": "杭州悦妙网络科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 56,
+        "name": "百重守护",
+        "category": "卡牌RPG",
+        "company": "上海德益昶信息科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 57,
+        "name": "逆袭的旅程",
+        "category": "ARPG",
+        "company": "杭州卡日曲网络科技有限公司",
+        "change": "14",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 58,
+        "name": "小小屠龙",
+        "category": "ARPG",
+        "company": "绍兴玩味科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 59,
+        "name": "百炼英雄",
+        "category": "ARPG",
+        "company": "深圳市九九互动科技有限公司",
+        "change": "7",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 60,
+        "name": "一步两步",
+        "category": "放置RPG",
+        "company": "厦门游力信息科技有限公司",
+        "change": "23",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 61,
+        "name": "青云诀之伏魔",
+        "category": "MMO",
+        "company": "海南青时信息技术有限公司",
+        "change": "12",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 62,
+        "name": "天天台球",
+        "category": "棋牌",
+        "company": "北京喜云网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 63,
+        "name": "超凡三国",
+        "category": "卡牌RPG",
+        "company": "深圳百里光芒网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 64,
+        "name": "三国杀",
+        "category": "卡牌",
+        "company": "杭州游卡网络技术有限公司",
+        "change": "24",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 65,
+        "name": "找个球",
+        "category": "益智",
+        "company": "长沙指米网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 66,
+        "name": "无厘头大挑战",
+        "category": "益智",
+        "company": "广州双百信息科技有限公司",
+        "change": "6",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 67,
+        "name": "时光杂货店",
+        "category": "模拟经营",
+        "company": "安徽雷虎网络科技有限公司",
+        "change": "22",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 68,
+        "name": "找个啥",
+        "category": "益智",
+        "company": "长沙指米网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 69,
+        "name": "这活贼解压",
+        "category": "益智",
+        "company": "福州新象互动网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 70,
+        "name": "兵器王者",
+        "category": "动作",
+        "company": "青岛蓝飞互娱科技股份有限公司",
+        "change": "3",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 71,
+        "name": "欢乐战三国",
+        "category": "卡牌RPG",
+        "company": "海南哎呦互娱网络科技有限公司",
+        "change": "13",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 72,
+        "name": "无限轮回",
+        "category": "ARPG",
+        "company": "海南易多量科技有限公司",
+        "change": "15",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 73,
+        "name": "斗神域",
+        "category": "ARPG",
+        "company": "杭州悦昭网络科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 74,
+        "name": "在玩亿关就睡",
+        "category": "益智",
+        "company": "深圳海草科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 75,
+        "name": "楚新钓",
+        "category": "放置RPG",
+        "company": "海南易多量科技有限公司",
+        "change": "21",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 76,
+        "name": "援军来了",
+        "category": "塔防",
+        "company": "上海炎魔网络科技有限公司",
+        "change": "24",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 77,
+        "name": "咻咻勇者",
+        "category": "ARPG",
+        "company": "深圳市紫晓互动科技有限公司",
+        "change": "16",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 78,
+        "name": "灵决苍穹",
+        "category": "ARPG",
+        "company": "杭州悦玩互娱网络科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 79,
+        "name": "极限萌怪",
+        "category": "卡牌RPG",
+        "company": "霍尔果斯天翔信息技术有限公司",
+        "change": "9",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 80,
+        "name": "这关不简单",
+        "category": "益智",
+        "company": "北京起跃文化有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 81,
+        "name": "全境守卫",
+        "category": "塔防",
+        "company": "重庆汇量云科技有限公司",
+        "change": "4",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 82,
+        "name": "时光大爆炸",
+        "category": "模拟经营",
+        "company": "安徽盈趣网络科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 83,
+        "name": "王者征途",
+        "category": "MMO",
+        "company": "上海巨人统平网络科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 84,
+        "name": "通关来解压",
+        "category": "益智",
+        "company": "武汉智地卓越信息科技有限公司",
+        "change": "7",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 85,
+        "name": "守护神之觉醒网络游戏软件V1.0",
+        "category": "其他",
+        "company": "海南丰际网络科技有限公司",
+        "change": "26",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 86,
+        "name": "此生无白",
+        "category": "模拟经营",
+        "company": "苏州沁游网络科技有限公司天枢",
+        "change": "8",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 87,
+        "name": "剑侠传奇",
+        "category": "ARPG",
+        "company": "深圳市小黑龙网络科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 88,
+        "name": "空格之境",
+        "category": "模拟经营",
+        "company": "江西启游互动科技有限公司",
+        "change": "21",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 89,
+        "name": "超级消消",
+        "category": "消除",
+        "company": "广州联曼信息科技有限公司",
+        "change": "8",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 90,
+        "name": "乐蜀三国",
+        "category": "卡牌RPG",
+        "company": "杭州上兔网络科技有限公司",
+        "change": "9",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 91,
+        "name": "最强祖师",
+        "category": "放置RPG",
+        "company": "霍尔果斯星嘉网络科技有限公司",
+        "change": "2",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 92,
+        "name": "象棋达人",
+        "category": "棋牌",
+        "company": "深圳市一锋科技有限公司",
+        "change": "- 稳定",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 93,
+        "name": "消的有点菜",
+        "category": "消除",
+        "company": "长沙指极星科技有限公司",
+        "change": "9",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 94,
+        "name": "三界无双",
+        "category": "ARPG",
+        "company": "杭州悦昭网络科技有限公司",
+        "change": "17",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 95,
+        "name": "大丰收",
+        "category": "模拟经营",
+        "company": "北京米兜科技有限公司",
+        "change": "1",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 96,
+        "name": "诡话连篇",
+        "category": "益智",
+        "company": "深圳市会友互联网络科技有限公",
+        "change": "21",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 97,
+        "name": "咻咻大冒险",
+        "category": "放置RPG",
+        "company": "江西菲凯信息技术有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 98,
+        "name": "天龙八部荣耀版",
+        "category": "MMO",
+        "company": "成都初心互动科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 99,
+        "name": "躺平发育",
+        "category": "塔防",
+        "company": "北京蜜獾工坊科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      },
+      {
+        "rank": 100,
+        "name": "宫廷风云",
+        "category": "模拟经营",
+        "company": "苏州沁游网络科技有限公司",
+        "change": "新进榜",
+        "isCrossPlatform": false
+      }
+    ]
+  },
+  "policies": {
+    "apple": "<p><strong>本周状态：</strong>2025年底苹果与腾讯达成iOS支付协议，微信小游戏已跑通流程。</p>\n<p><strong>① 佣金率调整（2026年3月15日起生效）</strong>\n<br>• 标准App内购买/付费App佣金：<strong>30% → 25%</strong>\n<br>• 小型厂商游戏合作伙伴计划：<strong>15%</strong>，适合总收益在 100 万美元以内的现有开发者，以及新加入 App Store 的开发者</p>\n<br>• 首年后自动续费订阅：<strong>15% → 12%</strong><p></p>\n<p><strong>② iOS支付重大进展 — ⭐ 本周关注</strong>\n<br>• 2025年底苹果与腾讯达成协议，苹果从用户购买金额中抽取 <strong>15%分成</strong>\n<br>• 微信团队在5.27开发者大会上确认\"流程已跑通\"，开发者正陆续完成对接\n<br>• 相比此前小游戏在iOS端无法正常走通内购的困境，<strong>15%分成比例显著利好</strong>开发者</p>\n<p><strong>政策原文：</strong><a href=\"https://developer.apple.com/cn/app-store/small-business-program/\">苹果开发者小企业计划 →</a></p>\n\t<p><strong>后续关注重点：</strong></p>\n<ol style=\"margin:6px 0 0 16px;font-size:13px;\">\n  <li>iOS支付流程全面跑通后，微信小游戏iOS端内购收入增量预期</li>\n  <li>苹果是否将15%游戏优惠向更多开发者开放</li>\n  <li>欧盟《数字市场法案》后续执行是否影响中国区政策走向</li>\n</ol>",
+    "douyin": "<p><strong>本周状态：</strong>5月历史任务金激活计划已启动，多项激励活动持续至6月30日。</p>\n<p><strong>① 历史任务金激活计划（5月执行—⭐ 新增）</strong>\n<br>• 激活条件：2026年4月单款游戏发行人与一口价场景分成前总收入≥<strong>1万元</strong>\n<br>• 激活内容：截至2026年2月28日已到期但未使用的<strong>历史任务金可重新激活</strong>\n<br>• 发放时间：5月内一次性发放至星图账户，有效期<strong>180天</strong>\n<br>• 通知方式：5月7日站内信下发，已陆续到账</p>\n<p><strong>② 版本提审新规（2026年4月20日起生效）</strong>\n<br>• 提审通过后将<strong>自动上线至所有已接入抖音小游戏的合作App</strong>，QA回归多端\n<br>• 任一宿主端未通过则需重新修改提审（已通过端需版本号大于当前）\n<br>• 使用网络功能需配置<strong>安全域名白名单</strong>（https:// + wss://）</p>\n<p><strong>③ Q1 IAP激励政策（持续至Q2）</strong>\n<br>• 最高 <strong>40%现金消耗赠款</strong>，单款封顶 <strong>400万元</strong>\n<br>• 新游同发门槛简化，日均消耗增量≥1万元即可享受\n<br>• 重点品类（模拟经营、塔防、RPG）额外<strong>20%返点</strong></p>\n<p><strong>④ 任务金限时激励（持续至2026年6月30日）</strong>\n<br>• 发行人及一口价场景：广告收入<strong>20%</strong>任务金\n<br>• 投广场景IAA：广告收入<strong>5%</strong>任务金\n<br>• 投广场景IAP：安卓内购消费总额<strong>4%</strong>任务金\n<br>• 自然场景IAP：内购消费总额<strong>10%</strong>任务金\n<br>• 门槛：上一半月结算周期内收入≥1万元</p>\n<p><strong>⑤ 生态扶持三项政策（2026年4月）</strong>\n<br>• T+1提现能力：提现周期提升93%\n<br>• 内容任务激励金：通过内容经营获取自然流量\n<br>• 同发新游扶持通道：测试调优+增长补贴+内容共建</p>\n<strong>政策原文：</strong><a href=\"https://partner.open-douyin.com/docs/resource/zh-CN/mini-game/guide/minigame/examineguide\" target=\"_blank\" rel=\"noopener\" style=\"color:#667eea;\">抖音开放平台开发者文档 →</a>\n\t<p><strong>后续关注重点：</strong>多项激励活动6月30日截止，Q3政策调整方向；PC端小游戏入驻政策是否放宽。</p>",
+    "wechat": "<p><strong>本周状态：2026年5月27日微信小游戏开发者大会（杭州）发布史上最大力度政策更新，5/28-29媒体密集报道深度解读。</strong></p>\n\n<p><strong>📊 平台核心数据</strong>\n<br>• MAU突破 <strong>5亿</strong>，开发者超 <strong>50万</strong>（80%为30人以下团队），DAU超百万游戏超 <strong>80款</strong>\n<br>• 季度流水超千万游戏超 <strong>300款</strong>，2026年1-5月变现收入同比增长 <strong>20%</strong>\n<br>• 用户画像：男性53%/女性47%，一二线城市45%，24-40岁占50%，日均使用时长超60分钟</p>\n\n<p><strong>💰 ① IAP新游激励升级 — ⭐ 历史力度最大</strong>\n<br>• <strong>首发新游</strong>最高5000万元流水<strong>全额不分成</strong> + 最高2000万元激励金\n<br>• 非首发新游：首100万流水不分成，单款最高40万元激励金\n<br>• 长线运营游戏：30天内每200万安卓现金投放消耗 → 5%广告金激励</p>\n\n<p><strong>💰 ② IAA广告变现激励 — 最高90%分成</strong>\n<br>• 方案一（轻中度激励）：现金50% + 广告金40%（30天）→ <strong>总90%</strong>\n<br>• 方案二（长线精品激励）：现金50% + 广告金35%（90天）→ <strong>总85%</strong>\n<br>• <strong>新增回流政策</strong>：流失超45天用户的召回激励与新用户等同，回流用户首日LTV提升超20%</p>\n\n<p><strong>💻 ③ PC端战略升级</strong>\n<br>• PC小游戏额外 <strong>10%专属广告金</strong>返还\n<br>• 2026年推出<strong>\"PC高性能模式\"</strong>（大屏适配、键鼠操作）\n<br>• PC独占用户占 <strong>40%</strong>，时长和ARPU分别比移动端增长 <strong>100% + 130%</strong></p>\n\n<p><strong>🔄 ④ 老游激励优化</strong>\n<br>• IAP老游广告金获取门槛从\"消2赠1\"降至<strong>\"消1赠1\"</strong></p>\n\n<p><strong>📱 ⑤ iOS支付重大突破</strong>\n<br>• 苹果与腾讯达成协议：苹果从用户购买金额中抽取 <strong>15%分成</strong>\n<br>• 微信团队确认\"流程已跑通\"，开发者正陆续完成对接</p>\n\n<p><strong>🤖 ⑥ AI赋能落地 — 核心战略方向</strong>\n<br>• 腾讯游戏云AI智能体：创意→可玩原型从<strong>数周压缩至数小时</strong>\n<br>• AI覆盖：美术风格、关卡设计、素材生成、自动化运营全链路\n<br>• 投放端：AIM+智能投放2026年Q2消耗同比<strong>增长390%</strong>，直玩形态点击转化率<strong>提升3倍</strong>\n<br>• 平台定位：AI是<strong>\"效率基础设施\"</strong>而非颠覆者，爆款仍需人工打磨</p>\n\n<p><strong>🛡️ ⑦ 安全体系全面升级（5/28发布）</strong>\n<br>• <strong>动态反外挂</strong>：从静态加固进化为主动防御，零接入成本，覆盖游戏全生命周期\n<br>• <strong>代码加固3.0</strong>：全面支持Unity（WASM）加固，性能几乎无损，已服务超1万款游戏\n<br>• <strong>一站式维权平台</strong>：AI动态监测+全链路打击，一键授权全程托管\n<br>• 实测：某游戏重打包外挂版本从3000+降趋近于0；侵权下架率48小时内达95%</p>\n\n<p><strong>🎯 ⑧ 战略转向：\"从连接到长青\"</strong>\n<br>• 明确月活5亿接近国内游戏人口天花板，不再执着规模增长\n<br>• 2026年主题<strong>\"生态繁荣\"</strong> — 做深留存、做长时长、做强场景渗透\n<br>• 重点方向：经典玩法+IP、女性用户（\"她力量\"）、玩法创新融合（肉鸽+自走棋等）</p>\n\n<p><strong>政策原文：</strong><a href=\"https://developers.weixin.qq.com/minigame/introduction/commercialization/\">微信激励政策 →</a> | <a href=\"https://mp.weixin.qq.com/s/vWqsKGkFXNN4sywdVBsSNA?mpshare=1&amp;scene=1&amp;srcid=05066ktyDDat6XveOqS1bWJM&amp;sharer_shareinfo=4001f18ecce46d1877af65dfc651c0cf&amp;sharer_shareinfo_first=c46d4584756e0e09f8d28dcf4b39e284&amp;from=industrynews&amp;color_scheme=light#rd\" noopener\"=\"\" style=\"color:#667eea;\">政策解读→</a></p>\n<p><strong>后续关注：</strong>5000万不分成政策具体申请流程与资格细则；AI智能体能力开放范围；安全体系后续升级节奏。</p>",
+    "android": "<p><strong>本周状态：无重大分成政策更新，以下为行业共性动态：</strong></p>\n<p><strong>① ITGSA金标联盟 — 公平运行内存机制（2026年5月发布）</strong>\n<br>• 联盟成员：vivo、小米、OPPO、荣耀等（华为同为金标联盟成员）\n<br>• 统一内存管理规范，解决安卓应用内存占用过高导致的卡顿/发热/后台被杀问题\n<br>• 建立<strong>主动释放机制</strong>，内存紧张时系统通知应用释放资源\n<br>• <span style=\"color:#e74c3c;font-weight:600;\">适配截止：2026年6月30日</span>，需各品牌开放平台获取适配文档</p>\n<p><strong>② TapTap</strong>：维持0分成策略不变，2026年聚焦社区内容生态和游戏评测体系完善。</p>\n<p></p><p><strong>后续关注重点：</strong></p>\n<ol style=\"margin:6px 0 0 16px;font-size:13px;\">\n  <li>各硬件厂商2026年H2联运分成政策是否调整</li>\n  <li>金标联盟内存机制对游戏性能表现的实际影响</li>\n  <li>华为鸿蒙生态小游戏/快应用接入进展</li>\n</ol>",
+    "banhao": "<p><strong>共计158款游戏获批</strong>（国产网络游戏154款 + 进口网络游戏4款），2026年累计发放版号 <strong>779个</strong>（同比增长19.66%）。</p>\n\n<table>\n<thead><tr><th>类型</th><th>数量</th><th>占比</th></tr></thead>\n<tbody>\n<tr><td>移动游戏</td><td>79款</td><td>51.3%</td></tr>\n<tr><td>移动-休闲益智</td><td>56款</td><td>36.4%</td></tr>\n<tr><td>移动+客户端</td><td>15款</td><td>9.7%</td></tr>\n<tr><td>客户端</td><td>2款</td><td>1.3%</td></tr>\n<tr><td>移动+网页等多端</td><td>2款</td><td>1.3%</td></tr>\n</tbody>\n</table>\n\n<table>\n<thead><tr><th>厂商</th><th>游戏</th><th>品类/题材</th></tr></thead>\n<tbody>\n<tr><td><strong>腾讯</strong></td><td>《追逐卡蕾多》</td><td>3D二次元机车RPG</td></tr>\n<tr><td><strong>网易</strong></td><td>《诡影藏锋》</td><td>中式志怪搜打撤</td></tr>\n<tr><td><strong>三七互娱</strong></td><td>《斗破苍穹：觉醒》</td><td>玄幻开放世界MMO</td></tr>\n<tr><td><strong>莉莉丝</strong></td><td>《小冰冰斗蛐蛐》</td><td>休闲竞技</td></tr>\n<tr><td><strong>朝夕光年</strong></td><td>《托托比亚》</td><td>冒险题材</td></tr>\n<tr><td><strong>上海游卡</strong></td><td>《三国杀·烽烟策》</td><td>卡牌（三端）</td></tr>\n<tr><td><strong>友谊时光</strong></td><td>《超人气足球》</td><td>体育模拟经营</td></tr>\n<tr><td><strong>电魂网络</strong></td><td>《星愿之冠》</td><td>角色扮演</td></tr>\n</tbody>\n</table>\n\n<p><strong>模拟经营品类重点关注：</strong></p>\n<p>本月过审游戏中，模拟经营类约 <strong>17款</strong>，以轻量化休闲经营为主：</p>\n<ul style=\"margin:4px 0 0 16px;font-size:13px;\">\n  <li><strong>《犹格索托斯的庭院》</strong>（移动+客户端）— ⭐ 最受关注，克苏鲁题材模拟经营叙事，骨钉工作室开发，Steam特别好评</li>\n  <li><strong>《桃源小镇》</strong>（移动）— 小镇模拟经营</li>\n  <li><strong>《开间花店》《花房四季》《花间小筑》</strong>（移动-休闲益智）— 花卉园艺经营品类</li>\n  <li><strong>《花香农场》《大鹅超市》《杂货梦工厂》《老板的日常》</strong>（移动/休闲益智）— 农场/商超/工坊经营</li>\n  <li><strong>《梦想时光》</strong>（移动-休闲益智）— 生活模拟经营</li>\n</ul>\n<p style=\"font-size:12px;color:#888;margin-top:6px;\"><a href=\"https://www.gamersky.com/news/202605/2146177.shtml\">5月最新版号信息 →</a> </p>",
+    "industry": "<p><strong>① 微信小游戏开发者大会（5月27日·杭州）— 核心战略转向</strong>\n<br>• <strong>主题\"从连接到长青\"</strong>：MAU突破5亿接近天花板，不再执着规模增长，转向生态繁荣\n<br>• 李卿（产品总监）AI三判断：AI增强生产能力/短期体现于成本端/AI无法替代人类创意\n<br>• 明确三大方向：经典玩法+IP、女性用户（\"她力量\"）、玩法创新融合（肉鸽+自走棋等）\n<br>• 商业化规模连续8年增长，2026年1-5月变现收入同比增长 <strong>20%</strong></p>\n\n<p><strong>② AI在小游戏领域的务实落地</strong>\n<br>• <strong>研发端</strong>：腾讯游戏云AI智能体将原型开发从数周压缩至数小时，AI关卡分析/热点工具/难度评分大量实测中\n<br>• <strong>投放端</strong>：AIM+智能投放Q2消耗同比增长<strong>390%</strong>，妙思AIGC素材大幅降本增效，自然语言投放Agent降低门槛\n<br>• <strong>用户端</strong>：直玩形态（广告即游戏）点击转化率<strong>提升3倍</strong>，注册成本<strong>降低80%</strong>\n<br>• 开发者反馈：《一箭又一箭》关卡量产/难度评分已大量交给AI；《向往的生活》AI嵌入立项/调研/策划全环节\n<br>• AI漫剧Q1在播量约18万部（较1月增200%+），与小游戏争夺\"低成本娱乐时间\"</p>\n\n<p><strong>③ 安全风控全面升级（5/28微信公开课）</strong>\n<br>• 微信公开课讲师彭馨勇发布 <strong>三大安全升级</strong>：动态反外挂（零接入成本）+ 代码加固3.0（Unity WASM）+ 一站式维权平台\n<br>• 实测效果：重打包外挂从3000+趋近于0，侵权内容48小时内下架率超95%\n<br>• 用户风控系统上线：高/中/低/轻微四级风险分级，高风险直接拦截，中风险柔性干预</p>\n\n<p><strong>④ 头部厂商加速布局生活模拟赛道</strong>\n<br>• 腾讯《莉莉的迷你世界》、米哈游《星布谷地》预计2026年上线\n<br>• 行业正从\"数值驱动ARPG疲劳\"转向<strong>\"治愈系\"低压力生活模拟</strong>\n<br>• 品类定位：抢占玩家 <strong>\"第二款游戏\"</strong> 位置，低压力日常陪伴型体验</p>\n\n<p><strong>⑤ 行业大咖持续流向小游戏赛道</strong>\n<br>• 原《射雕》制作人（600人团队/投入近10亿项目关停后）低调创业<strong>竖屏小游戏</strong>\n<br>• 反映中重度游戏大咖向小游戏赛道流动的持续趋势</p>\n\n<p><strong>⑥ 小游戏获客报告：买量已成主入口</strong>\n<br>• 67%新用户来自<strong>付费买量</strong>（两年前约40%），自然增长红利消退\n<br>• 热力引擎×Insightrackr联合报告：IAP占比升至<strong>68%</strong>，小游戏从\"IAA轻量\"转向\"IAP中重度\"</p>"
+  },
+  "marketing": {
+    "marketOverview": {
+      "app": 1300,
+      "miniapp": 5400,
+      "total": 6700
+    },
+    "groupTop10": [
+      {
+        "rank": 1,
+        "name": "大梦",
+        "dailyConsume": 410
+      },
+      {
+        "rank": 2,
+        "name": "途游",
+        "dailyConsume": 370
+      },
+      {
+        "rank": 3,
+        "name": "9377",
+        "dailyConsume": 340
+      },
+      {
+        "rank": 4,
+        "name": "点点",
+        "dailyConsume": 340
+      },
+      {
+        "rank": 5,
+        "name": "波克",
+        "dailyConsume": 210
+      },
+      {
+        "rank": 6,
+        "name": "IEG",
+        "dailyConsume": 210
+      },
+      {
+        "rank": 7,
+        "name": "必凡",
+        "dailyConsume": 210
+      },
+      {
+        "rank": 8,
+        "name": "游酷",
+        "dailyConsume": 190
+      },
+      {
+        "rank": 9,
+        "name": "豪腾",
+        "dailyConsume": 160
+      },
+      {
+        "rank": 10,
+        "name": "3网",
+        "dailyConsume": 140
+      }
+    ],
+    "consumeTop15": [
+      {
+        "rank": 1,
+        "name": "永远的蔚蓝星球",
+        "dailyConsume": 220,
+        "category": "塔防"
+      },
+      {
+        "rank": 2,
+        "name": "向僵尸开炮",
+        "dailyConsume": 210,
+        "category": "塔防"
+      },
+      {
+        "rank": 3,
+        "name": "无尽冬日",
+        "dailyConsume": 200,
+        "category": "SLG"
+      },
+      {
+        "rank": 4,
+        "name": "向往的生活",
+        "dailyConsume": 170,
+        "category": "模拟经营"
+      },
+      {
+        "rank": 5,
+        "name": "三国：冰河时代",
+        "dailyConsume": 160,
+        "category": "SLG"
+      },
+      {
+        "rank": 6,
+        "name": "肥鹅美食街",
+        "dailyConsume": 140,
+        "category": "模拟经营"
+      },
+      {
+        "rank": 7,
+        "name": "烈焰觉醒",
+        "dailyConsume": 140,
+        "category": "ARPG"
+      },
+      {
+        "rank": 8,
+        "name": "奔奔王国",
+        "dailyConsume": 110,
+        "category": "塔防"
+      },
+      {
+        "rank": 9,
+        "name": "疯狂水世界",
+        "dailyConsume": 110,
+        "category": "SLG"
+      },
+      {
+        "rank": 10,
+        "name": "保卫向日葵",
+        "dailyConsume": 100,
+        "category": "塔防"
+      },
+      {
+        "rank": 11,
+        "name": "寻道大千",
+        "dailyConsume": 90,
+        "category": "卡牌RPG"
+      },
+      {
+        "rank": 12,
+        "name": "梦幻消除战",
+        "dailyConsume": 80,
+        "category": "模拟经营"
+      },
+      {
+        "rank": 13,
+        "name": "西游降妖记",
+        "dailyConsume": 70,
+        "category": "ARPG"
+      },
+      {
+        "rank": 14,
+        "name": "灵画师",
+        "dailyConsume": 60,
+        "category": "ARPG"
+      },
+      {
+        "rank": 15,
+        "name": "口袋奇兵",
+        "dailyConsume": 60,
+        "category": "SLG"
+      }
+    ],
+    "appTop10": [
+      {
+        "rank": 1,
+        "name": "捕鱼大作战",
+        "dailyConsume": 110
+      },
+      {
+        "rank": 2,
+        "name": "永远的蔚蓝星球",
+        "dailyConsume": 110
+      },
+      {
+        "rank": 3,
+        "name": "鱼乐达人",
+        "dailyConsume": 80
+      },
+      {
+        "rank": 4,
+        "name": "捕鱼大咖",
+        "dailyConsume": 70
+      },
+      {
+        "rank": 5,
+        "name": "宗师之上",
+        "dailyConsume": 70
+      },
+      {
+        "rank": 6,
+        "name": "超自然行动组",
+        "dailyConsume": 70
+      },
+      {
+        "rank": 7,
+        "name": "向僵尸开炮",
+        "dailyConsume": 50
+      },
+      {
+        "rank": 8,
+        "name": "途游休闲捕鱼",
+        "dailyConsume": 40
+      },
+      {
+        "rank": 9,
+        "name": "梦幻西游",
+        "dailyConsume": 40
+      },
+      {
+        "rank": 10,
+        "name": "捕鱼达人千炮版",
+        "dailyConsume": 30
+      }
+    ],
+    "channelBreakdown": [
+      {
+        "name": "小程序",
+        "dailyConsume": 2200
+      },
+      {
+        "name": "朋友圈",
+        "dailyConsume": 1200
+      },
+      {
+        "name": "搜一搜",
+        "dailyConsume": 850
+      },
+      {
+        "name": "APP-ios",
+        "dailyConsume": 800
+      },
+      {
+        "name": "平台和内容",
+        "dailyConsume": 800
+      },
+      {
+        "name": "联盟",
+        "dailyConsume": 650
+      },
+      {
+        "name": "视频号",
+        "dailyConsume": 560
+      },
+      {
+        "name": "APP-安卓",
+        "dailyConsume": 500
+      },
+      {
+        "name": "公众号",
+        "dailyConsume": 400
+      },
+      {
+        "name": "试玩",
+        "dailyConsume": 380
+      },
+      {
+        "name": "直玩",
+        "dailyConsume": 370
+      }
+    ],
+    "consumeChartTop5": {
+      "labels": [
+        "永远的蔚蓝星球",
+        "向僵尸开炮",
+        "无尽冬日",
+        "向往的生活",
+        "三国：冰河时代"
+      ],
+      "values": [
+        220,
+        210,
+        200,
+        170,
+        160
+      ]
+    },
+    "totalConsume": 1920,
+    "consumeOverview": {
+      "conclusion": "【大盘格局】广点通日均总消耗 6700 万元（APP 1300 万 + 小程序 5400 万），小程序占比 80.6%，是 APP 渠道的 4.2 倍，微信小游戏已成为广点通买量的绝对主力。\n\n【厂商集中度】Top3 集团（大梦/途游/9377）合计 1120 万元，占集团 Top10 的 43.4%。大梦以 410 万/天领跑，途游 370 万紧随其后，头部厂商买量竞争激烈。\n\n【小游戏消耗解析】永远的蔚蓝星球以 220 万/天领跑，向僵尸开炮 210 万紧随其后。品类维度：塔防 4 款合计 640 万（33.3%）为消耗第一大品类；SLG/策略 4 款 530 万（27.6%）；模拟经营 3 款 390 万（20.3%）；ARPG 3 款 270 万（14.1%）。\n\n【APP 消耗】捕鱼题材占主导，Top10 中 5 款捕鱼游戏合计 330 万。永远的蔚蓝星球 APP 端同步投放 110 万/天，双端联动策略显著。\n\n【渠道拆解】小程序渠道 2200 万（25.3%）最高；朋友圈 1200 万（13.8%）、搜一搜 850 万（9.8%）等社交/搜索渠道表现亮眼，新兴渠道正成为重要增量来源。"
+    }
+  }
+}
