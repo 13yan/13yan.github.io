@@ -1,8 +1,6644 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>工作台</title>
-<meta http-equiv="refresh" content="0;url=/w/">
-<script>location.href='/w/'</script>
+
+
+<html lang="zh-CN">
+
+
+<head>
+
+
+<meta charset="UTF-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+<meta name="format-detection" content="telephone=no">
+
+
+<title>市场资讯工作台 — 小游戏周报</title>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" integrity="sha384-vsrfeLOOY6KuIYKDlmVH5UiBmgIdB1oEf7p01YgWHuqmOHfZr374+odEv96n9tNC" crossorigin="anonymous"></script>
+
+
+<style>
+
+
+/* ============================================================
+
+
+   设计系统 (Design Tokens)
+
+
+   ============================================================ */
+
+
+:root {
+
+
+  /* 主色 — 深邃商务蓝，参考彭博/FT/麦肯锡 */
+
+
+  --primary: #1e3a8a;
+
+
+  --primary-50: #eef2ff;
+
+
+  --primary-100: #dbe4ff;
+
+
+  --primary-200: #b3c5ff;
+
+
+  --primary-500: #1e3a8a;
+
+
+  --primary-600: #172554;
+
+
+  --primary-700: #0c1834;
+
+
+  --primary-glow: rgba(30, 58, 138, 0.12);
+
+
+
+
+
+  /* 中性色 */
+
+
+  --bg: #f8fafc;
+
+
+  --bg-soft: #f1f5f9;
+
+
+  --card-bg: #ffffff;
+
+
+  --text: #0f172a;
+
+
+  --text-secondary: #475569;
+
+
+  --text-tertiary: #94a0b0;
+
+
+  --border: #e2e8f0;
+
+
+  --border-light: #f1f5f9;
+
+
+
+
+
+  /* 状态色 */
+
+
+  --orange: #f97316;
+
+
+  --red: #e53e3e;
+
+
+  --red-soft: #fef2f2;
+
+
+  --blue: #3b82f6;
+
+
+  --blue-soft: #eff6ff;
+
+
+  --purple: #8b5cf6;
+
+
+  --amber: #d97706;
+
+
+  --amber-soft: #fffbeb;
+
+
+  --rose: #e11d48;
+
+
+  --teal: #0d9488;
+
+
+  --teal-soft: #f0fdfa;
+
+
+
+
+
+  /* 排名徽章渐变 */
+
+
+  --rank-1: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+
+
+  --rank-2: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+
+
+  --rank-3: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+
+
+
+
+
+  /* 阴影 / 高度 */
+
+
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+
+
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+
+
+  --shadow: 0 2px 6px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+
+
+  --shadow-md: 0 6px 16px rgba(15, 23, 42, 0.08), 0 2px 4px rgba(15, 23, 42, 0.04);
+
+
+  --shadow-lg: 0 16px 32px rgba(15, 23, 42, 0.10), 0 4px 8px rgba(15, 23, 42, 0.04);
+
+
+
+
+
+  /* 圆角 */
+
+
+  --radius-xs: 4px;
+
+
+  --radius-sm: 6px;
+
+
+  --radius: 10px;
+
+
+  --radius-lg: 14px;
+
+
+  --radius-xl: 20px;
+
+
+
+
+
+  /* 字体 */
+
+
+  --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+
+
+  --font-num: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+
+
+
+
+
+  /* 尺寸 */
+
+
+  --sidebar-w: 232px;
+
+
+  --topbar-h: 56px;
+
+
+  --content-max: 1620px;
+
+
+
+
+
+  /* 动画 */
+
+
+  --t-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+  --t: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+  --t-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+
+
+
+  --safe-top: env(safe-area-inset-top, 0px);
+
+
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+
+}
+
+
+
+
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+
+html, body { background: var(--bg); }
+
+
+body { font-family: var(--font); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; font-size: 14px; }
+
+
+a { color: var(--primary); text-decoration: none; }
+
+
+button { font-family: inherit; cursor: pointer; }
+
+
+
+
+
+/* ============================================================
+
+
+   侧边栏
+
+
+   ============================================================ */
+
+
+.sidebar {
+
+
+  width: var(--sidebar-w);
+
+
+  position: fixed; top: 0; left: 0; bottom: 0;
+
+
+  background: linear-gradient(180deg, #0b1424 0%, #111d2b 100%);
+
+
+  color: #fff;
+
+
+  display: flex; flex-direction: column;
+
+
+  z-index: 100;
+
+
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
+
+
+}
+
+
+.sidebar-logo {
+
+
+  padding: 22px 20px 18px;
+
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+
+}
+
+
+.sidebar-logo h1 {
+
+
+  font-size: 16px; font-weight: 700;
+
+
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+
+
+  -webkit-background-clip: text;
+
+
+  -webkit-text-fill-color: transparent;
+
+
+  background-clip: text;
+
+
+  letter-spacing: 0.3px;
+
+
+}
+
+
+.sidebar-logo p { font-size: 10.5px; color: rgba(255, 255, 255, 0.35); margin-top: 4px; letter-spacing: 0.3px; }
+
+
+.sidebar-nav { flex: 1; padding: 8px 0; overflow-y: auto; }
+
+
+.sidebar-nav::-webkit-scrollbar { width: 3px; }
+
+
+.sidebar-nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 4px; }
+
+
+.nav-section-title {
+
+
+  padding: 14px 20px 6px; font-size: 10px;
+
+
+  color: rgba(255, 255, 255, 0.25);
+
+
+  text-transform: uppercase; letter-spacing: 1.8px; font-weight: 600;
+
+
+}
+
+
+.nav-item {
+
+
+  display: flex; align-items: center; gap: 10px;
+
+
+  padding: 9px 20px; cursor: pointer;
+
+
+  color: rgba(255, 255, 255, 0.55);
+
+
+  font-size: 13px; font-weight: 500;
+
+
+  border-left: 2px solid transparent;
+
+
+  text-decoration: none;
+
+
+  transition: all var(--t-fast);
+
+
+}
+
+
+.nav-item:hover { background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.9); }
+
+
+.nav-item.scroll-active { background: rgba(255, 255, 255, 0.07); color: #fff; border-left-color: #fff; }
+
+
+.nav-item .nav-icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; opacity: 0.7; flex-shrink: 0; }
+
+
+.nav-item .badge { margin-left: auto; background: #e53e3e; color: #fff; font-size: 9.5px; padding: 2px 7px; border-radius: 8px; font-weight: 600; }
+
+
+.sidebar-footer {
+
+
+  padding: 14px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+
+  font-size: 10.5px; color: rgba(255, 255, 255, 0.25); line-height: 1.7;
+
+
+}
+
+
+.sidebar-footer .sync-btn {
+
+
+  margin-top: 10px; background: rgba(96, 165, 250, 0.12); color: #93c5fd;
+
+
+  border: none; padding: 7px 14px; border-radius: var(--radius-sm); cursor: pointer;
+
+
+  font-size: 11.5px; transition: all var(--t-fast); width: 100%; font-weight: 500;
+
+
+}
+
+
+.sidebar-footer .sync-btn:hover { background: rgba(96, 165, 250, 0.2); }
+
+
+.sidebar-footer .sync-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+
+
+
+
+.menu-toggle {
+
+
+  display: none; position: fixed; top: 12px; left: 12px; z-index: 200;
+
+
+  background: var(--text); color: #fff; border: none;
+
+
+  width: 38px; height: 38px; border-radius: var(--radius);
+
+
+  font-size: 18px; cursor: pointer; align-items: center; justify-content: center;
+
+
+  box-shadow: var(--shadow-md);
+
+
+}
+
+
+.sidebar-overlay {
+
+
+  display: none; position: fixed; inset: 0; z-index: 99;
+
+
+  background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px);
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   主区域
+
+
+   ============================================================ */
+
+
+.main { margin-left: var(--sidebar-w); min-height: 100vh; }
+
+
+.topbar {
+
+
+  background: rgba(255, 255, 255, 0.85);
+
+
+  backdrop-filter: blur(16px);
+
+
+  padding: 0 28px;
+
+
+  display: flex; align-items: center; justify-content: space-between;
+
+
+  border-bottom: 1px solid var(--border);
+
+
+  position: sticky; top: 0; z-index: 50;
+
+
+  height: var(--topbar-h);
+
+
+}
+
+
+.topbar-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
+
+
+.topbar-title span { color: var(--primary); }
+
+
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--text-tertiary); }
+
+
+.topbar-right .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #e53e3e; display: inline-block; margin-right: 4px; box-shadow: 0 0 0 3px var(--primary-glow); animation: pulse 2s ease-in-out infinite; }
+
+
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+
+
+
+
+.content { padding: 28px 20px calc(60px + var(--safe-bottom)); max-width: var(--content-max); margin: 0 auto; }
+
+
+.content > * { animation: fadeUp 0.4s ease; }
+
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+
+
+
+
+/* ============================================================
+
+
+   Banner
+
+
+   ============================================================ */
+
+
+.banner {
+
+
+  background:
+
+
+    radial-gradient(ellipse at top right, rgba(59, 130, 246, 0.25) 0%, transparent 50%),
+
+
+    radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+
+
+    linear-gradient(135deg, #0c1834 0%, #15285c 50%, #1e3a8a 100%);
+
+
+  border-radius: var(--radius-lg);
+
+
+  padding: 32px 36px;
+
+
+  color: #fff;
+
+
+  margin-bottom: 24px;
+
+
+  position: relative; overflow: hidden;
+
+
+  box-shadow: var(--shadow-md);
+
+
+}
+
+
+.banner::after {
+
+
+  content: ''; position: absolute;
+
+
+  right: -80px; top: -80px;
+
+
+  width: 280px; height: 280px;
+
+
+  border-radius: 50%;
+
+
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.15) 0%, transparent 70%);
+
+
+  pointer-events: none;
+
+
+}
+
+
+.banner-content { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 24px; position: relative; z-index: 1; }
+
+
+.banner-left h1 {
+
+
+  font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+
+
+  background: linear-gradient(135deg, #fff 0%, #a7f3d0 100%);
+
+
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+
+}
+
+
+.banner-left .week-tag { color: #93c5fd; font-weight: 700; }
+
+
+.banner-meta { display: flex; align-items: center; gap: 14px; margin-top: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.6); flex-wrap: wrap; }
+
+
+.banner-meta .meta-item { display: flex; align-items: center; gap: 5px; }
+
+
+.banner-meta .divider { color: rgba(255, 255, 255, 0.15); }
+
+
+.banner-meta .pulse { width: 6px; height: 6px; border-radius: 50%; background: #60a5fa; box-shadow: 0 0 8px #60a5fa; }
+
+
+.banner-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; min-width: 360px; }
+
+
+.stat-card {
+
+
+  background: rgba(255, 255, 255, 0.06);
+
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 14px 16px;
+
+
+  backdrop-filter: blur(8px);
+
+
+  transition: all var(--t-fast);
+
+
+}
+
+
+.stat-card:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-1px); }
+
+
+.stat-card .stat-icon { font-size: 14px; opacity: 0.5; margin-bottom: 6px; }
+
+
+.stat-card .stat-num { font-size: 22px; font-weight: 800; font-family: var(--font-num); line-height: 1.1; }
+
+
+.stat-card .stat-label { font-size: 11px; color: rgba(255, 255, 255, 0.5); margin-top: 2px; }
+
+
+.stat-card.stat-wx .stat-num { color: #93c5fd; }
+
+
+.stat-card.stat-dy .stat-num { color: #60a5fa; }
+
+
+.stat-card.stat-cross .stat-num { color: #fbbf24; }
+
+
+.stat-card.stat-cat .stat-num { color: #a78bfa; }
+
+
+
+
+
+/* ============================================================
+
+
+   周选择器
+
+
+   ============================================================ */
+
+
+.week-selector {
+
+
+  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+
+
+  background: var(--card-bg);
+
+
+  padding: 8px; border-radius: var(--radius);
+
+
+  box-shadow: var(--shadow-sm);
+
+
+}
+
+
+.week-btn {
+
+
+  padding: 7px 16px;
+
+
+  border-radius: var(--radius-sm);
+
+
+  border: 1px solid transparent;
+
+
+  background: transparent; cursor: pointer;
+
+
+  font-size: 12.5px; color: var(--text-secondary);
+
+
+  transition: all var(--t-fast); white-space: nowrap; font-weight: 500;
+
+
+}
+
+
+.week-btn:hover { background: var(--primary-50); color: var(--primary); }
+
+
+.week-btn.active {
+
+
+  background: var(--primary);
+
+
+  color: #fff;
+
+
+  font-weight: 600;
+
+
+  box-shadow: 0 2px 8px var(--primary-glow);
+
+
+}
+
+
+.week-btn .new-dot { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: #ef4444; margin-left: 5px; vertical-align: middle; }
+
+
+
+
+
+/* ============================================================
+
+
+   Section Card
+
+
+   ============================================================ */
+
+
+.section {
+
+
+  background: var(--card-bg);
+
+
+  border-radius: var(--radius-lg);
+
+
+  padding: 28px 32px;
+
+
+  margin-bottom: 18px;
+
+
+  box-shadow: var(--shadow-sm);
+
+
+  transition: box-shadow var(--t);
+
+
+  scroll-margin-top: calc(var(--topbar-h) + 16px);
+
+
+  border: 1px solid var(--border-light);
+
+
+}
+
+
+.section:hover { box-shadow: var(--shadow); border-color: var(--primary-200); transform: translateY(-1px); }
+
+
+.section-title {
+
+
+  font-size: 17px; font-weight: 700; color: var(--text);
+
+
+  margin-bottom: 18px; padding-bottom: 14px;
+
+
+  border-bottom: 1.5px solid var(--border-light);
+
+
+  display: flex; align-items: center; gap: 10px;
+
+
+  position: relative;
+
+
+}
+
+
+.section-title::before {
+
+
+  content: ''; position: absolute; left: 0; bottom: -1.5px;
+
+
+  width: 28px; height: 1.5px; background: var(--primary);
+
+
+}
+
+
+.section-title .section-icon {
+
+
+  display: inline-flex; align-items: center; justify-content: center;
+
+
+  width: 28px; height: 28px; border-radius: 7px;
+
+
+  background: var(--primary-50); color: var(--primary);
+
+
+  font-size: 13px; font-weight: 700;
+
+
+}
+
+
+.section-title .section-text { display: flex; flex-direction: column; gap: 2px; }
+
+
+.section-title .section-sub { font-size: 11.5px; color: var(--text-tertiary); font-weight: 500; }
+
+
+.section-title .more-link {
+
+
+  margin-left: auto; font-size: 12px; font-weight: 500;
+
+
+  color: var(--primary); cursor: pointer; white-space: nowrap;
+
+
+  opacity: 0.7; transition: opacity var(--t-fast);
+
+
+}
+
+
+.section-title .more-link:hover { opacity: 1; }
+
+
+.subsection-title {
+
+
+  font-size: 14px; font-weight: 600; color: var(--text);
+
+
+  margin: 20px 0 12px; display: flex; align-items: center; gap: 6px;
+
+
+}
+
+
+.subsection-title::before { content: ''; width: 3px; height: 14px; background: var(--primary); border-radius: 2px; }
+
+
+
+
+
+/* ============================================================
+
+
+   摘要区 — 看板卡片式
+
+
+   ============================================================ */
+
+
+.summary-hero {
+
+
+  background: linear-gradient(135deg, #f0faf4 0%, #fff 100%);
+
+
+  border: 1px solid var(--primary-200);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 14px 18px;
+
+
+  margin-bottom: 14px;
+
+
+  display: flex; align-items: center; gap: 12px;
+
+
+  position: relative; overflow: hidden;
+
+
+}
+
+
+.summary-hero::before {
+
+
+  content: ''; position: absolute; top: 0; right: 0;
+
+
+  width: 100px; height: 100px;
+
+
+  background: radial-gradient(circle, rgba(30, 58, 138, 0.08) 0%, transparent 70%);
+
+
+}
+
+
+.summary-hero .hero-tag {
+
+
+  flex-shrink: 0;
+
+
+  display: inline-flex; align-items: center; gap: 4px;
+
+
+  background: var(--primary);
+
+
+  color: #fff;
+
+
+  font-size: 11px; font-weight: 700;
+
+
+  padding: 5px 10px; border-radius: 6px;
+
+
+  letter-spacing: 0.3px;
+
+
+  position: relative;
+
+
+}
+
+
+.summary-hero .hero-content {
+
+
+  flex: 1; font-size: 13.5px; line-height: 1.6; color: var(--text);
+
+
+  font-weight: 500; position: relative;
+
+
+}
+
+
+
+
+
+.kanban-grid {
+
+
+  display: grid;
+
+
+  grid-template-columns: repeat(2, 1fr);
+
+
+  gap: 12px;
+
+
+}
+
+
+.kanban-card {
+
+
+  background: var(--card-bg);
+
+
+  border: 1px solid var(--border-light);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 16px 18px;
+
+
+  display: flex; flex-direction: column;
+
+
+  transition: all var(--t-fast);
+
+
+  position: relative; overflow: hidden;
+
+
+}
+
+
+.kanban-card::before {
+
+
+  content: ''; position: absolute; top: 0; left: 0;
+
+
+  width: 3px; height: 100%; background: var(--border);
+
+
+  transition: all var(--t-fast);
+
+
+}
+
+
+.kanban-card:hover {
+
+
+  border-color: var(--primary-200);
+
+
+  box-shadow: var(--shadow);
+
+
+  transform: translateY(-1px);
+
+
+}
+
+
+.kanban-card:hover::before { background: var(--primary); }
+
+
+.kanban-card.kanban-wide { grid-column: 1 / -1; }
+
+
+.kanban-card.kanban-featured { background: linear-gradient(135deg, var(--primary-50) 0%, #fff 100%); border-color: var(--primary-200); }
+
+
+.kanban-card.kanban-featured::before { background: var(--primary); }
+
+
+.kanban-card.kanban-featured .kanban-body { line-height: 2.0; }
+
+
+.kanban-card.kanban-featured .kanban-body strong:first-child { color: var(--primary); margin-right: 4px; }
+
+
+
+
+
+.kanban-header {
+
+
+  display: flex; align-items: center; gap: 8px;
+
+
+  margin-bottom: 10px; padding-bottom: 10px;
+
+
+  border-bottom: 1px dashed var(--border-light);
+
+
+}
+
+
+.kanban-icon {
+
+
+  display: inline-flex; align-items: center; justify-content: center;
+
+
+  width: 28px; height: 28px; border-radius: 7px;
+
+
+  font-size: 14px; background: var(--bg-soft);
+
+
+  flex-shrink: 0;
+
+
+}
+
+
+.kanban-card.kanban-featured .kanban-icon { background: var(--primary); color: #fff; }
+
+
+.kanban-label {
+
+
+  font-size: 14px; font-weight: 700; color: var(--text);
+
+
+  flex: 1; letter-spacing: 0.2px;
+
+
+}
+
+
+.kanban-tag {
+
+
+  display: inline-flex; align-items: center; gap: 3px;
+
+
+  font-size: 10.5px; font-weight: 700;
+
+
+  padding: 3px 8px; border-radius: 4px;
+
+
+  letter-spacing: 0.3px;
+
+
+  white-space: nowrap;
+
+
+}
+
+
+.kanban-tag.tag-data { background: #eff6ff; color: #1e40af; }
+
+
+.kanban-tag.tag-focus { background: #fff7ed; color: #c2410c; }
+
+
+.kanban-tag.tag-feature { background: var(--primary-50); color: var(--primary-700); }
+
+
+.kanban-tag.tag-policy { background: #faf5ff; color: #7e22ce; }
+
+
+.kanban-tag.tag-action { background: #fef2f2; color: #b91c1c; }
+
+
+.kanban-tag.tag-market { background: #f0fdfa; color: #0f766e; }
+
+
+
+
+
+.kanban-body {
+
+
+  font-size: 13.5px; line-height: 1.8;
+
+
+  color: var(--text-secondary); flex: 1;
+
+
+}
+
+
+.kanban-body .hl {
+
+
+  color: var(--red); font-weight: 700;
+
+
+  background: rgba(229, 62, 62, 0.08);
+
+
+  padding: 1px 5px; border-radius: 3px;
+
+
+  font-size: 0.95em;
+
+
+}
+
+
+.kanban-body .hl-green { color: var(--primary); font-weight: 700; }
+
+
+.kanban-body .hl-blue { color: var(--blue); font-weight: 700; }
+
+
+.kanban-body a { color: var(--primary); border-bottom: 1px dashed rgba(59,130,246,0.4); font-weight: 500; }
+
+
+.kanban-body a:hover { border-bottom-style: solid; }
+
+
+.kanban-body .hl-amber { color: var(--amber); font-weight: 700; }
+
+
+.kanban-body strong { color: var(--text); font-weight: 600; }
+
+
+.kanban-body .warn {
+
+
+  display: inline-flex; align-items: center; gap: 4px;
+
+
+  color: var(--amber); font-weight: 600;
+
+
+  background: var(--amber-soft);
+
+
+  padding: 2px 6px; border-radius: 4px;
+
+
+  font-size: 12px;
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   表格 (Top20 / 模拟经营 / 飙升)
+
+
+   ============================================================ */
+
+
+.table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border-light); background: var(--card-bg); }
+
+
+.table-wrap table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+
+.table-wrap th {
+
+
+  background: #f8f9fb;
+
+
+  padding: 12px 16px; text-align: center; font-weight: 600;
+
+
+  color: var(--text-secondary); font-size: 12px;
+
+
+  border-bottom: 1px solid var(--border);
+
+
+  white-space: nowrap; letter-spacing: 0.3px;
+
+
+}
+
+
+.table-wrap td { padding: 12px 14px; border-bottom: 1px solid var(--border-light); text-align: center; vertical-align: middle; }
+
+
+.table-wrap tbody tr { transition: background var(--t-fast); }
+
+
+.table-wrap tbody tr:nth-child(even) td { background: #fafbfc; }
+
+
+.table-wrap tbody tr:hover td { background: var(--primary-50); }
+
+
+.table-wrap tbody tr:last-child td { border-bottom: none; }
+
+
+
+
+
+.rank-num {
+
+
+  display: inline-flex; align-items: center; justify-content: center;
+
+
+  width: 26px; height: 26px; border-radius: 7px;
+
+
+  font-weight: 700; font-size: 12px; font-family: var(--font-num);
+
+
+  color: var(--text-tertiary); background: var(--bg-soft);
+
+
+}
+
+
+.rank-num.top1 { background: var(--rank-1); color: #fff; box-shadow: 0 2px 6px rgba(245, 158, 11, 0.3); }
+
+
+.rank-num.top2 { background: var(--rank-2); color: #fff; box-shadow: 0 2px 6px rgba(156, 163, 175, 0.3); }
+
+
+.rank-num.top3 { background: var(--rank-3); color: #fff; box-shadow: 0 2px 6px rgba(234, 88, 12, 0.3); }
+
+
+.rank-num.top10 { background: var(--primary-50); color: var(--primary); }
+
+
+
+
+
+.cross-tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 9.5px; background: var(--primary-50); color: var(--primary); margin-left: 4px; font-weight: 700; vertical-align: middle; }
+
+
+.platform-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; vertical-align: middle; }
+
+
+.platform-tag.wx { background: var(--primary-50); color: var(--primary); }
+
+
+.platform-tag.dy { background: #e0f2fe; color: #075985; }
+
+
+
+
+
+.up { color: var(--red); font-weight: 600; }
+
+
+.down { color: var(--primary); font-weight: 600; }
+
+
+.stable { color: var(--text-tertiary); }
+
+
+.new { color: var(--orange); font-weight: 700; }
+
+
+.dominate { color: var(--orange); font-weight: 600; font-size: 11px; }
+
+
+
+
+
+.tag-cat { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 500; background: var(--bg-soft); color: var(--text-secondary); }
+
+.company { color: var(--text-tertiary); font-size: 11px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; }
+
+
+
+
+
+/* 表格头部彩色 */
+
+
+.table-wrap th.col-wx { background: linear-gradient(180deg, var(--primary-50) 0%, #f5f7ff 100%); color: var(--primary-700); }
+
+
+.table-wrap th.col-dy { background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%); color: #075985; }
+
+
+
+
+
+/* 买量/ROI 板块辅助 */
+
+
+.insight-box { background: var(--primary-50); border-radius: var(--radius); padding: 14px 16px; font-size: 13px; line-height: 1.7; color: var(--text-secondary); border-left: 3px solid var(--primary); }
+
+
+.trend-up { color: var(--red); font-weight: 600; }
+
+
+.footnote { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; margin-top: 8px; }
+
+
+
+
+
+/* Chart 卡片嵌入 */
+
+
+.top20-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+
+@media (max-width: 900px) { .top20-grid { grid-template-columns: 1fr; } }
+
+
+
+
+
+/* 品类分布 Top100 胶囊按钮 */
+
+
+.top100-capsules { display: flex; gap: 12px; margin-top: 16px; }
+
+
+.top100-capsule {
+
+
+  flex: 1; padding: 12px 20px; border-radius: 100px; border: none;
+
+
+  cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;
+
+
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+
+
+  transition: all var(--t-fast); box-shadow: var(--shadow-sm);
+
+
+}
+
+
+.top100-capsule.wx { background: #dbe4ff; color: #1e3a8a; }
+
+
+.top100-capsule.wx:hover { background: #c7d6ff; transform: translateY(-1px); box-shadow: var(--shadow); }
+
+
+.top100-capsule.dy { background: #e3f2fd; color: #1565c0; }
+
+
+.top100-capsule.dy:hover { background: #bbdefb; transform: translateY(-1px); box-shadow: var(--shadow); }
+
+
+.top100-capsule .capsule-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+
+.top100-capsule.wx .capsule-dot { background: #1e3a8a; }
+
+
+.top100-capsule.dy .capsule-dot { background: #42a5f5; }
+
+
+
+
+
+/* Top100 弹窗遮罩 */
+
+
+.top100-overlay {
+
+
+  position: fixed; inset: 0; z-index: 9999;
+
+
+  background: rgba(0,0,0,0.45); display: none;
+
+
+  align-items: flex-end; justify-content: center;
+
+
+  animation: fadeIn .2s ease;
+
+
+}
+
+
+.top100-overlay.open { display: flex; }
+
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+
+
+
+
+.top100-modal {
+
+
+  background: #fff; border-radius: 20px 20px 0 0;
+
+
+  width: 100%; max-width: 640px; max-height: 85vh;
+
+
+  display: flex; flex-direction: column;
+
+
+  animation: slideUp .25s ease;
+
+
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.12);
+
+
+}
+
+
+.top100-modal-header {
+
+
+  display: flex; align-items: center; justify-content: space-between;
+
+
+  padding: 18px 20px 12px; border-bottom: 1px solid var(--border-light);
+
+
+  flex-shrink: 0;
+
+
+}
+
+
+.top100-modal-header .modal-title {
+
+
+  font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px;
+
+
+}
+
+
+.top100-modal-header .modal-close {
+
+
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+
+
+  background: var(--bg); cursor: pointer;
+
+
+  font-size: 18px; line-height: 1; color: var(--text-secondary);
+
+
+  display: flex; align-items: center; justify-content: center;
+
+
+  transition: background var(--t-fast);
+
+
+}
+
+
+.top100-modal-header .modal-close:hover { background: var(--border-light); }
+
+
+.top100-modal-body {
+
+
+  flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+
+
+  padding: 0 4px;
+
+
+}
+
+
+.top100-modal-body table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+
+.top100-modal-body th {
+
+
+  position: sticky; top: 0; z-index: 1;
+
+
+  background: var(--bg-soft); padding: 10px 10px; text-align: center;
+
+
+  border-bottom: 1px solid var(--border); font-size: 11.5px;
+
+
+  color: var(--text-tertiary); font-weight: 600; text-transform: uppercase;
+
+
+}
+
+
+.top100-modal-body th:first-child { text-align: center; width: 36px; }
+
+
+.top100-modal-body td {
+
+
+  padding: 9px 10px; border-bottom: 1px solid var(--border-light);
+
+
+  text-align: center; vertical-align: middle;
+
+
+}
+
+
+.top100-modal-body td:nth-child(2) { font-weight: 500; }
+
+
+.top100-modal-body td:nth-child(4) { font-size: 11px; color: var(--text-tertiary); max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+
+.top100-modal-body td .cross-tag { margin-left: 4px; }
+
+
+.top100-modal-empty {
+
+
+  padding: 40px 20px; text-align: center; color: var(--text-tertiary); font-size: 14px;
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   模拟经营概况表
+
+
+   ============================================================ */
+
+
+.sim-overview { margin-bottom: 16px; }
+
+
+.sim-overview table { font-size: 13px; }
+
+
+.sim-overview .platform-name { font-weight: 700; font-size: 14px; }
+
+
+.sim-overview .platform-name.wx { color: var(--primary); }
+
+
+.sim-overview .platform-name.dy { color: var(--amber); }
+
+
+.sim-overview .progress-bar { display: flex; align-items: center; gap: 8px; }
+
+
+.sim-overview .progress-track { flex: 1; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+
+
+.sim-overview .progress-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+
+
+.sim-overview .progress-fill.wx { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); }
+
+
+.sim-overview .progress-fill.dy { background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%); }
+
+
+.sim-overview .progress-text { font-size: 11px; color: var(--text-tertiary); font-family: var(--font-num); min-width: 36px; text-align: right; }
+
+
+
+
+
+/* ============================================================
+
+
+   图表
+
+
+   ============================================================ */
+
+
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+
+@media (max-width: 1100px) { .chart-grid { grid-template-columns: 1fr 1fr; } }
+
+
+@media (max-width: 700px) { .chart-grid { grid-template-columns: 1fr; } }
+
+
+.chart-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: var(--radius); padding: 14px 16px; transition: all var(--t-fast); }
+
+
+.chart-card:hover { border-color: var(--primary-200); box-shadow: var(--shadow-sm); }
+
+
+.chart-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+
+.chart-title .dot { width: 6px; height: 6px; border-radius: 50%; }
+
+
+.chart-title .dot.wx { background: #1e3a8a; }
+
+
+.chart-title .dot.dy { background: #3b82f6; }
+
+
+.chart-title .dot.cmp { background: linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%); }
+
+
+.chart-box { height: 240px; position: relative; }
+
+
+.chart-box canvas { width: 100% !important; height: 100% !important; }
+
+
+
+
+
+/* ============================================================
+
+
+   飙升卡片
+
+
+   ============================================================ */
+
+
+.surge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+
+
+.surge-scroll { max-height: 360px; overflow-y: auto; scrollbar-width: thin; }
+
+
+.surge-scroll::-webkit-scrollbar { width: 4px; }
+
+
+.surge-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+
+.surge-card {
+
+
+  background: var(--card-bg);
+
+
+  border: 1px solid var(--border-light);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 12px 14px;
+
+
+  display: flex; align-items: center; gap: 12px;
+
+
+  transition: all var(--t-fast);
+
+
+  cursor: default;
+
+
+}
+
+
+.surge-card:hover { border-color: var(--red); box-shadow: 0 4px 12px rgba(229, 62, 62, 0.08); transform: translateY(-1px); }
+
+
+.surge-rank {
+
+
+  flex-shrink: 0;
+
+
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+
+
+  min-width: 52px; padding: 8px 4px;
+
+
+  background: linear-gradient(180deg, var(--red-soft) 0%, #fff 100%);
+
+
+  border-radius: var(--radius-sm);
+
+
+  border: 1px solid rgba(229, 62, 62, 0.15);
+
+
+}
+
+
+.surge-rank .rise { font-size: 16px; font-weight: 800; color: var(--red); font-family: var(--font-num); line-height: 1.1; }
+
+
+.surge-rank .rise-label { font-size: 9.5px; color: var(--text-tertiary); margin-top: 1px; }
+
+
+.surge-rank.new-rank { background: linear-gradient(180deg, #fff7ed 0%, #fff 100%); border-color: rgba(249, 115, 22, 0.2); }
+
+
+.surge-rank.new-rank .rise { color: var(--orange); }
+
+
+.surge-info { flex: 1; min-width: 0; }
+
+
+.surge-name { font-size: 14px; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 6px; }
+
+
+.surge-meta { font-size: 11.5px; color: var(--text-tertiary); margin-top: 3px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+
+.surge-meta .insight { color: var(--text-secondary); font-size: 11.5px; margin-top: 4px; line-height: 1.5; }
+
+
+
+
+
+/* ============================================================
+
+
+   政策卡片
+
+
+   ============================================================ */
+
+
+.policy-grid { display: grid; gap: 12px; }
+
+
+.policy-card {
+
+
+  background: var(--card-bg);
+
+
+  border: 1px solid var(--border-light);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 16px 18px;
+
+
+  transition: all var(--t-fast);
+
+
+  border-left: 3px solid var(--border);
+
+
+}
+
+
+.policy-card:hover { box-shadow: var(--shadow-sm); }
+
+
+.policy-card.wx { border-left-color: #1e3a8a; }
+
+
+.policy-card.dy { border-left-color: #f59e0b; }
+
+
+.policy-card.apple { border-left-color: #8b5cf6; }
+
+
+.policy-card.android { border-left-color: #3b82f6; }
+
+
+.policy-card.banhao { border-left-color: #0d9488; }
+
+
+.policy-card.industry { border-left-color: #ec4899; }
+
+
+.policy-card.policy-empty { opacity: 0.55; }
+
+
+.policy-card.policy-combined {
+
+
+  background: linear-gradient(135deg, var(--card-bg) 0%, #f9faff 100%);
+
+
+  padding: 20px 24px;
+
+
+}
+
+
+.policy-card.policy-combined h2 {
+
+
+  font-size: 16px; color: var(--text); font-weight: 700;
+
+
+  margin: 0 0 16px; padding-bottom: 12px;
+
+
+  border-bottom: 2px solid var(--primary);
+
+
+  display: flex; align-items: center; gap: 8px;
+
+
+}
+
+
+.policy-card.policy-combined > h2 { display: none; }
+
+
+.policy-card.policy-combined .combined-header {
+
+
+  font-size: 16px; font-weight: 700; color: var(--text);
+
+
+  margin: 0 0 16px; padding-bottom: 12px;
+
+
+  border-bottom: 2px solid var(--primary);
+
+
+}
+
+
+.policy-card.policy-combined h3 {
+
+
+  font-size: 14px; color: var(--text); font-weight: 700;
+
+
+  margin: 18px 0 12px; padding: 8px 12px;
+
+
+  background: linear-gradient(90deg, var(--primary-50) 0%, transparent 100%);
+
+
+  border-left: 3px solid var(--primary);
+
+
+  border-radius: 0 4px 4px 0;
+
+
+}
+
+
+.policy-card.policy-combined h4 {
+
+
+  font-size: 13px; color: var(--text); font-weight: 700;
+
+
+  margin: 14px 0 8px;
+
+
+  padding: 6px 10px;
+
+
+  background: var(--bg-soft);
+
+
+  border-radius: 4px;
+
+
+}
+
+
+.policy-card.policy-combined .insight-box {
+
+
+  margin: 0 0 18px; padding: 12px 16px;
+
+
+  background: linear-gradient(90deg, #fff3e0 0%, transparent 100%);
+
+
+  border-left: 4px solid #ff9800;
+
+
+  border-radius: 0 6px 6px 0;
+
+
+  font-size: 13px; line-height: 1.85;
+
+
+}
+
+
+.policy-card.policy-combined .policy-box {
+
+
+  margin: 12px 0; padding: 14px 16px;
+
+
+  background: #f9faff;
+
+
+  border-left: 3px solid var(--primary);
+
+
+  border-radius: 0 6px 6px 0;
+
+
+  font-size: 13px; line-height: 1.85;
+
+
+}
+
+
+.policy-card.policy-combined .policy-box.wx { border-left-color: #1e3a8a; }
+
+
+.policy-card.policy-combined .policy-box.dy { border-left-color: #f59e0b; }
+
+
+.policy-card.policy-combined .policy-box.apple { border-left-color: #8b5cf6; }
+
+
+.policy-card.policy-combined .policy-box.android { border-left-color: #3b82f6; }
+
+
+.policy-card.policy-combined .policy-box.industry { border-left-color: #ec4899; }
+
+
+.policy-card.policy-combined ul, .policy-card.policy-combined ol { margin: 8px 0; padding-left: 22px; }
+
+
+.policy-card.policy-combined li { margin: 6px 0; line-height: 1.7; }
+
+
+.policy-card.policy-combined p { margin: 8px 0; }
+
+
+.policy-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+
+.policy-title .policy-icon { font-size: 16px; }
+
+
+.policy-title .policy-tag { margin-left: auto; font-size: 10.5px; padding: 2px 8px; border-radius: 4px; background: var(--bg-soft); color: var(--text-tertiary); font-weight: 500; }
+
+
+.policy-body { font-size: 13px; color: var(--text-secondary); line-height: 1.85; }
+
+
+.policy-body p { margin: 6px 0; }
+
+
+.policy-body p + p { margin-top: 6px; }
+
+
+.policy-body ol, .policy-body ul { padding-left: 22px; margin: 6px 0; }
+
+
+.policy-body li { margin: 4px 0; line-height: 1.7; }
+
+
+.policy-body .hl { color: var(--red); font-weight: 700; background: rgba(229, 62, 62, 0.06); padding: 1px 4px; border-radius: 3px; }
+
+
+.policy-body b, .policy-body strong { color: var(--text); font-weight: 700; }
+
+
+.policy-body a { color: var(--primary); border-bottom: 1px dashed var(--primary); }
+
+
+
+
+
+/* ============================================================
+
+
+   趋势卡片
+
+
+   ============================================================ */
+
+
+.trend-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+
+.trend-card {
+
+
+  background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-soft) 100%);
+
+
+  border: 1px solid var(--border-light);
+
+
+  border-radius: var(--radius);
+
+
+  padding: 16px 18px;
+
+
+  transition: all var(--t-fast);
+
+
+  position: relative; overflow: hidden;
+
+
+}
+
+
+.trend-card::before {
+
+
+  content: ''; position: absolute; top: 0; left: 0;
+
+
+  width: 3px; height: 100%;
+
+
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-200) 100%);
+
+
+}
+
+
+.trend-card:hover { border-color: var(--primary-200); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+
+.trend-card .trend-num {
+
+
+  position: absolute; top: 12px; right: 14px;
+
+
+  font-size: 28px; font-weight: 800; color: var(--primary-100);
+
+
+  font-family: var(--font-num); line-height: 1;
+
+
+}
+
+
+.trend-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; position: relative; }
+
+
+.trend-content { font-size: 13px; color: var(--text-secondary); line-height: 1.75; position: relative; }
+
+
+.trend-content .hl { color: var(--primary); font-weight: 700; }
+
+
+.trend-content .hl-green { color: var(--primary); font-weight: 700; }
+
+
+
+
+
+/* ============================================================
+
+
+   通用
+
+
+   ============================================================ */
+
+
+.loading-state {
+
+
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+
+
+  padding: 100px 20px; color: var(--text-tertiary);
+
+
+}
+
+
+.loading-state .spinner {
+
+
+  width: 36px; height: 36px;
+
+
+  border: 2.5px solid var(--border);
+
+
+  border-top-color: var(--primary);
+
+
+  border-radius: 50%;
+
+
+  animation: spin 0.7s linear infinite;
+
+
+}
+
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+
+.loading-state p { margin-top: 14px; font-size: 13.5px; }
+
+
+.error-state { text-align: center; padding: 100px 20px; }
+
+
+.error-state .err-icon { font-size: 48px; margin-bottom: 10px; }
+
+
+.error-state p { font-size: 14px; color: var(--text-tertiary); }
+
+
+.error-state .retry-btn {
+
+
+  margin-top: 16px; padding: 8px 24px;
+
+
+  background: var(--primary); color: #fff; border: none;
+
+
+  border-radius: var(--radius-sm); font-size: 13px; cursor: pointer; font-weight: 600;
+
+
+  transition: all var(--t-fast);
+
+
+}
+
+
+.error-state .retry-btn:hover { background: var(--primary-600); }
+
+
+
+
+
+.site-footer {
+
+
+  text-align: center; padding: 24px 0 16px;
+
+
+  font-size: 11.5px; color: var(--text-tertiary);
+
+
+  border-top: 1px solid var(--border);
+
+
+  margin-top: 18px; line-height: 1.8;
+
+
+}
+
+
+.site-footer a { color: var(--primary); text-decoration: none; font-weight: 500; }
+
+
+
+
+
+/* ============================================================
+
+
+   响应式 — 移动端
+
+
+   ============================================================ */
+
+
+@media (max-width: 1100px) {
+
+
+  .chart-grid { grid-template-columns: 1fr 1fr; }
+
+
+  .banner-stats { min-width: 320px; }
+
+
+}
+
+
+@media (max-width: 900px) {
+
+
+  .top20-grid { grid-template-columns: 1fr; }
+
+
+  .content { padding: 16px 14px calc(60px + var(--safe-bottom)); }
+
+
+  .banner { padding: 20px; }
+
+
+  .banner-content { flex-direction: column; align-items: stretch; }
+
+
+  .banner-stats { grid-template-columns: repeat(4, 1fr); min-width: 0; }
+
+
+  .banner-left h1 { font-size: 20px; }
+
+
+  .stat-card .stat-num { font-size: 18px; }
+
+
+  .section { padding: 18px 20px; }
+
+
+  .section-title { font-size: 14.5px; }
+
+
+  .chart-grid { grid-template-columns: 1fr; }
+
+
+}
+
+
+@media (max-width: 768px) {
+
+
+  .sidebar { transform: translateX(-100%); }
+
+
+  .sidebar.open { transform: translateX(0); }
+
+
+  .sidebar-overlay.open { display: block; }
+
+
+  .menu-toggle { display: flex; }
+
+
+  .main { margin-left: 0; }
+
+
+  .topbar { padding: 0 14px 0 60px; }
+
+
+  .banner-stats { grid-template-columns: repeat(2, 1fr); }
+
+
+  .week-selector { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+
+
+  .week-btn { flex-shrink: 0; }
+
+
+  /* 表格转卡片 */
+
+
+  .mobile-cards table, .mobile-cards thead, .mobile-cards tbody, .mobile-cards tr, .mobile-cards td, .mobile-cards th { display: block; }
+
+
+  .mobile-cards thead { display: none; }
+
+
+  .mobile-cards tr {
+
+
+    background: var(--card-bg);
+
+
+    border: 1px solid var(--border-light);
+
+
+    border-radius: var(--radius);
+
+
+    padding: 10px 14px; margin-bottom: 8px;
+
+
+  }
+
+
+  .mobile-cards td { padding: 4px 0; border: none; text-align: left; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+
+
+  .mobile-cards td::before { content: attr(data-label); font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+
+
+  .mobile-cards td:first-child::before { display: none; }
+
+
+  .mobile-cards td:first-child { justify-content: flex-start; }
+
+
+}
+
+
+@media (max-width: 480px) {
+
+
+  .content { padding: 12px 10px calc(60px + var(--safe-bottom)); }
+
+
+  .banner { padding: 16px; border-radius: var(--radius); }
+
+
+  .banner-left h1 { font-size: 18px; }
+
+
+  .banner-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+
+  .stat-card { padding: 10px 12px; }
+
+
+  .stat-card .stat-num { font-size: 16px; }
+
+
+  .section { padding: 14px 16px; border-radius: var(--radius); }
+
+
+  .section-title { font-size: 13.5px; }
+
+
+  .summary-item { padding: 12px 14px; font-size: 13px; }
+
+
+  .kanban-grid { grid-template-columns: 1fr; gap: 10px; }
+
+
+  .kanban-card { padding: 12px 14px; }
+
+
+  .kanban-body { font-size: 12.5px; }
+
+
+  .surge-grid { grid-template-columns: 1fr; }
+
+
+  .trend-grid { grid-template-columns: 1fr; }
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   响应式改进 — 表格 + 移动端适配
+
+
+   ============================================================ */
+
+
+@media (max-width: 768px) {
+
+
+  .sim-overview .table-wrap table { min-width: 0; }
+
+
+  .sim-overview .progress-bar { flex-direction: column; gap: 2px; }
+
+
+  .sim-overview .progress-text { min-width: 0; text-align: center; }
+
+
+  .section { border-radius: var(--radius); }
+
+
+  .insight-box { font-size: 13px; padding: 12px 14px; }
+
+
+  .table-wrap th, .table-wrap td { white-space: normal; word-break: break-word; }
+
+
+  .top100-capsules { flex-direction: column; gap: 8px; }
+
+
+  .top100-capsule { width: 100%; justify-content: center; }
+
+
+  .surge-grid { grid-template-columns: 1fr; }
+
+
+  .trend-grid { grid-template-columns: 1fr; }
+
+
+  .chart-grid { grid-template-columns: 1fr; }
+
+
+  .content { padding-bottom: calc(80px + var(--safe-bottom)); }
+
+
+}
+
+
+@media (max-width: 480px) {
+
+
+  .section { padding: 12px 14px; }
+
+
+  .kanban-body { font-size: 12px; }
+
+
+  .stat-card .stat-num { font-size: 15px; }
+
+
+  .mobile-cards td { font-size: 12px; }
+
+
+  .table-wrap th { font-size: 11px; padding: 8px 10px; }
+
+
+  .table-wrap td { font-size: 12px; padding: 8px 10px; }
+
+
+}
+
+
+
+
+
+/* Top20 表格仅显示前5行，其余通过滚动查看 */
+
+
+.top20-scroll thead { display: table; width: 100%; table-layout: fixed; }
+
+
+.top20-scroll tbody {
+
+
+  display: block;
+
+
+  overflow-y: auto;
+
+
+  max-height: 230px;
+
+
+  scrollbar-width: thin;
+
+
+}
+
+
+.top20-scroll tbody tr {
+
+
+  display: table;
+
+
+  width: 100%;
+
+
+  table-layout: fixed;
+
+
+}
+
+
+.top20-scroll tbody::-webkit-scrollbar { width: 4px; }
+
+
+.top20-scroll tbody::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+
+.top20-scroll .scroll-hint { text-align: center; font-size: 11px; color: #999; padding: 4px 0 0; }
+
+
+
+
+
+/* 大幅上升 Tab 切换 */
+
+
+.surge-tabs { display: flex; gap: 0; background: var(--bg); border-radius: var(--radius); padding: 3px; width: fit-content; border: 1px solid var(--border-light); flex-shrink: 0; }
+
+
+.surge-tab { padding: 6px 18px; font-size: 12.5px; font-weight: 500; border: none; background: transparent; color: var(--text-tertiary); cursor: pointer; border-radius: calc(var(--radius) - 2px); transition: all var(--t-fast); }
+
+
+.surge-tab:hover { color: var(--text); background: rgba(10,124,66,0.05); }
+
+
+.surge-tab.active { background: var(--primary); color: #fff; font-weight: 600; box-shadow: 0 1px 3px rgba(10,124,66,0.3); }
+
+
+.surge-tab.active:hover { background: var(--primary-600); }
+
+
+
+
+
+/* 新鲜感指标 - 环比箭头 + 倒计时 */
+
+
+.delta-up { color: var(--red); font-size: 11px; font-weight: 700; margin-left: 3px; }
+
+
+.delta-down { color: var(--primary); font-size: 11px; font-weight: 700; margin-left: 3px; }
+
+
+.delta-down::before { display: none; }
+
+
+.stat-card .stat-num { display: flex; align-items: center; gap: 2px; }
+
+
+#countdownDays { color: #fbbf24; font-weight: 700; }
+
+
+
+
+
+/* 月份分组 */
+
+
+.month-group { border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+
+.month-header {
+
+
+  display: flex; align-items: center; gap: 8px;
+
+
+  padding: 10px 20px 10px 16px; cursor: pointer;
+
+
+  color: rgba(255, 255, 255, 0.45); font-size: 11px;
+
+
+  font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+
+
+  transition: color .2s; user-select: none;
+
+
+}
+
+
+.month-header:hover { color: rgba(255,255,255,0.8); }
+
+
+.month-header .arrow {
+
+
+  display: inline-block; width: 14px; text-align: center;
+
+
+  transition: transform .2s; font-size: 10px; color: rgba(255,255,255,0.3);
+
+
+}
+
+
+.month-header .arrow.collapsed { transform: rotate(-90deg); }
+
+
+.month-body { overflow: hidden; transition: max-height .25s ease; }
+
+
+.month-body.collapsed { max-height: 0 !important; }
+
+
+.month-body .nav-item { padding-left: 28px; font-size: 12px; }
+
+
+.month-body .badge-latest {
+
+
+  display: inline-block; font-size: 9px; font-weight: 700;
+
+
+  background: #e53e3e; color: #fff;
+
+
+  padding: 1px 6px; border-radius: 8px; margin-left: 6px;
+
+
+  letter-spacing: 0; text-transform: none;
+
+
+}
+
+
+
+
+
+</style>
+
+
 </head>
-<body><a href="/w/">跳转</a></body>
+
+
+<body>
+
+
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰</button>
+
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+
+
+
+
+<!-- Top100 弹窗 -->
+
+
+<div class="top100-overlay" id="top100Overlay" onclick="closeTop100Modal(event)">
+
+
+  <div class="top100-modal" onclick="event.stopPropagation()">
+
+
+    <div class="top100-modal-header">
+
+
+      <div class="modal-title" id="top100ModalTitle"><span class="capsule-dot" id="top100ModalDot"></span><span id="top100ModalLabel">榜单</span></div>
+
+
+      <button class="modal-close" onclick="closeTop100Modal()">✕</button>
+
+
+    </div>
+
+
+    <div class="top100-modal-body" id="top100ModalBody">
+
+
+      <div class="top100-modal-empty">加载中...</div>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+<aside class="sidebar" id="sidebar">
+
+
+  <div class="sidebar-logo">
+
+
+    <h1>市场资讯工作台</h1>
+
+
+    <p>小游戏双平台周报监测</p>
+
+
+  </div>
+
+
+  <nav class="sidebar-nav">
+
+
+    <div class="nav-section-title">导航</div>
+
+
+    <a class="nav-item" href="#summary" data-nav><span class="nav-icon">★</span><span>本周核心摘要</span></a>
+
+
+    <a class="nav-item" href="#top20" data-nav><span class="nav-icon">Ⅰ</span><span>畅销榜 Top20</span></a>
+
+
+    <a class="nav-item" href="#sim" data-nav><span class="nav-icon">Ⅱ</span><span>模拟经营对比</span></a>
+
+
+    <a class="nav-item" href="#marketing" data-nav><span class="nav-icon">$</span><span>买量 &amp; ROI</span></a>
+
+
+    <a class="nav-item" href="#category" data-nav><span class="nav-icon">Ⅲ</span><span>品类分布全景</span></a>
+
+
+    <a class="nav-item" href="#surge" data-nav><span class="nav-icon">↑</span><span>大幅上升游戏</span></a>
+
+
+    <a class="nav-item" href="#policy" data-nav><span class="nav-icon">⊙</span><span>政策与市场动态</span></a>
+
+
+    <a class="nav-item" href="#trends" data-nav><span class="nav-icon">◎</span><span>本周趋势观察</span></a>
+
+
+    <div class="nav-section-title" style="margin-top:10px">历史周报</div>
+
+
+    <div id="sidebarWeekList"></div>
+
+
+  </nav>
+
+
+  <div class="sidebar-footer">
+
+
+    <div>数据来源：引力引擎</div>
+
+
+    <div>品类划分：统一标准</div>
+
+
+    <button class="sync-btn" id="syncBtn" onclick="syncData()">🔄 同步最新数据</button>
+
+
+  </div>
+
+
+</aside>
+
+
+
+
+
+<div class="main">
+
+
+<div class="content" id="mainContent">
+
+
+    <div class="loading-state">
+
+
+      <div class="spinner"></div>
+
+
+      <p>正在加载周报数据...</p>
+
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+/* ============================================================
+
+
+   市场资讯工作台 v2 — UI 重设计版
+
+
+   数据流：manifest.json → report-data.json（每个周报）
+
+
+   ============================================================ */
+
+
+
+
+
+var BASE = '../', MANIFEST_URL = './manifest.json';
+
+
+var CHART_COLORS = ['#1e3a8a', '#60a5fa', '#f97316', '#8b5cf6', '#ef4444', '#06b6d4', '#84cc16', '#ec4899', '#6366f1', '#14b8a6', '#f59e0b', '#a855f7', '#10b981', '#dc2626', '#0ea5e9', '#7c3aed'];
+
+
+
+
+
+var DATA = {}, weekKeys = [], currentKey = null, reportMap = {};
+
+
+var chartInstances = {}, navSections = [];
+
+
+var isMobile = window.innerWidth <= 768;
+
+
+var _allMovers = [];
+
+
+var _surgeTab = 'all';
+
+
+/* 新鲜感辅助函数 */
+
+
+function getPrevWeekKey(key) {
+
+
+  var idx = weekKeys.indexOf(key);
+
+
+  return (idx >= 0 && idx < weekKeys.length - 1) ? weekKeys[idx + 1] : null;
+
+
+}
+
+
+function daysUntilNextUpdate() {
+
+
+  var now = new Date();
+
+
+  var day = now.getDay();
+
+
+  var diff = (5 - day + 7) % 7;
+
+
+  return diff === 0 ? 7 : diff;
+
+
+}
+
+
+function calcDelta(cur, prev) {
+
+
+  if (cur === null || cur === undefined || prev === null || prev === undefined || cur === '--' || prev === '--' || cur == prev) return '';
+
+
+  var d = Number(cur) - Number(prev);
+
+
+  if (d === 0) return '';
+
+
+  return '<span class="' + (d > 0 ? 'delta-up' : 'delta-down') + '">' + (d > 0 ? '▲' : '▼') + Math.abs(d) + '</span>';
+
+
+}
+
+
+
+
+
+
+
+
+window.addEventListener('resize', function() {
+
+
+  var newMobile = window.innerWidth <= 768;
+
+
+  if (newMobile !== isMobile) { isMobile = newMobile; if (currentKey) renderPage(currentKey); }
+
+
+});
+
+
+
+
+
+function init() {
+
+
+  document.getElementById('mainContent').innerHTML =
+
+
+    '<div class="loading-state"><div class="spinner"></div><p>正在加载周报数据...</p></div>';
+
+
+  fetchJSON(MANIFEST_URL).then(function(manifest) {
+
+
+    if (!manifest || !manifest.reports || !manifest.reports.length) return renderEmpty();
+
+
+    var reports = manifest.reports;
+
+
+    var promises = [];
+
+
+    reports.forEach(function(r) {
+
+
+      if (r.hasData === false) return;
+
+
+      weekKeys.push(r.id);
+
+
+      promises.push(
+
+
+        fetchJSON(BASE + r.dirName + '/report-data.json').then(function(data) {
+
+
+          DATA[r.id] = normalizeData(data, r);
+
+
+        }).catch(function() { })
+
+
+      );
+
+
+    });
+
+
+    return Promise.all(promises).then(function() {
+
+
+      reports.forEach(function(r) { reportMap[r.id] = r; });
+
+
+      weekKeys = weekKeys.filter(function(k) { return DATA[k]; });
+
+
+      if (!weekKeys.length) return renderEmpty();
+
+
+      currentKey = weekKeys[0];
+
+
+      renderSidebarList(reports);
+
+
+      renderPage(currentKey);
+
+
+    });
+
+
+  }).catch(function() {
+
+
+    renderError('网络连接失败，请检查网络后重试。');
+
+
+  });
+
+
+}
+
+
+
+
+
+function normalizeData(d, meta) {
+
+
+  if (!d.week) d.week = {};
+
+
+  if (!d.week.label) d.week.label = meta ? meta.label : '';
+
+
+  if (!d.week.date) d.week.date = meta ? meta.date : '';
+
+
+  if (!d.week.tag) d.week.tag = meta ? meta.label : '';
+
+
+  if (!d.stats) d.stats = {};
+
+
+  if (!d.top20) d.top20 = { wx: [], dy: [] };
+
+
+  if (!d.top100) d.top100 = { wx: [], dy: [] };
+
+
+  if (!d.simulation) d.simulation = { wxCount: 0, dyCount: 0, games: [] };
+
+
+  if (d.movers && !Array.isArray(d.movers)) {
+
+
+    var arr = [];
+
+
+    for (var k in d.movers) { if (d.movers[k] && typeof d.movers[k] === 'object' && d.movers[k].name) arr.push(d.movers[k]); }
+
+
+    if (arr.length) d.movers = arr;
+
+
+  }
+
+
+  if (!d.movers) d.movers = [];
+
+
+  if (!d.policies) d.policies = {};
+
+
+  if (!d.trends) d.trends = [];
+
+
+
+
+
+  // 兼容桌面端硬编码格式（老版本 gen_report_v3.js 输出）
+
+
+  if (d.banner && typeof d.banner === 'object' && !d.stats.wxCount) {
+
+
+    d.stats.wxCount = d.banner.wechat || d.stats.wxCount;
+
+
+    d.stats.dyCount = d.banner.douyin || d.stats.dyCount;
+
+
+    d.stats.crossPlatform = d.banner.cross || d.stats.crossPlatform;
+
+
+    d.stats.categories = d.banner.category || d.stats.categories;
+
+
+    if (d.label) d.week.label = d.label;
+
+
+    if (d.date) d.week.date = d.date;
+
+
+    if (d.weekTag || d.label) d.week.tag = d.weekTag || d.label;
+
+
+
+
+
+    // 计算 Top5
+
+
+    if (d.wechatTop20 && d.wechatTop20.length) {
+
+
+      d.stats.wxTop5 = d.wechatTop20.slice(0, 5).map(function(r) { return r[0]; });
+
+
+    }
+
+
+    if (d.douyinTop20 && d.douyinTop20.length) {
+
+
+      d.stats.dyTop5 = d.douyinTop20.slice(0, 5).map(function(r) { return r[0]; });
+
+
+    }
+
+
+
+
+
+    // summary 迁移：4 卡片数组/对象 → core HTML + highlight
+
+
+    if (d.summary && !d.summary.core && (Array.isArray(d.summary) || typeof d.summary === 'object')) {
+
+
+      var cardsArr = Array.isArray(d.summary) ? d.summary : Object.keys(d.summary).map(function(k){ return d.summary[k]; });
+
+
+      var cards = [];
+
+
+      for (var ci = 0; ci < cardsArr.length; ci++) {
+
+
+        var card = cardsArr[ci];
+
+
+        if (card && card.title) {
+
+
+          // 老数据 title 已含【】，直接包 <strong>；无【】则补全
+
+
+          var t = card.title;
+
+
+          if (t.indexOf('【') < 0) t = '【' + t + '】';
+
+
+          cards.push('<strong>' + t + '</strong>' + (card.desc || ''));
+
+
+        }
+
+
+      }
+
+
+      d.summary = {
+
+
+        core: cards.join('<br>'),
+
+
+        highlight: meta ? meta.highlight : '',
+
+
+        keyEvents: [],
+
+
+        coreConcerns: []
+
+
+      };
+
+
+    }
+
+
+
+
+
+    // Top20 迁移 + 跨平台检测
+
+
+    if (d.wechatTop20 && d.douyinTop20) {
+
+
+      var dyNames = {}, wxNames = {};
+
+
+      d.douyinTop20.forEach(function(r) { dyNames[r[0]] = true; });
+
+
+      d.wechatTop20.forEach(function(r) { wxNames[r[0]] = true; });
+
+
+      if (!d.top20.wx.length) {
+
+
+        d.top20.wx = d.wechatTop20.map(function(r, i){
+
+
+          return { rank: i + 1, name: r[0], category: r[2], change: r[3], isCrossPlatform: !!dyNames[r[0]] };
+
+
+        });
+
+
+      }
+
+
+      if (!d.top20.dy.length) {
+
+
+        d.top20.dy = d.douyinTop20.map(function(r, i){
+
+
+          return { rank: i + 1, name: r[0], category: r[2], change: r[3], isCrossPlatform: !!wxNames[r[0]] };
+
+
+        });
+
+
+      }
+
+
+    }
+
+
+
+
+
+    // 模拟经营迁移
+
+
+    if (d.simData && !d.simulation.games.length) {
+
+
+      function cleanRank(v) {
+
+
+        v = (v || '').toString().replace('#', '').trim();
+
+
+        if (v === '─' || v === '未上榜' || v === '--' || v === '') return '-';
+
+
+        var n = parseInt(v);
+
+
+        return isNaN(n) ? '-' : n;
+
+
+      }
+
+
+      d.simulation.games = d.simData.map(function(s){
+
+
+        return { name: s[0] || '', company: s[1] || '', mergePlay: s[2] || '', theme: s[3] || '', wxRank: cleanRank(s[4]), dyRank: cleanRank(s[5]), diff: s[6] || '' };
+
+
+      });
+
+
+    }
+
+
+    if (d.simOverview) {
+
+
+      var mWx = d.simOverview.match(/微信上榜(\d+)款(?:[，,]\s*Top10内(\d+)款)?(?:[，,]\s*Top20内(\d+)款)?/);
+
+
+      var mDy = d.simOverview.match(/抖音上榜(\d+)款(?:[，,]\s*Top10内(\d+)款)?(?:[，,]\s*Top20内(\d+)款)?/);
+
+
+      if (mWx) {
+
+
+        d.simulation.wxCount = parseInt(mWx[1]);
+
+
+        d.simulation.wxTop10 = mWx[2] ? parseInt(mWx[2]) : 0;
+
+
+        d.simulation.wxTop20 = mWx[3] ? parseInt(mWx[3]) : 0;
+
+
+      }
+
+
+      if (mDy) {
+
+
+        d.simulation.dyCount = parseInt(mDy[1]);
+
+
+        d.simulation.dyTop10 = mDy[2] ? parseInt(mDy[2]) : 0;
+
+
+        d.simulation.dyTop20 = mDy[3] ? parseInt(mDy[3]) : 0;
+
+
+      }
+
+
+      // 默认 reps 字段（老数据无此字段）
+
+
+      d.simulation.wxReps = d.simulation.wxReps || '--';
+
+
+      d.simulation.dyReps = d.simulation.dyReps || '--';
+
+
+    }
+
+
+
+
+
+    // 飙升迁移
+
+
+    if (d.surgeData && !d.movers.length) {
+
+
+      d.movers = d.surgeData.map(function(sg){
+
+
+        var rawRise = sg[3] || '';
+
+
+        var riseNum = rawRise === 'NEW' || rawRise === '登顶' || rawRise.indexOf('新进榜') >= 0 ? 999
+
+
+          : parseInt(rawRise.replace('↑', '')) || 0;
+
+
+        return { name: sg[0] || '', platform: sg[1] || '', category: sg[2] || '', rise: riseNum, company: sg[4] || '', insight: sg[5] || '', bgClass: sg[6] || '' };
+
+
+      });
+
+
+    }
+
+
+
+
+
+    // 政策迁移
+
+
+    if (d.policyContent) { d.policies = { _combinedHtml: d.policyContent }; }
+
+
+
+
+
+    // trends 迁移
+
+
+    if (Array.isArray(d.trends) && d.trends.length && typeof d.trends[0] === 'string') {
+
+
+      d.trends = d.trends.map(function(t){ return { title: t, content: '' }; });
+
+
+    }
+
+
+
+
+
+    d.top20Insight = d.top20Insight || '';
+
+
+    d.simConclusion = d.simConclusion || '';
+
+
+    d.surgeConclusion = d.surgeConclusion || '';
+
+
+    d.catDesc = d.catDesc || '';
+
+
+    d.summary.highlight = d.summary.highlight || (meta ? meta.highlight : '');
+
+
+  }
+
+
+  return d;
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   渲染
+
+
+   ============================================================ */
+
+
+function renderPage(key) {
+
+
+  var d = DATA[key];
+
+
+  if (!d) return;
+
+
+  currentKey = key;
+
+
+  document.getElementById('mainContent').innerHTML = buildPageHTML(d, key);
+
+
+  fillData(d, key);
+
+
+  updateNavStates(key);
+
+
+  initScrollSpy();
+
+
+}
+
+
+
+
+
+function buildPageHTML(d, key) {
+
+
+  var stats = d.stats || {};
+
+
+  var week = d.week || {};
+
+
+  var movers = d.movers || [];
+
+
+  var prevKey = getPrevWeekKey(key);
+
+
+  var prevStats = prevKey && DATA[prevKey] ? (DATA[prevKey].stats || {}) : {};
+
+
+  return [
+
+
+    // Banner
+
+
+    '<div class="banner">',
+
+
+      '<div class="banner-content">',
+
+
+        '<div class="banner-left">',
+
+
+          '<h1>市场资讯观察周报<br><span class="week-tag" id="bannerWeekTag_">' + escHTML(week.tag || '') + '</span></h1>',
+
+
+          '<div class="banner-meta">',
+
+
+            '<span class="meta-item"><span class="pulse"></span><span id="bannerDate_">' + escHTML(week.date || '') + '</span></span>',
+
+
+            '<span class="divider">·</span>',
+
+
+            '<span class="meta-item">微小畅销榜 Top100 · 抖小畅销榜 Top100</span>',
+
+
+            '<span class="divider">·</span>',
+
+
+            '<span class="meta-item hide-mobile">双平台同步监测</span>',
+
+
+            '<span class="divider">·</span>',
+
+
+            '<span class="meta-item">距下次更新 <strong id="countdownDays">' + daysUntilNextUpdate() + '</strong> 天</span>',
+
+
+          '</div>',
+
+
+        '</div>',
+
+
+        '<div class="banner-stats">',
+
+
+          '<div class="stat-card stat-wx"><div class="stat-icon">◉</div><div class="stat-num">' + (stats.wxCount || '--') + calcDelta(stats.wxCount, prevStats.wxCount) + '</div><div class="stat-label">微信上榜</div></div>',
+
+
+          '<div class="stat-card stat-dy"><div class="stat-icon">◉</div><div class="stat-num">' + (stats.dyCount || '--') + calcDelta(stats.dyCount, prevStats.dyCount) + '</div><div class="stat-label">抖音上榜</div></div>',
+
+
+          '<div class="stat-card stat-cross"><div class="stat-icon">♦</div><div class="stat-num">' + (stats.crossPlatform || '--') + calcDelta(stats.crossPlatform, prevStats.crossPlatform) + '</div><div class="stat-label">跨平台</div></div>',
+
+
+          '<div class="stat-card stat-cat"><div class="stat-icon">☰</div><div class="stat-num">' + (stats.categories || '--') + calcDelta(stats.categories, prevStats.categories) + '</div><div class="stat-label">品类数量</div></div>',
+
+
+        '</div>',
+
+
+      '</div>',
+
+
+    '</div>',
+
+
+
+
+
+    // ★ 摘要
+
+
+    '<section class="section" id="summary">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">★</span>',
+
+
+        '<div class="section-text"><span>本周核心摘要</span><span class="section-sub">Core Insights</span></div>',
+
+
+        '<a class="more-link" href="' + BASE + 'index.html" target="_blank">查看完整 HTML 报告 →</a>',
+
+
+      '</div>',
+
+
+      '<div class="summary-hero" id="summaryHero"></div>',
+
+
+      '<div class="kanban-grid" id="summaryCore"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅰ Top20
+
+
+    '<section class="section" id="top20">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">Ⅰ</span>',
+
+
+        '<div class="section-text"><span>双平台畅销榜 Top20</span><span class="section-sub">Cross-Platform Top 20</span></div>',
+
+
+      '</div>',
+
+
+      '<div class="top20-grid">',
+
+
+        '<div>',
+
+
+          '<div class="subsection-title">微信小游戏 Top20</div>',
+
+
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="wxTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+
+
+        '</div>',
+
+
+        '<div>',
+
+
+          '<div class="subsection-title">抖音小游戏 Top20</div>',
+
+
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="dyTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+
+
+        '</div>',
+
+
+      '</div>',
+
+
+      '<div class="insight-box" id="top20InsightWrap" style="margin-top:16px"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅱ 模拟经营
+
+
+    '<section class="section" id="sim">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">Ⅱ</span>',
+
+
+        '<div class="section-text"><span>模拟经营 · 双平台深度对比</span><span class="section-sub">Simulation Deep-Dive</span></div>',
+
+
+      '</div>',
+
+
+      '<div class="subsection-title">双平台模拟经营上榜概况</div>',
+
+
+      '<div class="sim-overview" id="simOverview"></div>',
+
+
+      '<div class="subsection-title">模拟经营游戏双平台排名对比</div>',
+
+
+      '<div class="table-wrap" style="max-height:340px;overflow-y:auto"><table><thead><tr><th>游戏名</th><th>融合玩法</th><th>题材</th><th style="width:80px">微信排名</th><th style="width:80px">抖音排名</th><th>双平台差异</th></tr></thead><tbody id="simTableBody"></tbody></table></div>',
+
+
+      '<div class="insight-box" id="simConclusionWrap" style="margin-top:14px"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // ★ 买量/ROI（仅在5月第2/3/4周有数据）
+
+
+    '<section class="section" id="marketing" style="display:none">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">$</span>',
+
+
+        '<div class="section-text"><span>买量效能 &amp; ROI 对比</span><span class="section-sub">Marketing Efficiency &amp; ROI</span></div>',
+
+
+      '</div>',
+
+
+      '<div id="marketingContent"></div>',
+      '<div id="gameAnalysisContent"></div>',
+      '<div class="game-analysis-grid" id="gameAnalysisExtra"></div>',
+
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅲ 品类分布
+
+
+    '<section class="section" id="category">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">Ⅲ</span>',
+
+
+        '<div class="section-text"><span>畅销榜 Top100 品类分布全景</span><span class="section-sub">Category Distribution</span></div>',
+
+
+      '</div>',
+
+
+      '<div class="chart-grid" id="chartGrid">',
+
+
+        '<div class="chart-card"><div class="chart-title"><span class="dot wx"></span>微信 Top100 品类分布</div><div class="chart-box"><canvas id="wxCatChart"></canvas></div></div>',
+
+
+        '<div class="chart-card"><div class="chart-title"><span class="dot dy"></span>抖音 Top100 品类分布</div><div class="chart-box"><canvas id="dyCatChart"></canvas></div></div>',
+
+
+        '<div class="chart-card"><div class="chart-title"><span class="dot cmp"></span>双平台品类数量对比</div><div class="chart-box"><canvas id="cmpChart"></canvas></div></div>',
+
+
+      '</div>',
+
+
+      // Top100 榜单胶囊按钮
+
+
+      '<div class="top100-capsules">',
+
+
+        '<button class="top100-capsule wx" onclick="openTop100Modal(\'wx\')"><span class="capsule-dot"></span>微小 Top100</button>',
+
+
+        '<button class="top100-capsule dy" onclick="openTop100Modal(\'dy\')"><span class="capsule-dot"></span>抖小 Top100</button>',
+
+
+      '</div>',
+
+
+      '<div class="insight-box" id="catDescWrap" style="margin-top:14px"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅳ 大幅上升
+
+
+    '<section class="section" id="surge">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">↑</span>',
+
+
+        '<div class="section-text"><span>本周大幅上升游戏（≥15位/新上榜）</span><span class="section-sub">Movers — Rising Stars</span></div>',
+
+
+        '<div class="surge-tabs" id="surgeTabs" style="margin-left:auto"><button class="surge-tab active" data-surge="all">全部</button><button class="surge-tab" data-surge="wx">微小</button><button class="surge-tab" data-surge="dy">抖小</button></div>',
+
+
+      '</div>',
+
+
+      '<div class="surge-grid surge-scroll" id="surgeGrid"></div>',
+
+
+      '<div class="insight-box" id="surgeConclusionWrap" style="margin-top:14px"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅴ 政策
+
+
+    '<section class="section" id="policy">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">⊙</span>',
+
+
+        '<div class="section-text"><span>平台政策与市场动态</span><span class="section-sub">Policy & Market Dynamics</span></div>',
+
+
+      '</div>',
+
+
+      '<div class="policy-grid" id="policyContent"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Ⅵ 趋势
+
+
+    '<section class="section" id="trends">',
+
+
+      '<div class="section-title">',
+
+
+        '<span class="section-icon">◎</span>',
+
+
+        '<div class="section-text"><span>本周趋势观察</span><span class="section-sub">Weekly Trends</span></div>',
+
+
+      '</div>',
+
+
+      '<div class="trend-grid" id="trendCards"></div>',
+
+
+    '</section>',
+
+
+
+
+
+    // Footer
+
+
+    '<div class="site-footer">',
+
+
+      '数据来源：<a href="' + BASE + 'index.html" target="_blank">市场资讯观察周报</a> · 引力引擎 · 品类统一划分<br>',
+
+
+      '<span style="font-size:10.5px;opacity:.6">信息聚合工作台 · v2 UI 重设计</span>',
+
+
+    '</div>'
+
+
+  ].join('');
+
+
+}
+
+
+
+
+
+function fillData(d, key) {
+
+
+  var cwl = document.getElementById('currentWeekLabel'); if (cwl) cwl.textContent = d.week ? (d.week.label || '') : '';
+
+
+  renderWeekButtons(key);
+
+
+  renderSummary(d);
+
+
+  renderTable('wxTop20Body', d.top20 && d.top20.wx ? d.top20.wx : [], 'wx');
+
+
+  renderTable('dyTop20Body', d.top20 && d.top20.dy ? d.top20.dy : [], 'dy');
+
+
+  renderInsightBox('top20InsightWrap', d.top20Insight, '头部格局发现');
+
+
+  renderSimOverview(d.simulation || {});
+
+
+  renderSimTable(d.simulation && d.simulation.games ? d.simulation.games : []);
+
+
+  renderInsightBox('simConclusionWrap', d.simConclusion, '结论');
+
+
+  renderMarketing(d.marketing || {}, key);
+
+
+  var charts = d.charts || {};
+
+
+  if (charts.cats && charts.cats.length) { renderCharts(charts); document.getElementById('chartGrid').style.display = 'grid'; }
+
+
+  else { document.getElementById('chartGrid').style.display = 'none'; }
+
+
+  renderInsightBox('catDescWrap', d.catDesc, '品类结构结论');
+
+
+  _allMovers = d.movers || []; _surgeTab = 'all'; renderSurgeGrid(_allMovers);
+
+
+  renderInsightBox('surgeConclusionWrap', d.surgeConclusion, '飙升结论');
+
+
+  renderPolicies(d.policies || {});
+
+
+  renderGameAnalysis(d.gameAnalysis || []);
+  renderTrends(d.trends || []);
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   摘要渲染 — 看板卡片式
+
+
+   ============================================================ */
+
+
+var KANBAN_META = {
+
+
+  '市场格局':     { icon: '📊', tag: '数据洞察', tagClass: 'tag-data' },
+
+
+  '头部表现':     { icon: '🏆', tag: '本周焦点', tagClass: 'tag-focus', featured: true },
+
+
+  '模拟经营聚焦': { icon: '🏘️', tag: '核心品类', tagClass: 'tag-feature' },
+
+
+  '政策动态':     { icon: '📋', tag: '政策追踪', tagClass: 'tag-policy' },
+
+
+  '核心关注':     { icon: '🎯', tag: '行动建议', tagClass: 'tag-action', wide: true, featured: true },
+
+
+  '竞品动态':     { icon: '🦁', tag: '竞品监测', tagClass: 'tag-market' }
+
+
+};
+
+
+
+
+
+function renderSummary(d) {
+
+
+  var summary = d.summary || {};
+
+
+
+
+
+  // Hero — 一句话焦点
+
+
+  var heroEl = document.getElementById('summaryHero');
+
+
+  if (heroEl) {
+
+
+    if (summary.highlight) {
+
+
+      heroEl.innerHTML = '<span class="hero-tag">⚡ 本周焦点</span><div class="hero-content">' + escHTML(summary.highlight) + '</div>';
+
+
+    } else {
+
+
+      heroEl.innerHTML = '';
+
+
+      heroEl.style.display = 'none';
+
+
+    }
+
+
+  }
+
+
+
+
+
+  // 看板卡片 — 解析 summary.core
+
+
+  var coreEl = document.getElementById('summaryCore');
+
+
+  if (coreEl) {
+
+
+    if (summary.core) {
+
+
+      var html = summary.core;
+
+
+      // 按 <br><strong>【...】 拆段（只匹配标签开头，避免匹配内部序号<strong>数字</strong>）
+
+
+      var parts = html.split(/(?=<strong>【.+?】<\/strong>)/).filter(function(s) { return s.trim(); });
+
+
+      coreEl.innerHTML = parts.map(function(p) {
+
+
+        // 抽取 <strong>【标签】</strong>
+
+
+        var m = p.match(/<strong>【(.+?)】<\/strong>/);
+
+
+        var label = m ? m[1] : '';
+
+
+        var body = m ? p.replace(/<strong>【.+?】<\/strong>/, '') : p;
+
+
+        var meta = KANBAN_META[label] || { icon: '•', tag: '本周要点', tagClass: 'tag-data' };
+
+
+        var featuredClass = meta.featured ? ' kanban-featured' : '';
+
+
+        var wideClass = meta.wide ? ' kanban-wide' : '';
+
+
+        // 对多段落内容按；或；加序号
+
+
+        var items = body.split(/[；;]\s*/).filter(function(s) { return s.trim(); });
+
+
+        if (items.length > 1 && label === '核心关注') {
+
+
+          body = items.map(function(s, i) {
+
+
+            // 红字高亮关键数字：百分比、日期、金额、倍数
+
+
+            var highlighted = s
+
+
+              .replace(/(\d+月\d+日)/g, '<span class="hl">$1</span>')
+
+
+              .replace(/(\d+%)/g, '<span class="hl">$1</span>')
+
+
+              .replace(/(\+\d+%)/g, '<span class="hl">$1</span>')
+
+
+              .replace(/(\d+→\d+%)/g, '<span class="hl">$1</span>')
+
+
+              .replace(/(\d+倍)/g, '<span class="hl">$1</span>')
+
+
+              .replace(/封停\/降星/g, '<span class="hl">封停/降星</span>');
+
+
+            return '<strong>' + (i + 1) + '.</strong> ' + highlighted.trim();
+
+
+          }).join('<br>');
+
+
+        }
+
+
+        return '<div class="kanban-card' + featuredClass + wideClass + '">' +
+
+
+          '<div class="kanban-header">' +
+
+
+            '<span class="kanban-icon">' + meta.icon + '</span>' +
+
+
+            '<span class="kanban-label">' + escHTML(label) + '</span>' +
+
+
+            '<span class="kanban-tag ' + meta.tagClass + '">' + meta.tag + '</span>' +
+
+
+          '</div>' +
+
+
+          '<div class="kanban-body">' + body + '</div>' +
+
+
+        '</div>';
+
+
+      }).join('');
+
+
+    } else {
+
+
+      coreEl.innerHTML = '';
+
+
+    }
+
+
+  }
+
+
+  // 不再渲染 keyEvents / coreConcerns — 已并入核心 5 张卡片，避免重复
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   表格渲染
+
+
+   ============================================================ */
+
+
+function renderTable(id, data, plat) {
+
+
+  var el = document.getElementById(id);
+
+
+  if (!el) return;
+
+
+  el.innerHTML = '';
+
+
+  var platLabel = plat === 'wx' ? '微信' : '抖音';
+
+
+  data.forEach(function(r) {
+
+
+    var rank = r.rank || 0;
+
+
+    var name = r.name || '';
+
+
+    var cat = r.category || '';
+
+
+    var change = r.change || '';
+
+    var company = r.company || '';
+
+
+    var isCross = r.isCrossPlatform;
+
+
+    var rc = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : rank <= 10 ? 'top10' : '';
+
+
+
+
+
+    // 格式化变化值（兜底：原 JSON 多数是裸数字 "5"，原报告里是 "↑5"）
+
+
+    var changeHtml = '';
+
+
+    var changeClass = 'stable';
+
+
+    if (!change || change === '-' || change === '─' || change === '稳定' || change === '- 稳定' || change === '—') {
+
+
+      changeHtml = '─'; changeClass = 'stable';
+
+
+    } else if (change.indexOf('霸榜') >= 0) {
+
+
+      changeHtml = change; changeClass = 'new';
+
+
+    } else if (change === '新进榜' || change === 'NEW' || change === '登顶') {
+
+
+      changeHtml = 'NEW'; changeClass = 'new';
+
+
+    } else if (change.indexOf('↑') >= 0 || /^\d+$/.test(change)) {
+
+
+      var n = change.replace('↑', '');
+
+
+      changeHtml = '↑' + n; changeClass = 'up';
+
+
+    } else if (change.indexOf('↓') >= 0) {
+
+
+      changeHtml = change; changeClass = 'down';
+
+
+    } else {
+
+
+      changeHtml = change; changeClass = 'stable';
+
+
+    }
+
+
+
+
+
+    el.innerHTML += '<tr>' +
+
+
+      '<td data-label="排名"><span class="rank-num ' + rc + '">' + rank + '</span></td>' +
+
+
+      '<td data-label="游戏"><strong>' + escHTML(name) + '</strong>' + (isCross ? '<span class="cross-tag">双</span>' : '') + '</td>' +
+
+      '<td data-label="厂商"><span class="company">' + escHTML(company) + '</span></td>' +
+
+
+      '<td data-label="品类"><span class="tag-cat">' + escHTML(cat) + '</span></td>' +
+
+
+      '<td data-label="变化" class="' + changeClass + '">' + escHTML(changeHtml) + '</td>' +
+
+
+    '</tr>';
+
+
+  });
+
+
+}
+
+
+
+
+
+/* Top100 弹窗：点击胶囊按钮打开 */
+
+
+function openTop100Modal(plat) {
+
+
+  var overlay = document.getElementById('top100Overlay');
+
+
+  var bodyEl = document.getElementById('top100ModalBody');
+
+
+  var labelEl = document.getElementById('top100ModalLabel');
+
+
+  var dotEl = document.getElementById('top100ModalDot');
+
+
+  if (!overlay || !bodyEl) return;
+
+
+
+
+
+  var d = DATA[currentKey];
+
+
+  var list = d && d.top100 ? (plat === 'wx' ? d.top100.wx : d.top100.dy) : [];
+
+
+  var name = plat === 'wx' ? '微小' : '抖小';
+
+
+  var color = plat === 'wx' ? '#4caf50' : '#42a5f5';
+
+
+
+
+
+  labelEl.textContent = name + '畅销榜 Top100';
+
+
+  if (dotEl) dotEl.style.background = color;
+
+
+
+
+
+  if (!list || !list.length) {
+
+
+    bodyEl.innerHTML = '<div class="top100-modal-empty">暂无完整榜单数据</div>';
+
+
+  } else {
+
+
+    bodyEl.innerHTML = '<table><thead><tr><th>#</th><th>游戏</th><th>品类</th><th>公司</th><th>变化</th></tr></thead><tbody>' +
+
+
+      list.map(function(g) {
+
+
+        var ch = g.change || '';
+
+
+        var chDisplay = ch, chCls = 'stable';
+
+
+        if (!ch || ch === '-' || ch === '─' || ch === '稳定' || ch === '- 稳定') {
+
+
+          chDisplay = '─'; chCls = 'stable';
+
+
+        } else if (ch.indexOf('霸榜') >= 0) {
+
+
+          chDisplay = ch; chCls = 'new';
+
+
+        } else if (ch === '新进榜' || ch === 'NEW' || ch === '登顶') {
+
+
+          chDisplay = 'NEW'; chCls = 'new';
+
+
+        } else if (ch.indexOf('↑') >= 0 || /^\d+$/.test(ch)) {
+
+
+          chDisplay = '↑' + ch.replace('↑', ''); chCls = 'up';
+
+
+        } else if (ch.indexOf('↓') >= 0) {
+
+
+          chDisplay = ch; chCls = 'down';
+
+
+        }
+
+
+        return '<tr>' +
+
+
+          '<td>' + (g.rank || 0) + '</td>' +
+
+
+          '<td>' + escHTML(g.name || '') + (g.isCrossPlatform ? '<span class="cross-tag">双</span>' : '') + '</td>' +
+
+
+          '<td><span class="tag-cat">' + escHTML(g.category || '') + '</span></td>' +
+
+
+          '<td>' + escHTML(g.company || '--') + '</td>' +
+
+
+          '<td class="' + chCls + '">' + escHTML(chDisplay) + '</td>' +
+
+
+        '</tr>';
+
+
+      }).join('') +
+
+
+      '</tbody></table>';
+
+
+  }
+
+
+
+
+
+  overlay.classList.add('open');
+
+
+  document.body.style.overflow = 'hidden';
+
+
+}
+
+
+
+
+
+function closeTop100Modal(e) {
+
+
+  if (e && e.target !== e.currentTarget) return; // 只处理遮罩点击
+
+
+  var overlay = document.getElementById('top100Overlay');
+
+
+  if (!overlay) return;
+
+
+  overlay.classList.remove('open');
+
+
+  document.body.style.overflow = '';
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   模拟经营渲染
+
+
+   ============================================================ */
+
+
+function renderSimOverview(sim) {
+
+
+  var el = document.getElementById('simOverview');
+
+
+  if (!el) return;
+
+
+  var wxCount = sim.wxCount || 0, dyCount = sim.dyCount || 0;
+
+
+  var wxT10 = sim.wxTop10 || 0, wxT20 = sim.wxTop20 || 0;
+
+
+  var dyT10 = sim.dyTop10 || 0, dyT20 = sim.dyTop20 || 0;
+
+
+  var wxReps = sim.wxReps || '--', dyReps = sim.dyReps || '--';
+
+
+  el.innerHTML = '<div class="table-wrap"><table><thead><tr><th>平台</th><th>上榜数</th><th>Top10 内</th><th>Top20 内</th><th>头部代表</th></tr></thead><tbody>' +
+
+
+    '<tr><td data-label="平台"><span class="platform-name wx">微信小游戏</span></td>' +
+
+
+      '<td data-label="上榜数"><strong>' + wxCount + '</strong> 款</td>' +
+
+
+      '<td data-label="Top10内"><div class="progress-bar"><div class="progress-track"><div class="progress-fill wx" style="width:' + (wxCount ? Math.min(wxT10/wxCount*100, 100) : 0) + '%"></div></div><span class="progress-text">' + wxT10 + ' 款</span></div></td>' +
+
+
+      '<td data-label="Top20内"><div class="progress-bar"><div class="progress-track"><div class="progress-fill wx" style="width:' + (wxCount ? Math.min(wxT20/wxCount*100, 100) : 0) + '%"></div></div><span class="progress-text">' + wxT20 + ' 款</span></div></td>' +
+
+
+      '<td data-label="头部代表">' + escHTML(wxReps) + '</td></tr>' +
+
+
+    '<tr><td data-label="平台"><span class="platform-name dy">抖音小游戏</span></td>' +
+
+
+      '<td data-label="上榜数"><strong>' + dyCount + '</strong> 款</td>' +
+
+
+      '<td data-label="Top10内"><div class="progress-bar"><div class="progress-track"><div class="progress-fill dy" style="width:' + (dyCount ? Math.min(dyT10/dyCount*100, 100) : 0) + '%"></div></div><span class="progress-text">' + dyT10 + ' 款</span></div></td>' +
+
+
+      '<td data-label="Top20内"><div class="progress-bar"><div class="progress-track"><div class="progress-fill dy" style="width:' + (dyCount ? Math.min(dyT20/dyCount*100, 100) : 0) + '%"></div></div><span class="progress-text">' + dyT20 + ' 款</span></div></td>' +
+
+
+      '<td data-label="头部代表">' + escHTML(dyReps) + '</td></tr>' +
+
+
+    '</tbody></table></div>';
+
+
+}
+
+
+
+
+
+function renderSimTable(games) {
+
+
+  var el = document.getElementById('simTableBody');
+
+
+  if (!el) return;
+
+
+  el.innerHTML = '';
+
+
+  if (!games || !games.length) {
+
+
+    el.innerHTML = '<tr><td colspan="7" style="color:#999;padding:16px;text-align:center">暂无数据</td></tr>';
+
+
+    return;
+
+
+  }
+
+
+  // 兜底：客户端计算 diff（兼容旧数据无此字段）
+
+
+  function calcDiff(wxR, dyR) {
+
+
+    if (wxR === '-' || wxR === '─' || wxR == null || wxR === '') return '仅抖音';
+
+
+    if (dyR === '-' || dyR === '─' || dyR == null || dyR === '') return '仅微信';
+
+
+    var d = wxR - dyR;
+
+
+    if (d > 0) return '抖音领先' + d + '位';
+
+
+    if (d < 0) return '微信领先' + Math.abs(d) + '位';
+
+
+    return '排名接近';
+
+
+  }
+
+
+  games.forEach(function(g) {
+
+
+    var diff = g.diff || calcDiff(g.wxRank, g.dyRank);
+
+
+    el.innerHTML += '<tr>' +
+
+
+      '<td data-label="游戏"><strong>' + escHTML(g.name || '') + '</strong><br><span style="font-size:10.5px;color:var(--text-tertiary)">' + escHTML(g.company || '') + '</span></td>' +
+
+
+      '<td data-label="融合玩法">' + escHTML(g.mergePlay || '') + '</td>' +
+
+
+      '<td data-label="题材">' + escHTML(g.theme || '') + '</td>' +
+
+
+      '<td data-label="微信排名">' + (g.wxRank && g.wxRank !== '-' ? '#<strong>' + g.wxRank + '</strong>' : '<span style="color:#999">未上榜</span>') + '</td>' +
+
+
+      '<td data-label="抖音排名">' + (g.dyRank && g.dyRank !== '-' ? '#<strong>' + g.dyRank + '</strong>' : '<span style="color:#999">未上榜</span>') + '</td>' +
+
+
+      '<td data-label="差异" style="font-size:11.5px;color:var(--text-secondary)">' + escHTML(diff) + '</td>' +
+
+
+    '</tr>';
+
+
+  });
+
+
+  // JS强制设置滚动容器
+
+
+  var wrap = el.closest('.table-wrap');
+
+
+  if (wrap) { wrap.style.maxHeight = '340px'; wrap.style.overflowY = 'auto'; }
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   飙升卡片
+
+
+   ============================================================ */
+
+
+function renderSurgeGrid(movers) {
+
+
+  // Filter by active tab
+
+
+  var filtered = movers;
+
+
+  if (_surgeTab === 'wx') filtered = movers.filter(function(m) { return m.platform === '微信'; }); // 微信
+
+
+  else if (_surgeTab === 'dy') filtered = movers.filter(function(m) { return m.platform === '抖音'; }); // 抖音
+
+
+
+
+
+  var el = document.getElementById('surgeGrid');
+
+
+  if (!el) return;
+
+
+  el.innerHTML = '';
+
+
+  if (!filtered || !filtered.length) {
+
+
+    el.innerHTML = '<div style="color:#999;padding:24px;text-align:center">本周无大幅上升游戏</div>';
+
+
+    return;
+
+
+  }
+
+
+  filtered.forEach(function(m) {
+
+
+    var rise = m.rise || 0;
+
+
+    var isNew = rise >= 999 || rise === 'NEW' || (m.rise === 'NEW');
+
+
+    var riseDisplay = isNew ? 'NEW' : '↑' + rise;
+
+
+    var platTag = (m.platform === '微信') ? '<span class="platform-tag wx">微信</span>' : '<span class="platform-tag dy">抖音</span>';
+
+
+    el.innerHTML += '<div class="surge-card">' +
+
+
+      '<div class="surge-rank ' + (isNew ? 'new-rank' : '') + '">' +
+
+
+        '<div class="rise">' + riseDisplay + '</div>' +
+
+
+        '<div class="rise-label">' + (isNew ? '新进榜' : '上升位') + '</div>' +
+
+
+      '</div>' +
+
+
+      '<div class="surge-info">' +
+
+
+        '<div class="surge-name">' + escHTML(m.name || '') + platTag + '</div>' +
+
+
+        '<div class="surge-meta">' +
+
+
+          '<span class="tag-cat">' + escHTML(m.category || '') + '</span>' +
+
+
+          (m.company && m.company !== '--' ? '<span>' + escHTML(m.company) + '</span>' : '') +
+
+
+        '</div>' +
+
+
+        (m.insight ? '<div class="surge-meta insight">' + escHTML(m.insight) + '</div>' : '') +
+
+
+      '</div>' +
+
+
+    '</div>';
+
+
+  });
+
+
+}
+
+
+
+
+
+
+
+
+/* ============================================================
+
+
+   政策 / 趋势
+
+
+   ============================================================ */
+
+
+
+
+
+
+
+
+/* Surge tab switching */
+
+
+function switchSurgeTab(tab) {
+
+
+  _surgeTab = tab;
+
+
+  document.querySelectorAll('#surgeTabs .surge-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.surge === tab); });
+
+
+  renderSurgeGrid(_allMovers);
+
+
+}
+
+
+document.addEventListener('click', function(e) {
+
+
+  var tab = e.target.closest('#surgeTabs .surge-tab');
+
+
+  if (tab) switchSurgeTab(tab.dataset.surge);
+
+
+});
+
+
+
+
+
+function renderPolicies(policies) {
+
+
+  var el = document.getElementById('policyContent');
+
+
+  if (!el) return;
+
+
+  if (policies._combinedHtml) {
+
+
+    // 包装combinedHtml：保留原本HTML结构但用统一policy-card样式 + 美化排版
+
+
+    el.innerHTML = '<div class="policy-card policy-combined">' + policies._combinedHtml + '</div>';
+
+
+    return;
+
+
+  }
+
+
+  var sections = [
+
+
+    { key: 'wechat', cls: 'wx', icon: '📣', label: '微信小游戏' },
+
+
+    { key: 'douyin', cls: 'dy', icon: '🎵', label: '抖音小游戏' },
+
+
+    { key: 'apple', cls: 'apple', icon: '🍎', label: '苹果' },
+
+
+    { key: 'android', cls: 'android', icon: '📱', label: '华为/小米/OPPO/vivo/TapTap' },
+
+
+    { key: 'banhao', cls: 'banhao', icon: '📜', label: '版号更新' },
+
+
+    { key: 'industry', cls: 'industry', icon: '📈', label: '行业动态' }
+
+
+  ];
+
+
+  el.innerHTML = sections.map(function(s) {
+
+
+    var content = policies[s.key] || '';
+
+
+    var isEmpty = !content || content.indexOf('本周无新政策') >= 0;
+
+
+    if (content.indexOf('<h3') === 0) {
+
+
+      return '<div class="policy-card ' + s.cls + '">' + content + '</div>';
+
+
+    }
+
+
+    return '<div class="policy-card ' + s.cls + (isEmpty ? ' policy-empty' : '') + '">' +
+
+
+      '<div class="policy-title"><span class="policy-icon">' + s.icon + '</span>' + s.label + '<span class="policy-tag">' + (isEmpty ? '本周无更新' : '已更新') + '</span></div>' +
+
+
+      '<div class="policy-body">' + (content || '<span style="color:#999">本周无更新</span>') + '</div>' +
+
+
+    '</div>';
+
+
+  }).join('');
+
+
+}
+
+
+
+
+
+function renderGameAnalysis(games) {
+  var el = document.getElementById('gameAnalysisContent');
+  if (!el) return;
+  if (!games || !games.length) { el.innerHTML = ''; el.parentElement.style.display='none'; return; }
+  el.parentElement.style.display='';
+  el.innerHTML = games.map(function(g) {
+    var chartRows = (g.charts || []).map(function(c) {
+      return '<tr><td style="text-align:center">' + c.chart + '</td><td style="text-align:center"><strong>#' + c.rank + '</strong></td><td style="text-align:center">' + c.change + '</td></tr>';
+    }).join('');
+    var detailRows = (g.details || []).map(function(d) {
+      return '<p style="margin:6px 0;font-size:13px;line-height:1.8"><strong>' + d.label + '：</strong>' + d.content + '</p>';
+    }).join('');
+    return '<div class="policy-card policy-combined" style="margin-bottom:14px">'
+      + '<div class="combined-header">' + escHTML(g.name) + ' <span style="font-size:12px;color:var(--text-tertiary);font-weight:400">' + escHTML(g.category) + '</span></div>'
+      + '<div style="padding:4px 0 8px">'
+      + detailRows
+      + '</div>'
+      + '<table style="width:100%;font-size:12px;border-collapse:collapse"><thead><tr style="background:#f8f9fb"><th style="padding:6px 8px;text-align:center">榜单</th><th style="padding:6px 8px;text-align:center">排名</th><th style="padding:6px 8px;text-align:center">变化</th></tr></thead><tbody>'
+      + chartRows + '</tbody></table>'
+      + '</div>';
+  }).join('');
+}
+
+function renderTrends(trends) {
+  var el = document.getElementById('trendCards');
+  if (!el) return;
+
+
+  el.innerHTML = '';
+
+
+  if (!trends || !trends.length) {
+
+
+    el.innerHTML = '<div style="color:#999;padding:24px;text-align:center">暂无趋势数据</div>';
+
+
+    return;
+
+
+  }
+
+
+  trends.forEach(function(t, i) {
+
+
+    var title = t.title || '';
+
+
+    var content = t.content || '';
+
+
+    el.innerHTML += '<div class="trend-card">' +
+
+
+      '<div class="trend-num">' + String(i + 1).padStart(2, '0') + '</div>' +
+
+
+      '<div class="trend-title">' + escHTML(title) + '</div>' +
+
+
+      '<div class="trend-content">' + escHTML(content) + '</div>' +
+
+
+    '</div>';
+
+
+  });
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   买量/ROI 板块（5月第2/3/4周扩展数据）
+
+
+   ============================================================ */
+
+
+function renderMarketing(mkt, weekKey) {
+
+
+  var el = document.getElementById('marketingContent');
+
+
+  if (!el) return;
+
+
+  var section = el.closest('#marketing');
+
+
+  if (!mkt || (!mkt.roi && !mkt.consumeOverview && !mkt.blueStar && !mkt.beastGame)) {
+
+
+    if (section) section.style.display = 'none';
+
+
+    return;
+
+
+  }
+
+
+  if (section) section.style.display = '';
+
+
+
+
+
+  var html = '', useNewChart = false;
+
+
+
+
+
+  // 1) ROI 表（5月第3周：含激活成本/付费成本 / 5月第2周：含微小排名/核心玩法）
+
+
+  if (mkt.roi && mkt.roi.length) {
+
+
+    var hasCostCols = mkt.roi[0].activateCost !== undefined;
+
+
+    if (hasCostCols) {
+
+
+      html += '<div class="subsection-title">头部模拟经营买量效能 &amp; ROI对比</div>';
+
+
+      html += '<div class="table-wrap"><table><thead><tr><th>游戏</th><th>日均消耗(万元)</th><th>激活成本</th><th>付费成本</th><th>首日ROI</th><th>7日ROI</th></tr></thead><tbody>';
+
+
+      mkt.roi.forEach(function(r) {
+
+
+        html += '<tr><td><strong>' + escHTML(r.name) + '</strong></td>'
+
+
+          + '<td>' + r.dailyConsume + '</td>'
+
+
+          + '<td>' + r.activateCost + '</td>'
+
+
+          + '<td>' + r.payCost + '</td>'
+
+
+          + '<td>' + (r.d1Roi != null ? r.d1Roi + '%' : '-') + '</td>'
+
+
+          + '<td><strong>' + (r.d7Roi != null ? r.d7Roi + '%' : '-') + '</strong></td></tr>';
+
+
+      });
+
+
+      html += '</tbody></table></div>';
+
+
+    } else {
+
+
+      html += '<div class="subsection-title">五一档ROI &amp; 消耗情况</div>';
+
+
+      html += '<div class="table-wrap"><table><thead><tr><th>游戏名</th><th>微小榜排名</th><th>日均消耗(万元)</th><th>首日ROI</th><th>7日ROI</th><th>核心玩法</th><th>题材亮点</th></tr></thead><tbody>';
+
+
+      mkt.roi.forEach(function(r) {
+
+
+        var hasData = r.dailyConsume != null;
+
+
+        html += '<tr><td><strong>' + escHTML(r.name) + '</strong></td>'
+
+
+          + '<td>' + (r.wxRank || '-') + '</td>'
+
+
+          + '<td>' + (hasData ? r.dailyConsume : '<span style="color:#999">未披露</span>') + '</td>'
+
+
+          + '<td>' + (hasData && r.d1Roi != null ? r.d1Roi + '%' : '<span style="color:#999">-</span>') + '</td>'
+
+
+          + '<td>' + (hasData && r.d7Roi != null ? r.d7Roi + '%' : '<span style="color:#999">-</span>') + '</td>'
+
+
+          + '<td>' + escHTML(r.corePlay || '') + '</td>'
+
+
+          + '<td>' + escHTML(r.themeHighlight || '') + '</td></tr>';
+
+
+      });
+
+
+      html += '</tbody></table></div>';
+
+
+    }
+
+
+    // 7日ROI柱状图
+
+
+    if (mkt.roiChart7d) {
+
+
+      html += '<div class="chart-card" style="margin-top:14px"><div class="chart-title" style="font-size:13px;font-weight:600">📊 7日ROI 头部梯队 (%)</div><div class="chart-box"><canvas id="roiChart7dCanvas" style="max-height:200px"></canvas></div></div>';
+
+
+    }
+
+
+  }
+
+
+
+
+
+  // 2) 重点模拟经营游戏核心指标表（5月第3周）
+
+
+  if (mkt.keyMetrics && mkt.keyMetrics.length) {
+
+
+    html += '<div class="subsection-title" style="margin-top:18px">重点模拟经营游戏核心指标</div>';
+
+
+    html += '<div class="table-wrap"><table><thead><tr><th>游戏名</th><th>微信排名</th><th>抖音排名</th><th>融合元素</th><th>变现</th><th>玩法亮点</th></tr></thead><tbody>';
+
+
+    mkt.keyMetrics.forEach(function(r) {
+
+
+      html += '<tr><td><strong>' + escHTML(r.name) + '</strong></td>'
+
+
+        + '<td>' + escHTML(String(r.wxRank)) + '</td>'
+
+
+        + '<td>' + escHTML(String(r.dyRank)) + '</td>'
+
+
+        + '<td>' + escHTML(r.mergeElement || '') + '</td>'
+
+
+        + '<td>' + escHTML(r.monetization || '') + '</td>'
+
+
+        + '<td>' + escHTML(r.highlight || '') + '</td></tr>';
+
+
+    });
+
+
+    html += '</tbody></table></div>';
+
+
+    if (mkt.keyMetricsInsight) {
+
+
+      html += '<div class="insight-box" style="margin-top:12px">' + escHTML(mkt.keyMetricsInsight) + '</div>';
+
+
+    }
+
+
+  }
+
+
+
+
+
+  // 2.5) 斗兽战场首发（本周新增）
+
+
+  if (mkt.beastGame) {
+
+
+    var bg = mkt.beastGame;
+
+
+    html += '<div class="subsection-title" style="margin-top:18px">🦁 ' + escHTML(bg.gameName) + ' · 首发资源评级</div>';
+
+
+    html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th>渠道</th><th>首发资源评级</th></tr></thead><tbody>';
+
+
+    bg.channelRatings.forEach(function(r) {
+
+
+      var cls = r.rating === 'A' ? ' trend-up' : '';
+
+
+      html += '<tr><td>' + escHTML(r.channel) + '</td><td class="' + cls + '" style="font-weight:700;text-align:center">' + escHTML(r.rating) + '</td></tr>';
+
+
+    });
+
+
+    html += '</tbody></table></div>';
+
+
+    html += '<div class="subsection-title" style="margin-top:18px">🦁 ' + escHTML(bg.gameName) + ' · 首发首日买量消耗（' + escHTML(bg.launchDate) + '）</div>';
+
+
+    html += '<div class="table-wrap"><table><thead><tr><th>渠道</th><th>日消耗（万元）</th><th>付费成本</th><th>首日ROI</th></tr></thead><tbody>';
+
+
+    bg.dailyCost.forEach(function(c) {
+
+
+      html += '<tr><td>' + escHTML(c.channel) + '</td><td style="text-align:center;font-weight:600">' + c.cost + '</td><td style="text-align:center">' + (c.payCost != null ? c.payCost : '<span style="color:#999">-</span>') + '</td><td style="text-align:center">' + (c.d1Roi != null ? '<span class="trend-down">' + c.d1Roi + '</span>' : '<span style="color:#999">-</span>') + '</td></tr>';
+
+
+    });
+
+
+    html += '</tbody></table></div>';
+
+
+    if (bg.conclusion) {
+
+
+      html += '<div class="insight-box" style="margin-top:12px"><strong>📌 结论：</strong>' + escHTML(bg.conclusion) + '</div>';
+
+
+    }
+
+
+  }
+
+
+
+
+
+  // 3) 消耗透视（5月第4周）
+
+
+  if (mkt.consumeOverview) {
+
+
+    if (weekKey === '20260605' || weekKey === '20260529') {
+
+
+      // 6月第1周：4张表格 + Top5柱状图
+
+
+      // === 表1：大盘概况 ===
+
+
+      if (mkt.marketOverview) {
+
+
+        var mo = mkt.marketOverview;
+
+
+        html += '<div class="subsection-title">广点通大盘概况</div>';
+
+
+        html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th>项目</th><th>日均消耗（万元）</th><th style="width:60px">占比</th></tr></thead><tbody>';
+
+
+        var totalVal = mo.total || mo.app + mo.miniapp;
+
+
+        html += '<tr><td>APP</td><td style="text-align:center">' + mo.app.toLocaleString() + '</td><td>' + (mo.app / totalVal * 100).toFixed(1) + '%</td></tr>';
+
+
+        html += '<tr><td><strong>小程序</strong></td><td style="text-align:center"><strong>' + mo.miniapp.toLocaleString() + '</strong></td><td>' + (mo.miniapp / totalVal * 100).toFixed(1) + '%</td></tr>';
+
+
+        html += '<tr style="background:#f1f9ec"><td><strong>汇总</strong></td><td style="text-align:center"><strong>' + totalVal.toLocaleString() + '</strong></td><td><strong>100%</strong></td></tr>';
+
+
+        html += '</tbody></table></div>';
+
+
+      }
+
+
+
+
+
+      // === 表2：集团 Top10 ===
+
+
+      if (mkt.groupTop10 && mkt.groupTop10.length) {
+
+
+        html += '<div class="subsection-title">周日耗 Top10 集团</div>';
+
+
+        html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th style="width:46px">排名</th><th>厂商</th><th>日均消耗（万元）</th></tr></thead><tbody>';
+
+
+        mkt.groupTop10.forEach(function(r) {
+
+
+          var isTop3 = r.rank <= 3;
+
+
+          var valStyle = 'text-align:center;font-weight:' + (isTop3 ? '700' : '400');
+
+
+          html += '<tr><td><strong>' + r.rank + '</strong></td><td>' + escHTML(r.name) + '</td><td class="trend-up" style="' + valStyle + '">' + r.dailyConsume + '</td></tr>';
+
+
+        });
+
+
+        html += '</tbody></table></div>';
+
+
+      }
+
+
+
+
+
+      // === 表3：小游戏 Top15（原） + APP Top10 ===
+
+
+      if (mkt.consumeTop15 && mkt.consumeTop15.length) {
+
+
+        html += '<div class="subsection-title">微信小游戏广点通买量消耗 Top15</div>';
+
+
+        html += '<p style="margin:0 0 10px;font-size:12px;color:var(--text-tertiary)">数据来源：本周买量消耗情况（截止5月31日）</p>';
+
+
+        html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th style="width:46px">排名</th><th>游戏</th><th>日均消耗（万元）</th><th style="width:80px">品类</th></tr></thead><tbody>';
+
+
+        mkt.consumeTop15.forEach(function(r) {
+
+
+          var isTop3 = r.rank <= 3;
+
+
+          var valStyle = 'text-align:center;font-weight:' + (isTop3 ? '700' : '400');
+
+
+          var valClass = isTop3 ? ' class="trend-up"' : '';
+
+
+          html += '<tr><td><strong>' + r.rank + '</strong></td><td>' + escHTML(r.name) + '</td><td' + valClass + ' style="' + valStyle + '">' + r.dailyConsume + '</td><td>' + escHTML(r.category) + '</td></tr>';
+
+
+        });
+
+
+        html += '</tbody></table></div>';
+
+
+        if (mkt.totalConsume) {
+
+
+          html += '<p style="margin:-8px 0 14px;font-size:12px;color:var(--text-tertiary)">Top15 合计消耗：约 <strong>' + mkt.totalConsume.toLocaleString() + '</strong> 万元 / 天</p>';
+
+
+        }
+
+
+      }
+
+
+
+
+
+      // APP Top10
+
+
+      if (mkt.appTop10 && mkt.appTop10.length) {
+
+
+        html += '<div class="subsection-title" style="margin-top:18px">APP 广点通买量消耗 Top10</div>';
+
+
+        html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th style="width:46px">排名</th><th>游戏</th><th>日均消耗（万元）</th></tr></thead><tbody>';
+
+
+        mkt.appTop10.forEach(function(r) {
+
+
+          var isTop3 = r.rank <= 3;
+
+
+          var valStyle = 'text-align:center;font-weight:' + (isTop3 ? '700' : '400');
+
+
+          html += '<tr><td><strong>' + r.rank + '</strong></td><td>' + escHTML(r.name) + '</td><td class="trend-up" style="' + valStyle + '">' + r.dailyConsume + '</td></tr>';
+
+
+        });
+
+
+        html += '</tbody></table></div>';
+
+
+      }
+
+
+
+
+
+      // Top5 柱状图
+
+
+      if (mkt.consumeChartTop5) {
+
+
+        html += '<div class="chart-card" style="margin-top:16px"><div class="chart-box"><canvas id="consumeTop5Canvas2" style="height:200px"></canvas></div></div>';
+
+
+      }
+
+
+
+
+
+      // === 表4：渠道拆解 ===
+
+
+      if (mkt.channelBreakdown && mkt.channelBreakdown.length) {
+
+
+        var chTotal = 0;
+
+
+        mkt.channelBreakdown.forEach(function(c) { chTotal += c.dailyConsume; });
+
+
+        html += '<div class="subsection-title" style="margin-top:18px">广点通大盘消耗渠道拆解</div>';
+
+
+        html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th>渠道</th><th>日均消耗（万元）</th><th style="width:60px">占比</th></tr></thead><tbody>';
+
+
+        mkt.channelBreakdown.forEach(function(c) {
+
+
+          var pct = chTotal ? (c.dailyConsume / chTotal * 100).toFixed(1) + '%' : '';
+
+
+          html += '<tr><td>' + escHTML(c.name) + '</td><td class="trend-up" style="text-align:center;font-weight:'
+
+
+            + (c.dailyConsume >= 1000 ? '700' : '400') + '">' + c.dailyConsume + '</td><td>' + pct + '</td></tr>';
+
+
+        });
+
+
+        html += '</tbody></table></div>';
+
+
+        // 渠道柱状图
+
+
+        html += '<div class="chart-card" style="margin-bottom:14px"><div class="chart-box"><canvas id="channelChartCanvas" style="height:260px"></canvas></div></div>';
+
+
+      }
+
+
+
+
+
+      // 结论
+
+
+      if (mkt.consumeOverview.conclusion) {
+
+
+        html += '<div class="insight-box" style="margin-top:16px"><strong>📌 数据解读：</strong><br>';
+
+
+        var ps = (mkt.consumeOverview.conclusion || '').split('\n\n').filter(function(p) { return p.trim(); });
+
+
+        ps.forEach(function(p, i) {
+
+
+          if (i > 0) html += '<br><br>';
+
+
+          html += '<strong>' + (i + 1) + '.</strong> ' + sanitizeHtml(p.trim());
+
+
+        });
+
+
+        html += '</div>';
+
+
+      }
+
+
+
+
+
+      useNewChart = true;
+
+
+    } else {
+
+
+      // 其他周：旧格式保持不变
+
+
+      var co = mkt.consumeOverview;
+
+
+      html += '<div class="subsection-title">' + escHTML(co.title || '投放消耗透视') + '</div>';
+
+
+      html += '<div class="table-wrap" style="margin-bottom:12px"><table><thead><tr><th>渠道</th><th>日均消耗（万元）</th></tr></thead><tbody>';
+
+
+      co.channels.forEach(function(ch) {
+
+
+        html += '<tr><td>' + escHTML(ch.name) + '</td><td class="trend-up">' + ch.value + '</td></tr>';
+
+
+      });
+
+
+      if (co.wxTotal != null) {
+
+
+        html += '<tr style="background:#f1f9ec"><td><strong>微小合计</strong></td><td><strong>' + co.wxTotal + '</strong></td></tr>';
+
+
+      }
+
+
+      if (co.allTotal != null) {
+
+
+        html += '<tr style="background:#fef7e0"><td><strong>全渠道合计</strong></td><td><strong>' + co.allTotal + '</strong></td></tr>';
+
+
+      }
+
+
+      html += '</tbody></table></div>';
+
+
+      if (co.conclusion) {
+
+
+        html += '<div class="insight-box" style="margin-bottom:16px">' + escHTML(co.conclusion) + '</div>';
+
+
+      }
+
+
+      if (mkt.consumeChartTop5) {
+
+
+        html += '<div class="chart-card" style="margin-top:12px"><div class="chart-title" style="font-size:13px;font-weight:600">📊 微小-广点通 · 日消耗Top5（万元）</div><div class="chart-box"><canvas id="consumeTop5Canvas" style="max-height:200px"></canvas></div></div>';
+
+
+      }
+
+
+      if (mkt.consumeTop15 && mkt.consumeTop15.length) {
+
+
+        html += '<div class="subsection-title" style="margin-top:18px">🏆 微小-广点通 · 日消耗Top15</div>';
+
+
+        html += '<div class="table-wrap"><table><thead><tr><th>排名</th><th>游戏</th><th>日消耗(万元)</th><th>品类</th></tr></thead><tbody>';
+
+
+        mkt.consumeTop15.forEach(function(r) {
+
+
+          html += '<tr><td>' + r.rank + '</td><td><strong>' + escHTML(r.name) + '</strong></td><td class="trend-up">' + r.dailyConsume + '</td><td>' + escHTML(r.category) + '</td></tr>';
+
+
+        });
+
+
+        html += '</tbody></table></div>';
+
+
+        if (mkt.totalConsume) {
+
+
+          html += '<div class="footnote" style="margin-top:8px;color:var(--text-tertiary);font-size:12px">总消耗 ' + mkt.totalConsume + ' 万元</div>';
+
+
+        }
+
+
+      }
+
+
+    }
+
+
+  }
+
+
+
+
+
+  // 4) 蔚蓝星球代言人效果（5月第2周）
+
+
+  if (mkt.blueStar && mkt.blueStar.length) {
+
+
+    html += '<div class="subsection-title" style="margin-top:18px">《永远的蔚蓝星球》× 周杰伦代言 | 微小畅销榜飞跃</div>';
+
+
+    html += '<div class="table-wrap"><table><thead><tr><th>日期 (2026)</th><th>抖小畅销榜</th><th>微小畅销榜</th><th>微小日均消耗(万元)</th><th>微小首日ROI</th></tr></thead><tbody>';
+
+
+    mkt.blueStar.forEach(function(r) {
+
+
+      html += '<tr><td>' + escHTML(r.date) + '</td><td>' + escHTML(String(r.dyRank)) + '</td><td>' + escHTML(String(r.wxRank)) + '</td><td>' + escHTML(r.dailyConsume) + '</td><td>' + escHTML(r.d1Roi) + '</td></tr>';
+
+
+    });
+
+
+    html += '</tbody></table></div>';
+
+
+    if (mkt.blueStarConclusion) {
+
+
+      html += '<div class="insight-box" style="margin-top:12px">' + escHTML(mkt.blueStarConclusion) + '</div>';
+
+
+    }
+
+
+  }
+
+
+
+
+
+  el.innerHTML = html;
+
+
+
+
+
+  // 绘制图表（延迟到 DOM 刷新后）
+
+
+  if (mkt.roiChart7d) {
+
+
+    requestAnimationFrame(function() { drawRoiChart7d(mkt.roiChart7d); });
+
+
+  }
+
+
+  if (mkt.consumeChartTop5) {
+
+
+    requestAnimationFrame(function() {
+
+
+      if (useNewChart) {
+
+
+        drawConsumeTop5Chart2(mkt.consumeChartTop5);
+
+
+      } else {
+
+
+        drawConsumeTop5Chart(mkt.consumeChartTop5);
+
+
+      }
+
+
+    });
+
+
+  }
+
+
+  if (mkt.channelBreakdown && mkt.channelBreakdown.length) {
+
+
+    requestAnimationFrame(function() { drawChannelChart(mkt.channelBreakdown); });
+
+
+  }
+
+
+}
+
+
+
+
+
+function drawRoiChart7d(data) {
+
+
+  var canvas = document.getElementById('roiChart7dCanvas');
+
+
+  if (!canvas || !data.labels || !data.values) return;
+
+
+  try {
+
+
+    new Chart(canvas, {
+
+
+      type: 'bar',
+
+
+      data: { labels: data.labels, datasets: [{ label: '7日 ROI (%)', data: data.values, backgroundColor: '#569e6b', borderRadius: 6 }] },
+
+
+      options: {
+
+
+        responsive: true, maintainAspectRatio: true,
+
+
+        plugins: { legend: { display: false } },
+
+
+        scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+
+
+      }
+
+
+    });
+
+
+  } catch(e) {}
+
+
+}
+
+
+
+
+
+function drawConsumeTop5Chart(data) {
+
+
+  var canvas = document.getElementById('consumeTop5Canvas');
+
+
+  if (!canvas || !data.labels || !data.values) return;
+
+
+  try {
+
+
+    new Chart(canvas, {
+
+
+      type: 'bar',
+
+
+      data: { labels: data.labels, datasets: [{ label: '日消耗（万元）', data: data.values, backgroundColor: '#6f9e7c', borderRadius: 6 }] },
+
+
+      options: {
+
+
+        responsive: true, maintainAspectRatio: true,
+
+
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(ctx) { return ctx.raw + '万元'; } } } },
+
+
+        scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } }
+
+
+      }
+
+
+    });
+
+
+  } catch(e) {}
+
+
+}
+
+
+
+
+
+function drawConsumeTop5Chart2(data) {
+
+
+  var canvas = document.getElementById('consumeTop5Canvas2');
+
+
+  if (!canvas || !data.labels || !data.values) return;
+
+
+  try {
+
+
+    var BAR_COLORS = ['#e74c3c', '#e67e22', '#f1c40f', '#2ecc71', '#3498db'];
+
+
+    var colors = data.values.map(function(v, i) { return BAR_COLORS[i % BAR_COLORS.length]; });
+
+
+    new Chart(canvas, {
+
+
+      type: 'bar',
+
+
+      data: { labels: data.labels, datasets: [{ label: '日均消耗（万元）', data: data.values, backgroundColor: colors, borderRadius: 6 }] },
+
+
+      options: {
+
+
+        responsive: true, maintainAspectRatio: false,
+
+
+        plugins: {
+
+
+          legend: { display: false },
+
+
+          title: { display: true, text: '消耗 Top5 对比（万元）', font: { size: 14 } }
+
+
+        },
+
+
+        scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { display: false } } }
+
+
+      }
+
+
+    });
+
+
+  } catch(e) {}
+
+
+}
+
+
+
+
+
+function drawChannelChart(data) {
+
+
+  var canvas = document.getElementById('channelChartCanvas');
+
+
+  if (!canvas || !data || !data.length) return;
+
+
+  try {
+
+
+    var sorted = data.slice().sort(function(a, b) { return b.dailyConsume - a.dailyConsume; });
+
+
+    var labels = sorted.map(function(c) { return c.name; });
+
+
+    var values = sorted.map(function(c) { return c.dailyConsume; });
+
+
+    var CHANNEL_COLORS = ['#2c3e50','#34495e','#3d566e','#4a6a8a','#5a7fa0','#6f94b0','#88a9c0','#a3bed0','#bed3e0','#d9e8f0','#eef5f8'];
+
+
+    var colors = values.map(function(v, i) { return CHANNEL_COLORS[i % CHANNEL_COLORS.length]; });
+
+
+    new Chart(canvas, {
+
+
+      type: 'bar',
+
+
+      data: { labels: labels, datasets: [{ label: '日均消耗（万元）', data: values, backgroundColor: colors, borderRadius: 4 }] },
+
+
+      options: {
+
+
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+
+
+        plugins: {
+
+
+          legend: { display: false },
+
+
+          title: { display: true, text: '渠道消耗分布（万元）', font: { size: 14 } }
+
+
+        },
+
+
+        scales: {
+
+
+          x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+
+
+          y: { grid: { display: false } }
+
+
+        }
+
+
+      }
+
+
+    });
+
+
+  } catch(e) {}
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   通用
+
+
+   ============================================================ */
+
+
+function renderInsightBox(id, content, label) {
+
+
+  var el = document.getElementById(id);
+
+
+  if (!el) return;
+
+
+  if (content) el.innerHTML = '<strong>📌 ' + (label || '核心发现') + '：</strong>' + sanitizeHtml(content);
+
+
+  else el.innerHTML = '';
+
+
+}
+
+
+
+
+
+function renderWeekButtons(activeKey) {
+
+
+  var el = document.getElementById('weekSelector');
+
+
+  if (!el) return;
+
+
+  el.innerHTML = weekKeys.map(function(k, i) {
+
+
+    var d = DATA[k];
+
+
+    var label = d && d.week ? (d.week.label || k) : k;
+
+
+    return '<button class="week-btn' + (k === activeKey ? ' active' : '') + '" data-week="' + k + '" title="' + (i === 0 ? '最新周报' : '') + '">' + escHTML(label) + (i === 0 ? '<span class="new-dot" title="最新"></span>' : '') + '</button>';
+
+
+  }).join('');
+
+
+  el.querySelectorAll('.week-btn').forEach(function(btn) {
+
+
+    btn.addEventListener('click', function() {
+
+
+      var wk = this.getAttribute('data-week');
+
+
+      if (wk && wk !== currentKey && DATA[wk]) renderPage(wk);
+
+
+    });
+
+
+  });
+
+
+}
+
+
+
+
+
+function renderSidebarList(reports) {
+
+
+  var el = document.getElementById('sidebarWeekList');
+
+
+  if (!el) return;
+
+
+  // Group reports by month (from id: YYYYMMDD)
+
+
+  var months = {};
+
+
+  var monthNames = ['','1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+
+
+  reports.forEach(function(r) {
+
+
+    var m = r.id.substring(0, 6);
+
+
+    if (!months[m]) months[m] = { key: m, name: r.id.substring(0, 4) + '年' + monthNames[parseInt(r.id.substring(4, 6), 10)], list: [] };
+
+
+    months[m].list.push(r);
+
+
+  });
+
+
+  // Sort months descending (latest first), and weeks within each month descending
+
+
+  var sortedMonths = Object.keys(months).sort().reverse();
+
+
+  var firstMonth = sortedMonths[0];
+
+
+  var html = '';
+
+
+  sortedMonths.forEach(function(mk) {
+
+
+    var m = months[mk];
+
+
+    var isFirst = (mk === firstMonth);
+
+
+    var bodyId = 'monthBody_' + mk;
+
+
+    html += '<div class="month-group">';
+
+
+    html += '<div class="month-header" data-month-body="' + bodyId + '">';
+
+
+    html += '<span class="arrow' + (isFirst ? '' : ' collapsed') + '">▼</span>';
+
+
+    html += escHTML(m.name) + '</div>';
+
+
+    html += '<div id="' + bodyId + '" class="month-body' + (isFirst ? '' : ' collapsed') + '">';
+
+
+    m.list.sort(function(a,b) { return b.id.localeCompare(a.id); }).forEach(function(r, j) {
+
+
+      html += '<a class="nav-item" href="#" data-sidebar-week="' + r.id + '" data-dir="' + escAttr(r.dirName) + '" data-hasdata="' + (r.hasData !== false) + '">';
+
+
+      html += '<span class="nav-icon">' + (j + 1) + '</span>';
+
+
+      html += '<span>' + escHTML(r.label) + '</span>';
+
+
+      if (isFirst && j === 0) html += '<span class="badge-latest">最新</span>';
+
+
+      html += '</a>';
+
+
+    });
+
+
+    html += '</div>';
+
+
+    html += '</div>';
+
+
+  });
+
+
+  el.innerHTML = html;
+
+
+  // Click handlers for month headers
+
+
+  el.querySelectorAll('.month-header').forEach(function(h) {
+
+
+    h.addEventListener('click', function() {
+
+
+      var body = document.getElementById(this.dataset.monthBody);
+
+
+      if (!body) return;
+
+
+      body.classList.toggle('collapsed');
+
+
+      this.querySelector('.arrow').classList.toggle('collapsed');
+
+
+    });
+
+
+  });
+
+
+  // Click handlers for week items
+
+
+  el.querySelectorAll('[data-sidebar-week]').forEach(function(a) {
+
+
+    a.addEventListener('click', function(e) {
+
+
+      e.preventDefault();
+
+
+      var wk = this.getAttribute('data-sidebar-week');
+
+
+      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); }
+
+
+    });
+
+
+  });
+
+
+}
+
+
+
+
+
+function updateNavStates(key) {
+
+
+  document.querySelectorAll('.week-btn').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-week') === key); });
+
+
+  document.querySelectorAll('[data-sidebar-week]').forEach(function(a) { a.classList.toggle('scroll-active', a.getAttribute('data-sidebar-week') === key); });
+
+
+}
+
+
+
+
+
+function renderCharts(charts) {
+
+
+  for (var k in chartInstances) { if (chartInstances[k]) chartInstances[k].destroy(); }
+
+
+  chartInstances = {};
+
+
+  var cats = charts.cats || [];
+
+
+  var wxData = charts.wx || [];
+
+
+  var dyData = charts.dy || [];
+
+
+  if (!cats.length) return;
+
+
+  var pieOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } } } };
+
+
+  var wxC = document.getElementById('wxCatChart');
+
+
+  if (wxC) chartInstances.wx = new Chart(wxC, { type: 'doughnut', data: { labels: cats, datasets: [{ data: wxData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
+
+
+  var dyC = document.getElementById('dyCatChart');
+
+
+  if (dyC) chartInstances.dy = new Chart(dyC, { type: 'doughnut', data: { labels: cats, datasets: [{ data: dyData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
+
+
+  var cmpC = document.getElementById('cmpChart');
+
+
+  if (cmpC) chartInstances.cmp = new Chart(cmpC, {
+
+
+    type: 'bar',
+
+
+    data: { labels: cats, datasets: [
+
+
+      { label: '微信', data: wxData, backgroundColor: 'rgba(30, 58, 138, 0.85)', borderRadius: 4, maxBarThickness: 28 },
+
+
+      { label: '抖音', data: dyData, backgroundColor: 'rgba(59, 130, 246, 0.85)', borderRadius: 4, maxBarThickness: 28 }
+
+
+    ]},
+
+
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 12 } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { stepSize: 2, font: { size: 9 } }, grid: { color: 'rgba(0,0,0,0.06)' } } } }
+
+
+  });
+
+
+}
+
+
+
+
+
+/* ============================================================
+
+
+   滚动监听
+
+
+   ============================================================ */
+
+
+function initScrollSpy() {
+
+
+  navSections = [];
+
+
+  document.querySelectorAll('[data-nav]').forEach(function(a) {
+
+
+    var id = a.getAttribute('href').replace('#', '');
+
+
+    navSections.push({ id: id, el: document.getElementById(id) });
+
+
+  });
+
+
+  if (!navSections.length) return;
+
+
+  function update() {
+
+
+    var scrollY = window.scrollY + 100;
+
+
+    var activeId = null;
+
+
+    navSections.forEach(function(item) { if (item.el && item.el.offsetTop <= scrollY) activeId = item.id; });
+
+
+    document.querySelectorAll('[data-nav]').forEach(function(a) { a.classList.toggle('scroll-active', a.getAttribute('href') === '#' + activeId); });
+
+
+  }
+
+
+  window.addEventListener('scroll', update, { passive: true });
+
+
+  update();
+
+
+}
+
+
+
+
+
+function toggleSidebar() {
+
+
+  document.getElementById('sidebar').classList.toggle('open');
+
+
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+
+
+}
+
+
+
+
+
+function renderEmpty() {
+
+
+  document.getElementById('mainContent').innerHTML = '<div class="loading-state" style="padding:80px 20px"><p style="font-size:48px;margin-bottom:12px">📋</p><p style="font-size:16px;color:var(--text-secondary)">暂无周报数据</p><p style="font-size:12px;color:var(--text-tertiary);margin-top:6px">首份报告将在下次生成后自动显示</p><p style="margin-top:20px"><a href="' + BASE + 'index.html" style="color:var(--primary);font-size:13px;font-weight:500">查看汇总报告 →</a></p></div>';
+
+
+}
+
+
+function renderError(msg) {
+
+
+  document.getElementById('mainContent').innerHTML = '<div class="error-state"><div class="err-icon">⚠️</div><p>' + (msg || '加载失败') + '</p><button class="retry-btn" onclick="location.reload()">重试</button><p style="margin-top:18px"><a href="' + BASE + 'index.html" style="color:var(--primary);font-size:13px">查看汇总报告 →</a></p></div>';
+
+
+}
+
+
+function syncData() {
+
+
+  var btn = document.getElementById('syncBtn');
+
+
+  btn.disabled = true; btn.innerHTML = '⏳ 同步中...';
+
+
+  fetch('https://13yan.github.io/weekly-reports/').then(function(r) {
+
+
+    if (r.ok) { btn.innerHTML = '✅ 同步成功'; setTimeout(function() { btn.innerHTML = '🔄 同步最新数据'; btn.disabled = false; }, 2000); }
+
+
+    else throw Error();
+
+
+  }).catch(function() { btn.innerHTML = '❌ 同步失败'; setTimeout(function() { btn.innerHTML = '🔄 同步最新数据'; btn.disabled = false; }, 2000); });
+
+
+}
+
+
+
+
+
+document.addEventListener('click', function(e) {
+
+
+  var nav = e.target.closest('[data-nav]');
+
+
+  if (nav) {
+
+
+    e.preventDefault();
+
+
+    var target = nav.getAttribute('href');
+
+
+    var el = document.querySelector(target);
+
+
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+
+    document.querySelectorAll('[data-nav]').forEach(function(n) { n.classList.remove('active'); });
+
+
+    nav.classList.add('active');
+
+
+    if (window.innerWidth <= 768) toggleSidebar();
+
+
+  }
+
+
+});
+
+
+
+
+
+function fetchJSON(url, timeout) {
+
+
+  timeout = timeout || 15000;
+
+
+  var controller = new AbortController();
+
+
+  var timer = setTimeout(function() { controller.abort(); }, timeout);
+
+
+  return fetch(url, { signal: controller.signal }).then(function(r) {
+
+
+    clearTimeout(timer);
+
+
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+
+
+    return r.json();
+
+
+  }).catch(function(e) { clearTimeout(timer); throw e; });
+
+
+}
+
+
+
+
+
+function escHTML(s) { if (!s) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+
+function escAttr(s) { return escHTML(s); }
+
+
+function drawChannelChart(data) {
+
+
+  var canvas = document.getElementById('channelChartCanvas');
+
+
+  if (!canvas || !data || !data.length) return;
+
+
+  try {
+
+
+    var sorted = data.slice().sort(function(a, b) { return b.dailyConsume - a.dailyConsume; });
+
+
+    var labels = sorted.map(function(c) { return c.name; });
+
+
+    var values = sorted.map(function(c) { return c.dailyConsume; });
+
+
+    var CHANNEL_COLORS = ['#2c3e50','#34495e','#3d566e','#4a6a8a','#5a7fa0','#6f94b0','#88a9c0','#a3bed0','#bed3e0','#d9e8f0','#eef5f8'];
+
+
+    var colors = values.map(function(v, i) { return CHANNEL_COLORS[i % CHANNEL_COLORS.length]; });
+
+
+    new Chart(canvas, {
+
+
+      type: 'bar',
+
+
+      data: { labels: labels, datasets: [{ label: '日均消耗（万元）', data: values, backgroundColor: colors, borderRadius: 4 }] },
+
+
+      options: {
+
+
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+
+
+        plugins: {
+
+
+          legend: { display: false },
+
+
+          title: { display: true, text: '渠道消耗分布（万元）', font: { size: 14 } }
+
+
+        },
+
+
+        scales: {
+
+
+          x: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+
+
+          y: { grid: { display: false } }
+
+
+        }
+
+
+      }
+
+
+    });
+
+
+  } catch(e) {}
+
+
+}
+
+
+
+
+
+function sanitizeHtml(s) { if (!s) return ''; return String(s).replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi,'').replace(/<(\/?)(strong|b|em|span|br)(\s[^>]*)?>/g,'<$1$2>').replace(/<[^>]+>/g,function(m){return escHTML(m);}); }
+
+
+
+
+
+// 移动端表格转卡片
+
+
+function applyMobileTableCards() {
+
+
+  if (!isMobile) return;
+
+
+  document.querySelectorAll('.table-wrap').forEach(function(w) { w.classList.add('mobile-cards'); });
+
+
+}
+
+
+
+
+
+init();
+
+
+// 移动端表格转换需在内容渲染后执行
+
+
+var origRenderPage = renderPage;
+
+
+renderPage = function(key) { origRenderPage(key); setTimeout(applyMobileTableCards, 0); };
+
+
+</script>
+
+
+</body>
+
+
 </html>
+
+
