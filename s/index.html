@@ -120,6 +120,28 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
 .session-item .right .s-sales { font-size:15px; font-weight:700; color:var(--up); }
 .session-item .right .s-orders { font-size:11px; color:var(--text3); }
 
+/* ===== 数据风险 ===== */
+.risk-section { margin-bottom:16px; }
+.risk-bar {
+  display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;
+}
+.risk-tag {
+  display:flex; align-items:center; gap:4px; padding:5px 12px; border-radius:20px;
+  font-size:11px; font-weight:600;
+}
+.risk-tag.high { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
+.risk-tag.medium { background:#fffbeb; color:#d97706; border:1px solid #fde68a; }
+.risk-tag.low { background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }
+.risk-tag.ok { background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; }
+.risk-list { list-style:none; }
+.risk-item {
+  display:flex; align-items:flex-start; gap:8px; padding:8px 12px;
+  border-left:3px solid; margin-bottom:6px; border-radius:0 6px 6px 0; font-size:12px; line-height:1.6;
+}
+.risk-item.danger { background:#fef2f2; border-color:#dc2626; color:#991b1b; }
+.risk-item.warning { background:#fffbeb; border-color:#d97706; color:#92400e; }
+.risk-item.success { background:#f0fdf4; border-color:#16a34a; color:#166534; }
+
 @media (max-width:768px) {
   body { flex-direction:column; }
   .sidebar { width:100%; min-height:auto; flex-direction:row; padding:0; border-right:none; border-bottom:1px solid var(--border); overflow-x:auto; }
@@ -183,6 +205,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
   <div class="kpi-row" id="rptTrafficKpi"></div>
   <div class="kpi-row" id="rptInteractKpi"></div>
 
+  <!-- 数据风险 -->
+  <div class="risk-section" id="rptRiskSection"></div>
+
   <!-- 单日模式：详细图表 | 多日模式：趋势图+场次列表 -->
   <div id="rptDetailView"></div>
   <div id="rptTrendView" style="display:none;"></div>
@@ -191,6 +216,16 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
   <div class="chart-card full" style="margin-bottom:20px;" id="rptDetailTableWrap">
     <h3>📃 数据明细</h3>
     <table class="data-table" id="rptDetailTable"></table>
+  </div>
+
+  <!-- 数据分析说明 -->
+  <div class="analysis-box" id="rptAnalysisNote">
+    <strong>📋 数据分析说明</strong><br>
+    • <strong>进房率</strong> = 进房人数 ÷ 曝光人数，反映直播封面和标题的吸引力，健康线 &gt;5%<br>
+    • <strong>评论率</strong> = 评论人数 ÷ 进房人数，反映互动引导效果，健康线 &gt;3%<br>
+    • <strong>曝光→点击转化</strong> = 商品点击人数 ÷ 商品曝光人数，反映商品吸引力，健康线 &gt;20%<br>
+    • <strong>点击→成交转化</strong> = 成交人数 ÷ 商品点击人数，反映购买决策效率，健康线 &gt;10%<br>
+    • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常
   </div>
 </div>
 
@@ -257,7 +292,87 @@ function renderOverview() {
   if(s.analysis) a.innerHTML=s.analysis;
 }
 
-// ===== 数据报表 =====
+function assessRisk(sessions, isSingle) {
+  var items = [], high=0, medium=0, low=0;
+  var s = isSingle ? sessions : null;
+  var t = s ? s.traffic||{} : {};
+  var it = s ? s.interaction||{} : {};
+  var p = s ? s.product||{} : {};
+
+  if (isSingle && s) {
+    // 单日风险评估
+    if (t.entryRate !== undefined && t.entryRate < 0.03) {
+      items.push({level:'danger', icon:'🔴', title:'进房率过低', desc:'进房率仅 '+pct(t.entryRate)+'，低于健康线3%，建议优化直播封面图和标题'});
+      high++;
+    } else if (t.entryRate !== undefined && t.entryRate < 0.05) {
+      items.push({level:'warning', icon:'🟡', title:'进房率偏低', desc:'进房率 '+pct(t.entryRate)+'，低于优良线5%，建议优化封面图或增加预热视频'});
+      medium++;
+    }
+
+    if (it.commentRate !== undefined && it.commentRate < 0.03) {
+      items.push({level:'warning', icon:'🟡', title:'互动率偏低', desc:'评论率仅 '+pct(it.commentRate)+'，缺乏互动引导，建议设置评论抽奖/扣屏领券'});
+      medium++;
+    }
+
+    if (p.exposureClickRate !== undefined && p.exposureClickRate < 0.10) {
+      items.push({level:'danger', icon:'🔴', title:'商品点击率过低', desc:'曝光→点击转化率仅 '+pct(p.exposureClickRate)+'，远低于健康线，建议优化商品主图和价格标签'});
+      high++;
+    } else if (p.exposureClickRate !== undefined && p.exposureClickRate < 0.20) {
+      items.push({level:'warning', icon:'🟡', title:'商品点击率偏低', desc:'曝光→点击转化率 '+pct(p.exposureClickRate)+'，低于优良线20%，可尝试主播口播引导点击'});
+      medium++;
+    }
+
+    if (p.clickOrderRate !== undefined && p.clickOrderRate < 0.05) {
+      items.push({level:'danger', icon:'🔴', title:'成交转化率过低', desc:'点击→成交转化率仅 '+pct(p.clickOrderRate)+'，建议检查商品性价比和优惠力度'});
+      high++;
+    }
+
+    if (p.orders === 0) {
+      items.push({level:'danger', icon:'🔴', title:'本场无成交', desc:'直播未产生成交订单，需紧急复盘：选品、话术、流量精准度'});
+      high++;
+    }
+
+    var stayMin = parseFloat(it.avgStay) || 0;
+    if (stayMin > 0 && stayMin < 3) {
+      items.push({level:'warning', icon:'🟡', title:'停留时长偏短', desc:'人均停留 '+it.avgStay+'，不足3分钟，建议增加福利款/开播抽奖循环'});
+      medium++;
+    }
+
+    if (items.length === 0) {
+      items.push({level:'success', icon:'✅', title:'数据健康', desc:'本场直播各项指标均在健康范围内，继续维持'});
+    }
+  } else {
+    // 多日风险评估
+    var totalGMV=0, totalOrd=0, totalExp=0, totalEnt=0;
+    sessions.forEach(function(sx){
+      totalGMV+=sx.product?.sales||0; totalOrd+=sx.product?.orders||0;
+      totalExp+=sx.traffic?.exposure||0; totalEnt+=sx.traffic?.entry||0;
+    });
+    var avgEntryRate = totalExp>0 ? totalEnt/totalExp : 0;
+    var overallCVR = totalExp>0 ? totalOrd/totalExp : 0;
+
+    if (avgEntryRate < 0.03) {
+      items.push({level:'danger', icon:'🔴', title:'整体进房率过低', desc:'周期内平均进房率 '+pct(avgEntryRate)+'，流量获取效率不足'});
+      high++;
+    }
+    if (overallCVR < 0.005) {
+      items.push({level:'danger', icon:'🔴', title:'整体转化率过低', desc:'周期内曝光→成交转化率仅 '+pct(overallCVR)+'，需关注选品和流量质量'});
+      high++;
+    }
+    if (sessions.length > 1) {
+      var gmvs = sessions.map(function(sx){return sx.product?.sales||0;});
+      var maxG = Math.max.apply(null,gmvs), minG = Math.min.apply(null,gmvs);
+      if (maxG > 0 && minG === 0) {
+        items.push({level:'warning', icon:'🟡', title:'存在零成交场次', desc:'周期内有场次0成交，建议对比分析其与成交场次的差异'});
+        medium++;
+      }
+    }
+    if (items.length === 0) {
+      items.push({level:'success', icon:'✅', title:'数据健康', desc:'周期内数据无异常'});
+    }
+  }
+  return {items:items, high:high, medium:medium, low:low};
+}
 function renderReport() {
   var data=currentData; if(!data) return;
   var sessions=data.sessions||[]; if(sessions.length===0) return;
@@ -348,6 +463,16 @@ function renderSingleDay(s) {
     '</div></div>',
   ].join('');
 
+  // 数据风险评估
+  var risk = assessRisk(s, true);
+  var rh = '<div class="risk-bar">';
+  if (risk.high > 0) rh += '<span class="risk-tag high">🔴 '+risk.high+' 项高风险</span>';
+  if (risk.medium > 0) rh += '<span class="risk-tag medium">🟡 '+risk.medium+' 项中风险</span>';
+  rh += '</div><ul class="risk-list">';
+  risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
+  rh += '</ul>';
+  document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">单日</span></div>' + rh;
+
   // 明细表
   document.getElementById('rptDetailTable').innerHTML = [
     '<tr class="section"><td colspan="4">📺 直播间流量指标</td></tr><tr><th>曝光人数</th><th>进房人数</th><th>进房率</th><th>平均在线</th></tr><tr><td>'+fmt(t.exposure)+'</td><td>'+fmt(t.entry)+'</td><td>'+(t.entryRate?pct(t.entryRate):'-')+'</td><td>'+fmt(t.avgOnline)+' 人</td></tr>',
@@ -387,6 +512,16 @@ function renderMultiDay(sessions) {
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(totalOrders/sessions.length).toFixed(1)+' 单</div></div>',
   ].join('');
+
+  // 数据风险评估
+  var risk = assessRisk(sessions, false);
+  var rh = '<div class="risk-bar">';
+  if (risk.high > 0) rh += '<span class="risk-tag high">🔴 '+risk.high+' 项高风险</span>';
+  if (risk.medium > 0) rh += '<span class="risk-tag medium">🟡 '+risk.medium+' 项中风险</span>';
+  rh += '</div><ul class="risk-list">';
+  risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
+  rh += '</ul>';
+  document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">多日</span></div>' + rh;
 
   // 趋势图+场次列表
   var sorted=sessions.slice().sort(function(a,b){return a.date.localeCompare(b.date);});
