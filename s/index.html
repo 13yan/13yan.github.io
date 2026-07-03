@@ -3,384 +3,364 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>抖店数据工作台 · 设计稿 v2</title>
+<title>抖店数据工作台</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #dbe4ff;
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #475569;
+  --text3: #94a0b0;
+  --border: #e2e8f0;
+  --up: #10b981;
+  --down: #ef4444;
+  --warn: #f59e0b;
+}
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #1e293b; padding: 24px; }
-
-.draft-badge {
-  background: #f59e0b; color: #fff; font-size: 11px; padding: 3px 12px;
-  border-radius: 4px; display: inline-block; margin-bottom: 16px;
-}
-
-/* ===== 页头 ===== */
+body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; background:var(--bg); color:var(--text); padding:20px; }
 .header {
-  background: linear-gradient(135deg, #1e3a8a, #2563eb);
-  color: #fff; padding: 28px 32px; border-radius: 12px; margin-bottom: 20px;
+  background: linear-gradient(135deg,#1e3a8a,#2563eb); color:#fff;
+  padding:24px 28px; border-radius:12px; margin-bottom:20px;
 }
-.header h1 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-.header .sub { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+.header h1 { font-size:20px; font-weight:700; }
+.header .sub { font-size:12px; opacity:0.8; margin-top:4px; }
+.header .meta { font-size:11px; opacity:0.5; margin-top:2px; }
 
 .section-title {
-  font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 14px;
-  display: flex; align-items: center; gap: 8px;
+  font-size:14px; font-weight:600; color:var(--text); margin-bottom:12px;
+  display:flex; align-items:center; gap:8px;
 }
 .section-title .tag {
-  font-size: 10px; background: #dbe4ff; color: #1e3a8a;
-  padding: 1px 8px; border-radius: 8px; font-weight: 500;
+  font-size:10px; background:var(--primary-light); color:var(--primary);
+  padding:1px 8px; border-radius:8px; font-weight:500;
 }
 
-/* ===== 汇总数据卡片 ===== */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.stat-card {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 18px;
-  transition: box-shadow 0.2s;
+/* ===== 汇总模块 ===== */
+.summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+.summary-card {
+  background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff;
+  border-radius:10px; padding:16px 14px;
 }
-.stat-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-.stat-card .label { font-size: 12px; color: #94a0b0; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
-.stat-card .value { font-size: 28px; font-weight: 700; color: #1e3a8a; line-height: 1.2; }
-.stat-card .value .unit { font-size: 14px; font-weight: 400; color: #64748b; margin-left: 2px; }
-.stat-card .sub { font-size: 11px; color: #64748b; margin-top: 4px; }
-.stat-card .trend { font-size: 11px; margin-top: 6px; }
-.stat-card .trend.up { color: #10b981; }
-.stat-card .trend.down { color: #ef4444; }
-.stat-card .trend.flat { color: #94a0b0; }
+.summary-card .lbl { font-size:11px; color:var(--text3); }
+.summary-card .val { font-size:22px; font-weight:700; color:var(--primary); margin-top:2px; }
+.summary-card .sub { font-size:10px; color:var(--text2); margin-top:2px; }
 
-/* 特色卡片（汇总数据中的重点） */
-.stat-card.featured {
-  background: linear-gradient(135deg, #eef2ff, #f0f9ff);
-  border-color: #b3c5ff;
-}
-.stat-card.featured .value { color: #1e3a8a; }
-
-/* 扩展汇总行（小卡片） */
-.stats-row2 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
-.mini-card {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 12px; text-align: center;
-}
-.mini-card .lbl { font-size: 11px; color: #94a0b0; }
-.mini-card .val { font-size: 16px; font-weight: 700; color: #1e293b; margin-top: 2px; }
-
-/* ===== 日期筛选 ===== */
-.filter-section {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
-  padding: 16px 20px; margin-bottom: 20px;
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-}
-.filter-section .label { font-size: 13px; font-weight: 600; color: #1e293b; }
-.filter-group { display: flex; gap: 8px; align-items: center; }
-.filter-group select, .filter-group input {
-  border: 1px solid #d0d5dd; border-radius: 6px; padding: 6px 12px;
-  font-size: 13px; background: #fff; color: #1e293b; outline: none;
-}
-.filter-group select:focus, .filter-group input:focus { border-color: #1e3a8a; }
-.filter-group .date-range {
-  display: flex; align-items: center; gap: 4px; font-size: 13px; color: #475569;
-}
-.filter-group .date-input {
-  border: 1px solid #d0d5dd; border-radius: 6px; padding: 6px 10px;
-  font-size: 13px; width: 110px;
-}
-.btn-primary {
-  background: #1e3a8a; color: #fff; border: none; border-radius: 6px;
-  padding: 7px 20px; font-size: 13px; cursor: pointer;
-}
-.btn-outline {
-  background: #fff; color: #1e3a8a; border: 1px solid #1e3a8a; border-radius: 6px;
-  padding: 6px 16px; font-size: 13px; cursor: pointer;
+.empty-summary {
+  grid-column:1/-1; text-align:center; padding:30px; color:var(--text3);
+  font-size:13px; background:#fff; border:1px dashed var(--border); border-radius:10px;
 }
 
-/* ===== 选定日期数据 ===== */
-.date-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+/* ===== 筛选栏 ===== */
+.filter-bar {
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:#fff; border:1px solid var(--border); border-radius:10px;
+  padding:12px 16px; margin-bottom:16px;
 }
-.date-header .left { display: flex; align-items: center; gap: 10px; }
-.date-header .date-label { font-size: 18px; font-weight: 700; color: #1e3a8a; }
-.date-header .badge {
-  font-size: 11px; background: #dcfce7; color: #15803d;
-  padding: 2px 10px; border-radius: 10px;
+.filter-bar .lbl { font-size:12px; color:var(--text2); font-weight:600; }
+.filter-bar select {
+  border:1px solid #d0d5dd; border-radius:6px; padding:5px 10px; font-size:12px; background:#fff;
 }
+.filter-bar .date-info { font-size:12px; color:var(--primary); font-weight:600; margin-left:auto; }
 
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+/* ===== KPI ===== */
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
 .kpi-card {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 14px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 12px;
 }
-.kpi-card .label { font-size: 12px; color: #94a0b0; margin-bottom: 4px; }
-.kpi-card .value { font-size: 22px; font-weight: 700; color: #1e3a8a; line-height: 1.2; }
-.kpi-card .sub { font-size: 11px; color: #64748b; margin-top: 2px; }
-.kpi-card .value.warn { color: #f59e0b; }
-.kpi-card .value.down { color: #ef4444; }
-.kpi-card .value.up { color: #10b981; }
-.kpi-card .compare { font-size: 11px; margin-top: 4px; }
-.kpi-card .compare.up { color: #10b981; }
-.kpi-card .compare.down { color: #ef4444; }
+.kpi-card .lbl { font-size:11px; color:var(--text3); margin-bottom:3px; display:flex; align-items:center; gap:4px; }
+.kpi-card .val { font-size:20px; font-weight:700; color:var(--primary); line-height:1.2; }
+.kpi-card .sub { font-size:10px; color:var(--text2); margin-top:2px; }
+.kpi-card .val.warn { color:var(--warn); }
+.kpi-card .val.down { color:var(--down); }
+.kpi-card .val.up { color:var(--up); }
 
 /* ===== 图表 ===== */
-.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+.chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
 .chart-card {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;
 }
-.chart-card.full { grid-column: 1 / -1; }
-.chart-card h3 { font-size: 14px; color: #475569; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.chart-card.full { grid-column:1/-1; }
+.chart-card h3 { font-size:13px; color:var(--text2); font-weight:600; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
 .chart-card h3 .tag {
-  font-size: 10px; background: #dbe4ff; color: #1e3a8a;
-  padding: 1px 8px; border-radius: 8px; font-weight: 500;
+  font-size:9px; background:var(--primary-light); color:var(--primary);
+  padding:1px 7px; border-radius:7px;
 }
-.chart-area {
-  background: #f8fafc; border: 1px dashed #d0d5dd; border-radius: 8px;
-  height: 200px; display: flex; align-items: center; justify-content: center;
-  color: #94a0b0; font-size: 13px;
-}
-.chart-area.tall { height: 280px; }
+.chart-wrap { position:relative; width:100%; height:200px; }
+.chart-wrap.tall { height:220px; }
 
 /* ===== 转化链路 ===== */
 .conversion-flow {
-  display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 0; flex-wrap: wrap;
+  display:flex; align-items:center; justify-content:center; gap:4px; padding:8px 0; flex-wrap:wrap;
 }
 .flow-step {
-  display: flex; flex-direction: column; align-items: center; min-width: 65px;
-  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;
+  display:flex; flex-direction:column; align-items:center; min-width:58px;
+  background:#f8fafc; border:1px solid var(--border); border-radius:8px; padding:8px 10px;
 }
-.flow-step .num { font-size: 18px; font-weight: 700; color: #1e3a8a; }
-.flow-step .lbl { font-size: 10px; color: #94a0b0; margin-top: 2px; }
-.flow-arrow { font-size: 16px; color: #2563eb; margin: 0 2px; }
-.flow-rate { font-size: 10px; color: #475569; background: #eef2ff; padding: 1px 6px; border-radius: 4px; margin-top: 3px; }
+.flow-step .num { font-size:16px; font-weight:700; color:var(--primary); }
+.flow-step .lbl { font-size:10px; color:var(--text3); margin-top:2px; }
+.flow-arrow { font-size:14px; color:#2563eb; margin:0 2px; }
+.flow-rate { font-size:9px; color:var(--text2); background:#eef2ff; padding:1px 5px; border-radius:4px; margin-top:2px; }
 
-/* ===== 趋势图 ===== */
-.trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-
-/* ===== 明细表格 ===== */
-.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+/* ===== 明细 ===== */
+.data-table { width:100%; border-collapse:collapse; font-size:12px; }
 .data-table th {
-  background: #f1f5f9; padding: 8px 10px; text-align: center;
-  font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0;
+  background:#f1f5f9; padding:7px 8px; text-align:center;
+  font-weight:600; color:var(--text2); border-bottom:2px solid var(--border);
 }
-.data-table td { padding: 7px 10px; text-align: center; border-bottom: 1px solid #f1f5f9; }
+.data-table td { padding:6px 8px; text-align:center; border-bottom:1px solid #f1f5f9; }
 .data-table .section td {
-  background: #eef2ff; font-weight: 700; color: #1e3a8a; text-align: left; padding: 10px 12px; font-size: 13px;
+  background:#eef2ff; font-weight:700; color:var(--primary); text-align:left;
+  padding:8px 10px; font-size:12px;
 }
 
-.footer { text-align: center; padding: 20px; font-size: 11px; color: #94a0b0; }
+/* ===== 空状态 ===== */
+.empty-state {
+  text-align:center; padding:40px 20px; color:var(--text3); font-size:13px;
+}
+
+@media (max-width:700px) {
+  .kpi-row { grid-template-columns:repeat(2,1fr); }
+  .summary-grid { grid-template-columns:repeat(2,1fr); }
+  .chart-grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 
-<span class="draft-badge">📐 设计稿 v2 · 待开发</span>
-
-<!-- ===== 页头 ===== -->
 <div class="header">
   <h1>📊 抖店数据工作台</h1>
-  <div class="sub">全店数据概览 · 按日直播分析 · 多场次对比 · 利润预估</div>
+  <div class="sub">Douyin Store Data Dashboard</div>
+  <div class="meta">数据更新：<span id="dataUpdateTime">-</span></div>
 </div>
 
-<!-- ============================================ -->
-<!-- 第一模块：全店数据汇总 -->
-<!-- ============================================ -->
-<div class="section-title">📊 全店数据汇总 <span class="tag">累计数据</span></div>
-
-<div class="stats-grid">
-  <div class="stat-card featured">
-    <div class="label">💰 总流水（GMV）</div>
-    <div class="value">48,692<span class="unit">元</span></div>
-    <div class="sub">本月 12,380 元 | 上周 8,456 元</div>
-    <div class="trend up">📈 较上月 +23.5%</div>
-  </div>
-  <div class="stat-card featured">
-    <div class="label">📦 总订单数</div>
-    <div class="value">386<span class="unit">单</span></div>
-    <div class="sub">本月 97 单 | 上周 62 单</div>
-    <div class="trend up">📈 较上月 +18.2%</div>
-  </div>
-  <div class="stat-card featured">
-    <div class="label">👤 充值总人数</div>
-    <div class="value">214<span class="unit">人</span></div>
-    <div class="sub">本月新增 48 人 | 复购率 31.2%</div>
-    <div class="trend up">📈 较上月 +15.8%</div>
-  </div>
-  <div class="stat-card featured">
-    <div class="label">📋 结算利润预估</div>
-    <div class="value">12,580<span class="unit">元</span></div>
-    <div class="sub">毛利率 ≈25.8% | 待结算 3,240 元</div>
-    <div class="trend down">⚠️ 较上月 -2.1%</div>
-  </div>
+<!-- 汇总模块 -->
+<div class="section-title">📊 全店数据汇总 <span class="tag">累计</span></div>
+<div class="summary-grid" id="summaryGrid">
+  <div class="empty-state" style="grid-column:1/-1;">暂无汇总数据，待你提供后更新</div>
 </div>
 
-<div class="stats-row2">
-  <div class="mini-card">
-    <div class="lbl">📺 累计直播场次</div>
-    <div class="val">47</div>
-  </div>
-  <div class="mini-card">
-    <div class="lbl">⏱ 场均时长</div>
-    <div class="val">62<span style="font-size:12px;">min</span></div>
-  </div>
-  <div class="mini-card">
-    <div class="lbl">👥 场均观看</div>
-    <div class="val">2,158</div>
-  </div>
-  <div class="mini-card">
-    <div class="lbl">🛒 场均销售额</div>
-    <div class="val">1,036<span style="font-size:12px;">元</span></div>
-  </div>
-  <div class="mini-card">
-    <div class="lbl">📈 场均转化率</div>
-    <div class="val">1.83<span style="font-size:12px;">%</span></div>
-  </div>
-  <div class="mini-card">
-    <div class="lbl">⭐ 场均进房率</div>
-    <div class="val">6.87<span style="font-size:12px;">%</span></div>
-  </div>
+<!-- 筛选 -->
+<div class="filter-bar">
+  <span class="lbl">📅 选择日期</span>
+  <select id="sessionSelect"></select>
+  <span class="date-info" id="dateInfo">共 <span id="sessionCount">0</span> 场直播</span>
 </div>
 
-<!-- ============================================ -->
-<!-- 第二模块：按日期筛选查看直播分析 -->
-<!-- ============================================ -->
-<div class="section-title">📅 按日期查看直播分析 <span class="tag">筛选后展示</span></div>
-
-<!-- 筛选栏 -->
-<div class="filter-section">
-  <span class="label">筛选条件：</span>
-  <div class="filter-group">
-    <span class="date-range">📅 从</span>
-    <input class="date-input" type="text" value="2026-07-01" readonly style="background:#f8fafc;">
-    <span>至</span>
-    <input class="date-input" type="text" value="2026-07-02" readonly style="background:#f8fafc;">
-  </div>
-  <div class="filter-group">
-    <span>场次</span>
-    <select><option>全部场次</option><option>仅晚间场</option><option>仅下午场</option></select>
-  </div>
-  <button class="btn-primary">查询</button>
-  <button class="btn-outline">📥 导出</button>
-</div>
-
-<!-- 选中日期头部 -->
-<div class="date-header">
-  <div class="left">
-    <span class="date-label">📅 2026年7月2日</span>
-    <span class="badge">本场数据</span>
-  </div>
-  <div style="font-size:12px;color:#64748b;">对比基准：7月1日 ▼ ｜ 趋势：7日 ▼</div>
-</div>
-
-<!-- KPI -->
-<div class="kpi-row">
-  <div class="kpi-card">
-    <div class="label">👀 曝光人数</div>
-    <div class="value">2,721</div>
-    <div class="compare up">▲ 较昨日 +12.3%</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">🚪 进房人数</div>
-    <div class="value">193</div>
-    <div class="sub">进房率 7.09%</div>
-    <div class="compare down">▼ 较昨日 -2.5%</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">💰 商品销售额</div>
-    <div class="value up">1,134</div>
-    <div class="compare up">▲ 较昨日 +15.0%</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">✅ 成交人数</div>
-    <div class="value warn">2</div>
-    <div class="sub">点击→成交 10%</div>
-  </div>
-</div>
-
-<div class="kpi-row">
-  <div class="kpi-card">
-    <div class="label">📝 评论人数</div>
-    <div class="value">12</div>
-    <div class="sub">评论率 6.22%</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">❤️ 点赞次数</div>
-    <div class="value">729</div>
-    <div class="sub">点赞率 6.22%</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">⏱️ 人均停留</div>
-    <div class="value">5.53<span style="font-size:14px;">min</span></div>
-    <div class="compare up">▲ +0.8min</div>
-  </div>
-  <div class="kpi-card">
-    <div class="label">👥 新增粉丝</div>
-    <div class="value">8</div>
-    <div class="compare flat">─ 持平</div>
-  </div>
-</div>
+<!-- 当日 KPI -->
+<div class="kpi-row" id="trafficKpi"></div>
+<div class="kpi-row" id="interactKpi"></div>
 
 <!-- 图表 -->
 <div class="chart-grid">
   <div class="chart-card">
     <h3>📈 流量漏斗 <span class="tag">曝光→进房→在线</span></h3>
-    <div class="chart-area">📊 柱状图：曝光 → 进房 → 平均在线</div>
+    <div class="chart-wrap"><canvas id="trafficChart"></canvas></div>
   </div>
   <div class="chart-card">
-    <h3>💬 互动指标 <span class="tag">五维雷达</span></h3>
-    <div class="chart-area">🕸️ 雷达图：评论/点赞/停留/粉丝/进房率</div>
+    <h3>💬 互动指标 <span class="tag">雷达图</span></h3>
+    <div class="chart-wrap"><canvas id="interactChart"></canvas></div>
   </div>
   <div class="chart-card full">
     <h3>🛒 商品转化漏斗 <span class="tag">曝光→点击→成交</span></h3>
-    <div class="chart-area tall">📊 横向柱状图：商品曝光(126人) → 商品点击(20人) → 成交(2人)</div>
+    <div class="chart-wrap tall"><canvas id="funnelChart"></canvas></div>
   </div>
 </div>
 
 <!-- 转化链路 -->
-<div class="chart-card" style="margin-bottom:20px;">
+<div class="chart-card" style="margin-bottom:16px;">
   <h3>🔄 转化链路</h3>
-  <div class="conversion-flow">
-    <div class="flow-step"><div class="num">2,721</div><div class="lbl">总曝光</div></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">193</div><div class="lbl">进房</div><div class="flow-rate">7.09%</div></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">5</div><div class="lbl">平均在线</div></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">126</div><div class="lbl">曝光</div></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">20</div><div class="lbl">点击</div><div class="flow-rate">15.87%</div></div>
-    <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num" style="color:#ef4444;">2</div><div class="lbl">成交</div><div class="flow-rate">10%</div></div>
-  </div>
-</div>
-
-<!-- 趋势图表 -->
-<div class="section-title">📈 近期趋势 <span class="tag">近7日</span></div>
-<div class="trend-grid">
-  <div class="chart-card">
-    <h3>曝光/进房趋势</h3>
-    <div class="chart-area">📈 折线图：近7日曝光人数、进房人数变化</div>
-  </div>
-  <div class="chart-card">
-    <h3>销售额/订单趋势</h3>
-    <div class="chart-area">📈 折线图：近7日销售额、订单数变化</div>
-  </div>
+  <div class="conversion-flow" id="conversionFlow"></div>
 </div>
 
 <!-- 明细 -->
 <div class="chart-card full" style="margin-bottom:20px;">
   <h3>📃 数据明细</h3>
-  <table class="data-table">
-    <tr class="section"><td colspan="4">📺 直播间流量指标</td></tr>
-    <tr><th>曝光人数</th><th>进房人数</th><th>进房率</th><th>平均在线</th></tr>
-    <tr><td>2,721</td><td>193</td><td>7.09%</td><td>5 人</td></tr>
-    <tr class="section"><td colspan="4">💬 互动指标</td></tr>
-    <tr><th>评论人数</th><th>评论率</th><th>人均停留</th><th>新增粉丝</th></tr>
-    <tr><td>12</td><td>6.22%</td><td>5.53 min</td><td>8</td></tr>
-    <tr class="section"><td colspan="4">🛒 商品数据</td></tr>
-    <tr><th>商品销售额</th><th>曝光人数</th><th>点击人数</th><th>成交人数</th></tr>
-    <tr><td style="color:#10b981;font-weight:700;">1,134</td><td>126</td><td>20</td><td style="color:#ef4444;font-weight:700;">2</td></tr>
-    <tr class="section"><td colspan="4">📊 转化率</td></tr>
-    <tr><th>曝光→点击转化</th><th>点击→成交转化</th><th colspan="2">曝光→成交综合转化</th></tr>
-    <tr><td style="color:#f59e0b;">15.87%</td><td style="color:#ef4444;">10%</td><td colspan="2" style="color:#ef4444;">1.59%</td></tr>
-  </table>
+  <table class="data-table" id="detailTable"></table>
 </div>
 
-<div class="footer">
-  📐 此为设计稿 v2 · 汇总数据 + 日期筛选 + 趋势分析 · 正式开发时接入 Chart.js
+<div class="footer" style="text-align:center;padding:14px;font-size:11px;color:var(--text3);">
+  抖店数据工作台 · 数据由你手动提供
 </div>
 
+<script>
+var charts = {};
+
+// 格式化数字
+function fmt(n) {
+  if (n === null || n === undefined) return '-';
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function pct(r) { return (r * 100).toFixed(2) + '%'; }
+
+function render(data) {
+  var sessions = data.sessions || [];
+  document.getElementById('dataUpdateTime').textContent = data.updatedAt || '-';
+  document.getElementById('sessionCount').textContent = sessions.length;
+
+  // 汇总
+  var sg = document.getElementById('summaryGrid');
+  var s = data.storeSummary || {};
+  if (s.totalGMV || s.totalOrders) {
+    sg.innerHTML = '';
+    var cards = [
+      { lbl:'💰 总流水', val:fmt(s.totalGMV)+' 元', sub:'' },
+      { lbl:'📦 总订单', val:fmt(s.totalOrders)+' 单', sub:'' },
+      { lbl:'👤 充值总人数', val:fmt(s.totalPayUsers)+' 人', sub:'' },
+      { lbl:'📋 利润预估', val:fmt(s.estimatedProfit)+' 元', sub:'毛利率约' + (s.profitRate ? pct(s.profitRate) : '-') },
+    ];
+    cards.forEach(function(c) {
+      var div = document.createElement('div');
+      div.className = 'summary-card';
+      div.innerHTML = '<div class="lbl">'+c.lbl+'</div><div class="val">'+c.val+'</div>'+(c.sub ? '<div class="sub">'+c.sub+'</div>' : '');
+      sg.appendChild(div);
+    });
+  }
+
+  // 日期选择
+  var sel = document.getElementById('sessionSelect');
+  sel.innerHTML = '';
+  sessions.forEach(function(s, i) {
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = s.label || s.date;
+    sel.appendChild(opt);
+  });
+  if (sessions.length > 0) renderSession(sessions[sel.value]);
+  sel.onchange = function() { renderSession(sessions[parseInt(this.value)]); };
+}
+
+function renderSession(s) {
+  if (!s) return;
+  var t = s.traffic || {}, it = s.interaction || {}, p = s.product || {};
+
+  // KPI 第一行
+  document.getElementById('trafficKpi').innerHTML = [
+    '<div class="kpi-card"><div class="lbl">👀 曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate ? pct(t.entryRate) : '-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">💰 销售额</div><div class="val up">'+fmt(p.sales)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">✅ 成交人数</div><div class="val warn">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate ? pct(p.clickOrderRate) : '-')+'</div></div>',
+  ].join('');
+
+  // KPI 第二行
+  document.getElementById('interactKpi').innerHTML = [
+    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate ? pct(it.commentRate) : '-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">⏱️ 人均停留</div><div class="val">'+(it.avgStay || '-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👥 新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
+  ].join('');
+
+  // 转化链路
+  document.getElementById('conversionFlow').innerHTML = [
+    '<div class="flow-step"><div class="num">'+fmt(t.exposure)+'</div><div class="lbl">总曝光</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmt(t.entry)+'</div><div class="lbl">进房</div>'+(t.entryRate?'<div class="flow-rate">'+pct(t.entryRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmt(t.avgOnline)+'</div><div class="lbl">平均在线</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmt(p.exposure)+'</div><div class="lbl">商品曝光</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmt(p.clicks)+'</div><div class="lbl">点击</div>'+(p.exposureClickRate?'<div class="flow-rate">'+pct(p.exposureClickRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
+  ].join('');
+
+  // 明细表
+  document.getElementById('detailTable').innerHTML = [
+    '<tr class="section"><td colspan="4">📺 直播间流量指标</td></tr>',
+    '<tr><th>曝光人数</th><th>进房人数</th><th>进房率</th><th>平均在线</th></tr>',
+    '<tr><td>'+fmt(t.exposure)+'</td><td>'+fmt(t.entry)+'</td><td>'+(t.entryRate?pct(t.entryRate):'-')+'</td><td>'+fmt(t.avgOnline)+' 人</td></tr>',
+    '<tr class="section"><td colspan="4">💬 互动指标</td></tr>',
+    '<tr><th>评论人数</th><th>评论率</th><th>人均停留</th><th>新增粉丝</th></tr>',
+    '<tr><td>'+fmt(it.comments)+'</td><td>'+(it.commentRate?pct(it.commentRate):'-')+'</td><td>'+(it.avgStay||'-')+'</td><td>'+fmt(it.newFans)+'</td></tr>',
+    '<tr class="section"><td colspan="4">🛒 商品数据</td></tr>',
+    '<tr><th>销售额</th><th>曝光人数</th><th>点击人数</th><th>成交人数</th></tr>',
+    '<tr><td style="color:#10b981;font-weight:700;">'+fmt(p.sales)+'</td><td>'+fmt(p.exposure)+'</td><td>'+fmt(p.clicks)+'</td><td style="color:#ef4444;font-weight:700;">'+fmt(p.orders)+'</td></tr>',
+    '<tr class="section"><td colspan="4">📊 转化率</td></tr>',
+    '<tr><th>曝光→点击转化</th><th>点击→成交转化</th><th colspan="2">综合转化</th></tr>',
+    '<tr><td style="color:#f59e0b;">'+(p.exposureClickRate?pct(p.exposureClickRate):'-')+'</td><td style="color:#ef4444;">'+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</td><td colspan="2" style="color:#ef4444;">'+(p.exposureClickRate && p.clickOrderRate ? pct(p.exposureClickRate * p.clickOrderRate) : '-')+'</td></tr>',
+  ].join('');
+
+  // 图表
+  destroyCharts();
+  renderTrafficChart(t);
+  renderInteractChart(it, t);
+  renderFunnelChart(p);
+}
+
+function destroyCharts() {
+  Object.keys(charts).forEach(function(k) { if (charts[k]) { charts[k].destroy(); delete charts[k]; } });
+}
+
+function renderTrafficChart(t) {
+  var ctx = document.getElementById('trafficChart').getContext('2d');
+  charts.traffic = new Chart(ctx, {
+    type:'bar',
+    data: {
+      labels:['曝光人数','进房人数','平均在线','最高在线'],
+      datasets:[{label:'人数', data:[t.exposure,t.entry,t.avgOnline,t.maxOnline],
+        backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'], borderRadius:4, barPercentage:0.6}]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 人'}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}
+    }
+  });
+}
+
+function renderInteractChart(it, t) {
+  var ctx = document.getElementById('interactChart').getContext('2d');
+  charts.interact = new Chart(ctx, {
+    type:'radar',
+    data:{
+      labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],
+      datasets:[{
+        label:'本场', data:[it.comments, (it.likes||0)/60, it.newFans, parseFloat(it.avgStay)||0, (t.entryRate||0)*100],
+        backgroundColor:'rgba(30,58,138,0.12)', borderColor:'#1e3a8a', borderWidth:2,
+        pointBackgroundColor:'#1e3a8a', pointRadius:3,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{r:{beginAtZero:true, ticks:{backdropColor:'transparent',font:{size:9}}, pointLabels:{font:{size:10}}}}
+    }
+  });
+}
+
+function renderFunnelChart(p) {
+  var ctx = document.getElementById('funnelChart').getContext('2d');
+  charts.funnel = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels:['商品曝光人数','商品点击人数','成交人数'],
+      datasets:[{label:'人数', data:[p.exposure, p.clicks, p.orders],
+        backgroundColor:['#3b82f6','#f59e0b','#ef4444'], borderRadius:4, barPercentage:0.5}]
+    },
+    options:{
+      indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label:function(ctx){return ctx.parsed.x+' 人'},
+            afterLabel:function(ctx){
+              var v=[p.exposure,p.clicks,p.orders], i=ctx.dataIndex;
+              if(i>0){return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';}
+              return '';
+            }
+          }
+        }
+      },
+      scales:{x:{beginAtZero:true}}
+    }
+  });
+}
+
+// 加载数据
+fetch('./data.json').then(function(r){return r.json();}).then(function(data){
+  render(data);
+}).catch(function(){
+  document.body.innerHTML = '<div class="empty-state">⚠️ 数据加载失败</div>';
+});
+</script>
 </body>
 </html>

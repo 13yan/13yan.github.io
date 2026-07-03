@@ -1,0 +1,40 @@
+{
+  "updatedAt": "2026-07-02",
+  "storeSummary": {
+    "totalGMV": 0,
+    "totalOrders": 0,
+    "totalPayUsers": 0,
+    "estimatedProfit": 0,
+    "totalSessions": 1,
+    "note": "等你提供汇总数据后更新"
+  },
+  "sessions": [
+    {
+      "date": "2026-07-02",
+      "label": "7月2日直播",
+      "traffic": {
+        "exposure": 2721,
+        "entry": 193,
+        "entryRate": 0.0709,
+        "avgOnline": 5,
+        "maxOnline": 19
+      },
+      "interaction": {
+        "comments": 12,
+        "commentRate": 0.0622,
+        "likes": 729,
+        "likeRate": 0.0622,
+        "avgStay": "5.53min",
+        "newFans": 8
+      },
+      "product": {
+        "sales": 1134,
+        "exposure": 126,
+        "clicks": 20,
+        "orders": 2,
+        "exposureClickRate": 0.1587,
+        "clickOrderRate": 0.1
+      }
+    }
+  ]
+}
