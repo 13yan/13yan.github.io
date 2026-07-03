@@ -228,7 +228,8 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
     • <strong>评论率</strong> = 评论人数 ÷ 进房人数，反映互动引导效果，健康线 &gt;3%<br>
     • <strong>曝光→点击转化</strong> = 商品点击人数 ÷ 商品曝光人数，反映商品吸引力，健康线 &gt;20%<br>
     • <strong>点击→成交转化</strong> = 成交人数 ÷ 商品点击人数，反映购买决策效率，健康线 &gt;10%<br>
-    • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常
+    • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常<br>
+    • <strong>支付渠道风险评估</strong>：3k-安卓占比 &lt;50% 为健康，&gt;50% 为中度风险（抖店利润收益存在风险），&gt;80% 为高度风险
   </div>
 </div>
 
@@ -236,6 +237,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
 
 <script>
 var charts = {}, currentData = null;
+var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994 };
 
 function fmt(n) { if (n===null||n===undefined) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
@@ -360,6 +362,18 @@ function assessRisk(sessions, isSingle) {
     if (items.length === 0) {
       items.push({level:'success', icon:'✅', title:'数据健康', desc:'本场直播各项指标均在健康范围内，继续维持'});
     }
+
+    // 支付渠道风险评估
+    var androidPct = payData.android / (payData.android + payData.ios) * 100;
+    if (androidPct >= 80) {
+      items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'安卓渠道占比 '+androidPct.toFixed(1)+'%，超过80%警戒线，抖店利润收益存在高度风险'});
+      high++;
+    } else if (androidPct >= 50) {
+      items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'安卓渠道占比 '+androidPct.toFixed(1)+'%，超过50%关注线，抖店利润收益存在中度风险'});
+      medium++;
+    } else {
+      items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'安卓渠道占比 '+androidPct.toFixed(1)+'%，低于50%，支付渠道结构合理'});
+    }
   } else {
     // 多日风险评估
     var totalGMV=0, totalOrd=0, totalExp=0, totalEnt=0;
@@ -461,6 +475,7 @@ function renderSingleDay(s) {
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
     '<div class="kpi-card featured"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+fmt(Math.round(p.sales*0.994*1000)/1000)+'</div><div class="sub">扣除抖店0.6%服务费金额</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">📋 支付订单数</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
     '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
   ].join('');
@@ -474,7 +489,6 @@ function renderSingleDay(s) {
   ].join('');
 
   // 支付渠道构成可视化
-  var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994 };
   document.getElementById('rptDetailView').innerHTML = [
     '<div class="chart-card full" style="margin-bottom:16px;"><h3>💳 支付渠道构成 <span class="tag">扣除0.6%通道费</span></h3>',
     '<div style="display:flex;gap:16px;flex-wrap:wrap;">',
