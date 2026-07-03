@@ -3,54 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>抖店数据工作台 · 设计稿</title>
+<title>抖店数据工作台 · 设计稿 v2</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f7fa; color: #1e293b; padding: 24px; }
 
-/* 设计稿标注 */
 .draft-badge {
   background: #f59e0b; color: #fff; font-size: 11px; padding: 3px 12px;
   border-radius: 4px; display: inline-block; margin-bottom: 16px;
 }
 
+/* ===== 页头 ===== */
 .header {
   background: linear-gradient(135deg, #1e3a8a, #2563eb);
   color: #fff; padding: 28px 32px; border-radius: 12px; margin-bottom: 20px;
 }
 .header h1 { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-.header .sub { font-size: 13px; opacity: 0.8; margin-top: 6px; }
-.header .meta { font-size: 11px; opacity: 0.5; margin-top: 4px; }
+.header .sub { font-size: 13px; opacity: 0.8; margin-top: 4px; }
 
-/* 日期选择器 */
-.filter-bar {
-  display: flex; gap: 12px; align-items: center; margin-bottom: 20px; flex-wrap: wrap;
+.section-title {
+  font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
 }
-.filter-bar .date-picker {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;
-  padding: 8px 14px; font-size: 13px; display: flex; align-items: center; gap: 6px;
-  cursor: pointer;
-}
-.filter-bar .date-picker:hover { border-color: #1e3a8a; }
-.filter-bar .btn {
-  background: #1e3a8a; color: #fff; border: none; border-radius: 8px;
-  padding: 8px 18px; font-size: 13px; cursor: pointer;
+.section-title .tag {
+  font-size: 10px; background: #dbe4ff; color: #1e3a8a;
+  padding: 1px 8px; border-radius: 8px; font-weight: 500;
 }
 
-/* KPI 卡片行 */
-.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
-.kpi-card {
+/* ===== 汇总数据卡片 ===== */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 18px;
+  transition: box-shadow 0.2s;
+}
+.stat-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.stat-card .label { font-size: 12px; color: #94a0b0; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+.stat-card .value { font-size: 28px; font-weight: 700; color: #1e3a8a; line-height: 1.2; }
+.stat-card .value .unit { font-size: 14px; font-weight: 400; color: #64748b; margin-left: 2px; }
+.stat-card .sub { font-size: 11px; color: #64748b; margin-top: 4px; }
+.stat-card .trend { font-size: 11px; margin-top: 6px; }
+.stat-card .trend.up { color: #10b981; }
+.stat-card .trend.down { color: #ef4444; }
+.stat-card .trend.flat { color: #94a0b0; }
+
+/* 特色卡片（汇总数据中的重点） */
+.stat-card.featured {
+  background: linear-gradient(135deg, #eef2ff, #f0f9ff);
+  border-color: #b3c5ff;
+}
+.stat-card.featured .value { color: #1e3a8a; }
+
+/* 扩展汇总行（小卡片） */
+.stats-row2 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
+.mini-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 12px; text-align: center;
+}
+.mini-card .lbl { font-size: 11px; color: #94a0b0; }
+.mini-card .val { font-size: 16px; font-weight: 700; color: #1e293b; margin-top: 2px; }
+
+/* ===== 日期筛选 ===== */
+.filter-section {
   background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
-  padding: 18px 16px;
+  padding: 16px 20px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
 }
-.kpi-card .label { font-size: 12px; color: #94a0b0; margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
-.kpi-card .value { font-size: 26px; font-weight: 700; color: #1e3a8a; line-height: 1.2; }
+.filter-section .label { font-size: 13px; font-weight: 600; color: #1e293b; }
+.filter-group { display: flex; gap: 8px; align-items: center; }
+.filter-group select, .filter-group input {
+  border: 1px solid #d0d5dd; border-radius: 6px; padding: 6px 12px;
+  font-size: 13px; background: #fff; color: #1e293b; outline: none;
+}
+.filter-group select:focus, .filter-group input:focus { border-color: #1e3a8a; }
+.filter-group .date-range {
+  display: flex; align-items: center; gap: 4px; font-size: 13px; color: #475569;
+}
+.filter-group .date-input {
+  border: 1px solid #d0d5dd; border-radius: 6px; padding: 6px 10px;
+  font-size: 13px; width: 110px;
+}
+.btn-primary {
+  background: #1e3a8a; color: #fff; border: none; border-radius: 6px;
+  padding: 7px 20px; font-size: 13px; cursor: pointer;
+}
+.btn-outline {
+  background: #fff; color: #1e3a8a; border: 1px solid #1e3a8a; border-radius: 6px;
+  padding: 6px 16px; font-size: 13px; cursor: pointer;
+}
+
+/* ===== 选定日期数据 ===== */
+.date-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+}
+.date-header .left { display: flex; align-items: center; gap: 10px; }
+.date-header .date-label { font-size: 18px; font-weight: 700; color: #1e3a8a; }
+.date-header .badge {
+  font-size: 11px; background: #dcfce7; color: #15803d;
+  padding: 2px 10px; border-radius: 10px;
+}
+
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.kpi-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 14px;
+}
+.kpi-card .label { font-size: 12px; color: #94a0b0; margin-bottom: 4px; }
+.kpi-card .value { font-size: 22px; font-weight: 700; color: #1e3a8a; line-height: 1.2; }
 .kpi-card .sub { font-size: 11px; color: #64748b; margin-top: 2px; }
 .kpi-card .value.warn { color: #f59e0b; }
 .kpi-card .value.down { color: #ef4444; }
 .kpi-card .value.up { color: #10b981; }
+.kpi-card .compare { font-size: 11px; margin-top: 4px; }
+.kpi-card .compare.up { color: #10b981; }
+.kpi-card .compare.down { color: #ef4444; }
 
-/* 图表网格 */
+/* ===== 图表 ===== */
 .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
 .chart-card {
   background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 20px;
@@ -66,82 +132,155 @@ body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   height: 200px; display: flex; align-items: center; justify-content: center;
   color: #94a0b0; font-size: 13px;
 }
+.chart-area.tall { height: 280px; }
 
-/* 转化链路 */
+/* ===== 转化链路 ===== */
 .conversion-flow {
   display: flex; align-items: center; justify-content: center; gap: 4px; padding: 12px 0; flex-wrap: wrap;
 }
 .flow-step {
-  display: flex; flex-direction: column; align-items: center; min-width: 70px;
-  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px;
+  display: flex; flex-direction: column; align-items: center; min-width: 65px;
+  background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 12px;
 }
 .flow-step .num { font-size: 18px; font-weight: 700; color: #1e3a8a; }
 .flow-step .lbl { font-size: 10px; color: #94a0b0; margin-top: 2px; }
-.flow-arrow { font-size: 16px; color: #2563eb; }
-.flow-rate { font-size: 10px; color: #64748b; background: #eef2ff; padding: 1px 6px; border-radius: 4px; margin-top: 2px; }
+.flow-arrow { font-size: 16px; color: #2563eb; margin: 0 2px; }
+.flow-rate { font-size: 10px; color: #475569; background: #eef2ff; padding: 1px 6px; border-radius: 4px; margin-top: 3px; }
 
-/* 数据表格 */
-.data-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px; }
+/* ===== 趋势图 ===== */
+.trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+/* ===== 明细表格 ===== */
+.data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
 .data-table th {
   background: #f1f5f9; padding: 8px 10px; text-align: center;
   font-weight: 600; color: #475569; border-bottom: 2px solid #e2e8f0;
 }
 .data-table td { padding: 7px 10px; text-align: center; border-bottom: 1px solid #f1f5f9; }
 .data-table .section td {
-  background: #eef2ff; font-weight: 700; color: #1e3a8a;
-  text-align: left; padding: 10px 12px; font-size: 13px;
+  background: #eef2ff; font-weight: 700; color: #1e3a8a; text-align: left; padding: 10px 12px; font-size: 13px;
 }
 
-/* 多日对比 */
-.compare-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.compare-card {
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px;
-}
-.compare-card .date-label { font-size: 12px; color: #1e3a8a; font-weight: 600; margin-bottom: 8px; }
-.compare-card .metric { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #f1f5f9; }
-.compare-card .metric:last-child { border-bottom: none; }
-.compare-card .metric .name { color: #64748b; }
-.compare-card .metric .val { font-weight: 600; color: #1e293b; }
-.compare-card .up { color: #10b981; } .compare-card .down { color: #ef4444; }
-
-/* 底部 */
-.footer { text-align: center; padding: 16px; font-size: 11px; color: #94a0b0; }
+.footer { text-align: center; padding: 20px; font-size: 11px; color: #94a0b0; }
 </style>
 </head>
 <body>
 
-<span class="draft-badge">📐 设计稿 · 待开发</span>
+<span class="draft-badge">📐 设计稿 v2 · 待开发</span>
 
+<!-- ===== 页头 ===== -->
 <div class="header">
   <h1>📊 抖店数据工作台</h1>
-  <div class="sub">Douyin Store Data Dashboard · 直播转化分析</div>
-  <div class="meta">数据来源：抖店后台 | 支持多场次对比</div>
+  <div class="sub">全店数据概览 · 按日直播分析 · 多场次对比 · 利润预估</div>
 </div>
+
+<!-- ============================================ -->
+<!-- 第一模块：全店数据汇总 -->
+<!-- ============================================ -->
+<div class="section-title">📊 全店数据汇总 <span class="tag">累计数据</span></div>
+
+<div class="stats-grid">
+  <div class="stat-card featured">
+    <div class="label">💰 总流水（GMV）</div>
+    <div class="value">48,692<span class="unit">元</span></div>
+    <div class="sub">本月 12,380 元 | 上周 8,456 元</div>
+    <div class="trend up">📈 较上月 +23.5%</div>
+  </div>
+  <div class="stat-card featured">
+    <div class="label">📦 总订单数</div>
+    <div class="value">386<span class="unit">单</span></div>
+    <div class="sub">本月 97 单 | 上周 62 单</div>
+    <div class="trend up">📈 较上月 +18.2%</div>
+  </div>
+  <div class="stat-card featured">
+    <div class="label">👤 充值总人数</div>
+    <div class="value">214<span class="unit">人</span></div>
+    <div class="sub">本月新增 48 人 | 复购率 31.2%</div>
+    <div class="trend up">📈 较上月 +15.8%</div>
+  </div>
+  <div class="stat-card featured">
+    <div class="label">📋 结算利润预估</div>
+    <div class="value">12,580<span class="unit">元</span></div>
+    <div class="sub">毛利率 ≈25.8% | 待结算 3,240 元</div>
+    <div class="trend down">⚠️ 较上月 -2.1%</div>
+  </div>
+</div>
+
+<div class="stats-row2">
+  <div class="mini-card">
+    <div class="lbl">📺 累计直播场次</div>
+    <div class="val">47</div>
+  </div>
+  <div class="mini-card">
+    <div class="lbl">⏱ 场均时长</div>
+    <div class="val">62<span style="font-size:12px;">min</span></div>
+  </div>
+  <div class="mini-card">
+    <div class="lbl">👥 场均观看</div>
+    <div class="val">2,158</div>
+  </div>
+  <div class="mini-card">
+    <div class="lbl">🛒 场均销售额</div>
+    <div class="val">1,036<span style="font-size:12px;">元</span></div>
+  </div>
+  <div class="mini-card">
+    <div class="lbl">📈 场均转化率</div>
+    <div class="val">1.83<span style="font-size:12px;">%</span></div>
+  </div>
+  <div class="mini-card">
+    <div class="lbl">⭐ 场均进房率</div>
+    <div class="val">6.87<span style="font-size:12px;">%</span></div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 第二模块：按日期筛选查看直播分析 -->
+<!-- ============================================ -->
+<div class="section-title">📅 按日期查看直播分析 <span class="tag">筛选后展示</span></div>
 
 <!-- 筛选栏 -->
-<div class="filter-bar">
-  <div class="date-picker">📅 2026年7月2日 ▼</div>
-  <div class="date-picker">📅 对比场次：7月1日 ▼</div>
-  <button class="btn">查询</button>
-  <span style="font-size:11px;color:#94a0b0;margin-left:8px;">支持按日期选择单场或对比多场</span>
+<div class="filter-section">
+  <span class="label">筛选条件：</span>
+  <div class="filter-group">
+    <span class="date-range">📅 从</span>
+    <input class="date-input" type="text" value="2026-07-01" readonly style="background:#f8fafc;">
+    <span>至</span>
+    <input class="date-input" type="text" value="2026-07-02" readonly style="background:#f8fafc;">
+  </div>
+  <div class="filter-group">
+    <span>场次</span>
+    <select><option>全部场次</option><option>仅晚间场</option><option>仅下午场</option></select>
+  </div>
+  <button class="btn-primary">查询</button>
+  <button class="btn-outline">📥 导出</button>
 </div>
 
-<!-- KPI 第一行 -->
+<!-- 选中日期头部 -->
+<div class="date-header">
+  <div class="left">
+    <span class="date-label">📅 2026年7月2日</span>
+    <span class="badge">本场数据</span>
+  </div>
+  <div style="font-size:12px;color:#64748b;">对比基准：7月1日 ▼ ｜ 趋势：7日 ▼</div>
+</div>
+
+<!-- KPI -->
 <div class="kpi-row">
   <div class="kpi-card">
     <div class="label">👀 曝光人数</div>
     <div class="value">2,721</div>
-    <div class="sub">较昨日 <span style="color:#10b981;">▲12.3%</span></div>
+    <div class="compare up">▲ 较昨日 +12.3%</div>
   </div>
   <div class="kpi-card">
     <div class="label">🚪 进房人数</div>
     <div class="value">193</div>
-    <div class="sub">进房率 7.09% <span style="color:#ef4444;">▼0.8%</span></div>
+    <div class="sub">进房率 7.09%</div>
+    <div class="compare down">▼ 较昨日 -2.5%</div>
   </div>
   <div class="kpi-card">
     <div class="label">💰 商品销售额</div>
     <div class="value up">1,134</div>
-    <div class="sub">本场总额</div>
+    <div class="compare up">▲ 较昨日 +15.0%</div>
   </div>
   <div class="kpi-card">
     <div class="label">✅ 成交人数</div>
@@ -150,7 +289,6 @@ body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   </div>
 </div>
 
-<!-- KPI 第二行 -->
 <div class="kpi-row">
   <div class="kpi-card">
     <div class="label">📝 评论人数</div>
@@ -165,93 +303,83 @@ body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
   <div class="kpi-card">
     <div class="label">⏱️ 人均停留</div>
     <div class="value">5.53<span style="font-size:14px;">min</span></div>
-    <div class="sub">停留时长</div>
+    <div class="compare up">▲ +0.8min</div>
   </div>
   <div class="kpi-card">
     <div class="label">👥 新增粉丝</div>
     <div class="value">8</div>
-    <div class="sub">本场新增</div>
+    <div class="compare flat">─ 持平</div>
   </div>
 </div>
 
-<!-- 图表区域 -->
+<!-- 图表 -->
 <div class="chart-grid">
   <div class="chart-card">
     <h3>📈 流量漏斗 <span class="tag">曝光→进房→在线</span></h3>
-    <div class="chart-area">📊 柱状图：曝光人数(2,721) → 进房人数(193) → 平均在线(5)</div>
+    <div class="chart-area">📊 柱状图：曝光 → 进房 → 平均在线</div>
   </div>
   <div class="chart-card">
     <h3>💬 互动指标 <span class="tag">五维雷达</span></h3>
     <div class="chart-area">🕸️ 雷达图：评论/点赞/停留/粉丝/进房率</div>
   </div>
   <div class="chart-card full">
-    <h3>🛒 转化漏斗 <span class="tag">曝光→点击→成交</span></h3>
-    <div class="chart-area">📊 横向柱状图：商品曝光(126人) → 点击(20人) → 成交(2人)</div>
+    <h3>🛒 商品转化漏斗 <span class="tag">曝光→点击→成交</span></h3>
+    <div class="chart-area tall">📊 横向柱状图：商品曝光(126人) → 商品点击(20人) → 成交(2人)</div>
   </div>
 </div>
 
 <!-- 转化链路 -->
 <div class="chart-card" style="margin-bottom:20px;">
-  <h3>🔄 核心转化链路</h3>
+  <h3>🔄 转化链路</h3>
   <div class="conversion-flow">
     <div class="flow-step"><div class="num">2,721</div><div class="lbl">总曝光</div></div>
     <div class="flow-arrow">→</div>
     <div class="flow-step"><div class="num">193</div><div class="lbl">进房</div><div class="flow-rate">7.09%</div></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">5</div><div class="lbl">平均在线</div><div class="flow-rate">2.59%</div></div>
+    <div class="flow-step"><div class="num">5</div><div class="lbl">平均在线</div></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">126</div><div class="lbl">商品曝光</div></div>
+    <div class="flow-step"><div class="num">126</div><div class="lbl">曝光</div></div>
     <div class="flow-arrow">→</div>
-    <div class="flow-step"><div class="num">20</div><div class="lbl">商品点击</div><div class="flow-rate">15.87%</div></div>
+    <div class="flow-step"><div class="num">20</div><div class="lbl">点击</div><div class="flow-rate">15.87%</div></div>
     <div class="flow-arrow">→</div>
     <div class="flow-step"><div class="num" style="color:#ef4444;">2</div><div class="lbl">成交</div><div class="flow-rate">10%</div></div>
   </div>
 </div>
 
-<!-- 多日对比 -->
-<h3 style="font-size:14px;color:#475569;margin-bottom:12px;font-weight:600;">📅 多场次对比（开发中）</h3>
-<div class="compare-row">
-  <div class="compare-card">
-    <div class="date-label">7月2日（本场）</div>
-    <div class="metric"><span class="name">曝光</span><span class="val">2,721</span></div>
-    <div class="metric"><span class="name">进房</span><span class="val">193</span></div>
-    <div class="metric"><span class="name">销售额</span><span class="val">1,134</span></div>
-    <div class="metric"><span class="name">成交</span><span class="val">2</span></div>
+<!-- 趋势图表 -->
+<div class="section-title">📈 近期趋势 <span class="tag">近7日</span></div>
+<div class="trend-grid">
+  <div class="chart-card">
+    <h3>曝光/进房趋势</h3>
+    <div class="chart-area">📈 折线图：近7日曝光人数、进房人数变化</div>
   </div>
-  <div class="compare-card">
-    <div class="date-label">7月1日</div>
-    <div class="metric"><span class="name">曝光</span><span class="val">2,423</span><span class="up">▲12.3%</span></div>
-    <div class="metric"><span class="name">进房</span><span class="val">198</span><span class="down">▼2.5%</span></div>
-    <div class="metric"><span class="name">销售额</span><span class="val">986</span><span class="up">▲15.0%</span></div>
-    <div class="metric"><span class="name">成交</span><span class="val">3</span><span class="down">▼33.3%</span></div>
-  </div>
-  <div class="compare-card">
-    <div class="date-label">6月30日</div>
-    <div class="metric"><span class="name">曝光</span><span class="val">1,856</span><span class="up">▲46.6%</span></div>
-    <div class="metric"><span class="name">进房</span><span class="val">142</span><span class="up">▲35.9%</span></div>
-    <div class="metric"><span class="name">销售额</span><span class="val">752</span><span class="up">▲50.8%</span></div>
-    <div class="metric"><span class="name">成交</span><span class="val">1</span><span class="up">▲100.0%</span></div>
+  <div class="chart-card">
+    <h3>销售额/订单趋势</h3>
+    <div class="chart-area">📈 折线图：近7日销售额、订单数变化</div>
   </div>
 </div>
 
-<!-- 数据明细 -->
+<!-- 明细 -->
 <div class="chart-card full" style="margin-bottom:20px;">
-  <h3>📃 本场数据明细</h3>
+  <h3>📃 数据明细</h3>
   <table class="data-table">
     <tr class="section"><td colspan="4">📺 直播间流量指标</td></tr>
     <tr><th>曝光人数</th><th>进房人数</th><th>进房率</th><th>平均在线</th></tr>
-    <tr><td>2,721</td><td>193</td><td>7.09%</td><td style="font-weight:600;color:#f59e0b;">5 人</td></tr>
+    <tr><td>2,721</td><td>193</td><td>7.09%</td><td>5 人</td></tr>
     <tr class="section"><td colspan="4">💬 互动指标</td></tr>
     <tr><th>评论人数</th><th>评论率</th><th>人均停留</th><th>新增粉丝</th></tr>
     <tr><td>12</td><td>6.22%</td><td>5.53 min</td><td>8</td></tr>
     <tr class="section"><td colspan="4">🛒 商品数据</td></tr>
     <tr><th>商品销售额</th><th>曝光人数</th><th>点击人数</th><th>成交人数</th></tr>
-    <tr><td style="font-weight:700;color:#10b981;">1,134</td><td>126</td><td>20</td><td style="font-weight:700;color:#ef4444;">2</td></tr>
+    <tr><td style="color:#10b981;font-weight:700;">1,134</td><td>126</td><td>20</td><td style="color:#ef4444;font-weight:700;">2</td></tr>
+    <tr class="section"><td colspan="4">📊 转化率</td></tr>
+    <tr><th>曝光→点击转化</th><th>点击→成交转化</th><th colspan="2">曝光→成交综合转化</th></tr>
+    <tr><td style="color:#f59e0b;">15.87%</td><td style="color:#ef4444;">10%</td><td colspan="2" style="color:#ef4444;">1.59%</td></tr>
   </table>
 </div>
 
 <div class="footer">
-  📐 此为设计稿 · 各项功能待开发 · Chart.js 图表 + 多场次对比 + 数据导出
+  📐 此为设计稿 v2 · 汇总数据 + 日期筛选 + 趋势分析 · 正式开发时接入 Chart.js
 </div>
 
 </body>
