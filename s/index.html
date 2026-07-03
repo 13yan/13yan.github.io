@@ -207,6 +207,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
   <!-- KPI -->
   <div class="kpi-row" id="rptTrafficKpi"></div>
   <div class="kpi-row" id="rptInteractKpi"></div>
+  <div class="kpi-row" id="rptSubKpi" style="grid-template-columns:repeat(2,1fr);"></div>
 
   <!-- 数据风险 -->
   <div class="risk-section" id="rptRiskSection"></div>
@@ -471,19 +472,22 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s.traffic||{}, it=s.interaction||{}, p=s.product||{};
-  // KPI 第一行：销售额、预估结算金额、成交人数、直播间曝光人数
+  // 第一行：4个重点卡片
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
     '<div class="kpi-card featured"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+fmt(Math.round(p.sales*0.994*1000)/1000)+'</div><div class="sub">扣除抖店0.6%服务费金额</div></div>',
     '<div class="kpi-card featured"><div class="lbl">📋 支付订单数</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
     '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
   ].join('');
-  // KPI 第二行：进房人数、直播号新增粉丝、评论人数、点赞次数、直播间人均停留
+  // 第二行：流量+互动 4个
   document.getElementById('rptInteractKpi').innerHTML = [
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
+  ].join('');
+  // 第三行：2列（点赞、停留）
+  document.getElementById('rptSubKpi').innerHTML = [
     '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
   ].join('');
