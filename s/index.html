@@ -219,17 +219,25 @@ function render(data) {
     });
   }
 
-  // 日期选择
+  // 日期选择 - 默认选中最新日期
   var sel = document.getElementById('sessionSelect');
   sel.innerHTML = '';
-  sessions.forEach(function(s, i) {
+  var sorted = sessions.slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+  sorted.forEach(function(s, i) {
     var opt = document.createElement('option');
     opt.value = i;
     opt.textContent = s.label || s.date;
+    opt.dataset.idx = sessions.indexOf(s);
     sel.appendChild(opt);
   });
-  if (sessions.length > 0) renderSession(sessions[sel.value]);
-  sel.onchange = function() { renderSession(sessions[parseInt(this.value)]); };
+  if (sorted.length > 0) {
+    sel.value = '0';
+    renderSession(sorted[0]);
+  }
+  sel.onchange = function() {
+    var idx = parseInt(this.options[this.selectedIndex].dataset.idx);
+    renderSession(sessions[idx]);
+  };
 }
 
 function renderSession(s) {
