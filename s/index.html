@@ -87,6 +87,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; ba
 .kpi-card .val.up { color:var(--up); }
 .kpi-card .val.warn { color:var(--warn); }
 .kpi-card .val.down { color:var(--down); }
+.kpi-card.featured { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border-color:#b3c5ff; position:relative; }
+.kpi-card.featured .val { font-size:24px; }
+.kpi-card.featured .lbl { font-size:12px; color:var(--primary); font-weight:600; }
 
 /* ===== 图表 ===== */
 .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
@@ -454,18 +457,19 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s.traffic||{}, it=s.interaction||{}, p=s.product||{};
-  // KPI
+  // KPI 第一行：销售额、成交人数、直播间曝光人数、进房人数
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">👀 曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">💰 销售额</div><div class="val up">'+fmt(p.sales)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">✅ 成交人数</div><div class="val warn">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
   ].join('');
+  // KPI 第二行：直播号新增粉丝、评论人数、点赞次数、直播间人均停留
   document.getElementById('rptInteractKpi').innerHTML = [
+    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">⏱️ 人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👥 新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
   ].join('');
 
   // 详细图表
