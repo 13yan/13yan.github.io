@@ -5,9 +5,12 @@
     "totalOrders": 0,
     "totalPayUsers": 0,
     "estimatedProfit": 0,
+    "profitRate": 0,
     "totalSessions": 1,
-    "note": "等你提供汇总数据后更新"
+    "avgGMV": 0,
+    "analysis": ""
   },
+  "monthlySummary": [],
   "sessions": [
     {
       "date": "2026-07-02",
