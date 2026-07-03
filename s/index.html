@@ -457,23 +457,48 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s.traffic||{}, it=s.interaction||{}, p=s.product||{};
-  // KPI 第一行：销售额、成交人数、直播间曝光人数、进房人数
+  // KPI 第一行：销售额、预估结算金额、成交人数、直播间曝光人数
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+fmt(Math.round(p.sales*0.994*1000)/1000)+'</div><div class="sub">扣除抖店0.6%服务费金额</div></div>',
     '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
   ].join('');
-  // KPI 第二行：直播号新增粉丝、评论人数、点赞次数、直播间人均停留
+  // KPI 第二行：进房人数、直播号新增粉丝、评论人数、点赞次数、直播间人均停留
   document.getElementById('rptInteractKpi').innerHTML = [
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
   ].join('');
 
-  // 详细图表
+  // 支付渠道构成可视化
+  var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994 };
   document.getElementById('rptDetailView').innerHTML = [
+    '<div class="chart-card full" style="margin-bottom:16px;"><h3>💳 支付渠道构成 <span class="tag">扣除0.6%通道费</span></h3>',
+    '<div style="display:flex;gap:16px;flex-wrap:wrap;">',
+    '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
+    '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🤖 3k-安卓</div>',
+    '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(payData.android)+' 元</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(payData.androidSettle)+' 元 | 用户 1 人</div>',
+    '</div>',
+    '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
+    '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🍎 3k-iOS</div>',
+    '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(payData.ios)+' 元</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(payData.iosSettle)+' 元 | 用户 1 人</div>',
+    '</div>',
+    '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;">',
+    '<div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:6px;">📊 汇总</div>',
+    '<div style="font-size:22px;font-weight:700;color:var(--primary);">'+fmt(payData.android+payData.ios)+' 元</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(payData.androidSettle+payData.iosSettle)+' 元 | 通道费 '+(payData.android+payData.ios-(payData.androidSettle+payData.iosSettle)).toFixed(3)+' 元</div>',
+    '</div>',
+    '</div></div>',
+    '<div class="chart-grid" style="margin-top:0;">',
+    '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserChart"></canvas></div></div>',
+    '</div>',
+
     '<div class="chart-grid">',
     '<div class="chart-card"><h3>📈 流量漏斗 <span class="tag">曝光→进房→在线</span></h3><div class="chart-wrap"><canvas id="rptTrafficChart"></canvas></div></div>',
     '<div class="chart-card"><h3>💬 互动指标 <span class="tag">雷达图</span></h3><div class="chart-wrap"><canvas id="rptInteractChart"></canvas></div></div>',
@@ -516,6 +541,12 @@ function renderSingleDay(s) {
     if(c2) charts.rptInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'本场',data:[it.comments,(it.likes||0)/60,it.newFans,parseFloat(it.avgStay)||0,(t.entryRate||0)*100],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     var c3=document.getElementById('rptFunnelChart');
     if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    // 支付渠道饼图
+    destroyChart('rptPayAmount');destroyChart('rptPayUser');
+    var pa=document.getElementById('rptPayAmountChart');
+    if(pa) charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[1006,128],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/1134)*100).toFixed(1)+'%)';}}}}}});
+    var pu=document.getElementById('rptPayUserChart');
+    if(pu) charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[1,1],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/2)*100).toFixed(0)+'%)';}}}}}});
   }, 50);
 }
 
