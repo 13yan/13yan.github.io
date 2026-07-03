@@ -265,16 +265,32 @@ function renderOverview() {
   var data=currentData; if(!data) return;
   var s=data.storeSummary||{}, months=data.monthlySummary||[];
   var grid=document.getElementById('ovSummaryGrid');
-  if(s.totalGMV||s.totalOrders) {
-    grid.innerHTML='';
-    [{l:'💰 总流水',v:fmt(s.totalGMV)+' 元'},{l:'📦 总订单',v:fmt(s.totalOrders)+' 单'},{l:'👤 充值总人数',v:fmt(s.totalPayUsers)+' 人'},{l:'📋 利润预估',v:fmt(s.estimatedProfit)+' 元',sb:s.profitRate?'毛利率 '+pct(s.profitRate):''}].forEach(function(c){
+  if (s.totalGMV || s.totalOrders || (data.sessions && data.sessions.length > 0)) {
+    // 自动从 sessions 累计
+    var sessions = data.sessions || [];
+    var autoGMV = sessions.reduce(function(sum,ss){return sum + (ss.product?.sales||0);}, 0);
+    var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.orders||0);}, 0);
+    var totalGMV = s.totalGMV || autoGMV;
+    var totalOrders = s.totalOrders || autoOrders;
+    grid.innerHTML = '';
+    [[l:'💰 总流水',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计')],{l:'📦 总订单',v:fmt(totalOrders)+' 单'},{l:'👤 充值总人数',v:s.totalPayUsers>0?fmt(s.totalPayUsers)+' 人':'待提供'},{l:'📋 利润预估',v:s.estimatedProfit>0?fmt(s.estimatedProfit)+' 元':'待提供',sb:s.profitRate?'毛利率 '+pct(s.profitRate):''}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
   } else { grid.innerHTML='<div class="empty-block">暂无汇总数据，等你提供后更新</div>'; }
-
+  // 月趋势图 - 自动从 sessions 按月汇总
   destroyChart('ovTrend');
-  if(months.length>0) {
+  var sessions = data.sessions || [];
+  if (sessions.length > 0) {
+    // 自动按月份分组汇总
+    var monthMap = {};
+    sessions.forEach(function(sx){
+      var m = sx.date.substring(0,7);
+      if (!monthMap[m]) monthMap[m] = {label:m.substring(0,4)+'年'+parseInt(m.substring(5,7))+'月', totalGMV:0, totalOrders:0};
+      monthMap[m].totalGMV += sx.product?.sales||0;
+      monthMap[m].totalOrders += sx.product?.orders||0;
+    });
+    months = Object.keys(monthMap).sort().map(function(k){return monthMap[k];});
     var ctx=document.getElementById('ovTrendChart').getContext('2d');
     var rev=months.slice().reverse();
     charts.ovTrend=new Chart(ctx,{
@@ -378,15 +394,17 @@ function renderReport() {
   var sessions=data.sessions||[]; if(sessions.length===0) return;
 
   // 设置快捷按钮
+  var firstDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date<b.date?a:b;}).date : today();
+  var lastDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date>b.date?a:b;}).date : today();
   document.querySelectorAll('#datePresets button').forEach(function(btn){
     btn.addEventListener('click',function(){
       document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
       btn.classList.add('active');
-      var range=btn.dataset.range, start, end=today();
-      if(range==='today') start=end;
-      else if(range==='7d') start=daysAgo(6);
-      else if(range==='30d') start=daysAgo(29);
-      else if(range==='month') { var d=new Date(); start=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-01'; }
+      var range=btn.dataset.range, start, end=lastDate;
+      if(range==='today') start=lastDate;
+      else if(range==='7d') { var d=new Date(lastDate); d.setDate(d.getDate()-6); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
+      else if(range==='30d') { var d=new Date(lastDate); d.setDate(d.getDate()-29); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
+      else if(range==='month') { start=lastDate.substring(0,7)+'-01'; if(start<firstDate) start=firstDate; }
       else return; // custom
       document.getElementById('startDate').value=start;
       document.getElementById('endDate').value=end;
@@ -404,11 +422,15 @@ function renderReport() {
     applyRange(document.getElementById('startDate').value, this.value, sessions);
   });
 
-  // 默认近7日
-  var s=daysAgo(6), e=today();
-  document.getElementById('startDate').value=s;
-  document.getElementById('endDate').value=e;
-  applyRange(s,e,sessions);
+  // 默认近7日（以实际数据日期为准）
+  var s = lastDate;
+  // 取最近7天或最早日期，取范围
+  var s7 = new Date(lastDate); s7.setDate(s7.getDate() - 6);
+  var startDefault = s7.toISOString().substring(0,10) < firstDate ? firstDate : s7.toISOString().substring(0,10);
+  var e = lastDate;
+  document.getElementById('startDate').value = startDefault;
+  document.getElementById('endDate').value = e;
+  applyRange(startDefault, e, sessions);
 }
 
 function applyRange(start, end, sessions) {
