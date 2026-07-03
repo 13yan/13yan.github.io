@@ -1,5 +1,97 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>13yan · 首页</title>
-<meta http-equiv="refresh" content="0;url=https://13yan.github.io/weekly-reports/">
-<script>location.href='https://13yan.github.io/weekly-reports/'</script>
-</head><body><a href="https://13yan.github.io/weekly-reports/">跳转</a></body></html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市场资讯观察周报 - 历史索引</title>
+<style>
+:root {
+  --primary: #1e3a8a;
+  --primary-light: #dbe4ff;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a0b0;
+  --border: #e2e8f0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background:var(--bg); color:var(--text); }
+.header {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color:#fff; padding:32px 40px;
+}
+.header h1 { font-size:24px; font-weight:700; }
+.header .sub { font-size:13px; opacity:0.8; margin-top:6px; }
+.container { max-width:900px; margin:0 auto; padding:24px; }
+.section-title { font-size:15px; color:var(--text2); margin-bottom:16px; font-weight:600; }
+.report-list { list-style:none; padding:0; }
+.report-item {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:16px 20px; margin-bottom:10px; transition:box-shadow 0.2s;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.report-item:hover { box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+.report-item .info { flex:1; }
+.report-item .week { font-size:14px; font-weight:600; color:var(--primary); }
+.report-item .highlight { font-size:12px; color:var(--text2); margin-top:4px; line-height:1.6; }
+.report-item .stats { display:flex; gap:12px; font-size:11px; color:var(--text3); margin-top:6px; }
+.report-item .links { display:flex; gap:6px; flex-shrink:0; margin-left:16px; }
+.report-item .links a {
+  display:inline-block; padding:4px 10px; border-radius:6px; font-size:11px;
+  background:var(--primary-light); color:var(--primary); text-decoration:none; white-space:nowrap;
+}
+.report-item .links a:hover { background:#b3c5ff; }
+.footer { text-align:center; padding:20px; font-size:11px; color:var(--text3); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 市场资讯观察周报</h1>
+  <div class="sub">微信小游戏 & 抖音小游戏 畅销榜监测 · 历史全部周报</div>
+</div>
+
+<div class="container">
+  <div class="section-title">📂 历史周报列表</div>
+  <ul class="report-list" id="reportList">
+    <li style="text-align:center;padding:40px;color:var(--text3);font-size:13px;">加载中...</li>
+  </ul>
+</div>
+
+<div class="footer">数据来源：引力引擎 · 品类划分统一标准</div>
+
+<script>
+var BASE = 'https://13yan.github.io/weekly-reports/';
+var MANIFEST = BASE + 'workbench/manifest.json';
+
+fetch(MANIFEST).then(r => r.json()).then(data => {
+  var list = document.getElementById('reportList');
+  list.innerHTML = '';
+  var reports = data.reports || [];
+  reports.forEach(function(r) {
+    var dir = r.dirName;
+    var href = BASE + encodeURI(dir + '/');
+    var li = document.createElement('li');
+    li.className = 'report-item';
+    li.innerHTML = '<div class="info">' +
+      '<div class="week">' + r.label + '</div>' +
+      (r.highlight ? '<div class="highlight">' + r.highlight + '</div>' : '') +
+      '<div class="stats">' +
+        '<span>📱 微信 ' + (r.stats?.wxCount || '—') + '</span>' +
+        '<span>🎵 抖音 ' + (r.stats?.dyCount || '—') + '</span>' +
+        '<span>🔄 跨平台 ' + (r.stats?.crossPlatform || '—') + '</span>' +
+        '<span>📂 ' + (r.stats?.categories || '—') + ' 品类</span>' +
+      '</div></div>' +
+      '<div class="links">' +
+        '<a href="' + href + '" target="_blank">📄 报告</a>' +
+        (r.hasData !== false ? '<a href="' + href + 'report-data.json" target="_blank">📊 数据</a>' : '') +
+      '</div>';
+    list.appendChild(li);
+  });
+}).catch(function() {
+  document.getElementById('reportList').innerHTML = '<li style="text-align:center;padding:40px;color:#ef4444;font-size:13px;">⚠️ 加载失败</li>';
+});
+</script>
+</body>
+</html>
