@@ -273,7 +273,7 @@ function renderOverview() {
     var totalGMV = s.totalGMV || autoGMV;
     var totalOrders = s.totalOrders || autoOrders;
     grid.innerHTML = '';
-    [[l:'💰 总流水',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计')],{l:'📦 总订单',v:fmt(totalOrders)+' 单'},{l:'👤 充值总人数',v:s.totalPayUsers>0?fmt(s.totalPayUsers)+' 人':'待提供'},{l:'📋 利润预估',v:s.estimatedProfit>0?fmt(s.estimatedProfit)+' 元':'待提供',sb:s.profitRate?'毛利率 '+pct(s.profitRate):''}].forEach(function(c){
+    [{l:'💰 总流水',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计')},{l:'📦 总订单',v:fmt(totalOrders)+' 单'},{l:'👤 充值总人数',v:s.totalPayUsers>0?fmt(s.totalPayUsers)+' 人':'待提供'},{l:'📋 利润预估',v:s.estimatedProfit>0?fmt(s.estimatedProfit)+' 元':'待提供',sb:s.profitRate?'毛利率 '+pct(s.profitRate):''}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
