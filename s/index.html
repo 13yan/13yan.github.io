@@ -212,8 +212,8 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <!-- 日期选择器 -->
   <div class="date-picker-bar">
     <div class="presets" id="datePresets">
-      <button data-range="today">最新</button>
-      <button data-range="7d" class="active">近7日</button>
+      <button data-range="today" class="active">最新</button>
+      <button data-range="7d">近7日</button>
       <button data-range="30d">近30日</button>
       <button data-range="month">本月</button>
       <button data-range="custom">自定义</button>
@@ -524,15 +524,11 @@ function renderReport() {
     applyRange(startEl.value, this.value, sessions);
   });
 
-  // 默认近7日（以实际数据日期为准）
-  var s = lastDate;
-  // 取最近7天或最早日期，取范围
-  var s7 = new Date(lastDate); s7.setDate(s7.getDate() - 6);
-  var startDefault = s7.toISOString().substring(0,10) < firstDate ? firstDate : s7.toISOString().substring(0,10);
+  // 默认最新（以实际数据最后日期为准）
   var e = lastDate;
-  document.getElementById('startDate').value = startDefault;
+  document.getElementById('startDate').value = e;
   document.getElementById('endDate').value = e;
-  applyRange(startDefault, e, sessions);
+  applyRange(e, e, sessions);
 }
 
 function applyRange(start, end, sessions) {
