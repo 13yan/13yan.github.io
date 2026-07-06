@@ -472,6 +472,10 @@ function renderReport() {
   // 设置快捷按钮
   var firstDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date<b.date?a:b;}).date : today();
   var lastDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date>b.date?a:b;}).date : today();
+  document.getElementById('startDate').setAttribute('min', firstDate);
+  document.getElementById('startDate').setAttribute('max', lastDate);
+  document.getElementById('endDate').setAttribute('min', firstDate);
+  document.getElementById('endDate').setAttribute('max', lastDate);
   document.querySelectorAll('#datePresets button').forEach(function(btn){
     btn.addEventListener('click',function(){
       document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
@@ -491,11 +495,15 @@ function renderReport() {
   // 自定义日期变化
   document.getElementById('startDate').addEventListener('change',function(){
     document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    applyRange(this.value, document.getElementById('endDate').value, sessions);
+    var endEl = document.getElementById('endDate');
+    if (this.value > endEl.value) endEl.value = this.value;
+    applyRange(this.value, endEl.value, sessions);
   });
   document.getElementById('endDate').addEventListener('change',function(){
     document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    applyRange(document.getElementById('startDate').value, this.value, sessions);
+    var startEl = document.getElementById('startDate');
+    if (this.value < startEl.value) startEl.value = this.value;
+    applyRange(startEl.value, this.value, sessions);
   });
 
   // 默认近7日（以实际数据日期为准）
