@@ -1,17 +1,17 @@
 {
-  "updatedAt": "2026-07-03",
+  "updatedAt": "2026-07-05",
   "storeSummary": {
     "totalGMV": 0,
     "totalOrders": 0,
     "totalPayUsers": 0,
     "estimatedProfit": 0,
     "profitRate": 0,
-    "totalSessions": 2,
+    "totalSessions": 4,
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
-      "android": { "amount": 2332, "settle": 2331.982, "users": 3 },
-      "ios": { "amount": 2072, "settle": 2071.988, "users": 2 }
+      "android": { "amount": 9334, "settle": 9333.952, "users": 8 },
+      "ios": { "amount": 2720, "settle": 2719.982, "users": 3 }
     }
   },
   "sessions": [
@@ -28,6 +28,20 @@
       "traffic": { "exposure": 3275, "entry": 220, "entryRate": 0.0672, "avgOnline": 4, "maxOnline": 13 },
       "interaction": { "comments": 11, "commentRate": 0.05, "likes": 1737, "likeRate": 0.0227, "avgStay": "4.39min", "newFans": 3 },
       "product": { "sales": 3270, "exposure": 156, "clicks": 24, "orders": 4, "paymentOrders": 4, "exposureClickRate": 0.1538, "clickOrderRate": 0.1667 }
+    },
+    {
+      "date": "2026-07-04",
+      "label": "7月4日直播",
+      "traffic": { "exposure": 1459, "entry": 245, "entryRate": 0.1679, "avgOnline": 3, "maxOnline": 7 },
+      "interaction": { "comments": 10, "commentRate": 0.0408, "likes": 829, "likeRate": 0.0204, "avgStay": "2.10min", "newFans": 1 },
+      "product": { "sales": 3974, "exposure": 164, "clicks": 14, "orders": 3, "paymentOrders": 3, "exposureClickRate": 0.0854, "clickOrderRate": 0.2143 }
+    },
+    {
+      "date": "2026-07-05",
+      "label": "7月5日直播",
+      "traffic": { "exposure": 1264, "entry": 223, "entryRate": 0.1764, "avgOnline": 2, "maxOnline": 6 },
+      "interaction": { "comments": 6, "commentRate": 0.0269, "likes": 785, "likeRate": 0.0179, "avgStay": "2.52min", "newFans": 2 },
+      "product": { "sales": 3676, "exposure": 137, "clicks": 13, "orders": 3, "paymentOrders": 3, "exposureClickRate": 0.0949, "clickOrderRate": 0.2308 }
     }
   ]
 }
