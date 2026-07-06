@@ -648,7 +648,7 @@ function renderReport() {
 
   // 按游戏筛选
   var sessions = currentGame ? allSessions.filter(function(s){return s.game===currentGame;}) : allSessions;
-  if(sessions.length===0){document.getElementById('rangeInfo').textContent='该游戏暂无数据';return;}
+  var hasData = sessions.length > 0;
 
   // 游戏切换重新渲染
   sel.onchange = function(){ renderReport(); };
@@ -656,6 +656,11 @@ function renderReport() {
   // 设置快捷按钮
   var firstDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date<b.date?a:b;}).date : today();
   var lastDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date>b.date?a:b;}).date : today();
+  if (sessions.length === 0) {
+    // 无数据时仍显示日期控件，用默认日期
+    firstDate = today();
+    lastDate = today();
+  }
   document.getElementById('startDate').setAttribute('min', firstDate);
   document.getElementById('startDate').setAttribute('max', lastDate);
   document.getElementById('endDate').setAttribute('min', firstDate);
@@ -701,15 +706,14 @@ function applyRange(start, end, sessions) {
   if(!start||!end) return;
   var filtered = sessions.filter(function(s){return s.date>=start && s.date<=end;});
   var isSingle = (start===end) || (filtered.length===1);
-  document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(filtered.reduce(function(s,ss){return s+(ss.product?.sales||0);},0))+' 元';
+  var totalSales = filtered.reduce(function(s,ss){return s+(ss.product?.sales||0);},0);
+  document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(totalSales)+' 元' + (filtered.length===0?' · 该游戏暂无数据':'');
 
-  if(isSingle && filtered.length>0) {
-    // 单日模式
+  if(isSingle) {
     document.getElementById('rptDetailView').style.display='block';
     document.getElementById('rptTrendView').style.display='none';
-    renderSingleDay(filtered[0]);
+    renderSingleDay(filtered.length>0 ? filtered[0] : null);
   } else {
-    // 多日模式
     document.getElementById('rptDetailView').style.display='none';
     document.getElementById('rptTrendView').style.display='block';
     renderMultiDay(filtered);
@@ -717,7 +721,7 @@ function applyRange(start, end, sessions) {
 }
 
 function renderSingleDay(s) {
-  var t=s.traffic||{}, it=s.interaction||{}, p=s.product||{};
+  var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
   // 第一行：4个重点卡片
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
@@ -817,23 +821,23 @@ function renderSingleDay(s) {
 }
 
 function renderMultiDay(sessions) {
-  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0;
+  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0, cnt=sessions.length;
   sessions.forEach(function(s){
     totalGMV+=s.product?.sales||0; totalOrders+=s.product?.orders||0;
     totalExp+=s.traffic?.exposure||0; totalEntry+=s.traffic?.entry||0;
   });
   // KPI
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+sessions.length+' 场</div></div>',
+    '<div class="kpi-card"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+cnt+' 场</div></div>',
     '<div class="kpi-card"><div class="lbl">📦 总订单</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
     '<div class="kpi-card"><div class="lbl">👀 总曝光</div><div class="val">'+fmt(totalExp)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">🚪 总进房</div><div class="val">'+fmt(totalEntry)+'</div></div>',
   ].join('');
   document.getElementById('rptInteractKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(Math.round(totalGMV/sessions.length))+' 元</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(Math.round(totalExp/sessions.length))+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(cnt>0?Math.round(totalGMV/cnt):0)+' 元</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(cnt>0?Math.round(totalExp/cnt):0)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(totalOrders/sessions.length).toFixed(1)+' 单</div></div>',
+    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(1):'0.0')+' 单</div></div>',
   ].join('');
 
   // 多日支付渠道构成（从筛选时段计算）
