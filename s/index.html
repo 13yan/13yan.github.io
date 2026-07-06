@@ -419,10 +419,14 @@ function renderGameCharts(data) {
   var c1=document.getElementById('ovGameSalesChart');
   if(c1) charts.ovGameSales=new Chart(c1.getContext('2d'),{
     type:'bar',
-    data:{labels:gData.map(function(g){return g.name;}), datasets:[{label:'累计销售额',data:gData.map(function(g){return g.gmv;}),backgroundColor:['#1e3a8a','#059669','#d97706','#dc2626'],borderRadius:6,barPercentage:0.5}]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元';}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}},
-    // 用 afterDraw 在柱顶标注数值
-    plugins:[{id:'vl',afterDraw:function(c){var m=c.getDatasetMeta(0);m.data.forEach(function(e,i){var v=c.data.datasets[0].data[i];if(v>0){var x=e.x,y=e.y-8;c.ctx.save();c.ctx.fillStyle='#1e40af';c.ctx.font='bold 14px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='bottom';c.ctx.fillText(fmt(v)+' 元',x,y);c.ctx.restore();}})}}]}
+    data:{labels:['累计销售额'], datasets:gData.map(function(g,i){
+      return {label:g.name, data:[g.gmv], backgroundColor:['#1e3a8a','#d97706','#059669','#dc2626'][i]||'#6b7280', borderRadius:4, barPercentage:0.4};
+    })},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:12},usePointStyle:true,padding:16}},
+        tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' 元';}}}},
+      scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}},
+    plugins:[{id:'vl',afterDraw:function(c){c.data.datasets.forEach(function(ds,di){var m=c.getDatasetMeta(di);m.data.forEach(function(e,i){var v=ds.data[i];if(v>0){var x=e.x,y=e.y-8;c.ctx.save();c.ctx.fillStyle='#1e40af';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='bottom';c.ctx.fillText(fmt(v)+' 元',x,y);c.ctx.restore();}});})}}]}
   });
 }
 
