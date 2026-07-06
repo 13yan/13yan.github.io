@@ -518,6 +518,7 @@ function renderOverview() {
 }
 
 function assessRisk(sessions, isSingle) {
+  if (!sessions) return {items:[{level:'success', icon:'✅', title:'暂无数据', desc:'当前选择无直播数据'}], high:0, medium:0, low:0};
   var items = [], high=0, medium=0, low=0;
   var s = isSingle ? sessions : null;
   var t = s ? s.traffic||{} : {};
@@ -743,7 +744,7 @@ function renderSingleDay(s) {
   ].join('');
 
   // 支付渠道构成可视化（从当前场次取数据）
-  var paS = s.payment || {};
+  var paS = s?s.payment||{}:{};
   var paAndroid = paS.android || {}, paIos = paS.ios || {};
   var paAmt = paAndroid.amount||0, paIosAmt = paIos.amount||0;
   var paStl = paAndroid.settle||0, paIosStl = paIos.settle||0;
@@ -797,7 +798,15 @@ function renderSingleDay(s) {
   risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
   rh += '</ul>';
   document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">单日</span></div>' + rh;
+  // 无数据时清空图表并提前返回
+  if (!s) {
+    document.getElementById('rptDetailView').innerHTML = '';
+    document.getElementById('rptSubKpi').innerHTML = '';
+    destroyChart('rptPayAmount');destroyChart('rptPayUser');destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
+    return;
+  }
 
+  // 图表渲染
   setTimeout(function(){
     destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
     destroyChart('rptPayAmount');destroyChart('rptPayUser');
