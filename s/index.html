@@ -203,9 +203,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div id="ovRiskSection" class="risk-section"></div>
   <div class="section-title" style="margin-top:20px;">🎮 游戏对比 <span class="tag">多维度</span></div>
   <div class="chart-grid" id="ovGameCompareCharts" style="margin-bottom:20px;">
-    <div class="chart-card full"><h3>📊 各游戏累计销售额对比</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
-    <div class="chart-card"><h3>🤖 安卓渠道占比</h3><div class="chart-wrap"><canvas id="ovGameAndroidPctChart"></canvas></div></div>
-    <div class="chart-card"><h3>🍎 iOS渠道占比</h3><div class="chart-wrap"><canvas id="ovGameIosPctChart"></canvas></div></div>
+    <div class="chart-card full"><h3>📊 巨兽战场销售额 <span class="tag">累计</span></h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
+    <div class="chart-card"><h3>🥧 渠道占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="ovGameAndroidPctChart"></canvas></div></div>
+    <div class="chart-card"><h3>👥 渠道人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="ovGameIosPctChart"></canvas></div></div>
   </div>
   <div class="section-title">📈 月趋势 <span class="tag">逐月变化</span></div>
   <div class="chart-card" style="margin-bottom:20px;"><div class="chart-wrap tall"><canvas id="ovTrendChart"></canvas></div></div>
@@ -301,12 +301,12 @@ function render(data) {
 function renderGameCharts(data) {
   destroyChart('ovGameSales');destroyChart('ovGameAndroid');destroyChart('ovGameIos');
   var games = data.games || [];
-  if (games.length < 2) {
+  var all = data.sessions || [];
+  if (!games.length || !all.length) {
     document.getElementById('ovGameCompareCharts').style.display = 'none';
     return;
   }
   document.getElementById('ovGameCompareCharts').style.display = 'grid';
-  var all = data.sessions || [];
   // 计算各游戏数据
   var gData = games.map(function(g){
     var ss = all.filter(function(s){return s.game===g;});
@@ -320,18 +320,33 @@ function renderGameCharts(data) {
   });
   // 销售柱状图
   var c1=document.getElementById('ovGameSalesChart');
-  if(c1) charts.ovGameSales=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:gData.map(function(g){return g.name;}), datasets:[{label:'累计销售额',data:gData.map(function(g){return g.gmv;}),backgroundColor:['#1e3a8a','#059669','#d97706','#dc2626'],borderRadius:6,barPercentage:0.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元';}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
+  if(c1){
+    var barLabel = games.length > 1 ? gData.map(function(g){return g.name;}) : [gData[0].name+' 累计销售额'];
+    var barData = games.length > 1 ? gData.map(function(g){return g.gmv;}) : [gData[0].gmv];
+    charts.ovGameSales=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:barLabel, datasets:[{label:'累计销售额',data:barData,backgroundColor:['#1e3a8a','#059669','#d97706','#dc2626'],borderRadius:6,barPercentage:0.5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元';}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
+  }
   // 安卓渠道占比饼图
   var c2=document.getElementById('ovGameAndroidPctChart');
   if(c2){
     var totalA = gData.reduce(function(s,g){return s+g.aAmt;},0);
-    charts.ovGameAndroid=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name;}), datasets:[{data:gData.map(function(g){return g.aAmt;}),backgroundColor:['#1e3a8a','#059669','#d97706','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalA)*100).toFixed(1)+'%)';}}}}}});
+    var aLabels = games.length > 1 ? gData.map(function(g){return g.name;}) : ['3k-安卓 ('+((gData[0].aAmt/totalA)*100).toFixed(1)+'%)','3k-iOS ('+((gData[0].iAmt/totalA)*100).toFixed(1)+'%)'];
+    var aData = games.length > 1 ? gData.map(function(g){return g.aAmt;}) : [gData[0].aAmt, gData[0].iAmt];
+    charts.ovGameAndroid=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:aLabels, datasets:[{data:aData,backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalA)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 12px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
   }
   // iOS渠道占比饼图
   var c3=document.getElementById('ovGameIosPctChart');
   if(c3){
     var totalI = gData.reduce(function(s,g){return s+g.iAmt;},0);
-    charts.ovGameIos=new Chart(c3.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name;}), datasets:[{data:gData.map(function(g){return g.iAmt;}),backgroundColor:['#1e3a8a','#059669','#d97706','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalI)*100).toFixed(1)+'%)';}}}}}});
+    // 单游戏时显示人数占比
+    if (games.length === 1) {
+      var allSs = all.filter(function(s){return s.game===games[0];});
+      var aUsr=0, iUsr=0;
+      allSs.forEach(function(s){var p=s.payment||{}; aUsr+=p.android?.users||0; iUsr+=p.ios?.users||0;});
+      usrTotal = aUsr+iUsr;
+      var iLabels = ['3k-安卓 ('+((aUsr/usrTotal)*100).toFixed(0)+'%)','3k-iOS ('+((iUsr/usrTotal)*100).toFixed(0)+'%)'];
+      var iData = [aUsr, iUsr];
+      charts.ovGameIos=new Chart(c3.getContext('2d'),{type:'pie',data:{labels:iLabels, datasets:[{data:iData,backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/usrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 12px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+    }
   }
 }
 
