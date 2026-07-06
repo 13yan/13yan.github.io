@@ -11,8 +11,8 @@
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
-      "android": { "amount": 9519, "settle": 9509.898, "users": 8 },
-      "ios": { "amount": 2991, "settle": 2977.698, "users": 3 }
+      "android": { "amount": 9790, "settle": 9779.272, "users": 8 },
+      "ios": { "amount": 2720, "settle": 2708.324, "users": 3 }
     }
   },
   "sessions": [
@@ -32,7 +32,7 @@
       "traffic": { "exposure": 3275, "entry": 220, "entryRate": 0.0672, "avgOnline": 4, "maxOnline": 13 },
       "interaction": { "comments": 11, "commentRate": 0.05, "likes": 1737, "likeRate": 0.0227, "avgStay": "4.39min", "newFans": 3 },
       "product": { "sales": 3726, "exposure": 156, "clicks": 24, "orders": 4, "paymentOrders": 4, "exposureClickRate": 0.1538, "clickOrderRate": 0.1667 },
-      "payment": { "android": { "amount": 1511, "settle": 1501.934, "users": 2 }, "ios": { "amount": 2215, "settle": 2201.710, "users": 1 } }
+      "payment": { "android": { "amount": 1782, "settle": 1771.308, "users": 2 }, "ios": { "amount": 1944, "settle": 1932.336, "users": 1 } }
     },
     {
       "game": "巨兽战场",
