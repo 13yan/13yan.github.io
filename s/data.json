@@ -1,5 +1,6 @@
 {
   "updatedAt": "2026-07-05",
+  "games": ["巨兽战场"],
   "storeSummary": {
     "totalGMV": 0,
     "totalOrders": 0,
@@ -16,6 +17,7 @@
   },
   "sessions": [
     {
+      "game": "巨兽战场",
       "date": "2026-07-02",
       "label": "7月2日直播",
       "traffic": { "exposure": 2721, "entry": 193, "entryRate": 0.0709, "avgOnline": 5, "maxOnline": 19 },
@@ -24,6 +26,7 @@
       "payment": { "android": { "amount": 1006, "settle": 1005.994, "users": 1 }, "ios": { "amount": 128, "settle": 127.994, "users": 1 } }
     },
     {
+      "game": "巨兽战场",
       "date": "2026-07-03",
       "label": "7月3日直播",
       "traffic": { "exposure": 3275, "entry": 220, "entryRate": 0.0672, "avgOnline": 4, "maxOnline": 13 },
@@ -32,6 +35,7 @@
       "payment": { "android": { "amount": 1326, "settle": 1325.988, "users": 2 }, "ios": { "amount": 1944, "settle": 1943.994, "users": 1 } }
     },
     {
+      "game": "巨兽战场",
       "date": "2026-07-04",
       "label": "7月4日直播",
       "traffic": { "exposure": 1459, "entry": 245, "entryRate": 0.1679, "avgOnline": 3, "maxOnline": 7 },
@@ -40,6 +44,7 @@
       "payment": { "android": { "amount": 3974, "settle": 3973.982, "users": 3 }, "ios": { "amount": 0, "settle": 0, "users": 0 } }
     },
     {
+      "game": "巨兽战场",
       "date": "2026-07-05",
       "label": "7月5日直播",
       "traffic": { "exposure": 1264, "entry": 223, "entryRate": 0.1764, "avgOnline": 2, "maxOnline": 6 },
