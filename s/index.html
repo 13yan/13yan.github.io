@@ -261,7 +261,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 
 <script>
 var charts = {}, currentData = null;
-var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994 };
+var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994, androidUsers: 1, iosUsers: 1 };
 
 function fmt(n) { if (n===null||n===undefined) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
@@ -608,17 +608,9 @@ function renderSingleDay(s) {
   rh += '</ul>';
   document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">单日</span></div>' + rh;
 
-  // 明细表
-  document.getElementById('rptDetailTable').innerHTML = [
-    '<tr class="section"><td colspan="4">📺 直播间流量指标</td></tr><tr><th>曝光人数</th><th>进房人数</th><th>进房率</th><th>平均在线</th></tr><tr><td>'+fmt(t.exposure)+'</td><td>'+fmt(t.entry)+'</td><td>'+(t.entryRate?pct(t.entryRate):'-')+'</td><td>'+fmt(t.avgOnline)+' 人</td></tr>',
-    '<tr class="section"><td colspan="4">💬 互动指标</td></tr><tr><th>评论人数</th><th>评论率</th><th>人均停留</th><th>新增粉丝</th></tr><tr><td>'+fmt(it.comments)+'</td><td>'+(it.commentRate?pct(it.commentRate):'-')+'</td><td>'+(it.avgStay||'-')+'</td><td>'+fmt(it.newFans)+'</td></tr>',
-    '<tr class="section"><td colspan="4">🛒 商品数据</td></tr><tr><th>销售额</th><th>曝光人数</th><th>点击人数</th><th>成交人数</th></tr><tr><td style="color:#10b981;font-weight:700;">'+fmt(p.sales)+'</td><td>'+fmt(p.exposure)+'</td><td>'+fmt(p.clicks)+'</td><td style="color:#ef4444;font-weight:700;">'+fmt(p.orders)+'</td></tr>',
-    '<tr class="section"><td colspan="4">📊 转化率</td></tr><tr><th>曝光→点击</th><th>点击→成交</th><th colspan="2">综合转化</th></tr><tr><td style="color:#f59e0b;">'+(p.exposureClickRate?pct(p.exposureClickRate):'-')+'</td><td style="color:#ef4444;">'+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</td><td colspan="2" style="color:#ef4444;">'+(p.exposureClickRate&&p.clickOrderRate?pct(p.exposureClickRate*p.clickOrderRate):'-')+'</td></tr>',
-  ].join('');
-
-  // 图表渲染
   setTimeout(function(){
     destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
+    destroyChart('rptPayAmount');destroyChart('rptPayUser');
     var c1=document.getElementById('rptTrafficChart');
     if(c1) charts.rptTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[t.exposure,t.entry,t.avgOnline,t.maxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
     var c2=document.getElementById('rptInteractChart');
@@ -626,11 +618,10 @@ function renderSingleDay(s) {
     var c3=document.getElementById('rptFunnelChart');
     if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
     // 支付渠道饼图
-    destroyChart('rptPayAmount');destroyChart('rptPayUser');
     var pa=document.getElementById('rptPayAmountChart');
-    if(pa) charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[1006,128],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/1134)*100).toFixed(1)+'%)';}}}}}});
+    if(pa) charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[payData.android,payData.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/(payData.android+payData.ios))*100).toFixed(1)+'%)';}}}}}});
     var pu=document.getElementById('rptPayUserChart');
-    if(pu) charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[1,1],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/2)*100).toFixed(0)+'%)';}}}}}});
+    if(pu) charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[payData.androidUsers||1,payData.iosUsers||1],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/((payData.androidUsers||1)+(payData.iosUsers||1)))*100).toFixed(0)+'%)';}}}}}});
   }, 50);
 }
 
@@ -691,31 +682,22 @@ function renderMultiDay(sessions) {
     '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountMultiChart"></canvas></div></div>',
     '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserMultiChart"></canvas></div></div>',
     '</div>',
-    '<div class="chart-card full" style="margin-bottom:16px;"><h3>📈 每日销售额趋势</h3><div class="chart-wrap tall"><canvas id="rptTrendChart"></canvas></div></div>',
-    '<div class="section-title">📋 场次明细 <span class="tag">'+sorted.length+' 场</span></div>',
-    '<ul class="session-list" id="rptSessionList"></ul>',
+    '<div class="chart-card full" style="margin-bottom:16px;"><h3>📈 每日销售额趋势 <span class="tag">柱状+折线</span></h3><div class="chart-wrap tall"><canvas id="rptTrendChart"></canvas></div></div>',
   ].join('');
 
-  // 场次列表
-  var list=document.getElementById('rptSessionList');
-  if(list) {
-    list.innerHTML='';
-    sorted.slice().reverse().forEach(function(s){
-      var li=document.createElement('li');li.className='session-item';
-      li.innerHTML='<div class="left"><div class="s-date">'+s.date+'</div><div class="s-brief">曝光 '+fmt(s.traffic?.exposure)+' · 进房 '+fmt(s.traffic?.entry)+' · 成交 '+fmt(s.product?.orders)+'</div></div>'+
-        '<div class="right"><div class="s-sales">'+fmt(s.product?.sales)+' 元</div><div class="s-orders">'+(s.product?.orders||0)+' 单</div></div>';
-      list.appendChild(li);
-    });
-  }
-
-  // 趋势图
+  // 趋势图（柱状+折线）
   setTimeout(function(){
     destroyChart('rptTrend');destroyChart('rptPayAmountMulti');destroyChart('rptPayUserMulti');
     var c=document.getElementById('rptTrendChart');
     if(c) charts.rptTrend=new Chart(c.getContext('2d'),{
       type:'bar',
-      data:{labels:sorted.map(function(s){return s.date.substring(5);}), datasets:[{label:'销售额',data:sorted.map(function(s){return s.product?.sales||0;}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.6}]},
-      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}
+      data:{labels:sorted.map(function(s){return s.date.substring(5);}), datasets:[
+        {label:'销售额',data:sorted.map(function(s){return s.product?.sales||0;}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.5,order:2},
+        {label:'趋势',data:sorted.map(function(s){return s.product?.sales||0;}),type:'line',borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',borderWidth:2,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.3,order:1}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' 元'}}}},
+        scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}
     });
     // 多日支付渠道饼图
     if (payTotal > 0) {
