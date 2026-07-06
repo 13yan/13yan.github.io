@@ -212,7 +212,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <!-- 日期选择器 -->
   <div class="date-picker-bar">
     <div class="presets" id="datePresets">
-      <button data-range="today">今日</button>
+      <button data-range="today">最新</button>
       <button data-range="7d" class="active">近7日</button>
       <button data-range="30d">近30日</button>
       <button data-range="month">本月</button>
@@ -451,6 +451,26 @@ function assessRisk(sessions, isSingle) {
       if (maxG > 0 && minG === 0) {
         items.push({level:'warning', icon:'🟡', title:'存在零成交场次', desc:'周期内有场次0成交，建议对比分析其与成交场次的差异'});
         medium++;
+      }
+    }
+    // 多日支付渠道风险评估
+    var totalAndroid=0, totalIOS=0;
+    sessions.forEach(function(sx){
+      var p = sx.payment || {};
+      totalAndroid += p.android?.amount||0;
+      totalIOS += p.ios?.amount||0;
+    });
+    var payTotalChk = totalAndroid + totalIOS;
+    if (payTotalChk > 0) {
+      var androidPctMulti = totalAndroid / payTotalChk * 100;
+      if (androidPctMulti >= 80) {
+        items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过80%警戒线，抖店利润收益存在高度风险'});
+        high++;
+      } else if (androidPctMulti >= 50) {
+        items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过50%关注线，抖店利润收益存在中度风险'});
+        medium++;
+      } else {
+        items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，低于50%，支付渠道结构合理'});
       }
     }
     if (items.length === 0) {
