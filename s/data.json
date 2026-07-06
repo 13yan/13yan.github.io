@@ -31,7 +31,7 @@
       "label": "7月3日直播",
       "traffic": { "exposure": 3275, "entry": 220, "entryRate": 0.0672, "avgOnline": 4, "maxOnline": 13 },
       "interaction": { "comments": 11, "commentRate": 0.05, "likes": 1737, "likeRate": 0.0227, "avgStay": "4.39min", "newFans": 3 },
-      "product": { "sales": 3726, "exposure": 156, "clicks": 24, "orders": 4, "paymentOrders": 4, "exposureClickRate": 0.1538, "clickOrderRate": 0.1667 },
+      "product": { "sales": 3726, "exposure": 156, "clicks": 24, "orders": 4, "paymentOrders": 6, "exposureClickRate": 0.1538, "clickOrderRate": 0.1667 },
       "payment": { "android": { "amount": 1782, "settle": 1771.308, "users": 2 }, "ios": { "amount": 1944, "settle": 1932.336, "users": 1 } }
     },
     {
