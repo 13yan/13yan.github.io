@@ -55,7 +55,7 @@
     {
       "game": "巨兽战场",
       "date": "2026-07-06",
-      "label": "7月6日直播",
+      "label": "7月6日（无直播）",
       "traffic": { "exposure": 0, "entry": 0, "entryRate": 0, "avgOnline": 0, "maxOnline": 0 },
       "interaction": { "comments": 0, "commentRate": 0, "likes": 0, "likeRate": 0, "avgStay": "0min", "newFans": 0 },
       "product": { "sales": 648, "exposure": 0, "clicks": 0, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
