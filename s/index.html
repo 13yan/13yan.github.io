@@ -239,7 +239,10 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div id="ovRiskSection" class="risk-section"></div>
   <div class="section-title" style="margin-top:20px;">🎮 游戏对比 <span class="tag">累计销售额</span></div>
   <div id="ovGameCompareCharts" style="margin-bottom:20px;">
-    <div class="chart-card"><h3>📊 各游戏累计销售额</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
+    <div class="chart-grid" style="margin-top:0;">
+      <div class="chart-card"><h3>📊 各游戏累计销售额</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
+      <div class="chart-card"><h3>🥧 销售额占比</h3><div class="chart-wrap"><canvas id="ovGamePieChart"></canvas></div></div>
+    </div>
   </div>
   <div class="section-title">📈 月趋势 <span class="tag">逐月变化</span></div>
   <div class="chart-card" style="margin-bottom:20px;"><div class="chart-wrap tall"><canvas id="ovTrendChart"></canvas></div></div>
@@ -401,7 +404,7 @@ document.getElementById('helpOverlay').addEventListener('click', function(e){
 
 // ===== 全店汇总 =====
 function renderGameCharts(data) {
-  destroyChart('ovGameSales');
+  destroyChart('ovGameSales');destroyChart('ovGamePie');
   var games = data.games || [];
   var all = data.sessions || [];
   if (!games.length || !all.length) {
@@ -428,6 +431,12 @@ function renderGameCharts(data) {
       scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}},
     plugins:[{id:'vl',afterDraw:function(c){c.data.datasets.forEach(function(ds,di){var m=c.getDatasetMeta(di);m.data.forEach(function(e,i){var v=ds.data[i];if(v>0){var x=e.x,y=e.y-8;c.ctx.save();c.ctx.fillStyle='#1e40af';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='bottom';c.ctx.fillText(fmt(v)+' 元',x,y);c.ctx.restore();}});})}}]}
   });
+  // 饼图：销售额占比
+  var c2=document.getElementById('ovGamePieChart');
+  if(c2){
+    var pieTotal = gData.reduce(function(s,g){return s+g.gmv;},0);
+    charts.ovGamePie=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name+' ('+((g.gmv/pieTotal)*100).toFixed(1)+'%)';}), datasets:[{data:gData.map(function(g){return g.gmv;}),backgroundColor:['#1e3a8a','#d97706','#059669','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+  }
 }
 
 function renderOverview() {
