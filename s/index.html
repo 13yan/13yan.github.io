@@ -535,8 +535,13 @@ function assessRisk(sessions, isSingle) {
   var p = s ? s.product||{} : {};
 
   if (isSingle && s) {
-    // 单日风险评估
-    if (t.entryRate !== undefined && t.entryRate < 0.03) {
+    // 判断是否为非直播数据（流量数据全为0）
+    var noLive = (!t.exposure && !t.entry && !t.avgOnline);
+    if (noLive) {
+      items.push({level:'info', icon:'📋', title:'今日无直播安排', desc:'该日无直播场次，数据为其他渠道产生的订单'});
+    } else {
+      // 单日风险评估（直播相关）
+      if (t.entryRate !== undefined && t.entryRate < 0.03) {
       items.push({level:'danger', icon:'🔴', title:'进房率过低', desc:'进房率仅 '+pct(t.entryRate)+'，低于健康线3%，建议优化直播封面图和标题'});
       high++;
     } else if (t.entryRate !== undefined && t.entryRate < 0.05) {
@@ -575,6 +580,7 @@ function assessRisk(sessions, isSingle) {
 
     if (items.length === 0) {
       items.push({level:'success', icon:'✅', title:'数据健康', desc:'本场直播各项指标均在健康范围内，继续维持'});
+    }
     }
 
     // 支付渠道风险评估（从当前场次取数据）
