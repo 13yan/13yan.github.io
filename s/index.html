@@ -1017,7 +1017,7 @@ function renderSalesChannels(sessions, data) {
         '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(liveO)+' 笔 | 占比 '+((total>0?(liveS/total*100):0)).toFixed(1)+'%</div>',
       '</div>',
       '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
-        '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🏪 店铺自营</div>',
+        '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🏪 店铺自营（非直播）</div>',
         '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(selfS)+' 元</div>',
         '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(selfO)+' 笔 | 占比 '+((total>0?(selfS/total*100):0)).toFixed(1)+'%</div>',
       '</div>',
@@ -1031,10 +1031,10 @@ function renderSalesChannels(sessions, data) {
   destroyChart('scSalesChart');destroyChart('scOrdersChart');
   setTimeout(function(){
     var totalS = liveS + selfS, totalO = liveO + selfO;
-    var pieLabels = ['直播间 ('+(totalS>0?(liveS/totalS*100).toFixed(1):'0.0')+'%)','店铺自营 ('+(totalS>0?(selfS/totalS*100).toFixed(1):'0.0')+'%)'];
+    var pieLabels = ['直播间 ('+(totalS>0?(liveS/totalS*100).toFixed(1):'0.0')+'%)','店铺自营（非直播） ('+(totalS>0?(selfS/totalS*100).toFixed(1):'0.0')+'%)'];
     var c1=document.getElementById('scSalesChart');
     if(c1 && totalS>0) charts.scSalesChart=new Chart(c1.getContext('2d'),{type:'pie',data:{labels:pieLabels,datasets:[{data:[liveS,selfS],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalS)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
-    var ordLabels = ['直播间 ('+(totalO>0?(liveO/totalO*100).toFixed(1):'0.0')+'%)','店铺自营 ('+(totalO>0?(selfO/totalO*100).toFixed(1):'0.0')+'%)'];
+    var ordLabels = ['直播间 ('+(totalO>0?(liveO/totalO*100).toFixed(1):'0.0')+'%)','店铺自营（非直播） ('+(totalO>0?(selfO/totalO*100).toFixed(1):'0.0')+'%)'];
     var c2=document.getElementById('scOrdersChart');
     if(c2 && totalO>0) charts.scOrdersChart=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:ordLabels,datasets:[{data:[liveO,selfO],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 笔 ('+((ctx.parsed/totalO)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
   }, 50);
