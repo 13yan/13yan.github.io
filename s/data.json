@@ -12,7 +12,7 @@
     "analysis": "",
     "paymentChannels": {
       "android": { "amount": 9790, "settle": 9779.272, "users": 8 },
-      "ios": { "amount": 3368, "settle": 3352.436, "users": 4 }
+      "ios": { "amount": 3374, "settle": 3358.400, "users": 5 }
     }
   },
   "sessions": [
@@ -22,8 +22,8 @@
       "label": "7月2日直播",
       "traffic": { "exposure": 2721, "entry": 193, "entryRate": 0.0709, "avgOnline": 5, "maxOnline": 19 },
       "interaction": { "comments": 12, "commentRate": 0.0622, "likes": 729, "likeRate": 0.0622, "avgStay": "5.53min", "newFans": 8 },
-      "product": { "sales": 1134, "exposure": 126, "clicks": 20, "orders": 2, "paymentOrders": 4, "exposureClickRate": 0.1587, "clickOrderRate": 0.1 },
-      "payment": { "android": { "amount": 1006, "settle": 1005.994, "users": 1 }, "ios": { "amount": 128, "settle": 127.994, "users": 1 } }
+      "product": { "sales": 1134, "exposure": 126, "clicks": 20, "orders": 3, "paymentOrders": 5, "exposureClickRate": 0.1587, "clickOrderRate": 0.1 },
+      "payment": { "android": { "amount": 1006, "settle": 1005.994, "users": 1 }, "ios": { "amount": 134, "settle": 133.958, "users": 2 } }
     },
     {
       "game": "巨兽战场",
