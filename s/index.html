@@ -294,6 +294,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <!-- 销售渠道构成 -->
   <div id="rptSalesChannels"></div>
 
+  <!-- 直播数据（归类到销售渠道下方） -->
+  <div id="rptLiveData" style="margin-top:20px;"></div>
+
   <!-- 数据分析说明 -->
   <div class="analysis-box" id="rptAnalysisNote">
     <strong>📋 数据分析说明</strong><br>
@@ -796,25 +799,34 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
-  // 第一行：4个重点卡片
+  // 第一行：3个核心卡片（总销售额、总订单、总成交人数）
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales||0)+'</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+(p.sales?fmt(Math.round(p.sales*0.994*100)/100):'-')+'</div><div class="sub">扣除抖店0.6%服务费金额</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">📋 支付订单数</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders||0)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">💰 总销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales||0)+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">📋 总订单（支付订单数）</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">✅ 总支付人数（成交人数）</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders||0)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
   ].join('');
-  // 第二行：流量+互动 4个
-  document.getElementById('rptInteractKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
-  ].join('');
-  // 第三行：2列（点赞、停留）
-  document.getElementById('rptSubKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
+  // 直播数据（移动到销售渠道下方）
+  var liveHtml = [
+    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
+    // 预估结算+流量
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">💳 预估结算金额</div><div class="val up">'+(p.sales?fmt(Math.round(p.sales*0.994*100)/100):'-')+'</div><div class="sub">扣除抖店0.6%服务费</div></div>',
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans||0)+'</div></div>',
+    '</div>',
+    // 互动+停留
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes||0)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
+    '</div>',
   ].join('');
+  // 写入直播数据到下方模块，清空旧容器
+  document.getElementById('rptLiveData').innerHTML = liveHtml;
+  document.getElementById('rptInteractKpi').innerHTML = '';
+  document.getElementById('rptSubKpi').innerHTML = '';
 
   // 支付渠道构成可视化（从当前场次取数据）
   var paS = s?s.payment||{}:{};
@@ -908,24 +920,37 @@ function renderSingleDay(s) {
 }
 
 function renderMultiDay(sessions) {
-  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0, cnt=sessions.length;
+  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0, cnt=sessions.length, totalBuyers=0;
   sessions.forEach(function(s){
-    totalGMV+=s.product?.sales||0; totalOrders+=s.product?.orders||0;
+    totalGMV+=s.product?.sales||0; totalOrders+=s.product?.paymentOrders||s.product?.orders||0;
     totalExp+=s.traffic?.exposure||0; totalEntry+=s.traffic?.entry||0;
+    totalBuyers+=s.product?.orders||0;
   });
-  // KPI
+  // KPI（顶部只保留3个核心）
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+cnt+' 场</div></div>',
-    '<div class="kpi-card"><div class="lbl">📦 总订单</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
-    '<div class="kpi-card"><div class="lbl">👀 总曝光</div><div class="val">'+fmt(totalExp)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 总进房</div><div class="val">'+fmt(totalEntry)+'</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+cnt+' 场</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">📦 总订单（支付订单数）</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
+    '<div class="kpi-card featured"><div class="lbl">✅ 总支付人数（成交人数）</div><div class="val">'+fmt(totalBuyers)+' 人</div></div>',
   ].join('');
-  document.getElementById('rptInteractKpi').innerHTML = [
+  // 直播数据（下方模块）
+  var liveHtml = [
+    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">👀 总曝光人数</div><div class="val">'+fmt(totalExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 总进房人数</div><div class="val">'+fmt(totalEntry)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(cnt>0?Math.round(totalGMV/cnt):0)+' 元</div></div>',
     '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(cnt>0?Math.round(totalExp/cnt):0)+'</div></div>',
+    '</div>',
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(1):'0.0')+' 单</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmt(sessions.reduce(function(s,x){return s+(x.product?.exposure||0);},0))+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmt(sessions.reduce(function(s,x){return s+(x.product?.clicks||0);},0))+'</div></div>',
+    '</div>',
   ].join('');
+  document.getElementById('rptLiveData').innerHTML = liveHtml;
+  document.getElementById('rptInteractKpi').innerHTML = '';
+  document.getElementById('rptSubKpi').innerHTML = '';
 
   // 多日支付渠道构成（从筛选时段计算）
   var payTotal = 0, androidAmt = 0, androidUsr = 0, iosAmt = 0, iosUsr = 0;
