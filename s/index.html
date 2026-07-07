@@ -807,8 +807,12 @@ function renderSingleDay(s) {
     '<div class="kpi-card" style="background:#fff;"><div class="lbl">📋 总订单（支付订单数）</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
   ].join('');
   // 直播数据（移动到销售渠道下方）
+  var noLive = (!t.exposure && !t.entry && !t.avgOnline);
   var liveHtml = [
-    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
+    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>' + (noLive?'<div style="font-size:12px;color:var(--text3);padding:8px 0 12px;">今日无直播排期</div>':''),
+  ];
+  if (!noLive) {
+    liveHtml = liveHtml.concat([
     // 流量
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure||0)+'</div></div>',
@@ -822,7 +826,7 @@ function renderSingleDay(s) {
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
     '</div>',
-  ].join('');
+    ]); }
 
   // 支付渠道构成可视化（从当前场次取数据）
   var paS = s?s.payment||{}:{};
@@ -872,7 +876,7 @@ function renderSingleDay(s) {
     '</div></div>',
   ].join('');
   // 写入直播数据到下方模块（含漏斗+转化图表）
-  document.getElementById('rptLiveData').innerHTML = liveHtml + chartHtml;
+  document.getElementById('rptLiveData').innerHTML = liveHtml.join('') + (noLive?'':chartHtml);
   document.getElementById('rptInteractKpi').innerHTML = '';
   document.getElementById('rptSubKpi').innerHTML = '';
 
