@@ -823,10 +823,6 @@ function renderSingleDay(s) {
     '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
     '</div>',
   ].join('');
-  // 写入直播数据到下方模块，清空旧容器
-  document.getElementById('rptLiveData').innerHTML = liveHtml + (typeof chartHtml!='undefined'?chartHtml:'');
-  document.getElementById('rptInteractKpi').innerHTML = '';
-  document.getElementById('rptSubKpi').innerHTML = '';
 
   // 支付渠道构成可视化（从当前场次取数据）
   var paS = s?s.payment||{}:{};
@@ -875,6 +871,10 @@ function renderSingleDay(s) {
     '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
     '</div></div>',
   ].join('');
+  // 写入直播数据到下方模块（含漏斗+转化图表）
+  document.getElementById('rptLiveData').innerHTML = liveHtml + chartHtml;
+  document.getElementById('rptInteractKpi').innerHTML = '';
+  document.getElementById('rptSubKpi').innerHTML = '';
 
   // 数据风险评估
   var risk = assessRisk(s, true);
