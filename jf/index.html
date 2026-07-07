@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>减肥计划 · 个人看板</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --primary: #3b82f6;
+    --primary-light: #dbeafe;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --text: #1e293b;
+    --text2: #64748b;
+    --border: #e2e8f0;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    line-height: 1.6;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .header p { opacity: 0.85; font-size: 14px; }
+
+  /* Cards row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+  }
+  .stat-card .label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .stat-card .value { font-size: 26px; font-weight: 700; }
+  .stat-card .sub { font-size: 13px; color: var(--text2); margin-top: 2px; }
+
+  /* Section */
+  .section {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .section h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { font-weight: 600; color: var(--text2); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td:last-child, th:last-child { text-align: right; }
+
+  /* Progress bar */
+  .progress-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin: 12px 0;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transition: width 0.6s ease;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .tag-green { background: #d1fae5; color: #065f46; }
+  .tag-yellow { background: #fef3c7; color: #92400e; }
+  .tag-blue { background: #dbeafe; color: #1e40af; }
+
+  .badge {
+    display: inline-block;
+    min-width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  .tip-box {
+    background: #f0fdf4;
+    border-left: 4px solid var(--success);
+    padding: 14px 16px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    margin-top: 12px;
+    color: #166534;
+  }
+
+  .chart-container {
+    position: relative;
+    height: 200px;
+    margin: 12px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>🏋️ 个人减肥计划</h1>
+    <p>34岁 · 最大心率 186 bpm · 燃脂区 112~130 bpm · 每周5练</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="label">📅 计划周期</div>
+      <div class="value">12周</div>
+      <div class="sub">2026.07.07 - 2026.09.29</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">🎯 目标减重</div>
+      <div class="value">10~12<span style="font-size:16px">斤</span></div>
+      <div class="sub">运动 + 饮食控制</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">🔥 每周消耗</div>
+      <div class="value">2,000<span style="font-size:16px"> 大卡</span></div>
+      <div class="sub">5次 × 400大卡/次</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">📉 预期月均</div>
+      <div class="value">~2<span style="font-size:16px"> kg</span></div>
+      <div class="sub">健康减脂速度</div>
+    </div>
+  </div>
+
+  <!-- Progress overview -->
+  <div class="section">
+    <h2>📊 进度概览</h2>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:4px;">
+      <span>当前</span>
+      <span>目标：-5kg</span>
+    </div>
+    <div class="progress-bar">
+      <div class="fill" style="width:0%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);">
+      <span>🏁 开始</span>
+      <span id="progressLabel">0% — 还需减 5kg</span>
+    </div>
+    <div class="tip-box">
+      💡 每周同一时间（建议周日早上空腹）称重并记录，更新进度条
+    </div>
+  </div>
+
+  <!-- 一、运动计划 -->
+  <div class="section">
+    <h2>🏃 一、运动计划（每周一至周五）</h2>
+    <table>
+      <tr><th>阶段</th><th>时段</th><th>坡度</th><th>速度</th><th>时长</th><th>心率区间</th></tr>
+      <tr><td><span class="tag tag-blue">热身</span></td><td>0-5min</td><td>5%</td><td>2.5 mph</td><td>5min</td><td>热身</td></tr>
+      <tr><td><span class="tag tag-yellow">燃脂段 🎯</span></td><td>5-25min</td><td>8-10%</td><td>3.0-3.3 mph</td><td>20min</td><td>112~130 bpm</td></tr>
+      <tr><td><span class="tag tag-green">有氧段</span></td><td>25-55min</td><td>10-12%</td><td>3.5-4.0 mph</td><td>30min</td><td>130~145 bpm</td></tr>
+      <tr><td><span class="tag tag-blue">冷身</span></td><td>55-60min</td><td>5%</td><td>2.5 mph</td><td>5min</td><td>恢复</td></tr>
+    </table>
+    <div style="margin-top:12px;font-size:13px;color:var(--text2);">
+      ✅ 休息日（周六日）不运动，但注意控制饮食
+    </div>
+  </div>
+
+  <!-- 二、饮食控制 -->
+  <div class="section">
+    <h2>🥗 二、饮食控制建议</h2>
+    <div class="grid-2">
+      <div>
+        <table>
+          <tr><th>餐次</th><th>建议</th></tr>
+          <tr><td>🌅 早餐</td><td>蛋白质 + 粗粮，避免纯碳水</td></tr>
+          <tr><td>☀️ 午餐</td><td>正常吃，少油少糖，米饭减半</td></tr>
+          <tr><td>🌙 晚餐</td><td>低碳水，多吃蔬菜瘦肉，晚8点后不进食</td></tr>
+        </table>
+      </div>
+      <div>
+        <table>
+          <tr><th>类别</th><th>建议</th></tr>
+          <tr><td>🚫 戒掉</td><td>奶茶、含糖饮料、宵夜、油炸</td></tr>
+          <tr><td>💧 多喝</td><td>每天 2L 水，饭前一杯增加饱腹感</td></tr>
+          <tr><td>📉 缺口</td><td>每天少摄入 300~500 大卡</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 三、分阶段目标 -->
+  <div class="section">
+    <h2>🎯 三、分阶段目标</h2>
+    <table>
+      <tr><th>阶段</th><th>周期</th><th>目标</th><th>方法</th></tr>
+      <tr>
+        <td><span class="tag tag-blue">第一阶段</span></td>
+        <td>第1-2周</td>
+        <td>建立习惯</td>
+        <td>适应每周5练，饮食先戒糖</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-yellow">第二阶段</span></td>
+        <td>第3-6周</td>
+        <td>稳定掉秤</td>
+        <td>运动按计划，饮食严格控卡</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-green">第三阶段</span></td>
+        <td>第7-12周</td>
+        <td>加速燃脂</td>
+        <td>坡度拉高到12%，可加入力量</td>
+      </tr>
+      <tr>
+        <td><span style="color:var(--text2)">维持期</span></td>
+        <td>3个月后</td>
+        <td>巩固不反弹</td>
+        <td>保持3-4练/周，饮食已成习惯</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 四、预期效果 -->
+  <div class="section">
+    <h2>📈 四、预期效果对比</h2>
+    <div class="chart-container">
+      <canvas id="expectChart"></canvas>
+    </div>
+    <table>
+      <tr><th>方案</th><th>第1个月</th><th>第2个月</th><th>第3个月</th></tr>
+      <tr>
+        <td>只运动（5练/周）</td>
+        <td>-1~1.5kg</td>
+        <td>-2~3kg</td>
+        <td>-3~4.5kg</td>
+      </tr>
+      <tr style="background:var(--primary-light);font-weight:600;">
+        <td>✅ 运动 + 饮食控制</td>
+        <td><span style="color:var(--success)">-2kg</span></td>
+        <td><span style="color:var(--success)">-4kg</span></td>
+        <td><span style="color:var(--success)">-6kg</span></td>
+      </tr>
+    </table>
+    <div class="tip-box" style="margin-bottom:0;">
+      📌 第一周体重可能下降较快（主要为水分），后续趋于稳定。平台期正常，坚持即可突破。
+    </div>
+  </div>
+
+  <!-- 五、每周记录 -->
+  <div class="section">
+    <h2>📝 五、每周记录</h2>
+    <table>
+      <tr><th>周次</th><th>日期</th><th>体重(kg)</th><th>变化</th><th>腰围(cm)</th><th>备注</th></tr>
+      <tr><td>第0周</td><td>07/07</td><td>—</td><td>—</td><td>—</td><td>起始日</td></tr>
+      <tr><td>第1周</td><td>07/14</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第2周</td><td>07/21</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第3周</td><td>07/28</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第4周</td><td>08/04</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第5周</td><td>08/11</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第6周</td><td>08/18</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第7周</td><td>08/25</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第8周</td><td>09/01</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第9周</td><td>09/08</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第10周</td><td>09/15</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第11周</td><td>09/22</td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>第12周</td><td>09/29</td><td></td><td></td><td></td><td>🎯 目标日</td></tr>
+    </table>
+  </div>
+
+  <!-- 六、注意事项 -->
+  <div class="section">
+    <h2>💡 六、注意事项</h2>
+    <table>
+      <tr><td>⏰</td><td>每周同一时间、空腹、穿同样衣服称重</td></tr>
+      <tr><td>📏</td><td>量腰围比看体重秤更准——长肌肉不减重也是进步</td></tr>
+      <tr><td>😴</td><td>尽量11点前睡，熬夜降低代谢</td></tr>
+      <tr><td>🔄</td><td>某天没练不用补，正常继续就行</td></tr>
+      <tr><td>⛰️</td><td>平台期（1-2周体重不变）正常，可换方式打破</td></tr>
+      <tr><td>📸</td><td>每月拍照对比，视觉效果比数字更直观</td></tr>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;padding:20px 0;color:var(--text2);font-size:13px;">
+    坚持就是胜利 💪 · 每一点努力都算数
+  </div>
+</div>
+
+<script>
+// Progress update from localStorage
+(function(){
+  const saved = localStorage.getItem('jf_weight_kg');
+  const startWeight = parseFloat(localStorage.getItem('jf_start_kg'));
+  if(saved && startWeight) {
+    const current = parseFloat(saved);
+    const diff = startWeight - current;
+    const pct = Math.min(Math.round(diff / 5 * 100), 100);
+    document.querySelector('.progress-bar .fill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = pct + '% — 已减 ' + diff.toFixed(1) + 'kg，还需减 ' + (5 - diff).toFixed(1) + 'kg';
+  }
+})();
+
+// Expect chart
+new Chart(document.getElementById('expectChart'), {
+  type: 'bar',
+  data: {
+    labels: ['第1个月', '第2个月', '第3个月'],
+    datasets: [
+      {
+        label: '只运动（5练/周）',
+        data: [-1.2, -2.5, -4],
+        backgroundColor: 'rgba(148,163,184,0.6)',
+        borderColor: 'rgba(148,163,184,1)',
+        borderWidth: 1,
+        borderRadius: 4,
+      },
+      {
+        label: '运动 + 饮食控制 ✅',
+        data: [-2, -4, -6],
+        backgroundColor: 'rgba(16,185,129,0.6)',
+        borderColor: 'rgba(16,185,129,1)',
+        borderWidth: 2,
+        borderRadius: 4,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        reverse: true,
+        title: { display: true, text: '累计减重 (kg)' },
+        ticks: { callback: v => v + 'kg' }
+      }
+    },
+    plugins: {
+      legend: { position: 'bottom' },
+      tooltip: {
+        callbacks: {
+          label: ctx => ctx.dataset.label + ': ' + Math.abs(ctx.raw) + 'kg'
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
