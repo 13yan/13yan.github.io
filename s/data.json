@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-05",
+  "updatedAt": "2026-07-06",
   "games": ["巨兽战场", "我的使命"],
   "storeSummary": {
     "totalGMV": 0,
@@ -7,12 +7,12 @@
     "totalPayUsers": 0,
     "estimatedProfit": 0,
     "profitRate": 0,
-    "totalSessions": 4,
+    "totalSessions": 5,
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
       "android": { "amount": 9790, "settle": 9779.272, "users": 8 },
-      "ios": { "amount": 2720, "settle": 2708.324, "users": 3 }
+      "ios": { "amount": 3368, "settle": 3352.436, "users": 4 }
     }
   },
   "sessions": [
@@ -51,6 +51,15 @@
       "interaction": { "comments": 6, "commentRate": 0.0269, "likes": 785, "likeRate": 0.0179, "avgStay": "2.52min", "newFans": 2 },
       "product": { "sales": 3676, "exposure": 137, "clicks": 13, "orders": 3, "paymentOrders": 3, "exposureClickRate": 0.0949, "clickOrderRate": 0.2308 },
       "payment": { "android": { "amount": 3028, "settle": 3027.988, "users": 2 }, "ios": { "amount": 648, "settle": 647.994, "users": 1 } }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-06",
+      "label": "7月6日直播",
+      "traffic": { "exposure": 0, "entry": 0, "entryRate": 0, "avgOnline": 0, "maxOnline": 0 },
+      "interaction": { "comments": 0, "commentRate": 0, "likes": 0, "likeRate": 0, "avgStay": "0min", "newFans": 0 },
+      "product": { "sales": 648, "exposure": 0, "clicks": 0, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
+      "payment": { "android": { "amount": 0, "settle": 0, "users": 0 }, "ios": { "amount": 648, "settle": 644.112, "users": 1 } }
     }
   ]
 }
