@@ -15,6 +15,13 @@
       "ios": { "amount": 3374, "settle": 3358.400, "users": 5 }
     }
   },
+  "salesChannels": [
+    {"game":"巨兽战场","date":"2026-07-02","label":"7月2日","live":{"sales":1110,"orders":4},"self":{"sales":30,"orders":1}},
+    {"game":"巨兽战场","date":"2026-07-03","label":"7月3日","live":{"sales":1944,"orders":2},"self":{"sales":1782,"orders":4}},
+    {"game":"巨兽战场","date":"2026-07-04","label":"7月4日","live":{"sales":976,"orders":2},"self":{"sales":3010,"orders":3}},
+    {"game":"巨兽战场","date":"2026-07-05","label":"7月5日","live":{"sales":678,"orders":2},"self":{"sales":3016,"orders":4}},
+    {"game":"巨兽战场","date":"2026-07-06","label":"7月6日","live":{"sales":0,"orders":0},"self":{"sales":648,"orders":1}}
+  ],
   "sessions": [
     {
       "game": "巨兽战场",
