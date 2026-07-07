@@ -305,6 +305,18 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 </div>
 
 <button class="help-btn" id="helpBtn" title="数据说明">📋</button>
+
+<!-- ===== 权限登录浮层 ===== -->
+<div id="accessOverlay" class="help-overlay" style="z-index:999;display:flex;">
+  <div class="help-panel" style="max-width:400px;text-align:center;">
+    <h2 style="border:none;font-size:20px;">🔐 抖店数据工作台</h2>
+    <p style="font-size:13px;color:var(--text2);margin:12px 0 20px;">请输入访问密钥</p>
+    <input id="accessKeyInput" type="password" placeholder="输入密钥" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;outline:none;text-align:center;">
+    <button id="accessKeyBtn" style="margin-top:12px;width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">确认</button>
+    <p id="accessError" style="color:var(--down);font-size:12px;margin-top:8px;display:none;">密钥错误，请重试</p>
+  </div>
+</div>
+
 <div class="help-overlay" id="helpOverlay">
   <div class="help-panel">
     <button class="close-btn" id="helpClose">&times;</button>
@@ -363,6 +375,43 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 </div>
 <script>
 var charts = {}, currentData = null;
+var allowedGames = null; // null = all games
+
+// ===== 权限控制 =====
+var ACCESS_KEYS = {
+  'js123': ['巨兽战场'],
+  'sm456': ['我的使命'],
+  'admin999': null // 全部游戏
+};
+
+function checkAccess() {
+  var params = new URLSearchParams(window.location.search);
+  var key = params.get('key') || localStorage.getItem('ds_key');
+  if (key && ACCESS_KEYS[key] !== undefined) {
+    allowedGames = ACCESS_KEYS[key];
+    localStorage.setItem('ds_key', key);
+    document.getElementById('accessOverlay').style.display = 'none';
+    return true;
+  }
+  document.getElementById('accessOverlay').style.display = 'flex';
+  return false;
+}
+
+document.getElementById('accessKeyBtn').addEventListener('click', function(){
+  var val = document.getElementById('accessKeyInput').value.trim();
+  if (ACCESS_KEYS[val] !== undefined) {
+    allowedGames = ACCESS_KEYS[val];
+    localStorage.setItem('ds_key', val);
+    document.getElementById('accessOverlay').style.display = 'none';
+    document.getElementById('accessError').style.display = 'none';
+    fetch('./data.json').then(function(r){return r.json();}).then(function(data){render(data);});
+  } else {
+    document.getElementById('accessError').style.display = 'block';
+  }
+});
+document.getElementById('accessKeyInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') document.getElementById('accessKeyBtn').click();
+});
 var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994, androidUsers: 1, iosUsers: 1 };
 
 function fmt(n) { if (n===null||n===undefined||isNaN(n)||n===NaN) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
@@ -386,6 +435,11 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
 // ===== 主渲染 =====
 function render(data) {
   currentData = data;
+  // 权限过滤：只展示有权限的游戏
+  if (allowedGames) {
+    data.games = data.games.filter(function(g){return allowedGames.indexOf(g) !== -1;});
+    data.sessions = data.sessions.filter(function(s){return allowedGames.indexOf(s.game) !== -1;});
+  }
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   renderOverview(); renderReport();
@@ -938,7 +992,10 @@ function renderMultiDay(sessions) {
 
 function destroyChart(n){if(charts[n]){charts[n].destroy();delete charts[n];}}
 
-fetch('./data.json').then(function(r){return r.json();}).then(function(data){render(data);}).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
+fetch('./data.json').then(function(r){return r.json();}).then(function(data){
+  if (checkAccess()) render(data);
+  else { currentData = data; }
+}).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
 </script>
 </body>
 </html>
