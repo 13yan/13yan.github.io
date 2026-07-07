@@ -1022,29 +1022,21 @@ function renderSalesChannels(sessions, data) {
         '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(selfO)+' 笔 | 占比 '+((total>0?(selfS/total*100):0)).toFixed(1)+'%</div>',
       '</div>',
     '</div>',
-    '<div class="chart-card"><h3>📊 每日销售渠道对比</h3><div class="chart-wrap tall"><canvas id="scChart"></canvas></div></div>',
+    '<div class="chart-grid" style="margin-top:0;">',
+    '<div class="chart-card"><h3>🥧 销售额占比 <span class="tag">直播间 vs 自营</span></h3><div class="chart-wrap"><canvas id="scSalesChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>🥧 订单数占比 <span class="tag">直播间 vs 自营</span></h3><div class="chart-wrap"><canvas id="scOrdersChart"></canvas></div></div>',
+    '</div>',
   ].join('');
-  // 柱状图
-  destroyChart('scChart');
+  // 饼图：销售额占比 + 订单数占比
+  destroyChart('scSalesChart');destroyChart('scOrdersChart');
   setTimeout(function(){
-    var c=document.getElementById('scChart');
-    if(c){
-      var labels=sc.map(function(x){return x.label;});
-      charts.scChart=new Chart(c.getContext('2d'),{
-        type:'bar',
-        data:{
-          labels:labels,
-          datasets:[
-            {label:'直播间', data:sc.map(function(x){return x.live.sales||0;}), backgroundColor:'#1e3a8a', borderRadius:4, barPercentage:0.4},
-            {label:'店铺自营', data:sc.map(function(x){return x.self.sales||0;}), backgroundColor:'#d97706', borderRadius:4, barPercentage:0.4}
-          ]
-        },
-        options:{responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{position:'bottom',labels:{font:{size:11},usePointStyle:true}}},
-          scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}
-        }
-      });
-    }
+    var totalS = liveS + selfS, totalO = liveO + selfO;
+    var pieLabels = ['直播间 ('+(totalS>0?(liveS/totalS*100).toFixed(1):'0.0')+'%)','店铺自营 ('+(totalS>0?(selfS/totalS*100).toFixed(1):'0.0')+'%)'];
+    var c1=document.getElementById('scSalesChart');
+    if(c1 && totalS>0) charts.scSalesChart=new Chart(c1.getContext('2d'),{type:'pie',data:{labels:pieLabels,datasets:[{data:[liveS,selfS],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalS)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+    var ordLabels = ['直播间 ('+(totalO>0?(liveO/totalO*100).toFixed(1):'0.0')+'%)','店铺自营 ('+(totalO>0?(selfO/totalO*100).toFixed(1):'0.0')+'%)'];
+    var c2=document.getElementById('scOrdersChart');
+    if(c2 && totalO>0) charts.scOrdersChart=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:ordLabels,datasets:[{data:[liveO,selfO],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 笔 ('+((ctx.parsed/totalO)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
   }, 50);
 }
 
