@@ -824,7 +824,7 @@ function renderSingleDay(s) {
     '</div>',
   ].join('');
   // 写入直播数据到下方模块，清空旧容器
-  document.getElementById('rptLiveData').innerHTML = liveHtml;
+  document.getElementById('rptLiveData').innerHTML = liveHtml + (typeof chartHtml!='undefined'?chartHtml:'');
   document.getElementById('rptInteractKpi').innerHTML = '';
   document.getElementById('rptSubKpi').innerHTML = '';
 
@@ -857,8 +857,10 @@ function renderSingleDay(s) {
     '<div class="chart-grid" style="margin-top:0;">',
     '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountChart"></canvas></div></div>',
     '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserChart"></canvas></div></div>',
-    '</div>',
-
+    '</div></div>',
+  ].join('');
+  // 漏斗/互动/转化图表 + 转化链路 → 移到直播数据
+  var chartHtml = [
     '<div class="chart-grid">',
     '<div class="chart-card"><h3>📈 流量漏斗 <span class="tag">曝光→进房→在线</span></h3><div class="chart-wrap"><canvas id="rptTrafficChart"></canvas></div></div>',
     '<div class="chart-card"><h3>💬 互动指标 <span class="tag">雷达图</span></h3><div class="chart-wrap"><canvas id="rptInteractChart"></canvas></div></div>',
