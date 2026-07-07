@@ -58,7 +58,7 @@
       "label": "7月6日（无直播）",
       "traffic": { "exposure": 0, "entry": 0, "entryRate": 0, "avgOnline": 0, "maxOnline": 0 },
       "interaction": { "comments": 0, "commentRate": 0, "likes": 0, "likeRate": 0, "avgStay": "0min", "newFans": 0 },
-      "product": { "sales": 648, "exposure": 0, "clicks": 0, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
+      "product": { "sales": 648, "exposure": 40, "clicks": 6, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
       "payment": { "android": { "amount": 0, "settle": 0, "users": 0 }, "ios": { "amount": 648, "settle": 644.112, "users": 1 } }
     }
   ]
