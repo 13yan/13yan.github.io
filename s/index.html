@@ -210,6 +210,14 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   .summary-grid { grid-template-columns:1fr; }
   .main { padding:12px; }
 }
+/* 维度选择按钮 */
+.dimension-bar { display:flex; gap:8px; margin:12px 0 16px; flex-wrap:wrap; }
+.dim-btn {
+  padding:6px 16px; border:1px solid var(--border); border-radius:20px; background:#fff;
+  font-size:12px; color:var(--text2); cursor:pointer; transition:all 0.15s; font-weight:500;
+}
+.dim-btn:hover { border-color:var(--primary); color:var(--primary); }
+.dim-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
 </style>
 </head>
 <body>
@@ -228,6 +236,11 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 <!-- Tab: 全店汇总 -->
 <div class="tab-content active" id="tabOverview">
   <div class="header"><h1>📊 全店汇总</h1><div class="sub">累计经营数据与趋势</div></div>
+  <div class="dimension-bar" id="ovDimensionBar">
+    <button class="dim-btn active" data-dim="all">累计汇总</button>
+    <button class="dim-btn" data-dim="month">单月数据</button>
+    <button class="dim-btn" data-dim="settle">结算周期数据</button>
+  </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
   <div class="summary-grid-2" id="ovPayCards"></div>
@@ -464,18 +477,33 @@ document.getElementById('helpOverlay').addEventListener('click', function(e){
 });
 
 // ===== 全店汇总 =====
+var ovDimension = 'all';
+
+function filterSessionsByDim(sessions, dim) {
+  if (dim === 'all') return sessions;
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = String(now.getMonth() + 1).padStart(2, '0');
+  if (dim === 'month' || dim === 'settle') {
+    // 自然月 / 结算周期：当年当月
+    var prefix = year + '-' + month;
+    return sessions.filter(function(s){ return s.date && s.date.substring(0,7) === prefix; });
+  }
+  return sessions;
+}
+
 function renderGameCharts(data) {
   destroyChart('ovGameSales');destroyChart('ovGamePie');
   var games = data.games || [];
-  var all = data.sessions || [];
-  if (!games.length || !all.length) {
+  var dimSessions = filterSessionsByDim(data.sessions || [], ovDimension);
+  if (!games.length || !dimSessions.length) {
     document.getElementById('ovGameCompareCharts').style.display = 'none';
     return;
   }
   document.getElementById('ovGameCompareCharts').style.display = 'block';
-  // 计算各游戏累计销售额
+  // 计算各游戏累计销售额（按维度筛选）
   var gData = games.map(function(g){
-    var ss = all.filter(function(s){return s.game===g;});
+    var ss = dimSessions.filter(function(s){return s.game===g;});
     var gmv = ss.reduce(function(s, sx){return s + (sx.product?.sales||0);}, 0);
     return {name:g, gmv:gmv};
   });
@@ -502,9 +530,13 @@ function renderGameCharts(data) {
 
 function renderOverview() {
   var data=currentData; if(!data) return;
-  var sessions = data.sessions || [];
+  var allSessions = data.sessions || [];
+  var sessions = filterSessionsByDim(allSessions, ovDimension);
   var s=data.storeSummary||{}, months=data.monthlySummary||[];
   var grid=document.getElementById('ovSummaryGrid');
+  // 更新维度标签
+  var dimLabels = {'all':'累计经营数据与趋势','month':'2026年7月数据','settle':'结算周期（2026年7月）'};
+  document.querySelector('#tabOverview .sub').textContent = dimLabels[ovDimension] || '累计经营数据与趋势';
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
     var autoGMV = sessions.reduce(function(sum,ss){return sum + (ss.product?.sales||0);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
@@ -519,30 +551,36 @@ function renderOverview() {
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
-    // 支付渠道占比情况
-    var pc = s.paymentChannels || {};
+    // 支付渠道占比情况（从筛选场次中计算）
+    var pcAmt = {android:0, ios:0}, pcUsr = {android:0, ios:0}, pcSettle = {android:0, ios:0};
+    sessions.forEach(function(sx){
+      var p = sx.payment || {};
+      pcAmt.android += p.android?.amount||0; pcAmt.ios += p.ios?.amount||0;
+      pcUsr.android += p.android?.users||0; pcUsr.ios += p.ios?.users||0;
+      pcSettle.android += p.android?.settle||0; pcSettle.ios += p.ios?.settle||0;
+    });
     var pcCards = document.getElementById('ovPayCards');
-    var payTotal = (pc.android?.amount||0) + (pc.ios?.amount||0);
+    var payTotal = pcAmt.android + pcAmt.ios;
     if (payTotal > 0) {
-      var androidPct = (pc.android.amount / payTotal * 100).toFixed(1);
-      var iosPct = (pc.ios.amount / payTotal * 100).toFixed(1);
-      var androidSettle = pc.android.settle !== undefined ? Math.round(pc.android.settle * 100) / 100 : Math.round(pc.android.amount * 0.994 * 100) / 100;
-      var iosSettle = pc.ios.settle !== undefined ? Math.round(pc.ios.settle * 100) / 100 : Math.round(pc.ios.amount * 0.994 * 100) / 100;
+      var androidPct = (pcAmt.android / payTotal * 100).toFixed(1);
+      var iosPct = (pcAmt.ios / payTotal * 100).toFixed(1);
+      var androidSettle = pcSettle.android || Math.round(pcAmt.android * 0.994 * 100) / 100;
+      var iosSettle = pcSettle.ios || Math.round(pcAmt.ios * 0.994 * 100) / 100;
       pcCards.innerHTML = [
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pc.android.amount)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元 · 占比 '+androidPct+'%</div></div>',
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pc.ios.amount)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元 · 占比 '+iosPct+'%</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.android)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元 · 占比 '+androidPct+'%</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.ios)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元 · 占比 '+iosPct+'%</div></div>',
       ].join('');
       // 支付渠道饼图
       setTimeout(function(){
         destroyChart('ovPayAmount');destroyChart('ovPayUser');
         var pa=document.getElementById('ovPayAmountChart');
-        var payTotalAmt = pc.android.amount+pc.ios.amount;
-        var payLabelAmt = ['3k-安卓 ('+((pc.android.amount/payTotalAmt)*100).toFixed(1)+'%)','3k-iOS ('+((pc.ios.amount/payTotalAmt)*100).toFixed(1)+'%)'];
-        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pc.android.amount,pc.ios.amount],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        var payTotalAmt = pcAmt.android+pcAmt.ios;
+        var payLabelAmt = ['3k-安卓 ('+((pcAmt.android/payTotalAmt)*100).toFixed(1)+'%)','3k-iOS ('+((pcAmt.ios/payTotalAmt)*100).toFixed(1)+'%)'];
+        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
         var pu=document.getElementById('ovPayUserChart');
-        var payTotalUsr = (pc.android.users||0)+(pc.ios.users||0);
-        var payLabelUsr = ['3k-安卓 ('+(((pc.android.users||0)/payTotalUsr)*100).toFixed(0)+'%)','3k-iOS ('+(((pc.ios.users||0)/payTotalUsr)*100).toFixed(0)+'%)'];
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pc.android.users||0,pc.ios.users||0],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/((pc.android.users||0)+(pc.ios.users||0)))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
+        var payLabelUsr = ['3k-安卓 ('+((pcUsr.android/payTotalUsr)*100).toFixed(0)+'%)','3k-iOS ('+((pcUsr.ios/payTotalUsr)*100).toFixed(0)+'%)'];
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
       }, 50);
       // 数据风险评估（支付渠道）
       var riskEl = document.getElementById('ovRiskSection');
@@ -561,7 +599,6 @@ function renderOverview() {
   renderGameCharts(data);
   // 月趋势图 - 自动从 sessions 按月汇总
   destroyChart('ovTrend');
-  var sessions = data.sessions || [];
   if (sessions.length > 0) {
     // 自动按月份分组汇总
     var monthMap = {};
@@ -1112,6 +1149,16 @@ fetch('./data.json').then(function(r){return r.json();}).then(function(data){
   if (checkAccess()) render(data);
   else { currentData = data; }
 }).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
+
+// 维度切换按钮
+document.getElementById('ovDimensionBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.dim-btn');
+  if (!btn || btn.classList.contains('active')) return;
+  this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  ovDimension = btn.getAttribute('data-dim');
+  renderOverview();
+});
 </script>
 </body>
 </html>
