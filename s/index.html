@@ -263,7 +263,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <!-- 日期选择器 -->
   <div class="date-picker-bar">
     <div class="presets" id="datePresets">
-      <button data-range="today" class="active">最新</button>
+      <button data-range="today" class="active">单日最新</button>
       <button data-range="7d">近7日</button>
       <button data-range="30d">近30日</button>
       <button data-range="month">本月</button>
@@ -355,7 +355,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>游戏筛选</td><td>顶部下拉选择游戏，只展示该游戏的场次数据</td></tr>
-      <tr><td>日期筛选</td><td>可选「最新」「近7日」「近30日」「本月」「自定义」，日期范围受实际数据日期限制</td></tr>
+      <tr><td>日期筛选</td><td>可选「单日最新」「近7日」「近30日」「本月」「自定义」，日期范围受实际数据日期限制</td></tr>
       <tr><td>单日模式</td><td>选择单日时展示完整 KPI 卡片、支付渠道、流量漏斗、互动雷达、转化漏斗等</td></tr>
       <tr><td>多日模式</td><td>选择多日范围时展示汇总 KPI、支付渠道构成、每日趋势图</td></tr>
       <tr><td>数据风险评估</td><td>单日：进房率、评论率、点击率、支付渠道风险等多维度评估；多日：平均进房率、零成交场次、支付渠道风险</td></tr>
@@ -772,7 +772,7 @@ function renderReport() {
     applyRange(startEl.value, this.value, sessions);
   });
 
-  // 默认最新（以实际数据最后日期为准）
+  // 默认单日最新（以实际数据最后日期为准）
   var e = lastDate;
   document.getElementById('startDate').value = e;
   document.getElementById('endDate').value = e;
