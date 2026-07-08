@@ -1081,7 +1081,7 @@ function renderMultiDay(sessions) {
         var pct = (flowData[i]/maxFlow*100).toFixed(0);
         return '<div style="display:flex;align-items:center;margin-bottom:10px;gap:8px;"><div style="width:70px;font-size:11px;color:var(--text2);text-align:right;">'+lbl+'</div><div style="flex:1;height:22px;background:#f3f4f6;border-radius:4px;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:'+flowColors[i]+';border-radius:4px;transition:width 0.3s;"></div></div><div style="width:60px;font-size:12px;font-weight:600;color:var(--text);text-align:right;">'+fmt(flowData[i])+'</div></div>';
       }).join('')+'</div>';
-      c4.parentElement.innerHTML = '<div class="chart-wrap"><h3 style="font-size:13px;font-weight:600;margin-bottom:10px;">🔄 转化链路 <span class="tag">周期汇总</span></h3>'+flowHtml+'</div>';
+      c4.parentElement.innerHTML = flowHtml;
     }
   }, 80);
 
