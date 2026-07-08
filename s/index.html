@@ -357,11 +357,13 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
-      <tr><td>顶部 3 卡片</td><td>所有游戏数据叠加：累计销售额 = 所有场次 sales 之和；预估结算金额 = 累计销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 所有场次 paymentOrders 之和</td></tr>
-      <tr><td>支付渠道占比</td><td>读取 data.json 中 paymentChannels 的累计值展示安卓/iOS 金额和占比饼图</td></tr>
+      <tr><td>维度筛选</td><td>顶部按钮切换：累计汇总（全部场次）/ 单月数据（当月自然月）/ 结算周期数据（按合同自然月结算周期筛选），切换后所有模块联动更新</td></tr>
+      <tr><td>顶部 3 卡片</td><td>按所选维度叠加：累计销售额 = 筛选场次 sales 之和；预估结算金额 = 筛选销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 筛选场次 paymentOrders 之和</td></tr>
+      <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
+      <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
       <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;50% 为✅健康，&gt;50% 为🟡中度风险（抖店利润收益存在风险），&gt;80% 为🔴高度风险</td></tr>
       <tr><td>月趋势</td><td>所有场次按月份分组，累计销售额和订单数</td></tr>
-      <tr><td>游戏对比</td><td>各游戏独立统计累计销售额，柱状图展示 + 柱顶标注数值</td></tr>
+      <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值</td></tr>
     </table>
 
     <h3>四、基础数据报表 数据逻辑</h3>
@@ -369,8 +371,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>游戏筛选</td><td>顶部下拉选择游戏，只展示该游戏的场次数据</td></tr>
       <tr><td>日期筛选</td><td>可选「单日最新」「近7日」「近30日」「本月」「自定义」，日期范围受实际数据日期限制</td></tr>
-      <tr><td>单日模式</td><td>选择单日时展示完整 KPI 卡片、支付渠道、流量漏斗、互动雷达、转化漏斗等</td></tr>
+      <tr><td>单日模式</td><td>选择单日时展示完整 KPI 卡片、支付渠道、流量漏斗、互动雷达、转化漏斗、直播数据等</td></tr>
       <tr><td>多日模式</td><td>选择多日范围时展示汇总 KPI、支付渠道构成、每日趋势图</td></tr>
+      <tr><td>核心数据关注</td><td>显示支付渠道金额占比 + 销售渠道流水占比（直播间 vs 店铺自营）</td></tr>
       <tr><td>数据风险评估</td><td>单日：进房率、评论率、点击率、支付渠道风险等多维度评估；多日：平均进房率、零成交场次、支付渠道风险</td></tr>
     </table>
 
