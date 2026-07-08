@@ -33,6 +33,19 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 .risk-med { color:#d97706; font-weight:600; }
 .risk-ok { color:#16a34a; font-weight:600; }
 .section-desc { font-size:12px; color:#6b7280; margin-bottom:12px; line-height:1.7; }
+/* 竞品对比可视化条 */
+.comp-bar-wrap { display:flex; align-items:center; gap:6px; justify-content:flex-end; }
+.comp-bar { height:14px; border-radius:3px; min-width:2px; transition:width 0.3s; }
+.comp-bar.our { background:#1e40af; }
+.comp-bar.c1 { background:#d97706; }
+.comp-bar.c2 { background:#059669; }
+.comp-num { font-size:11px; white-space:nowrap; color:#374151; min-width:60px; text-align:right; }
+.comp-row { display:flex; align-items:center; padding:5px 0; border-bottom:1px solid #f3f4f6; }
+.comp-row .label { width:80px; font-size:11px; color:#6b7280; flex-shrink:0; }
+.comp-row .bars { flex:1; display:flex; flex-direction:column; gap:3px; }
+.comp-row .bar-item { display:flex; align-items:center; gap:4px; }
+.comp-row .bar-item .bar { height:12px; border-radius:3px; min-width:2px; }
+.comp-row .bar-item .tag { font-size:10px; color:#6b7280; min-width:50px; }
 </style>
 </head>
 <body><div class="container">
@@ -95,13 +108,21 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <div class="section-desc">与同类游戏抖店对比，定位差距与机会</div>
 
 <h3>核心指标对比</h3>
-<table>
-<tr><th>指标</th><th class="num" style="color:#1e40af;">策略游戏馆（我们）</th><th class="num" style="color:#d97706;">星球购 Planet go</th><th class="num" style="color:#059669;">水世界收藏馆</th></tr>
-<tr><td>在售商品数</td><td class="num">15</td><td class="num">10</td><td class="num">29</td></tr>
-<tr><td>商品点击人数</td><td class="num">31</td><td class="num">1万-2.5万</td><td class="num">1万-2.5万</td></tr>
-<tr><td>用户支付金额</td><td class="num">8,510</td><td class="num">750万-1000万</td><td class="num">1000万-2500万</td></tr>
-<tr><td>点击成交转化率</td><td class="num">19.35%</td><td class="num up">30%+ ↑</td><td class="num up">30%+ ↑</td></tr>
-</table>
+<div class="comp-row"><div class="label">在售商品数</div><div class="bars">
+<div class="bar-item"><span class="bar our" style="width:52%;"></span><span class="tag" style="color:#1e40af;">我们 15</span></div>
+<div class="bar-item"><span class="bar c1" style="width:34%;"></span><span class="tag" style="color:#d97706;">星球购 10</span></div>
+<div class="bar-item"><span class="bar c2" style="width:100%;"></span><span class="tag" style="color:#059669;">水世界 29</span></div>
+</div></div>
+<div class="comp-row"><div class="label">支付金额</div><div class="bars">
+<div class="bar-item"><span class="bar our" style="width:0.3%;"></span><span class="tag" style="color:#1e40af;">我们 8,510</span></div>
+<div class="bar-item"><span class="bar c1" style="width:40%;"></span><span class="tag" style="color:#d97706;">星球购 750万+</span></div>
+<div class="bar-item"><span class="bar c2" style="width:100%;"></span><span class="tag" style="color:#059669;">水世界 1,000万+</span></div>
+</div></div>
+<div class="comp-row"><div class="label">转化率</div><div class="bars">
+<div class="bar-item"><span class="bar our" style="width:65%;"></span><span class="tag" style="color:#1e40af;">我们 19.35%</span></div>
+<div class="bar-item"><span class="bar c1" style="width:100%;"></span><span class="tag" style="color:#d97706;">星球购 30%+ ↑</span></div>
+<div class="bar-item"><span class="bar c2" style="width:100%;"></span><span class="tag" style="color:#059669;">水世界 30%+ ↑</span></div>
+</div></div>
 <div class="highlight warn" style="margin-top:8px;">
 🟡 <b>关键差距：</b>竞店转化率30%+ vs 我们19.35%；竞店商品点击人数在万级，我们仅31人。流量规模和转化效率均有显著差距。
 </div>
@@ -109,14 +130,14 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <h3 style="margin-top:20px;">👆 商品点击人数 — 分渠道对比</h3>
 <table>
 <tr><th>流量来源</th><th class="num" style="color:#1e40af;">策略游戏馆</th><th class="num" style="color:#d97706;">星球购</th><th class="num" style="color:#059669;">水世界</th></tr>
-<tr><td>搜索</td><td class="num">23</td><td class="num">2,500-5,000</td><td class="num">1万-2.5万</td></tr>
-<tr><td>购后页面</td><td class="num">3</td><td class="num">2,500-5,000</td><td class="num">1,000-2,500</td></tr>
-<tr><td>合作达人</td><td class="num">3</td><td class="num">5,000-7,500</td><td class="num">250-500</td></tr>
+<tr><td>搜索</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">23</td><td class="num" style="background:#f0fdf4;">2,500-5,000</td><td class="num" style="background:#f0fdf4;">1万-2.5万</td></tr>
+<tr><td>购后页面</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">3</td><td class="num" style="background:#f0fdf4;">2,500-5,000</td><td class="num">1,000-2,500</td></tr>
+<tr><td>合作达人</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">3</td><td class="num" style="background:#f0fdf4;">5,000-7,500</td><td class="num">250-500</td></tr>
 <tr><td>直播间溢出</td><td class="num">2</td><td class="num">100-250</td><td class="num">100-250</td></tr>
 <tr><td>短视频溢出</td><td class="num">1</td><td class="num">100-250</td><td class="num">250-500</td></tr>
 <tr><td>消息</td><td class="num">1</td><td class="num">250-500</td><td class="num">250-500</td></tr>
-<tr><td>购物车</td><td class="num">0</td><td class="num">50-100</td><td class="num">250-500</td></tr>
-<tr><td>底 tab - 我</td><td class="num">0</td><td class="num">0-50</td><td class="num">500-750</td></tr>
+<tr><td>购物车</td><td class="num" style="background:#fef2f2;color:#dc2626;">0</td><td class="num">50-100</td><td class="num">250-500</td></tr>
+<tr><td>底 tab - 我</td><td class="num" style="background:#fef2f2;color:#dc2626;">0</td><td class="num">0-50</td><td class="num">500-750</td></tr>
 </table>
 <div class="highlight warn" style="margin-top:8px;">
 🟡 <b>核心差距在搜索和合作达人渠道。</b>竞店搜索流量是千/万级，我们仅23。合作达人渠道竞店5000-7500，我们只有3。需重点提升搜索SEO和达人合作规模。
@@ -125,11 +146,11 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <h3 style="margin-top:20px;">💰 用户支付金额 — 分渠道对比</h3>
 <table>
 <tr><th>流量来源</th><th class="num" style="color:#1e40af;">策略游戏馆</th><th class="num" style="color:#d97706;">星球购</th><th class="num" style="color:#059669;">水世界</th></tr>
-<tr><td>搜索</td><td class="num">2,016</td><td class="num">100万-250万</td><td class="num">750万-1000万</td></tr>
+<tr><td>搜索</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">2,016</td><td class="num" style="background:#f0fdf4;">100万-250万</td><td class="num" style="background:#f0fdf4;">750万-1000万</td></tr>
 <tr><td>其他</td><td class="num">6,452</td><td class="num">500-750</td><td class="num">10万-25万</td></tr>
-<tr><td>购后页面</td><td class="num">36</td><td class="num">250万-500万</td><td class="num">250万-500万</td></tr>
-<tr><td>合作达人</td><td class="num">0</td><td class="num">250万-500万</td><td class="num">0-250</td></tr>
-<tr><td>消息</td><td class="num">0</td><td class="num">10万-25万</td><td class="num">25万-50万</td></tr>
+<tr><td>购后页面</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">36</td><td class="num" style="background:#f0fdf4;">250万-500万</td><td class="num" style="background:#f0fdf4;">250万-500万</td></tr>
+<tr><td>合作达人</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">0</td><td class="num" style="background:#f0fdf4;">250万-500万</td><td class="num">0-250</td></tr>
+<tr><td>消息</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">0</td><td class="num" style="background:#f0fdf4;">10万-25万</td><td class="num" style="background:#f0fdf4;">25万-50万</td></tr>
 </table>
 <div class="highlight" style="margin-top:8px;">
 🔴 <b>支付金额差距巨大。</b>竞店通过搜索和合作达人渠道获得百万级支付金额，我们这两块几乎为零。建议重点向商务咨询：竞品在搜索SEO和达人合作上的具体操作方式。
@@ -138,10 +159,10 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <h3 style="margin-top:20px;">📈 点击成交转化率 — 分渠道对比</h3>
 <table>
 <tr><th>流量来源</th><th class="num" style="color:#1e40af;">策略游戏馆</th><th class="num" style="color:#d97706;">星球购</th><th class="num" style="color:#059669;">水世界</th></tr>
-<tr><td>购后页面</td><td class="num">66.67%</td><td class="num">30%+</td><td class="num">30%+</td></tr>
-<tr><td>搜索</td><td class="num">17.39%</td><td class="num up">30%+ ↑</td><td class="num up">30%+ ↑</td></tr>
-<tr><td>短视频溢出</td><td class="num">1%</td><td class="num up">30%+ ↑</td><td class="num up">30%+ ↑</td></tr>
-<tr><td>其他</td><td class="num">1%</td><td class="num">20%-25%</td><td class="num">30%+</td></tr>
+<tr><td>购后页面</td><td class="num" style="background:#f0fdf4;font-weight:700;color:#059669;">66.67%</td><td class="num">30%+</td><td class="num">30%+</td></tr>
+<tr><td>搜索</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">17.39%</td><td class="num" style="background:#f0fdf4;">30%+ ↑</td><td class="num" style="background:#f0fdf4;">30%+ ↑</td></tr>
+<tr><td>短视频溢出</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">1%</td><td class="num" style="background:#f0fdf4;">30%+ ↑</td><td class="num" style="background:#f0fdf4;">30%+ ↑</td></tr>
+<tr><td>其他</td><td class="num" style="background:#fef2f2;color:#dc2626;">1%</td><td class="num">20%-25%</td><td class="num" style="background:#f0fdf4;">30%+</td></tr>
 </table>
 <div class="highlight" style="margin-top:8px;">
 🔴 <b>搜索转化率竞店30%+，我们仅17.39%；短视频溢出转化率竞店30%+，我们仅1%。</b>说明搜索落地页和短视频引流后的承接页存在明显优化空间。
