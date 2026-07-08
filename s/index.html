@@ -1008,7 +1008,28 @@ function renderMultiDay(sessions) {
     '<div class="kpi-card" style="background:#fff;"><div class="lbl">💳 预估结算金额</div><div class="val up">'+fmt(Math.round(totalGMV*0.994*100)/100)+' 元</div><div class="sub">扣除抖店0.6%服务费</div></div>',
     '<div class="kpi-card" style="background:#fff;"><div class="lbl">📦 总订单（支付订单数）</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
   ].join('');
-  // 直播数据（下方模块）
+  // 直播数据（下方模块+图表）
+  // 计算汇总数据用于图表
+  var totalAvgOnline = 0, totalMaxOnline = 0, totalComments = 0, totalLikes = 0, totalNewFans = 0, totalAvgStay = 0;
+  var totalPExp = 0, totalPClicks = 0, totalPOrders = 0;
+  sessions.forEach(function(s){
+    var t = s.traffic || {}, it = s.interaction || {}, p = s.product || {};
+    totalAvgOnline += t.avgOnline || 0;
+    totalMaxOnline = Math.max(totalMaxOnline, t.maxOnline || 0);
+    totalComments += it.comments || 0;
+    totalLikes += it.likes || 0;
+    totalNewFans += it.newFans || 0;
+    totalAvgStay += parseFloat(it.avgStay) || 0;
+    totalPExp += p.exposure || 0;
+    totalPClicks += p.clicks || 0;
+    totalPOrders += p.orders || 0;
+  });
+  var avgOnlineVal = cnt > 0 ? Math.round(totalAvgOnline / cnt) : 0;
+  var avgStayVal = cnt > 0 ? (totalAvgStay / cnt).toFixed(2) : '0';
+  var entryRateVal = totalExp > 0 ? (totalEntry / totalExp) : 0;
+  var expClickRate = totalPExp > 0 ? (totalPClicks / totalPExp) : 0;
+  var clickOrderRate = totalPClicks > 0 ? (totalPOrders / totalPClicks) : 0;
+
   var liveHtml = [
     '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
@@ -1020,13 +1041,49 @@ function renderMultiDay(sessions) {
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(1):'0.0')+' 单</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmt(sessions.reduce(function(s,x){return s+(x.product?.exposure||0);},0))+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmt(sessions.reduce(function(s,x){return s+(x.product?.clicks||0);},0))+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmt(totalPExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmt(totalPClicks)+'</div></div>',
+    '</div>',
+    // 图表区域：流量漏斗 + 互动雷达 + 商品转化漏斗 + 转化链路
+    '<div class="chart-grid" style="margin-top:16px;">',
+      '<div class="chart-card"><h3>📊 流量漏斗 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulTrafficChart"></canvas></div></div>',
+      '<div class="chart-card"><h3>🎯 互动指标 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulInteractChart"></canvas></div></div>',
+    '</div>',
+    '<div class="chart-grid" style="margin-top:0;">',
+      '<div class="chart-card"><h3>🛒 商品转化漏斗 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulFunnelChart"></canvas></div></div>',
+      '<div class="chart-card"><h3>🔄 转化链路 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulFlowChart"></canvas></div></div>',
     '</div>',
   ].join('');
   document.getElementById('rptLiveData').innerHTML = liveHtml;
   document.getElementById('rptInteractKpi').innerHTML = '';
   document.getElementById('rptSubKpi').innerHTML = '';
+
+  // 渲染多日图表
+  setTimeout(function(){
+    destroyChart('mulTraffic');destroyChart('mulInteract');destroyChart('mulFunnel');destroyChart('mulFlow');
+    // 流量漏斗（柱状图）
+    var c1=document.getElementById('mulTrafficChart');
+    if(c1) charts.mulTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[totalExp,totalEntry,avgOnlineVal,totalMaxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
+    // 互动雷达图
+    var c2=document.getElementById('mulInteractChart');
+    if(c2) charts.mulInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'周期汇总',data:[totalComments,Math.round(totalLikes/60),totalNewFans,parseFloat(avgStayVal)||0,Math.round(entryRateVal*100)],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
+    // 商品转化漏斗
+    var c3=document.getElementById('mulFunnelChart');
+    if(c3) charts.mulFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[totalPExp,totalPClicks,totalPOrders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var d=[totalPExp,totalPClicks,totalPOrders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(d[i]/d[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    // 转化链路（水平进度条或简化卡片）
+    var c4=document.getElementById('mulFlowChart');
+    if(c4){
+      var flowLabels = ['总曝光','进房','平均在线','商品曝光','点击','成交'];
+      var flowData = [totalExp,totalEntry,avgOnlineVal,totalPExp,totalPClicks,totalPOrders];
+      var flowColors = ['#1e3a8a','#2563eb','#f59e0b','#3b82f6','#f59e0b','#ef4444'];
+      var maxFlow = Math.max.apply(null, flowData) || 1;
+      var flowHtml = '<div style="padding:8px 0;">'+flowLabels.map(function(lbl,i){
+        var pct = (flowData[i]/maxFlow*100).toFixed(0);
+        return '<div style="display:flex;align-items:center;margin-bottom:10px;gap:8px;"><div style="width:70px;font-size:11px;color:var(--text2);text-align:right;">'+lbl+'</div><div style="flex:1;height:22px;background:#f3f4f6;border-radius:4px;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:'+flowColors[i]+';border-radius:4px;transition:width 0.3s;"></div></div><div style="width:60px;font-size:12px;font-weight:600;color:var(--text);text-align:right;">'+fmt(flowData[i])+'</div></div>';
+      }).join('')+'</div>';
+      c4.parentElement.innerHTML = '<div class="chart-wrap"><h3 style="font-size:13px;font-weight:600;margin-bottom:10px;">🔄 转化链路 <span class="tag">周期汇总</span></h3>'+flowHtml+'</div>';
+    }
+  }, 80);
 
   // 多日支付渠道构成（从筛选时段计算）
   var payTotal = 0, androidAmt = 0, androidUsr = 0, iosAmt = 0, iosUsr = 0;
