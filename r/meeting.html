@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>巨兽战场 · 抖店数据复盘会议资料</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 body { font-family: -apple-system,'PingFang SC','Microsoft YaHei',sans-serif; background:#f5f6fa; color:#1a1a2e; margin:0; padding:20px; }
 .container { max-width:800px; margin:0 auto; }
@@ -131,6 +132,11 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
   <div class="stat-box"><div class="val warn">18.56%</div><div class="lbl">📉 点击→成交转化率</div><div class="sub">健康线 >10% ✅ 达标</div></div>
 </div>
 
+<div style="margin-top:16px;">
+  <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:8px;">📈 直播间曝光量 & 成交人数 分日趋势</div>
+  <div style="height:220px;"><canvas id="trendChart"></canvas></div>
+</div>
+
 <div class="highlight warn" style="margin-top:12px;">
 🟡 <b>曝光→点击转化率仅13.68%，低于健康线20%。</b>说明商品展示页的吸引力不足，用户曝光后不愿意点击查看详情。需优化商品主图、标题、价格锚点等页面要素。
 </div>
@@ -235,4 +241,35 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 </ul>
 </div>
 
+<script>
+var ctx = document.getElementById('trendChart');
+if (ctx) {
+  new Chart(ctx.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: ['7/2','7/3','7/4','7/5','7/7'],
+      datasets: [
+        { label:'直播间曝光人数', data:[2721,3275,1459,1264,1257],
+          borderColor:'#1e3a8a', backgroundColor:'rgba(30,58,138,0.08)',
+          fill:true, tension:0.3, pointRadius:4, pointBackgroundColor:'#1e3a8a' },
+        { label:'成交人数', data:[3,4,4,4,2],
+          borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.08)',
+          fill:true, tension:0.3, pointRadius:4, pointBackgroundColor:'#ef4444',
+          yAxisID:'y1' }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},usePointStyle:true,padding:14}}},
+      scales:{
+        y:{beginAtZero:true,position:'left',grid:{color:'#f3f4f6'},
+          ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}},
+        y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},
+          ticks:{stepSize:1}}
+      }
+    }
+  });
+}
+</script>
 </div></body></html>
