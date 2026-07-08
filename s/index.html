@@ -156,6 +156,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 .flow-step .lbl { font-size:10px; color:var(--text3); margin-top:3px; }
 .flow-arrow { font-size:16px; color:var(--primary); opacity:0.6; margin:0 2px; }
 .flow-rate { font-size:9px; color:var(--text2); background:#eef2ff; padding:1px 6px; border-radius:4px; margin-top:3px; }
+.flow-row { display:flex; align-items:center; gap:4px; padding:4px 0; overflow-x:auto; }
 
 /* ===== 明细 ===== */
 .data-table { width:100%; border-collapse:collapse; font-size:12px; }
@@ -1070,18 +1071,22 @@ function renderMultiDay(sessions) {
     // 商品转化漏斗
     var c3=document.getElementById('mulFunnelChart');
     if(c3) charts.mulFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[totalPExp,totalPClicks,totalPOrders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var d=[totalPExp,totalPClicks,totalPOrders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(d[i]/d[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
-    // 转化链路（水平进度条或简化卡片）
+    // 转化链路（与单日一致的流式布局）
     var c4=document.getElementById('mulFlowChart');
     if(c4){
-      var flowLabels = ['总曝光','进房','平均在线','商品曝光','点击','成交'];
-      var flowData = [totalExp,totalEntry,avgOnlineVal,totalPExp,totalPClicks,totalPOrders];
-      var flowColors = ['#1e3a8a','#2563eb','#f59e0b','#3b82f6','#f59e0b','#ef4444'];
-      var maxFlow = Math.max.apply(null, flowData) || 1;
-      var flowHtml = '<div style="padding:8px 0;">'+flowLabels.map(function(lbl,i){
-        var pct = (flowData[i]/maxFlow*100).toFixed(0);
-        return '<div style="display:flex;align-items:center;margin-bottom:10px;gap:8px;"><div style="width:70px;font-size:11px;color:var(--text2);text-align:right;">'+lbl+'</div><div style="flex:1;height:22px;background:#f3f4f6;border-radius:4px;overflow:hidden;"><div style="height:100%;width:'+pct+'%;background:'+flowColors[i]+';border-radius:4px;transition:width 0.3s;"></div></div><div style="width:60px;font-size:12px;font-weight:600;color:var(--text);text-align:right;">'+fmt(flowData[i])+'</div></div>';
+      var flowSteps = [
+        {num:fmt(totalExp), lbl:'总曝光', rate:''},
+        {num:fmt(totalEntry), lbl:'进房', rate:entryRateVal>0?pct(entryRateVal):''},
+        {num:fmt(avgOnlineVal), lbl:'平均在线', rate:''},
+        {num:fmt(totalPExp), lbl:'商品曝光', rate:''},
+        {num:fmt(totalPClicks), lbl:'点击', rate:expClickRate>0?pct(expClickRate):''},
+        {num:fmt(totalPOrders), lbl:'成交', rate:clickOrderRate>0?pct(clickOrderRate):'', last:true}
+      ];
+      c4.parentElement.style.height = 'auto';
+      c4.parentElement.innerHTML = '<div class="flow-row">'+flowSteps.map(function(f,i){
+        var step = '<div class="flow-step'+(f.last?' last':'')+'"><div class="num" style="'+(f.lbl==='成交'?'color:#ef4444;':'')+'font-size:22px;font-weight:700;">'+f.num+'</div><div class="lbl">'+f.lbl+'</div>'+(f.rate?'<div class="flow-rate">'+f.rate+'</div>':'')+'</div>';
+        return step + (i<flowSteps.length-1?'<div class="flow-arrow">→</div>':'');
       }).join('')+'</div>';
-      c4.parentElement.innerHTML = flowHtml;
     }
   }, 80);
 
