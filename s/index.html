@@ -163,6 +163,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 .data-table th { background:#f8f9fb; padding:8px 10px; text-align:center; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); font-size:11px; }
 .data-table td { padding:8px 10px; text-align:center; border-bottom:1px solid var(--border-light); }
 .data-table .section td { background:var(--primary-50); font-weight:700; color:var(--primary); text-align:left; padding:9px 12px; font-size:12px; }
+.comp-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:12px; }
+.comp-table th { background:#f8f9fb; padding:7px 10px; text-align:left; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); font-size:11px; }
+.comp-table td { padding:7px 10px; border-bottom:1px solid var(--border-light); }
+.comp-table td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.comp-table td.up { color:var(--up); font-weight:600; }
+.comp-table td.down { color:var(--down); font-weight:600; }
 
 /* ===== 场次列表 ===== */
 .session-list { list-style:none; }
@@ -228,6 +234,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo">📊 抖店数据工作台<div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
+  <button class="nav-item" data-tab="competitor"><span class="nav-icon">🏟️</span> 竞店数据对比</button>
   <div class="footer-info">共 <span id="totalSessions">0</span> 场直播</div>
 </div>
 
@@ -321,6 +328,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常<br>
     • <strong>支付渠道风险评估</strong>：3k-安卓占比 &lt;50% 为健康，&gt;50% 为中度风险（抖店利润收益存在风险），&gt;80% 为高度风险
   </div>
+</div>
+
+<!-- Tab: 竞店数据对比 -->
+<div class="tab-content" id="tabCompetitor">
+  <div class="header"><h1>🏟️ 竞店数据对比</h1><div class="sub">周期：7天 · 数据更新：<span id="compUpdateTime">-</span></div></div>
+  <div id="compContent"></div>
 </div>
 
 </div>
@@ -453,6 +466,7 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     document.getElementById(id).classList.add('active');
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
+    else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
   });
 });
 
@@ -467,7 +481,7 @@ function render(data) {
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
-  renderOverview(); renderReport();
+  renderOverview(); renderReport(); renderCompetitor(data);
 }
 
 // ===== 数据说明弹窗 =====
@@ -1235,6 +1249,49 @@ function renderSalesChannels(sessions, data) {
     var c2=document.getElementById('scOrdersChart');
     if(c2 && totalO>0) charts.scOrdersChart=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:ordLabels,datasets:[{data:[liveO,selfO],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 笔 ('+((ctx.parsed/totalO)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
   }, 50);
+}
+
+// ===== 竞店数据对比 =====
+function renderCompetitor(data) {
+  var cp = data.competitor;
+  if (!cp) { document.getElementById('tabCompetitor').style.display = 'none'; return; }
+  document.getElementById('tabCompetitor').style.display = '';
+  document.getElementById('compUpdateTime').textContent = cp.updatedAt || '-';
+  var stores = cp.stores || [];
+  var sColor = ['var(--primary)', '#d97706', '#059669'];
+  var html = [];
+  html.push('<div class="section-title" style="margin-top:0;">📊 核心指标对比 <span class="tag">7天周期</span></div>');
+  html.push('<table class="comp-table"><tr><th>指标</th>');
+  stores.forEach(function(s,i){ html.push('<th style="color:'+sColor[i]+';">'+s+'</th>'); });
+  html.push('</tr>');
+  (cp.summary||[]).forEach(function(row, ri){
+    if (ri === 0) return;
+    html.push('<tr><td style="font-weight:600;">'+row[0]+'</td>');
+    for (var i=1; i<=stores.length; i++) {
+      var cls = '';
+      if (ri === 4) {
+        var v = parseFloat(row[i]);
+        var ourV = parseFloat(row[1]);
+        cls = (i===1) ? '' : (v > ourV ? ' up' : ' down');
+      }
+      html.push('<td class="num'+cls+'">'+row[i]+'</td>');
+    }
+    html.push('</tr>');
+  });
+  html.push('</table>');
+  function chanTable(title, data) {
+    if (!data || data.length < 2) return '';
+    var h = '<div class="section-title" style="margin-top:20px;">'+title+'</div><div style="overflow-x:auto;"><table class="comp-table"><tr><th>流量来源</th>';
+    stores.forEach(function(s,i){ h += '<th style="color:'+sColor[i]+';">'+s+'</th>'; });
+    h += '</tr>';
+    data.forEach(function(row, ri){ if(ri===0) return; h += '<tr><td>'+row[0]+'</td>'; for(var i=1;i<=stores.length;i++) h += '<td class="num">'+row[i]+'</td>'; h += '</tr>'; });
+    h += '</table></div>';
+    return h;
+  }
+  html.push(chanTable('👆 商品点击人数 <span class="tag">分渠道</span>', cp.trafficClicks));
+  html.push(chanTable('💰 用户支付金额 <span class="tag">分渠道</span>', cp.trafficPay));
+  html.push(chanTable('📈 点击成交转化率 <span class="tag">分渠道</span>', cp.trafficCvr));
+  document.getElementById('compContent').innerHTML = html.join('');
 }
 
 function destroyChart(n){if(charts[n]){charts[n].destroy();delete charts[n];}}
