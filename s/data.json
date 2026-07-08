@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-06",
+  "updatedAt": "2026-07-07",
   "games": ["巨兽战场", "我的使命"],
   "storeSummary": {
     "totalGMV": 0,
@@ -7,12 +7,12 @@
     "totalPayUsers": 0,
     "estimatedProfit": 0,
     "profitRate": 0,
-    "totalSessions": 5,
+    "totalSessions": 6,
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
-      "android": { "amount": 9790, "settle": 9779.272, "users": 8 },
-      "ios": { "amount": 3374, "settle": 3358.400, "users": 5 }
+      "android": { "amount": 16270, "settle": 16259.266, "users": 9 },
+      "ios": { "amount": 3404, "settle": 3388.394, "users": 6 }
     }
   },
   "salesChannels": [
@@ -20,7 +20,8 @@
     {"game":"巨兽战场","date":"2026-07-03","label":"7月3日","live":{"sales":1944,"orders":2},"self":{"sales":1782,"orders":4}},
     {"game":"巨兽战场","date":"2026-07-04","label":"7月4日","live":{"sales":976,"orders":2},"self":{"sales":3010,"orders":3}},
     {"game":"巨兽战场","date":"2026-07-05","label":"7月5日","live":{"sales":678,"orders":2},"self":{"sales":3016,"orders":4}},
-    {"game":"巨兽战场","date":"2026-07-06","label":"7月6日","live":{"sales":0,"orders":0},"self":{"sales":648,"orders":1}}
+    {"game":"巨兽战场","date":"2026-07-06","label":"7月6日","live":{"sales":0,"orders":0},"self":{"sales":648,"orders":1}},
+    {"game":"巨兽战场","date":"2026-07-07","label":"7月7日","live":{"sales":6480,"orders":1},"self":{"sales":30,"orders":1}}
   ],
   "sessions": [
     {
@@ -67,7 +68,15 @@
       "interaction": { "comments": 0, "commentRate": 0, "likes": 0, "likeRate": 0, "avgStay": "0min", "newFans": 0 },
       "product": { "sales": 648, "exposure": 40, "clicks": 6, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
       "payment": { "android": { "amount": 0, "settle": 0, "users": 0 }, "ios": { "amount": 648, "settle": 644.112, "users": 1 } }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-07",
+      "label": "7月7日直播",
+      "traffic": { "exposure": 1257, "entry": 251, "entryRate": 0.1997, "avgOnline": 3, "maxOnline": 28 },
+      "interaction": { "comments": 9, "commentRate": 0.0359, "likes": 433, "likeRate": 0.004, "avgStay": "2.89min", "newFans": 4 },
+      "product": { "sales": 6510, "exposure": 126, "clicks": 20, "orders": 2, "paymentOrders": 2, "exposureClickRate": 0.1587, "clickOrderRate": 0.1 },
+      "payment": { "android": { "amount": 6480, "settle": 6479.994, "users": 1 }, "ios": { "amount": 30, "settle": 29.994, "users": 1 } }
     }
   ]
 }
-
