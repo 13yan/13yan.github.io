@@ -239,7 +239,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="dimension-bar" id="ovDimensionBar">
     <button class="dim-btn active" data-dim="all">累计汇总</button>
     <button class="dim-btn" data-dim="month">单月数据</button>
-    <button class="dim-btn" data-dim="settle">结算周期数据</button>
+    <select id="ovMonthSelect" style="display:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
   </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
@@ -357,7 +357,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
-      <tr><td>维度筛选</td><td>顶部按钮切换：累计汇总（全部场次）/ 单月数据（当月自然月）/ 结算周期数据（按合同自然月结算周期筛选），切换后所有模块联动更新</td></tr>
+      <tr><td>维度筛选</td><td>顶部按钮切换：累计汇总（全部场次）/ 单月数据（选择具体月份），切换后所有模块联动更新，月份从2026年7月起可选</td></tr>
       <tr><td>顶部 3 卡片</td><td>按所选维度叠加：累计销售额 = 筛选场次 sales 之和；预估结算金额 = 筛选销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 筛选场次 paymentOrders 之和</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
@@ -465,6 +465,7 @@ function render(data) {
   }
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
+  populateMonthSelect(data.sessions || []);
   renderOverview(); renderReport();
 }
 
@@ -481,16 +482,43 @@ document.getElementById('helpOverlay').addEventListener('click', function(e){
 
 // ===== 全店汇总 =====
 var ovDimension = 'all';
+var ovMonth = '';
+
+function getAvailableMonths(sessions) {
+  var months = {};
+  sessions.forEach(function(s){
+    var m = s.date ? s.date.substring(0,7) : '';
+    if (m) months[m] = true;
+  });
+  return Object.keys(months).sort();
+}
+
+function populateMonthSelect(sessions) {
+  var sel = document.getElementById('ovMonthSelect');
+  if (!sel) return;
+  var months = getAvailableMonths(sessions);
+  if (months.length === 0) { sel.style.display = 'none'; return; }
+  sel.innerHTML = '';
+  months.forEach(function(m){
+    var opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m.substring(0,4)+'年'+parseInt(m.substring(5,7))+'月';
+    sel.appendChild(opt);
+  });
+  // Default to latest month
+  sel.value = months[months.length-1];
+  ovMonth = sel.value;
+}
 
 function filterSessionsByDim(sessions, dim) {
   if (dim === 'all') return sessions;
-  var now = new Date();
-  var year = now.getFullYear();
-  var month = String(now.getMonth() + 1).padStart(2, '0');
-  if (dim === 'month' || dim === 'settle') {
-    // 自然月 / 结算周期：当年当月
-    var prefix = year + '-' + month;
-    return sessions.filter(function(s){ return s.date && s.date.substring(0,7) === prefix; });
+  if (dim === 'month') {
+    var target = ovMonth;
+    if (!target) {
+      var now = new Date();
+      target = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    }
+    return sessions.filter(function(s){ return s.date && s.date.substring(0,7) === target; });
   }
   return sessions;
 }
@@ -538,8 +566,9 @@ function renderOverview() {
   var s=data.storeSummary||{}, months=data.monthlySummary||[];
   var grid=document.getElementById('ovSummaryGrid');
   // 更新维度标签
-  var dimLabels = {'all':'累计经营数据与趋势','month':'2026年7月数据','settle':'结算周期（2026年7月）'};
-  document.querySelector('#tabOverview .sub').textContent = dimLabels[ovDimension] || '累计经营数据与趋势';
+  var dimLabels = {'all':'累计经营数据与趋势','month':(ovMonth||'')+'数据'};
+  var dimDesc = dimLabels[ovDimension] || '累计经营数据与趋势';
+  document.querySelector('#tabOverview .sub').textContent = dimDesc;
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
     var autoGMV = sessions.reduce(function(sum,ss){return sum + (ss.product?.sales||0);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
@@ -1160,6 +1189,14 @@ document.getElementById('ovDimensionBar').addEventListener('click', function(e){
   this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   ovDimension = btn.getAttribute('data-dim');
+  var sel = document.getElementById('ovMonthSelect');
+  if (sel) sel.style.display = (ovDimension === 'month') ? 'inline-block' : 'none';
+  renderOverview();
+});
+
+// 月份选择切换
+document.getElementById('ovMonthSelect').addEventListener('change', function(){
+  ovMonth = this.value;
   renderOverview();
 });
 </script>
