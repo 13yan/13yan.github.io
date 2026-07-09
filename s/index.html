@@ -11,6 +11,10 @@
   --primary-light: #dbeafe;
   --primary-50: #eff6ff;
   --primary-100: #e0e7ff;
+  --accent: #dc2626;
+  --accent-light: #fef2f2;
+  --warm: #d97706;
+  --warm-light: #fffbeb;
   --bg: #f0f2f5;
   --card: #ffffff;
   --text: #111827;
@@ -47,6 +51,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 .sidebar .nav-icon { font-size:16px; opacity:0.85; }
 .sidebar .nav-item.active .nav-icon { opacity:1; }
 .sidebar .footer-info { margin-top:auto; padding:16px 20px; font-size:10px; color:var(--text3); border-top:1px solid var(--border); }
+
+/* 侧边栏概览小卡片 */
+.sidebar-summary { padding:12px 16px; margin:8px 16px; background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; }
+.ss-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; font-size:12px; }
+.ss-lbl { color:var(--text3); }
+.ss-val { font-weight:700; color:var(--primary); font-size:13px; }
 
 /* ===== 主内容区 ===== */
 .main { flex:1; padding:28px 32px; min-width:0; }
@@ -138,6 +148,13 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 .kpi-card.featured { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border-color:#b3c5ff; position:relative; }
 .kpi-card.featured .val { font-size:26px; }
 .kpi-card.featured .lbl { font-size:12px; color:var(--primary); font-weight:600; }
+.kpi-card.accent { border-left:3px solid var(--accent); }
+.kpi-card.warm { border-left:3px solid var(--warm); }
+
+/* 场次状态标签 */
+.session-status { display:inline-block; font-size:9px; padding:2px 8px; border-radius:8px; font-weight:600; margin-left:8px; }
+.session-status.ok { background:#f0fdf4; color:#059669; border:1px solid #bbf7d0; }
+.session-status.none { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
 
 /* ===== 图表 ===== */
 .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
@@ -234,6 +251,11 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo">📊 抖店数据工作台<div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
+  <div class="sidebar-summary" id="sidebarSummary">
+    <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
+    <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
+    <div class="ss-row"><span class="ss-lbl">🎮 游戏</span><span class="ss-val" id="ssGames">-</span></div>
+  </div>
   <div class="footer-info">共 <span id="totalSessions">0</span> 场直播</div>
 </div>
 
@@ -504,6 +526,8 @@ function render(data) {
     };
   }
   currentData = data;
+  // 更新侧边栏概览
+  updateSidebarSummary(data);
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
@@ -511,6 +535,15 @@ function render(data) {
 }
 
 // ===== 数据说明弹窗 =====
+// 侧边栏概览更新
+function updateSidebarSummary(data) {
+  var sessions = data.sessions || [];
+  var totalSales = sessions.reduce(function(s, sx){return s+(sx.product?.sales||0);},0);
+  var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.orders||0);},0);
+  document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
+  document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
+  document.getElementById('ssGames').textContent = (data.games||[]).length+' 款';
+}
 document.getElementById('helpBtn').addEventListener('click', function(){
   document.getElementById('helpOverlay').classList.add('open');
 });
@@ -1183,6 +1216,8 @@ function renderMultiDay(sessions) {
     '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserMultiChart"></canvas></div></div>',
     '</div>',
     '<div class="chart-card full" style="margin-bottom:16px;"><h3>📈 每日销售额趋势 <span class="tag">柱状+折线</span></h3><div class="chart-wrap tall"><canvas id="rptTrendChart"></canvas></div></div>',
+    '<div class="section-title" style="margin-top:0;">📋 场次明细 <span class="tag">成交状态</span></div>',
+    '<div class="session-list" id="rptSessionList"></div>',
   ].join('');
 
   // 趋势图（柱状+折线）
@@ -1211,6 +1246,16 @@ function renderMultiDay(sessions) {
   // 核心关注 + 销售渠道
   renderCoreFocus(sessions, currentData);
   renderSalesChannels(sessions, currentData);
+  // 场次明细列表
+  var slEl = document.getElementById('rptSessionList');
+  if (slEl) {
+    var sorted = sessions.slice().sort(function(a,b){return a.date.localeCompare(b.date);});
+    slEl.innerHTML = sorted.map(function(sx){
+      var hasSales = (sx.product?.sales||0) > 0;
+      var statTag = hasSales ? '<span class="session-status ok">✅ 有成交</span>' : '<span class="session-status none">❌ 无成交</span>';
+      return '<div class="session-item"><div class="left"><div class="s-date">'+sx.date.substring(5)+'</div><div class="s-brief">'+sx.game+' '+statTag+'</div></div><div class="right"><div class="s-sales">'+fmt(sx.product?.sales||0)+' 元</div><div class="s-orders">'+(sx.product?.orders||0)+' 单</div></div></div>';
+    }).join('');
+  }
 }
 
 // ===== 销售渠道构成 =====
