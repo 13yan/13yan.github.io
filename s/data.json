@@ -10,19 +10,19 @@
     "totalPayUsers": 0,
     "estimatedProfit": 0,
     "profitRate": 0,
-    "totalSessions": 7,
+    "totalSessions": 8,
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 10118,
-        "settle": 10107.266,
-        "users": 9
+        "amount": 16598,
+        "settle": 16587.26,
+        "users": 10
       },
       "ios": {
-        "amount": 4150,
-        "settle": 4134.388,
-        "users": 7
+        "amount": 4180,
+        "settle": 4164.382,
+        "users": 8
       }
     }
   },
@@ -97,12 +97,12 @@
       "date": "2026-07-07",
       "label": "7月7日",
       "live": {
-        "sales": 484,
-        "orders": 2
+        "sales": 6480,
+        "orders": 1
       },
       "self": {
-        "sales": 0,
-        "orders": 0
+        "sales": 30,
+        "orders": 1
       }
     },
     {
@@ -112,6 +112,19 @@
       "live": {
         "sales": 648,
         "orders": 1
+      },
+      "self": {
+        "sales": 0,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-09",
+      "label": "7月9日",
+      "live": {
+        "sales": 484,
+        "orders": 2
       },
       "self": {
         "sales": 0,
@@ -330,38 +343,38 @@
       "date": "2026-07-07",
       "label": "7月7日直播",
       "traffic": {
-        "exposure": 1330,
-        "entry": 300,
-        "entryRate": 0.2256,
+        "exposure": 1257,
+        "entry": 251,
+        "entryRate": 0.1997,
         "avgOnline": 3,
-        "maxOnline": 9
+        "maxOnline": 28
       },
       "interaction": {
-        "comments": 10,
-        "commentRate": 0.0333,
-        "likes": 195,
-        "likeRate": 0.01,
-        "avgStay": "1.94min",
-        "newFans": 1
+        "comments": 9,
+        "commentRate": 0.0359,
+        "likes": 433,
+        "likeRate": 0.004,
+        "avgStay": "2.89min",
+        "newFans": 4
       },
       "product": {
-        "sales": 484,
-        "exposure": 151,
-        "clicks": 11,
+        "sales": 6510,
+        "exposure": 126,
+        "clicks": 20,
         "orders": 2,
         "paymentOrders": 2,
-        "exposureClickRate": 0.0728,
-        "clickOrderRate": 0.1818
+        "exposureClickRate": 0.1587,
+        "clickOrderRate": 0.1
       },
       "payment": {
         "android": {
-          "amount": 328,
-          "settle": 327.994,
+          "amount": 6480,
+          "settle": 6479.994,
           "users": 1
         },
         "ios": {
-          "amount": 128,
-          "settle": 127.994,
+          "amount": 30,
+          "settle": 29.994,
           "users": 1
         }
       }
@@ -403,6 +416,47 @@
         "ios": {
           "amount": 648,
           "settle": 647.994,
+          "users": 1
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-09",
+      "label": "7月9日直播",
+      "traffic": {
+        "exposure": 1330,
+        "entry": 300,
+        "entryRate": 0.2256,
+        "avgOnline": 3,
+        "maxOnline": 9
+      },
+      "interaction": {
+        "comments": 10,
+        "commentRate": 0.0333,
+        "likes": 195,
+        "likeRate": 0.01,
+        "avgStay": "1.94min",
+        "newFans": 1
+      },
+      "product": {
+        "sales": 484,
+        "exposure": 151,
+        "clicks": 11,
+        "orders": 2,
+        "paymentOrders": 2,
+        "exposureClickRate": 0.0728,
+        "clickOrderRate": 0.1818
+      },
+      "payment": {
+        "android": {
+          "amount": 328,
+          "settle": 327.994,
+          "users": 1
+        },
+        "ios": {
+          "amount": 128,
+          "settle": 127.994,
           "users": 1
         }
       }
