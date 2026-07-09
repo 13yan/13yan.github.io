@@ -413,6 +413,24 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 var charts = {}, currentData = null;
 var allowedGames = null; // null = all games
 
+// 饼图百分比标签插件（全局复用，减少7次重复定义）
+var pieLabelPlugin = {
+  id: 'pieLabel',
+  afterDraw: function(c){
+    var m=c.getDatasetMeta(0), d=c.data.datasets[0], t=d.data.reduce(function(a,b){return a+b;},0);
+    if(!t) return;
+    m.data.forEach(function(e,i){
+      var p=((d.data[i]/t)*100).toFixed(d.data[i]/t<0.01?1:0)+'%', pos=e.tooltipPosition();
+      c.ctx.save(); c.ctx.fillStyle='#fff'; c.ctx.font='bold 13px sans-serif';
+      c.ctx.textAlign='center'; c.ctx.textBaseline='middle';
+      c.ctx.shadowColor='rgba(0,0,0,0.5)'; c.ctx.shadowBlur=3;
+      c.ctx.fillText(p,pos.x,pos.y); c.ctx.restore();
+    });
+  }
+};
+// 游戏颜色板（支持10个游戏）
+var gameColors = ['#1e3a8a','#d97706','#059669','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#16a34a','#e11d48'];
+
 // ===== 权限控制 =====
 var ACCESS_KEYS = {
   'js123': ['巨兽战场'],
@@ -450,7 +468,7 @@ document.getElementById('accessKeyInput').addEventListener('keydown', function(e
 });
 var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994, androidUsers: 1, iosUsers: 1 };
 
-function fmt(n) { if (n===null||n===undefined||isNaN(n)||n===NaN) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function fmt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -471,12 +489,20 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
 
 // ===== 主渲染 =====
 function render(data) {
-  currentData = data;
-  // 权限过滤：只展示有权限的游戏
+  // 权限过滤：不修改原始数据，创建副本
   if (allowedGames) {
-    data.games = data.games.filter(function(g){return allowedGames.indexOf(g) !== -1;});
-    data.sessions = data.sessions.filter(function(s){return allowedGames.indexOf(s.game) !== -1;});
+    data = {
+      updatedAt: data.updatedAt,
+      games: (data.games||[]).filter(function(g){return allowedGames.indexOf(g) !== -1;}),
+      sessions: (data.sessions||[]).filter(function(s){return allowedGames.indexOf(s.game) !== -1;}),
+      storeSummary: data.storeSummary,
+      monthlySummary: data.monthlySummary,
+      monthlyTrend: data.monthlyTrend,
+      competitor: data.competitor,
+      salesChannels: data.salesChannels
+    };
   }
+  currentData = data;
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
@@ -516,7 +542,8 @@ function populateMonthSelect(sessions) {
   months.forEach(function(m){
     var opt = document.createElement('option');
     opt.value = m;
-    opt.textContent = m.substring(0,4)+'年'+parseInt(m.substring(5,7))+'月';
+    var mNum = parseInt(m.substring(5,7), 10);
+    opt.textContent = m.substring(0,4)+'年'+(isNaN(mNum)?m.substring(5,7):mNum)+'月';
     sel.appendChild(opt);
   });
   // Default to latest month
@@ -569,7 +596,7 @@ function renderGameCharts(data) {
   var c2=document.getElementById('ovGamePieChart');
   if(c2){
     var pieTotal = gData.reduce(function(s,g){return s+g.gmv;},0);
-    charts.ovGamePie=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name+' ('+((g.gmv/pieTotal)*100).toFixed(1)+'%)';}), datasets:[{data:gData.map(function(g){return g.gmv;}),backgroundColor:['#1e3a8a','#d97706','#059669','#dc2626']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+    charts.ovGamePie=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name+' ('+((g.gmv/pieTotal)*100).toFixed(1)+'%)';}), datasets:[{data:gData.map(function(g){return g.gmv;}),backgroundColor:gData.map(function(g,i){return gameColors[i%gameColors.length];})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元';}}}}},plugins:[pieLabelPlugin]});
   }
 }
 
@@ -621,12 +648,10 @@ function renderOverview() {
         destroyChart('ovPayAmount');destroyChart('ovPayUser');
         var pa=document.getElementById('ovPayAmountChart');
         var payTotalAmt = pcAmt.android+pcAmt.ios;
-        var payLabelAmt = ['3k-安卓 ('+((pcAmt.android/payTotalAmt)*100).toFixed(1)+'%)','3k-iOS ('+((pcAmt.ios/payTotalAmt)*100).toFixed(1)+'%)'];
-        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
         var pu=document.getElementById('ovPayUserChart');
         var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
-        var payLabelUsr = ['3k-安卓 ('+((pcUsr.android/payTotalUsr)*100).toFixed(0)+'%)','3k-iOS ('+((pcUsr.ios/payTotalUsr)*100).toFixed(0)+'%)'];
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
       }, 50);
       // 数据风险评估（支付渠道）
       var riskEl = document.getElementById('ovRiskSection');
@@ -650,7 +675,7 @@ function renderOverview() {
     var monthMap = {};
     sessions.forEach(function(sx){
       var m = sx.date.substring(0,7);
-      if (!monthMap[m]) monthMap[m] = {label:m.substring(0,4)+'年'+parseInt(m.substring(5,7))+'月', totalGMV:0, totalOrders:0};
+      if (!monthMap[m]) { var mNum2 = parseInt(m.substring(5,7), 10); monthMap[m] = {label:m.substring(0,4)+'年'+(isNaN(mNum2)?m.substring(5,7):mNum2)+'月', totalGMV:0, totalOrders:0}; }
       monthMap[m].totalGMV += sx.product?.sales||0;
       monthMap[m].totalOrders += sx.product?.orders||0;
     });
@@ -750,14 +775,14 @@ function assessRisk(sessions, isSingle) {
       totalGMV+=sx.product?.sales||0; totalOrd+=sx.product?.orders||0;
       totalExp+=sx.traffic?.exposure||0; totalEnt+=sx.traffic?.entry||0;
     });
-    var avgEntryRate = totalExp>0 ? totalEnt/totalExp : 0;
-    var overallCVR = totalExp>0 ? totalOrd/totalExp : 0;
+    var avgEntryRate = totalExp>0 ? totalEnt/totalExp : -1;
+    var overallCVR = totalExp>0 ? totalOrd/totalExp : -1;
 
-    if (avgEntryRate < 0.03) {
+    if (totalExp > 0 && avgEntryRate < 0.03) {
       items.push({level:'danger', icon:'🔴', title:'整体进房率过低', desc:'周期内平均进房率 '+pct(avgEntryRate)+'，流量获取效率不足'});
       high++;
     }
-    if (overallCVR < 0.005) {
+    if (totalExp > 0 && overallCVR < 0.005) {
       items.push({level:'danger', icon:'🔴', title:'整体转化率过低', desc:'周期内曝光→成交转化率仅 '+pct(overallCVR)+'，需关注选品和流量质量'});
       high++;
     }
@@ -795,6 +820,8 @@ function assessRisk(sessions, isSingle) {
   }
   return {items:items, high:high, medium:medium, low:low};
 }
+function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
 function renderReport() {
   var data=currentData; if(!data) return;
   var allSessions=data.sessions||[]; if(allSessions.length===0) return;
@@ -803,7 +830,7 @@ function renderReport() {
   // 渲染游戏下拉
   var sel=document.getElementById('rptGameSelect');
   var currentGame = sel.value || (games.length>0?games[0]:'');
-  sel.innerHTML = games.map(function(g){return '<option value="'+g+'">'+g+'</option>';}).join('');
+  sel.innerHTML = games.map(function(g){return '<option value="'+escapeHtml(g)+'">'+escapeHtml(g)+'</option>';}).join('');
   sel.value = currentGame;
 
   // 按游戏筛选
@@ -825,35 +852,42 @@ function renderReport() {
   document.getElementById('startDate').setAttribute('max', lastDate);
   document.getElementById('endDate').setAttribute('min', firstDate);
   document.getElementById('endDate').setAttribute('max', lastDate);
-  document.querySelectorAll('#datePresets button').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+  // 日期预设按钮 — 使用事件委托，避免重复绑定
+  var presetContainer = document.getElementById('datePresets');
+  if (!presetContainer._listener) {
+    presetContainer._listener = true;
+    presetContainer.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if (!btn || !btn.dataset.range) return;
+      presetContainer.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
       btn.classList.add('active');
       var range=btn.dataset.range, start, end=lastDate;
       if(range==='today') start=lastDate;
       else if(range==='7d') { var d=new Date(lastDate); d.setDate(d.getDate()-6); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
       else if(range==='30d') { var d=new Date(lastDate); d.setDate(d.getDate()-29); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
       else if(range==='month') { start=lastDate.substring(0,7)+'-01'; if(start<firstDate) start=firstDate; }
-      else return; // custom
+      else return;
       document.getElementById('startDate').value=start;
       document.getElementById('endDate').value=end;
       applyRange(start,end,sessions);
     });
-  });
-
-  // 自定义日期变化
-  document.getElementById('startDate').addEventListener('change',function(){
-    document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    var endEl = document.getElementById('endDate');
-    if (this.value > endEl.value) endEl.value = this.value;
-    applyRange(this.value, endEl.value, sessions);
-  });
-  document.getElementById('endDate').addEventListener('change',function(){
-    document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    var startEl = document.getElementById('startDate');
-    if (this.value < startEl.value) startEl.value = this.value;
-    applyRange(startEl.value, this.value, sessions);
-  });
+  }
+  // 自定义日期 — 一次性初始化
+  if (!window._dateListenersInited) {
+    window._dateListenersInited = true;
+    document.getElementById('startDate').addEventListener('change',function(){
+      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+      var endEl = document.getElementById('endDate');
+      if (this.value > endEl.value) endEl.value = this.value;
+      applyRange(this.value, endEl.value, currentData?currentData.sessions:[]);
+    });
+    document.getElementById('endDate').addEventListener('change',function(){
+      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+      var startEl = document.getElementById('startDate');
+      if (this.value < startEl.value) startEl.value = this.value;
+      applyRange(startEl.value, this.value, currentData?currentData.sessions:[]);
+    });
+  }
 
   // 默认单日最新（以实际数据最后日期为准）
   var e = lastDate;
@@ -995,12 +1029,12 @@ function renderSingleDay(s) {
     // 支付渠道饼图
     var pa=document.getElementById('rptPayAmountChart');
     if(pa && paTotal>0){
-      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paAmt,paIosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paAmt,paIosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
     var pu=document.getElementById('rptPayUserChart');
     var paUsrTotal = paUsr+paIosUsr;
     if(pu && paUsrTotal>0){
-      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
   }, 50);
   // 核心关注 + 销售渠道
@@ -1166,11 +1200,10 @@ function renderMultiDay(sessions) {
     // 多日支付渠道饼图
     if (payTotal > 0) {
       var pa=document.getElementById('rptPayAmountMultiChart');
-      var payLabelMultiAmt = ['3k-安卓 ('+((androidAmt/(androidAmt+iosAmt))*100).toFixed(1)+'%)','3k-iOS ('+((iosAmt/(androidAmt+iosAmt))*100).toFixed(1)+'%)'];
-      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
       var pu=document.getElementById('rptPayUserMultiChart');
       var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)'];
-      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
   }, 200);
   // 核心关注 + 销售渠道
@@ -1243,10 +1276,10 @@ function renderSalesChannels(sessions, data) {
     var totalS = liveS + selfS, totalO = liveO + selfO;
     var pieLabels = ['直播间 ('+(totalS>0?(liveS/totalS*100).toFixed(1):'0.0')+'%)','店铺自营（非直播） ('+(totalS>0?(selfS/totalS*100).toFixed(1):'0.0')+'%)'];
     var c1=document.getElementById('scSalesChart');
-    if(c1 && totalS>0) charts.scSalesChart=new Chart(c1.getContext('2d'),{type:'pie',data:{labels:pieLabels,datasets:[{data:[liveS,selfS],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalS)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+    if(c1 && totalS>0) charts.scSalesChart=new Chart(c1.getContext('2d'),{type:'pie',data:{labels:pieLabels,datasets:[{data:[liveS,selfS],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalS)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
     var ordLabels = ['直播间 ('+(totalO>0?(liveO/totalO*100).toFixed(1):'0.0')+'%)','店铺自营（非直播） ('+(totalO>0?(selfO/totalO*100).toFixed(1):'0.0')+'%)'];
     var c2=document.getElementById('scOrdersChart');
-    if(c2 && totalO>0) charts.scOrdersChart=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:ordLabels,datasets:[{data:[liveO,selfO],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 笔 ('+((ctx.parsed/totalO)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+    if(c2 && totalO>0) charts.scOrdersChart=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:ordLabels,datasets:[{data:[liveO,selfO],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 笔 ('+((ctx.parsed/totalO)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
   }, 50);
 }
 
