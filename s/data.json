@@ -1,162 +1,835 @@
 {
-  "updatedAt": "2026-07-07",
-  "games": ["巨兽战场", "我的使命"],
+  "updatedAt": "2026-07-08",
+  "games": [
+    "巨兽战场",
+    "我的使命"
+  ],
   "storeSummary": {
     "totalGMV": 0,
     "totalOrders": 0,
     "totalPayUsers": 0,
     "estimatedProfit": 0,
     "profitRate": 0,
-    "totalSessions": 6,
+    "totalSessions": 7,
     "avgGMV": 0,
     "analysis": "",
     "paymentChannels": {
-      "android": { "amount": 16270, "settle": 16259.266, "users": 9 },
-      "ios": { "amount": 3404, "settle": 3388.394, "users": 6 }
+      "android": {
+        "amount": 16270,
+        "settle": 16259.266,
+        "users": 9
+      },
+      "ios": {
+        "amount": 4052,
+        "settle": 4036.388,
+        "users": 7
+      }
     }
   },
   "salesChannels": [
-    {"game":"巨兽战场","date":"2026-07-02","label":"7月2日","live":{"sales":1110,"orders":4},"self":{"sales":30,"orders":1}},
-    {"game":"巨兽战场","date":"2026-07-03","label":"7月3日","live":{"sales":1944,"orders":2},"self":{"sales":1782,"orders":4}},
-    {"game":"巨兽战场","date":"2026-07-04","label":"7月4日","live":{"sales":976,"orders":2},"self":{"sales":3010,"orders":3}},
-    {"game":"巨兽战场","date":"2026-07-05","label":"7月5日","live":{"sales":678,"orders":2},"self":{"sales":3016,"orders":4}},
-    {"game":"巨兽战场","date":"2026-07-06","label":"7月6日","live":{"sales":0,"orders":0},"self":{"sales":648,"orders":1}},
-    {"game":"巨兽战场","date":"2026-07-07","label":"7月7日","live":{"sales":6480,"orders":1},"self":{"sales":30,"orders":1}}
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-02",
+      "label": "7月2日",
+      "live": {
+        "sales": 1110,
+        "orders": 4
+      },
+      "self": {
+        "sales": 30,
+        "orders": 1
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-03",
+      "label": "7月3日",
+      "live": {
+        "sales": 1944,
+        "orders": 2
+      },
+      "self": {
+        "sales": 1782,
+        "orders": 4
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-04",
+      "label": "7月4日",
+      "live": {
+        "sales": 976,
+        "orders": 2
+      },
+      "self": {
+        "sales": 3010,
+        "orders": 3
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-05",
+      "label": "7月5日",
+      "live": {
+        "sales": 678,
+        "orders": 2
+      },
+      "self": {
+        "sales": 3016,
+        "orders": 4
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-06",
+      "label": "7月6日",
+      "live": {
+        "sales": 0,
+        "orders": 0
+      },
+      "self": {
+        "sales": 648,
+        "orders": 1
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-07",
+      "label": "7月7日",
+      "live": {
+        "sales": 6480,
+        "orders": 1
+      },
+      "self": {
+        "sales": 30,
+        "orders": 1
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-08",
+      "label": "7月8日",
+      "live": {
+        "sales": 648,
+        "orders": 1
+      },
+      "self": {
+        "sales": 0,
+        "orders": 0
+      }
+    }
   ],
   "sessions": [
     {
       "game": "巨兽战场",
       "date": "2026-07-02",
       "label": "7月2日直播",
-      "traffic": { "exposure": 2721, "entry": 193, "entryRate": 0.0709, "avgOnline": 5, "maxOnline": 19 },
-      "interaction": { "comments": 12, "commentRate": 0.0622, "likes": 729, "likeRate": 0.0622, "avgStay": "5.53min", "newFans": 8 },
-      "product": { "sales": 1140, "exposure": 126, "clicks": 20, "orders": 3, "paymentOrders": 5, "exposureClickRate": 0.1587, "clickOrderRate": 0.1 },
-      "payment": { "android": { "amount": 1006, "settle": 1005.994, "users": 1 }, "ios": { "amount": 134, "settle": 133.958, "users": 2 } }
+      "traffic": {
+        "exposure": 2721,
+        "entry": 193,
+        "entryRate": 0.0709,
+        "avgOnline": 5,
+        "maxOnline": 19
+      },
+      "interaction": {
+        "comments": 12,
+        "commentRate": 0.0622,
+        "likes": 729,
+        "likeRate": 0.0622,
+        "avgStay": "5.53min",
+        "newFans": 8
+      },
+      "product": {
+        "sales": 1140,
+        "exposure": 126,
+        "clicks": 20,
+        "orders": 3,
+        "paymentOrders": 5,
+        "exposureClickRate": 0.1587,
+        "clickOrderRate": 0.1
+      },
+      "payment": {
+        "android": {
+          "amount": 1006,
+          "settle": 1005.994,
+          "users": 1
+        },
+        "ios": {
+          "amount": 134,
+          "settle": 133.958,
+          "users": 2
+        }
+      }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-03",
       "label": "7月3日直播",
-      "traffic": { "exposure": 3275, "entry": 220, "entryRate": 0.0672, "avgOnline": 4, "maxOnline": 13 },
-      "interaction": { "comments": 11, "commentRate": 0.05, "likes": 1737, "likeRate": 0.0227, "avgStay": "4.39min", "newFans": 3 },
-      "product": { "sales": 3726, "exposure": 156, "clicks": 24, "orders": 4, "paymentOrders": 6, "exposureClickRate": 0.1538, "clickOrderRate": 0.1667 },
-      "payment": { "android": { "amount": 1782, "settle": 1771.308, "users": 2 }, "ios": { "amount": 1944, "settle": 1932.336, "users": 1 } }
+      "traffic": {
+        "exposure": 3275,
+        "entry": 220,
+        "entryRate": 0.0672,
+        "avgOnline": 4,
+        "maxOnline": 13
+      },
+      "interaction": {
+        "comments": 11,
+        "commentRate": 0.05,
+        "likes": 1737,
+        "likeRate": 0.0227,
+        "avgStay": "4.39min",
+        "newFans": 3
+      },
+      "product": {
+        "sales": 3726,
+        "exposure": 156,
+        "clicks": 24,
+        "orders": 4,
+        "paymentOrders": 6,
+        "exposureClickRate": 0.1538,
+        "clickOrderRate": 0.1667
+      },
+      "payment": {
+        "android": {
+          "amount": 1782,
+          "settle": 1771.308,
+          "users": 2
+        },
+        "ios": {
+          "amount": 1944,
+          "settle": 1932.336,
+          "users": 1
+        }
+      }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-04",
       "label": "7月4日直播",
-      "traffic": { "exposure": 1459, "entry": 245, "entryRate": 0.1679, "avgOnline": 3, "maxOnline": 7 },
-      "interaction": { "comments": 10, "commentRate": 0.0408, "likes": 829, "likeRate": 0.0204, "avgStay": "2.10min", "newFans": 1 },
-      "product": { "sales": 3974, "exposure": 164, "clicks": 14, "orders": 4, "paymentOrders": 3, "exposureClickRate": 0.0854, "clickOrderRate": 0.2857 },
-      "payment": { "android": { "amount": 3974, "settle": 3973.982, "users": 3 }, "ios": { "amount": 0, "settle": 0, "users": 0 } }
+      "traffic": {
+        "exposure": 1459,
+        "entry": 245,
+        "entryRate": 0.1679,
+        "avgOnline": 3,
+        "maxOnline": 7
+      },
+      "interaction": {
+        "comments": 10,
+        "commentRate": 0.0408,
+        "likes": 829,
+        "likeRate": 0.0204,
+        "avgStay": "2.10min",
+        "newFans": 1
+      },
+      "product": {
+        "sales": 3974,
+        "exposure": 164,
+        "clicks": 14,
+        "orders": 4,
+        "paymentOrders": 3,
+        "exposureClickRate": 0.0854,
+        "clickOrderRate": 0.2857
+      },
+      "payment": {
+        "android": {
+          "amount": 3974,
+          "settle": 3973.982,
+          "users": 3
+        },
+        "ios": {
+          "amount": 0,
+          "settle": 0,
+          "users": 0
+        }
+      }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-05",
       "label": "7月5日直播",
-      "traffic": { "exposure": 1264, "entry": 223, "entryRate": 0.1764, "avgOnline": 2, "maxOnline": 6 },
-      "interaction": { "comments": 6, "commentRate": 0.0269, "likes": 785, "likeRate": 0.0179, "avgStay": "2.52min", "newFans": 2 },
-      "product": { "sales": 3676, "exposure": 137, "clicks": 13, "orders": 4, "paymentOrders": 3, "exposureClickRate": 0.0949, "clickOrderRate": 0.3077 },
-      "payment": { "android": { "amount": 3028, "settle": 3027.988, "users": 2 }, "ios": { "amount": 648, "settle": 647.994, "users": 1 } }
+      "traffic": {
+        "exposure": 1264,
+        "entry": 223,
+        "entryRate": 0.1764,
+        "avgOnline": 2,
+        "maxOnline": 6
+      },
+      "interaction": {
+        "comments": 6,
+        "commentRate": 0.0269,
+        "likes": 785,
+        "likeRate": 0.0179,
+        "avgStay": "2.52min",
+        "newFans": 2
+      },
+      "product": {
+        "sales": 3676,
+        "exposure": 137,
+        "clicks": 13,
+        "orders": 4,
+        "paymentOrders": 3,
+        "exposureClickRate": 0.0949,
+        "clickOrderRate": 0.3077
+      },
+      "payment": {
+        "android": {
+          "amount": 3028,
+          "settle": 3027.988,
+          "users": 2
+        },
+        "ios": {
+          "amount": 648,
+          "settle": 647.994,
+          "users": 1
+        }
+      }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-06",
       "label": "7月6日（无直播）",
-      "traffic": { "exposure": 0, "entry": 0, "entryRate": 0, "avgOnline": 0, "maxOnline": 0 },
-      "interaction": { "comments": 0, "commentRate": 0, "likes": 0, "likeRate": 0, "avgStay": "0min", "newFans": 0 },
-      "product": { "sales": 648, "exposure": 40, "clicks": 6, "orders": 1, "paymentOrders": 1, "exposureClickRate": 0, "clickOrderRate": 0 },
-      "payment": { "android": { "amount": 0, "settle": 0, "users": 0 }, "ios": { "amount": 648, "settle": 644.112, "users": 1 } }
+      "traffic": {
+        "exposure": 0,
+        "entry": 0,
+        "entryRate": 0,
+        "avgOnline": 0,
+        "maxOnline": 0
+      },
+      "interaction": {
+        "comments": 0,
+        "commentRate": 0,
+        "likes": 0,
+        "likeRate": 0,
+        "avgStay": "0min",
+        "newFans": 0
+      },
+      "product": {
+        "sales": 648,
+        "exposure": 40,
+        "clicks": 6,
+        "orders": 1,
+        "paymentOrders": 1,
+        "exposureClickRate": 0,
+        "clickOrderRate": 0
+      },
+      "payment": {
+        "android": {
+          "amount": 0,
+          "settle": 0,
+          "users": 0
+        },
+        "ios": {
+          "amount": 648,
+          "settle": 644.112,
+          "users": 1
+        }
+      }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-07",
       "label": "7月7日直播",
-      "traffic": { "exposure": 1257, "entry": 251, "entryRate": 0.1997, "avgOnline": 3, "maxOnline": 28 },
-      "interaction": { "comments": 9, "commentRate": 0.0359, "likes": 433, "likeRate": 0.004, "avgStay": "2.89min", "newFans": 4 },
-      "product": { "sales": 6510, "exposure": 126, "clicks": 20, "orders": 2, "paymentOrders": 2, "exposureClickRate": 0.1587, "clickOrderRate": 0.1 },
-      "payment": { "android": { "amount": 6480, "settle": 6479.994, "users": 1 }, "ios": { "amount": 30, "settle": 29.994, "users": 1 } }
+      "traffic": {
+        "exposure": 1257,
+        "entry": 251,
+        "entryRate": 0.1997,
+        "avgOnline": 3,
+        "maxOnline": 28
+      },
+      "interaction": {
+        "comments": 9,
+        "commentRate": 0.0359,
+        "likes": 433,
+        "likeRate": 0.004,
+        "avgStay": "2.89min",
+        "newFans": 4
+      },
+      "product": {
+        "sales": 6510,
+        "exposure": 126,
+        "clicks": 20,
+        "orders": 2,
+        "paymentOrders": 2,
+        "exposureClickRate": 0.1587,
+        "clickOrderRate": 0.1
+      },
+      "payment": {
+        "android": {
+          "amount": 6480,
+          "settle": 6479.994,
+          "users": 1
+        },
+        "ios": {
+          "amount": 30,
+          "settle": 29.994,
+          "users": 1
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-08",
+      "label": "7月8日直播",
+      "traffic": {
+        "exposure": 2894,
+        "entry": 472,
+        "entryRate": 0.1631,
+        "avgOnline": 3,
+        "maxOnline": 15
+      },
+      "interaction": {
+        "comments": 13,
+        "commentRate": 0.0275,
+        "likes": 564,
+        "likeRate": 0.0339,
+        "avgStay": "1.33min",
+        "newFans": 3
+      },
+      "product": {
+        "sales": 648,
+        "exposure": 356,
+        "clicks": 52,
+        "orders": 1,
+        "paymentOrders": 1,
+        "exposureClickRate": 0.1461,
+        "clickOrderRate": 0.0192
+      },
+      "payment": {
+        "android": {
+          "amount": 0,
+          "settle": 0,
+          "users": 0
+        },
+        "ios": {
+          "amount": 648,
+          "settle": 647.994,
+          "users": 1
+        }
+      }
     }
   ],
   "competitor": {
-  "updatedAt": "2026-07-08",
-  "stores": ["策略游戏馆", "星球购 Planet go", "水世界收藏馆"],
-  "summary": [
-    ["在售商品数", "15", "10", "29"],
-    ["主营类目", "游戏服务", "-", "-"],
-    ["商品点击人数", "31", "1万-2.5万", "1万-2.5万"],
-    ["用户支付金额(元)", "8,510", "750万-1000万", "1000万-2500万"],
-    ["点击成交转化率", "19.35%", "30%+", "30%+"]
-  ],
-  "trafficClicks": [
-    ["流量来源", "策略游戏馆", "星球购 Planet go", "水世界收藏馆"],
-    ["搜索", "23", "2500-5000", "1万-2.5万"],
-    ["购后页面", "3", "2500-5000", "1000-2500"],
-    ["合作达人", "3", "5000-7500", "250-500"],
-    ["直播间溢出", "2", "100-250", "100-250"],
-    ["短视频溢出", "1", "100-250", "250-500"],
-    ["消息", "1", "250-500", "250-500"],
-    ["商城其他", "1", "100-250", "250-500"],
-    ["其他", "1", "0-50", "50-100"],
-    ["购物车", "0", "50-100", "250-500"],
-    ["通用功能", "-", "50-100", "50-100"],
-    ["底 tab - 我", "0", "0-50", "500-750"],
-    ["猜你喜欢", "0", "0-50", "100-250"],
-    ["收藏", "0", "0-50", "0-50"],
-    ["顶 tab 聚合", "0", "0-50", "0-50"],
-    ["顶 tab - 推荐", "0", "0-50", "0-50"],
-    ["电商频道", "0", "0-50", "0-50"],
-    ["标准 + 品牌投放", "0", "0-50", "0-50"],
-    ["商城工具区", "0", "0-50", "0-50"],
-    ["分享", "-", "0-50", "0-50"],
-    ["足迹", "0", "0-50", "0-50"]
-  ],
-  "trafficPay": [
-    ["流量来源", "策略游戏馆", "星球购 Planet go", "水世界收藏馆"],
-    ["搜索", "2,016", "100万-250万", "750万-1000万"],
-    ["其他", "6,452", "500-750", "10万-25万"],
-    ["购后页面", "36", "250万-500万", "250万-500万"],
-    ["短视频溢出", "6", "7.5万-10万", "10万-25万"],
-    ["合作达人", "0", "250万-500万", "0-250"],
-    ["消息", "0", "10万-25万", "25万-50万"],
-    ["通用功能", "0", "2.5万-5万", "10万-25万"],
-    ["商城其他", "0", "2.5万-5万", "7.5万-10万"],
-    ["直播间溢出", "0", "2.5万-5万", "2.5万-5万"],
-    ["购物车", "0", "1万-2.5万", "7.5万-10万"],
-    ["底 tab - 我", "0", "2,500-5,000", "75万-100万"],
-    ["商城工具区", "0", "2,500-5,000", "1万-2.5万"],
-    ["分享", "0", "1,000-2,500", "2,500-5,000"],
-    ["猜你喜欢", "0", "1,000-2,500", "2,500-5,000"],
-    ["收藏", "0", "1,000-2,500", "2,500-5,000"],
-    ["足迹", "-", "1万-2.5万", "1万-2.5万"],
-    ["顶 tab 聚合", "0", "0-250", "750-1,000"],
-    ["电商频道", "0", "0-250", "0-250"],
-    ["标准 + 品牌投放", "0", "0-250", "0-250"],
-    ["顶 tab - 推荐", "0", "0-250", "5,000-7,500"]
-  ],
-  "trafficCvr": [
-    ["流量来源", "策略游戏馆", "星球购 Planet go", "水世界收藏馆"],
-    ["购后页面", "66.67%", "30%+", "30%+"],
-    ["搜索", "17.39%", "30%+", "30%+"],
-    ["短视频溢出", "1%", "30%+", "30%+"],
-    ["其他", "1%", "20%-25%", "30%+"],
-    ["合作达人", "0%", "30%+", "0%-2.5%"],
-    ["消息", "0%", "30%+", "30%+"],
-    ["直播间溢出", "0%", "30%+", "25%-30%"],
-    ["商城其他", "0%", "30%+", "30%+"],
-    ["商城工具区", "0%", "30%+", "30%+"],
-    ["底 tab - 我", "0%", "30%+", "30%+"],
-    ["通用功能", "0%", "30%+", "30%+"],
-    ["分享", "0%", "30%+", "30%+"],
-    ["购物车", "0%", "30%+", "30%+"],
-    ["足迹", "0%", "30%+", "30%+"],
-    ["顶 tab 聚合", "0%", "30%+", "30%+"],
-    ["猜你喜欢", "0%", "20%-25%", "7.5%-10%"],
-    ["收藏", "0%", "15%-20%", "7.5%-10%"],
-    ["顶 tab - 推荐", "0%", "0%-2.5%", "30%+"],
-    ["电商频道", "0%", "0%-2.5%", "0%-2.5%"],
-    ["标准 + 品牌投放", "0%", "0%-2.5%", "0%-2.5%"]
-  ]
-}
+    "updatedAt": "2026-07-08",
+    "stores": [
+      "策略游戏馆",
+      "星球购 Planet go",
+      "水世界收藏馆"
+    ],
+    "summary": [
+      [
+        "在售商品数",
+        "15",
+        "10",
+        "29"
+      ],
+      [
+        "主营类目",
+        "游戏服务",
+        "-",
+        "-"
+      ],
+      [
+        "商品点击人数",
+        "31",
+        "1万-2.5万",
+        "1万-2.5万"
+      ],
+      [
+        "用户支付金额(元)",
+        "8,510",
+        "750万-1000万",
+        "1000万-2500万"
+      ],
+      [
+        "点击成交转化率",
+        "19.35%",
+        "30%+",
+        "30%+"
+      ]
+    ],
+    "trafficClicks": [
+      [
+        "流量来源",
+        "策略游戏馆",
+        "星球购 Planet go",
+        "水世界收藏馆"
+      ],
+      [
+        "搜索",
+        "23",
+        "2500-5000",
+        "1万-2.5万"
+      ],
+      [
+        "购后页面",
+        "3",
+        "2500-5000",
+        "1000-2500"
+      ],
+      [
+        "合作达人",
+        "3",
+        "5000-7500",
+        "250-500"
+      ],
+      [
+        "直播间溢出",
+        "2",
+        "100-250",
+        "100-250"
+      ],
+      [
+        "短视频溢出",
+        "1",
+        "100-250",
+        "250-500"
+      ],
+      [
+        "消息",
+        "1",
+        "250-500",
+        "250-500"
+      ],
+      [
+        "商城其他",
+        "1",
+        "100-250",
+        "250-500"
+      ],
+      [
+        "其他",
+        "1",
+        "0-50",
+        "50-100"
+      ],
+      [
+        "购物车",
+        "0",
+        "50-100",
+        "250-500"
+      ],
+      [
+        "通用功能",
+        "-",
+        "50-100",
+        "50-100"
+      ],
+      [
+        "底 tab - 我",
+        "0",
+        "0-50",
+        "500-750"
+      ],
+      [
+        "猜你喜欢",
+        "0",
+        "0-50",
+        "100-250"
+      ],
+      [
+        "收藏",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "顶 tab 聚合",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "顶 tab - 推荐",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "电商频道",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "标准 + 品牌投放",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "商城工具区",
+        "0",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "分享",
+        "-",
+        "0-50",
+        "0-50"
+      ],
+      [
+        "足迹",
+        "0",
+        "0-50",
+        "0-50"
+      ]
+    ],
+    "trafficPay": [
+      [
+        "流量来源",
+        "策略游戏馆",
+        "星球购 Planet go",
+        "水世界收藏馆"
+      ],
+      [
+        "搜索",
+        "2,016",
+        "100万-250万",
+        "750万-1000万"
+      ],
+      [
+        "其他",
+        "6,452",
+        "500-750",
+        "10万-25万"
+      ],
+      [
+        "购后页面",
+        "36",
+        "250万-500万",
+        "250万-500万"
+      ],
+      [
+        "短视频溢出",
+        "6",
+        "7.5万-10万",
+        "10万-25万"
+      ],
+      [
+        "合作达人",
+        "0",
+        "250万-500万",
+        "0-250"
+      ],
+      [
+        "消息",
+        "0",
+        "10万-25万",
+        "25万-50万"
+      ],
+      [
+        "通用功能",
+        "0",
+        "2.5万-5万",
+        "10万-25万"
+      ],
+      [
+        "商城其他",
+        "0",
+        "2.5万-5万",
+        "7.5万-10万"
+      ],
+      [
+        "直播间溢出",
+        "0",
+        "2.5万-5万",
+        "2.5万-5万"
+      ],
+      [
+        "购物车",
+        "0",
+        "1万-2.5万",
+        "7.5万-10万"
+      ],
+      [
+        "底 tab - 我",
+        "0",
+        "2,500-5,000",
+        "75万-100万"
+      ],
+      [
+        "商城工具区",
+        "0",
+        "2,500-5,000",
+        "1万-2.5万"
+      ],
+      [
+        "分享",
+        "0",
+        "1,000-2,500",
+        "2,500-5,000"
+      ],
+      [
+        "猜你喜欢",
+        "0",
+        "1,000-2,500",
+        "2,500-5,000"
+      ],
+      [
+        "收藏",
+        "0",
+        "1,000-2,500",
+        "2,500-5,000"
+      ],
+      [
+        "足迹",
+        "-",
+        "1万-2.5万",
+        "1万-2.5万"
+      ],
+      [
+        "顶 tab 聚合",
+        "0",
+        "0-250",
+        "750-1,000"
+      ],
+      [
+        "电商频道",
+        "0",
+        "0-250",
+        "0-250"
+      ],
+      [
+        "标准 + 品牌投放",
+        "0",
+        "0-250",
+        "0-250"
+      ],
+      [
+        "顶 tab - 推荐",
+        "0",
+        "0-250",
+        "5,000-7,500"
+      ]
+    ],
+    "trafficCvr": [
+      [
+        "流量来源",
+        "策略游戏馆",
+        "星球购 Planet go",
+        "水世界收藏馆"
+      ],
+      [
+        "购后页面",
+        "66.67%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "搜索",
+        "17.39%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "短视频溢出",
+        "1%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "其他",
+        "1%",
+        "20%-25%",
+        "30%+"
+      ],
+      [
+        "合作达人",
+        "0%",
+        "30%+",
+        "0%-2.5%"
+      ],
+      [
+        "消息",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "直播间溢出",
+        "0%",
+        "30%+",
+        "25%-30%"
+      ],
+      [
+        "商城其他",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "商城工具区",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "底 tab - 我",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "通用功能",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "分享",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "购物车",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "足迹",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "顶 tab 聚合",
+        "0%",
+        "30%+",
+        "30%+"
+      ],
+      [
+        "猜你喜欢",
+        "0%",
+        "20%-25%",
+        "7.5%-10%"
+      ],
+      [
+        "收藏",
+        "0%",
+        "15%-20%",
+        "7.5%-10%"
+      ],
+      [
+        "顶 tab - 推荐",
+        "0%",
+        "0%-2.5%",
+        "30%+"
+      ],
+      [
+        "电商频道",
+        "0%",
+        "0%-2.5%",
+        "0%-2.5%"
+      ],
+      [
+        "标准 + 品牌投放",
+        "0%",
+        "0%-2.5%",
+        "0%-2.5%"
+      ]
+    ]
+  }
 }
