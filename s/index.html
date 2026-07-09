@@ -123,19 +123,6 @@ body {
   border-top: 1px solid var(--border-light);
 }
 
-/* ===== Sidebar Summary Card ===== */
-.sidebar-summary {
-  padding: 14px 16px;
-  margin: 10px 16px;
-  background: linear-gradient(135deg, var(--primary-surface), #f8fafc);
-  border: 1px solid #d4e0ff;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-xs);
-}
-.ss-row { display: flex; justify-content:space-between; align-items:center; padding:5px 0; font-size:12px; }
-.ss-lbl { color: var(--text3); }
-.ss-val { font-weight: 700; color: var(--primary); font-size: 13px; font-variant-numeric: tabular-nums; }
-
 /* ===== Main Layout ===== */
 .main { flex: 1; padding: 32px 36px; min-width: 0; max-width: 100%; }
 .header { margin-bottom: 24px; }
@@ -477,7 +464,6 @@ body {
   .sidebar .nav-item.active::before { display: none; }
   .sidebar .nav-item.active { border-bottom: 2px solid var(--primary); background: var(--primary-light); }
   .sidebar .footer-info { display: none; }
-  .sidebar-summary { display: none; }
   .main { padding: 20px 16px; }
   .kpi-row { grid-template-columns: repeat(2,1fr); }
   .summary-grid { grid-template-columns: repeat(2,1fr); }
@@ -498,11 +484,6 @@ body {
   <div class="logo">📊 抖店数据工作台<div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
-  <div class="sidebar-summary" id="sidebarSummary">
-    <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
-    <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
-    <div class="ss-row"><span class="ss-lbl">🎮 游戏</span><span class="ss-val" id="ssGames">-</span></div>
-  </div>
   <div class="footer-info">共 <span id="totalSessions">0</span> 场直播</div>
 </div>
 
@@ -773,8 +754,6 @@ function render(data) {
     };
   }
   currentData = data;
-  // 更新侧边栏概览
-  updateSidebarSummary(data);
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
@@ -782,15 +761,6 @@ function render(data) {
 }
 
 // ===== 数据说明弹窗 =====
-// 侧边栏概览更新
-function updateSidebarSummary(data) {
-  var sessions = data.sessions || [];
-  var totalSales = sessions.reduce(function(s, sx){return s+(sx.product?.sales||0);},0);
-  var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.orders||0);},0);
-  document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
-  document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
-  document.getElementById('ssGames').textContent = (data.games||[]).length+' 款';
-}
 document.getElementById('helpBtn').addEventListener('click', function(){
   document.getElementById('helpOverlay').classList.add('open');
 });
