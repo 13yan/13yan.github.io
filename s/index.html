@@ -295,6 +295,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <span>至</span>
       <input type="date" id="endDate">
       <span class="range-info" id="rangeInfo">共 0 场 · 销售额 0 元</span>
+      <button onclick="exportCSV()" style="margin-left:auto;padding:5px 14px;border:1px solid var(--primary);border-radius:6px;background:var(--primary);color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;">📥 导出CSV</button>
     </div>
   </div>
 
@@ -899,6 +900,7 @@ function renderReport() {
 function applyRange(start, end, sessions) {
   if(!start||!end) return;
   var filtered = sessions.filter(function(s){return s.date>=start && s.date<=end;});
+  window._exportData = {start: start, end: end, sessions: filtered};
   var isSingle = (start===end) || (filtered.length===1);
   var totalSales = filtered.reduce(function(s,ss){return s+(ss.product?.sales||0);},0);
   document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(totalSales)+' 元' + (filtered.length===0?' · 该游戏暂无数据':'');
@@ -1350,6 +1352,42 @@ document.getElementById('ovMonthSelect').addEventListener('change', function(){
   ovMonth = this.value;
   renderOverview();
 });
+
+// ===== 导出CSV =====
+function exportCSV() {
+  var ed = window._exportData;
+  if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
+  var rows = [];
+  // Header
+  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),支付订单数,曝光(商品),点击(商品),成交人数,安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  // Data rows
+  ed.sessions.forEach(function(s){
+    var t = s.traffic||{}, it = s.interaction||{}, p = s.product||{}, pay = s.payment||{};
+    rows.push([
+      s.date, s.game||'',
+      t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
+      it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
+      p.sales||0, p.orders||0, p.exposure||0, p.clicks||0, p.payUsers||p.orders||0,
+      pay.android?.amount||0, pay.ios?.amount||0,
+      pay.android?.users||0, pay.ios?.users||0
+    ].join(','));
+  });
+  // Summary row
+  var totalS = ed.sessions.reduce(function(a,b){return a+(b.product?.sales||0);},0);
+  var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.orders||0);},0);
+  rows.push('合计,,,,,,,,,,'+totalS+','+totalO+',,,,,,');
+  // Create blob and download
+  var bom = '\uFEFF';
+  var csv = bom + rows.join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = '抖店数据_'+ed.start+'~'+ed.end+'.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+}
 </script>
 </body>
 </html>
