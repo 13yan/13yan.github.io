@@ -20,7 +20,7 @@ h3 { font-size:14px; font-weight:600; margin:16px 0 8px; color:#1e40af; }
 .stat-box .sub { font-size:10px; color:#9ca3af; margin-top:1px; }
 .up { color:#059669; }
 .down { color:#dc2626; }
-.warn { color:#d97706; }
+.warn-c { color:#d97706; }
 .highlight { background:#fef2f2; border-left:3px solid #dc2626; padding:10px 14px; border-radius:0 6px 6px 0; margin:10px 0; font-size:13px; }
 .highlight.ok { background:#f0fdf4; border-color:#16a34a; }
 .highlight.warn { background:#fffbeb; border-color:#d97706; }
@@ -30,56 +30,54 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 .num { text-align:right; font-variant-numeric:tabular-nums; }
 .list { margin:6px 0; padding-left:18px; }
 .list li { font-size:13px; margin-bottom:6px; line-height:1.6; }
-.risk-high { color:#dc2626; font-weight:600; }
-.risk-med { color:#d97706; font-weight:600; }
-.risk-ok { color:#16a34a; font-weight:600; }
 .section-desc { font-size:12px; color:#6b7280; margin-bottom:12px; line-height:1.7; }
-/* 竞品对比可视化条 */
-.comp-bar-wrap { display:flex; align-items:center; gap:6px; justify-content:flex-end; }
-.comp-bar { height:14px; border-radius:3px; min-width:2px; transition:width 0.3s; }
-.comp-bar.our { background:#1e40af; }
-.comp-bar.c1 { background:#d97706; }
-.comp-bar.c2 { background:#059669; }
-.comp-num { font-size:11px; white-space:nowrap; color:#374151; min-width:60px; text-align:right; }
-.comp-row { display:flex; align-items:center; padding:5px 0; border-bottom:1px solid #f3f4f6; }
-.comp-row .label { width:80px; font-size:11px; color:#6b7280; flex-shrink:0; }
-.comp-row .bars { flex:1; display:flex; flex-direction:column; gap:3px; }
-.comp-row .bar-item { display:flex; align-items:center; gap:4px; }
-.comp-row .bar-item .bar { height:12px; border-radius:3px; min-width:2px; }
-.comp-row .bar-item .tag { font-size:10px; color:#6b7280; min-width:50px; }
+/* 支付渠道对比 */
+.pay-compare { display:flex; gap:16px; margin:12px 0; flex-wrap:wrap; }
+.pay-card { flex:1; min-width:200px; border-radius:10px; padding:18px; text-align:center; }
+.pay-card.android { background:linear-gradient(135deg,#eef2ff,#e0e7ff); border:1px solid #b3c5ff; }
+.pay-card.ios { background:linear-gradient(135deg,#fffbeb,#fef3c7); border:1px solid #fde68a; }
+.pay-card .pay-icon { font-size:28px; margin-bottom:6px; }
+.pay-card .pay-name { font-size:13px; font-weight:600; color:#374151; }
+.pay-card .pay-amt { font-size:28px; font-weight:800; color:#1e40af; margin:6px 0; }
+.pay-card.ios .pay-amt { color:#d97706; }
+.pay-card .pay-pct { font-size:20px; font-weight:700; }
+.pay-card .pay-detail { font-size:11px; color:#6b7280; margin-top:4px; }
+.pay-bar-wrap { background:#e5e7eb; border-radius:8px; height:24px; margin:12px 0; overflow:hidden; display:flex; }
+.pay-bar-android { background:#1e40af; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:600; transition:width 0.3s; }
+.pay-bar-ios { background:#d97706; height:100%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:600; transition:width 0.3s; }
 </style>
 </head>
 <body><div class="container">
 
 <h1>📊 巨兽战场 · 抖店数据复盘</h1>
-<div class="meta">数据周期：2026年7月2日 — 7月7日（6天，5场直播+1天无直播） · 生成时间：2026年7月8日</div>
-<div class="meta" style="margin-top:-10px;">用途：与抖音电商商务同步数据，寻求建议与竞品经验</div>
+<div class="meta">数据周期：2026年7月2日 — 7月9日（8天，7场直播+1天无直播） · 更新：2026年7月9日</div>
+<div class="meta" style="margin-top:-10px;">用途：内部数据分析复盘</div>
 
 <!-- ===== 一、核心经营数据 ===== -->
 <div class="card">
 <h2>一、核心经营指标</h2>
 <div class="grid2">
-  <div class="stat-box"><div class="val">1.97万元</div><div class="lbl">💰 用户支付金额</div></div>
-  <div class="stat-box"><div class="val">25 单</div><div class="lbl">📋 成交订单数</div></div>
-  <div class="stat-box"><div class="val">12 人</div><div class="lbl">✅ 商品成交人数</div></div>
-  <div class="stat-box"><div class="val">1,642 元</div><div class="lbl">💵 客单价</div></div>
+  <div class="stat-box"><div class="val">2.08万元</div><div class="lbl">💰 用户支付金额</div><div class="sub">7场直播+自营累计</div></div>
+  <div class="stat-box"><div class="val">21 单</div><div class="lbl">📋 成交订单数</div><div class="sub">支付订单23单</div></div>
+  <div class="stat-box"><div class="val">1,4200</div><div class="lbl">👀 总曝光人数</div><div class="sub">7场直播合计</div></div>
+  <div class="stat-box"><div class="val">1,904</div><div class="lbl">🚪 总进房人数</div><div class="sub">平均进房率15.30%</div></div>
 </div>
 
 <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap;align-items:stretch;">
   <div style="flex:1;min-width:200px;display:flex;flex-direction:column;align-items:center;gap:2px;">
     <div style="width:100%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:14px 12px;border-radius:10px;text-align:center;">
-      <div style="font-size:22px;font-weight:700;">733</div>
+      <div style="font-size:22px;font-weight:700;">905</div>
       <div style="font-size:10px;opacity:0.8;margin-top:2px;">商品曝光人数</div>
     </div>
-    <div style="font-size:11px;color:#d97706;font-weight:600;padding:6px 0;text-align:center;background:#fffbeb;border-radius:6px;width:80px;margin:2px 0;">8.73%</div>
+    <div style="font-size:11px;color:#d97706;font-weight:600;padding:6px 0;text-align:center;background:#fffbeb;border-radius:6px;width:80px;margin:2px 0;">12.43%</div>
     <div style="width:85%;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;padding:12px 12px;border-radius:10px;text-align:center;">
-      <div style="font-size:20px;font-weight:700;">64</div>
+      <div style="font-size:20px;font-weight:700;">112</div>
       <div style="font-size:10px;opacity:0.8;margin-top:2px;">商品点击人数</div>
     </div>
-    <div style="font-size:11px;color:#16a34a;font-weight:600;padding:6px 0;text-align:center;background:#f0fdf4;border-radius:6px;width:80px;margin:2px 0;">18.75%</div>
+    <div style="font-size:11px;color:#16a34a;font-weight:600;padding:6px 0;text-align:center;background:#f0fdf4;border-radius:6px;width:80px;margin:2px 0;">16.59%</div>
     <div style="width:70%;background:linear-gradient(135deg,#3b82f6,#60a5fa);color:#fff;padding:10px 12px;border-radius:10px;text-align:center;">
-      <div style="font-size:18px;font-weight:700;">12</div>
-      <div style="font-size:10px;opacity:0.8;margin-top:2px;">商品成交人数</div>
+      <div style="font-size:18px;font-weight:700;">21</div>
+      <div style="font-size:10px;opacity:0.8;margin-top:2px;">成交单数</div>
     </div>
   </div>
   <div style="flex:1.2;min-width:200px;font-size:12px;color:#6b7280;line-height:2;display:flex;flex-direction:column;justify-content:center;">
@@ -87,19 +85,19 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
     <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;">
       <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #f3f4f6;">
         <span>曝光→点击率</span>
-        <span style="font-weight:700;color:#dc2626;">8.73%</span>
+        <span style="font-weight:700;color:#dc2626;">12.43%</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #f3f4f6;">
         <span>点击→成交率</span>
-        <span style="font-weight:700;color:#16a34a;">18.75% ✅</span>
+        <span style="font-weight:700;color:#16a34a;">16.59% ✅</span>
       </div>
       <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;">
         <span>曝光→成交率</span>
-        <span style="font-weight:700;color:#d97706;">1.64%</span>
+        <span style="font-weight:700;color:#d97706;">2.06%</span>
       </div>
     </div>
     <div style="font-size:11px;color:#9ca3af;margin-top:8px;line-height:1.6;">
-      健康线：曝光→点击率 &gt;20% | 点击→成交率 &gt;10%
+      健康线：曝光→点击率 >20% | 点击→成交率 >10%
     </div>
   </div>
 </div>
@@ -109,42 +107,86 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <div class="card">
 <h2>二、销售渠道构成</h2>
 <div class="grid2">
-  <div class="stat-box"><div class="val up">1.11万元</div><div class="lbl">📺 直播销售</div><div class="sub">占比 63.2%</div></div>
-  <div class="stat-box"><div class="val">0.65万元</div><div class="lbl">🏪 店铺自营（非直播）</div><div class="sub">占比 36.8%</div></div>
+  <div class="stat-box"><div class="val up">1.23万元</div><div class="lbl">📺 直播销售</div><div class="sub">占比 59.1% · 14单</div></div>
+  <div class="stat-box"><div class="val">0.85万元</div><div class="lbl">🏪 店铺自营（非直播）</div><div class="sub">占比 40.9% · 14单</div></div>
 </div>
 <div class="section-desc" style="margin-top:8px;">
-<b>直播间与店铺自营流水占比数据：</b>直播销售占比 63.2%，店铺自营（非直播）占比 36.8%。
-</div>
-
-<div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
-  <div style="flex:1;min-width:280px;"><img src="/r/img/store_profile.png" style="width:100%;max-width:400px;border:1px solid #e5e7eb;border-radius:8px;"></div>
-  <div style="flex:1;min-width:280px;"><img src="/r/img/store_card.png" style="width:100%;max-width:400px;border:1px solid #e5e7eb;border-radius:8px;"></div>
+<b>直播间与店铺自营流水占比：</b>直播销售占比 59.1%，店铺自营（非直播）占比 40.9%。7月6日无直播日自营销售648元，说明非直播渠道持续有产出。
 </div>
 </div>
 
-<!-- ===== 三、流量与转化 ===== -->
+<!-- ===== 三、直播流量与转化 ===== -->
 <div class="card">
 <h2>三、直播流量与转化效率</h2>
 <div class="grid2" style="margin-top:4px;">
-  <div class="stat-box"><div class="val warn">11.35%</div><div class="lbl">📉 平均进房率</div><div class="sub">健康线 >5% ✅ 达标</div></div>
-  <div class="stat-box"><div class="val warn">13.68%</div><div class="lbl">📉 曝光→点击转化率</div><div class="sub">健康线 >20% ❌ 偏低</div></div>
-  <div class="stat-box"><div class="val down">2.54%</div><div class="lbl">📉 曝光→成交转化率</div><div class="sub">整体偏低</div></div>
-  <div class="stat-box"><div class="val warn">18.56%</div><div class="lbl">📉 点击→成交转化率</div><div class="sub">健康线 >10% ✅ 达标</div></div>
+  <div class="stat-box"><div class="val warn-c">15.30%</div><div class="lbl">📉 平均进房率</div><div class="sub">健康线 >5% ✅ 达标</div></div>
+  <div class="stat-box"><div class="val warn-c">12.43%</div><div class="lbl">📉 曝光→点击转化率</div><div class="sub">健康线 >20% ❌ 偏低</div></div>
+  <div class="stat-box"><div class="val down">2.06%</div><div class="lbl">📉 曝光→成交转化率</div><div class="sub">整体偏低</div></div>
+  <div class="stat-box"><div class="val warn-c">16.59%</div><div class="lbl">📉 点击→成交转化率</div><div class="sub">健康线 >10% ✅ 达标</div></div>
 </div>
 
 <div style="margin-top:16px;">
-  <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:8px;">📈 直播间曝光量 & 成交人数 分日趋势</div>
+  <div style="font-size:13px;font-weight:600;color:#1e40af;margin-bottom:8px;">📈 直播间曝光量 & 成交单数 分日趋势</div>
   <div style="height:220px;"><canvas id="trendChart"></canvas></div>
 </div>
 
 <div class="highlight warn" style="margin-top:12px;">
-🟡 <b>曝光→点击转化率仅13.68%，低于健康线20%。</b>说明商品展示页的吸引力不足，用户曝光后不愿意点击查看详情。需优化商品主图、标题、价格锚点等页面要素。
+🟡 <b>曝光→点击转化率仅12.43%，低于健康线20%。</b>商品展示页吸引力不足。7月9日新数据曝光1330、点击11，点击率仅0.83%，明显偏低。
 </div>
 </div>
 
-<!-- ===== 四、竞店数据对比 ===== -->
+<!-- ===== 新增：四、支付渠道对比分析 ===== -->
 <div class="card">
-<h2>四、竞店数据对比 <span class="tag">7天周期</span></h2>
+<h2>四、支付渠道对比分析 <span class="tag">3k-安卓 vs 3k-iOS</span></h2>
+<div class="section-desc">全周期支付渠道结构拆解，识别利润风险与优化方向</div>
+
+<div class="pay-compare">
+  <div class="pay-card android">
+    <div class="pay-icon">🤖</div>
+    <div class="pay-name">3k-安卓</div>
+    <div class="pay-amt">16,598 元</div>
+    <div class="pay-pct" style="color:#1e40af;">79.9%</div>
+    <div class="pay-detail">结算 16,590.24 元 · 10 位用户</div>
+  </div>
+  <div class="pay-card ios">
+    <div class="pay-icon">🍎</div>
+    <div class="pay-name">3k-iOS</div>
+    <div class="pay-amt">4,180 元</div>
+    <div class="pay-pct" style="color:#d97706;">20.1%</div>
+    <div class="pay-detail">结算 4,168.37 元 · 8 位用户</div>
+  </div>
+</div>
+
+<div class="pay-bar-wrap">
+  <div class="pay-bar-android" style="width:79.9%;">安卓 79.9%</div>
+  <div class="pay-bar-ios" style="width:20.1%;">iOS 20.1%</div>
+</div>
+
+<h3>📊 支付渠道分日趋势</h3>
+<table>
+<tr><th>日期</th><th class="num">安卓金额</th><th class="num">安卓用户</th><th class="num">iOS金额</th><th class="num">iOS用户</th><th class="num">iOS占比</th><th>风险等级</th></tr>
+<tr><td>7月2日</td><td class="num">1,006</td><td class="num">1</td><td class="num">134</td><td class="num">2</td><td class="num" style="color:#16a34a;">11.8%</td><td>✅ 健康</td></tr>
+<tr><td>7月3日</td><td class="num">1,782</td><td class="num">2</td><td class="num">1,944</td><td class="num">1</td><td class="num" style="color:#16a34a;">52.2%</td><td>✅ 健康</td></tr>
+<tr><td>7月4日</td><td class="num">3,974</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num" style="color:#dc2626;">0%</td><td>🔴 高风险</td></tr>
+<tr><td>7月5日</td><td class="num">3,028</td><td class="num">2</td><td class="num">648</td><td class="num">1</td><td class="num" style="color:#d97706;">17.6%</td><td>🟡 中风险</td></tr>
+<tr><td>7月6日</td><td class="num">0</td><td class="num">0</td><td class="num">648</td><td class="num">1</td><td class="num" style="color:#16a34a;">100%</td><td>✅ iOS独占</td></tr>
+<tr><td>7月7日</td><td class="num">6,480</td><td class="num">1</td><td class="num">30</td><td class="num">1</td><td class="num" style="color:#dc2626;">0.5%</td><td>🔴 高风险</td></tr>
+<tr><td>7月8日</td><td class="num">0</td><td class="num">0</td><td class="num">648</td><td class="num">1</td><td class="num" style="color:#16a34a;">100%</td><td>✅ iOS独占</td></tr>
+<tr><td>7月9日</td><td class="num">328</td><td class="num">1</td><td class="num">128</td><td class="num">1</td><td class="num" style="color:#d97706;">28.1%</td><td>🟡 中风险</td></tr>
+<tr style="font-weight:700;background:#f8fafc;"><td>合计</td><td class="num">16,598</td><td class="num">10</td><td class="num">4,180</td><td class="num">8</td><td class="num" style="color:#d97706;">20.1%</td><td>🟡 中风险</td></tr>
+</table>
+
+<div class="highlight" style="margin-top:8px;">
+🔴 <b>安卓支付占比79.9%，超过50%关注线。</b>7月4日、7月7日两场安卓占比超99%，iOS几乎为零。7月6日、8日虽为iOS独占但金额仅648元。iOS用户获取和支付引导需加强。
+</div>
+
+<h3>📈 支付渠道每日趋势</h3>
+<div style="height:220px;"><canvas id="payTrendChart"></canvas></div>
+</div>
+
+<!-- ===== 原四→五：竞店数据对比 ===== -->
+<div class="card">
+<h2>五、竞店数据对比 <span class="tag">7天周期</span></h2>
 <div class="section-desc">与同类游戏抖店对比，定位差距与机会</div>
 
 <h3>巨兽商品卡流量数据</h3>
@@ -179,7 +221,7 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <tr><td>底 tab - 我</td><td class="num" style="background:#fef2f2;color:#dc2626;">0</td><td class="num">0-50</td><td class="num">500-750</td></tr>
 </table>
 <div class="highlight warn" style="margin-top:8px;">
-🟡 <b>核心差距在搜索和合作达人渠道。</b>竞店搜索流量是千/万级，我们仅23。合作达人渠道竞店5000-7500，我们只有3。需重点提升搜索SEO和达人合作规模。
+🟡 <b>核心差距在搜索和合作达人渠道。</b>竞店搜索流量千/万级，我们仅23。合作达人渠道竞店5000-7500，我们只有3。需重点提升搜索SEO和达人合作规模。
 </div>
 
 <h3 style="margin-top:20px;">💰 用户支付金额 — 分渠道对比</h3>
@@ -192,7 +234,7 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <tr><td>消息</td><td class="num" style="background:#fef2f2;font-weight:700;color:#dc2626;">0</td><td class="num" style="background:#f0fdf4;">10万-25万</td><td class="num" style="background:#f0fdf4;">25万-50万</td></tr>
 </table>
 <div class="highlight" style="margin-top:8px;">
-🔴 <b>支付金额差距巨大。</b>竞店通过搜索和合作达人渠道获得百万级支付金额，我们这两块几乎为零。建议重点向商务咨询：竞品在搜索SEO和达人合作上的具体操作方式。
+🔴 <b>支付金额差距巨大。</b>竞店通过搜索和合作达人获得百万级支付金额，我们几乎为零。搜索、合作达人是核心突破口。
 </div>
 
 <h3 style="margin-top:20px;">📈 点击成交转化率 — 分渠道对比</h3>
@@ -204,64 +246,78 @@ td { padding:7px 10px; border-bottom:1px solid #f3f4f6; }
 <tr><td>其他</td><td class="num" style="background:#fef2f2;color:#dc2626;">1%</td><td class="num">20%-25%</td><td class="num" style="background:#f0fdf4;">30%+</td></tr>
 </table>
 <div class="highlight" style="margin-top:8px;">
-🔴 <b>搜索转化率竞店30%+，我们仅17.39%；短视频溢出转化率竞店30%+，我们仅1%。</b>说明搜索落地页和短视频引流后的承接页存在明显优化空间。
+🔴 <b>搜索转化率竞店30%+，我们仅17.39%；短视频溢出转化率竞店30%+，我们仅1%。</b>搜索落地页和短视频引流后承接页存在明显优化空间。
 </div>
 </div>
 
-<!-- ===== 五、需同步与寻求建议 ===== -->
+<!-- ===== 原五改为：六、当前数据问题及复盘 ===== -->
 <div class="card">
-<h2>五、需与抖音电商商务同步 & 寻求建议</h2>
+<h2>六、当前数据问题及复盘</h2>
+<div class="section-desc">围绕8天经营数据的内部深度复盘，聚焦核心问题与可行改善方向</div>
 
 <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:14px 18px;margin-bottom:16px;">
-  <div style="font-size:13px;font-weight:600;color:#dc2626;margin-bottom:8px;">🎯 当前难点</div>
+  <div style="font-size:13px;font-weight:600;color:#dc2626;margin-bottom:8px;">🎯 核心问题汇总</div>
   <ol style="margin:0;padding-left:18px;font-size:12px;color:#374151;line-height:1.8;">
-    <li>纯直播无法覆盖更多游戏用户</li>
-    <li>巨兽仅做官包（安卓+iOS），流水盘子有局限性</li>
-    <li>店铺搜索曝光偏低</li>
+    <li><b>支付渠道严重失衡</b> — 安卓79.9% vs iOS20.1%，7月4日/7日安卓占比超99%，利润风险高</li>
+    <li><b>曝光→点击转化率持续偏低</b> — 12.43%，远低于20%健康线，7月9日仅0.83%</li>
+    <li><b>直播流量波动大</b> — 7月3日曝光3275 vs 7月5日1264，稳定性差</li>
+    <li><b>搜索流量几乎为零</b> — 竞店万级 vs 我们23个点击</li>
+    <li><b>达人合作渠道空白</b> — 竞店百万级支付额来自达人渠道，我们为0</li>
+    <li><b>7月9日数据初现</b> — 曝光1330进房300，转化率偏低需关注</li>
   </ol>
 </div>
 
-<h3>🔴 议题一：支付渠道严重失衡 & 渠道切支付操作经验</h3>
+<h3>🔴 问题一：支付渠道结构失衡</h3>
 <div class="section-desc">
-安卓支付占比82.7%，7月4日和7月7日甚至接近100%。iOS渠道占比极低，利润风险高。需重点关注竞品如何通过运营手段调整支付渠道结构。
+安卓占79.9%，iOS仅20.1%。7月4日（100%安卓）和7月7日（99.5%安卓）两场高风险。iOS高消费用户获取不足。
 </div>
 <ul class="list">
-<li><b>经验分享：</b>其他竞品是否存在更好的切支付链路，可否做操作案例分享和指导？</li>
-<li><b>具体需求：</b>是否有成功案例——某游戏通过XXX操作将iOS支付占比从X%提升至Y%？</li>
+<li><b>原因分析：</b>可能原因包括：①直播引导话术偏向安卓下载；②iOS用户触达渠道不足；③iOS支付链路体验不佳</li>
+<li><b>改善方向：</b>①直播中增加iOS引导话术；②测试iOS专享福利；③分析iOS用户画像，针对性投放</li>
+<li><b>预期效果：</b>iOS占比提升至30%+可降低利润风险，预计增加结算收入约500元/周</li>
 </ul>
 
-<h3>🟡 议题二：商品转换效率偏低</h3>
+<h3>🟡 问题二：商品曝光→点击转化率偏低</h3>
 <div class="section-desc">
-曝光→点击转化率13.68%，远低于20%健康线。用户进房后看到商品但不愿意点击。
+全周期平均12.43%，7月9日仅0.83%。用户进房后看到商品但不愿点击。
 </div>
 <ul class="list">
-<li><b>寻求建议：</b>巨兽战场同品类竞品在抖店上的商品展示策略——主图风格、价格锚点、标题写法有哪些可借鉴？</li>
-<li><b>寻求建议：</b>直播间商品曝光的时机和频次如何优化能提升点击率？</li>
+<li><b>原因分析：</b>①商品主图风格与竞品趋同，差异化不足；②价格锚点设置缺乏吸引力；③商品曝光时机和频次待优化</li>
+<li><b>建议动作：</b>①A/B测试不同主图风格；②优化标题关键词（参考搜索热词）；③调整直播间商品曝光节奏</li>
 </ul>
 
-<h3>🟡 议题三：搜索流量 & 达人合作严重不足</h3>
+<h3>🟡 问题三：流量规模与稳定性不足</h3>
 <div class="section-desc">
-竞店搜索点击人数在千/万级，用户支付金额百万级；合作达人渠道支付金额250万-500万。我们搜索点击仅23人，达人渠道0元。差距巨大。
+单场曝光在1257-3275之间波动，无稳定增长趋势。7月5日仅1264曝光。新增7月9日数据1330曝光，仍在低位。
 </div>
 <ul class="list">
-<li><b>寻求建议：</b>竞品在搜索SEO上的具体操作方式——关键词策略、商品标题优化、类目匹配等方面有哪些可借鉴？</li>
-<li><b>寻求建议：</b>竞品在达人合作上的操作模式——如何筛选达人、合作分成方式、内容创作流程等，是否有成熟案例分享？</li>
-<li><b>经验分享：</b>其他游戏品类在抖店上从零起步做搜索流量和达人合作的经验路径和时间预期。</li>
+<li><b>需关注：</b>①直播预热和引流渠道单一；②短视频内容产出与直播关联度待优化；③投流策略需数据支撑</li>
+<li><b>可行方向：</b>①每场直播前至少1条预热短视频；②测试不同时段开播效果；③基于CES评分选品优化自然流量</li>
+</ul>
+
+<h3>🟠 问题四：搜索与达人渠道待突破</h3>
+<div class="section-desc">
+搜索点击仅23人，达人合作0元。竞店这两块是核心收入来源。
+</div>
+<ul class="list">
+<li><b>搜索优化：</b>商品标题需覆盖核心关键词（"巨兽战场""SLG""攻城""巨兽捕捉"），参考平台搜索下拉词</li>
+<li><b>达人合作：</b>筛选1-3位中腰部游戏主播试点合作，测试达人分销模式</li>
 </ul>
 </div>
 
 <script>
+// 流量趋势图
 var ctx = document.getElementById('trendChart');
 if (ctx) {
   new Chart(ctx.getContext('2d'), {
     type: 'line',
     data: {
-      labels: ['7/2','7/3','7/4','7/5','7/7'],
+      labels: ['7/2','7/3','7/4','7/5','7/6(无直播)','7/7','7/8','7/9'],
       datasets: [
-        { label:'直播间曝光人数', data:[2721,3275,1459,1264,1257],
+        { label:'直播间曝光人数', data:[2721,3275,1459,1264,0,1257,2894,1330],
           borderColor:'#1e3a8a', backgroundColor:'rgba(30,58,138,0.08)',
           fill:true, tension:0.3, pointRadius:4, pointBackgroundColor:'#1e3a8a' },
-        { label:'成交人数', data:[3,4,4,4,2],
+        { label:'成交单数', data:[3,4,4,4,1,2,1,2],
           borderColor:'#ef4444', backgroundColor:'rgba(239,68,68,0.08)',
           fill:true, tension:0.3, pointRadius:4, pointBackgroundColor:'#ef4444',
           yAxisID:'y1' }
@@ -276,6 +332,33 @@ if (ctx) {
           ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}},
         y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},
           ticks:{stepSize:1}}
+      }
+    }
+  });
+}
+
+// 支付渠道趋势图
+var payCtx = document.getElementById('payTrendChart');
+if (payCtx) {
+  new Chart(payCtx.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['7/2','7/3','7/4','7/5','7/6(无直播)','7/7','7/8','7/9'],
+      datasets: [
+        { label:'安卓支付', data:[1006,1782,3974,3028,0,6480,0,328],
+          backgroundColor:'#1e3a8a', borderRadius:3, barPercentage:0.7 },
+        { label:'iOS支付', data:[134,1944,0,648,648,30,648,128],
+          backgroundColor:'#d97706', borderRadius:3, barPercentage:0.7 }
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},usePointStyle:true,padding:14}}},
+      scales:{
+        x:{stacked:true},
+        y:{stacked:true,beginAtZero:true,
+          ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}
       }
     }
   });
