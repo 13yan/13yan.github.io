@@ -2892,7 +2892,7 @@ button { font-family: inherit; cursor: pointer; }
 
 
 
-var BASE = '/w/', MANIFEST_URL = './manifest.json';
+var BASE = '../', MANIFEST_URL = './manifest.json';
 
 
 var CHART_COLORS = ['#1e3a8a', '#60a5fa', '#f97316', '#8b5cf6', '#ef4444', '#06b6d4', '#84cc16', '#ec4899', '#6366f1', '#14b8a6', '#f59e0b', '#a855f7', '#10b981', '#dc2626', '#0ea5e9', '#7c3aed'];
@@ -6420,7 +6420,7 @@ function syncData() {
   btn.disabled = true; btn.innerHTML = '⏳ 同步中...';
 
 
-  fetch('/w/').then(function(r) {
+  fetch('https://13yan.github.io/weekly-reports/').then(function(r) {
 
 
     if (r.ok) { btn.innerHTML = '✅ 同步成功'; setTimeout(function() { btn.innerHTML = '🔄 同步最新数据'; btn.disabled = false; }, 2000); }
