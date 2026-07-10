@@ -6,7 +6,7 @@
     "weekNumber": 28
   },
   "summary": {
-    "core": "<strong>【市场格局】</strong>微信小游戏畅销榜Top100覆盖13个品类，模拟经营（13款）、ARPG（14款）、塔防（13款）为三大支柱；抖音畅销榜模拟经营（9款）、塔防（11款）、ARPG（18款）居前。双平台Top100中<span class=\"hl\">48款游戏跨平台上榜</span>，跨平台发行已成行业标配。<br><strong>【头部表现】</strong>微信Top5：灵画师、跃动小子、向僵尸开炮、疯狂水世界、三国：冰河时代；抖音Top5：我的花园世界、赵云与阿斗、灵画师、超能下蛋鸭、跃动小子。灵画师、跃动小子、向僵尸开炮、疯狂水世界、三国：冰河时代、永远的蔚蓝星球等11款游戏同时进入双平台Top20。<br><strong>【模拟经营聚焦】</strong>微信13款/抖音9款上榜。\"二合+模拟经营\"融合玩法占比超<span class=\"hl\">40%</span>，低门槛+长留存成为品类核心竞争力。修仙、怀旧、体育、职场等差异化题材表现亮眼。<br><strong>【政策动态】</strong>本周（7/5-7/10）<span class=\"hl\">腾讯-微小：微信小游戏暑期专项激励发布</span>（新游首发最高40%返货/封顶500万，7/9发布）；<span class=\"hl\">字节-微小：暑期冲量政策</span>（日均消耗>10w且素材指标环比涨幅>10%，周末返货扶持，7/8-7/24）。<br><strong>【核心关注】</strong>本周无新增重点新游分析。模拟经营、塔防、SLG三大品类持续领跑。<br><strong>【竞品动态】</strong>本周无新增竞品重大动态。",
+    "core": "<strong>【市场格局】</strong>微信小游戏畅销榜Top100覆盖13个品类，模拟经营（13款）、ARPG（14款）、塔防（13款）为三大支柱；抖音畅销榜模拟经营（9款）、塔防（11款）、ARPG（18款）居前。双平台Top100中<span class=\"hl\">48款游戏跨平台上榜</span>，跨平台发行已成行业标配。<br><strong>【头部表现】</strong>微信Top5：跃动小子、我的花园世界、灵画师、向僵尸开炮、疯狂水世界；抖音Top5：我的花园世界、赵云与阿斗、灵画师、超能下蛋鸭、跃动小子。我的花园世界、灵画师、跃动小子、向僵尸开炮、疯狂水世界、三国：冰河时代等11款游戏同时进入双平台Top20。<br><strong>【模拟经营聚焦】</strong>微信13款/抖音9款上榜。\"二合+模拟经营\"融合玩法占比超<span class=\"hl\">40%</span>，低门槛+长留存成为品类核心竞争力。修仙、怀旧、体育、职场等差异化题材表现亮眼。<br><strong>【政策动态】</strong>本周（7/5-7/10）<span class=\"hl\">腾讯-微小：微信小游戏暑期专项激励发布</span>（新游首发最高40%返货/封顶500万，7/9发布）；<span class=\"hl\">字节-微小：暑期冲量政策</span>（日均消耗>10w且素材指标环比涨幅>10%，周末返货扶持，7/8-7/24）。<br><strong>【核心关注】</strong>本周无新增重点新游分析。模拟经营、塔防、SLG三大品类持续领跑。<br><strong>【竞品动态】</strong>本周无新增竞品重大动态。",
     "highlight": "腾讯-微小：微信小游戏暑期专项激励（7/9）+ 字节-微小：暑期冲量政策（7/8-7/24）",
     "keyEvents": [
       "腾讯-微小：微信小游戏暑期专项激励发布（7月9日）：新游首发最高40%返货/封顶500万，活动期7-9月",
@@ -22,11 +22,11 @@
     "crossPlatform": 48,
     "categories": 13,
     "wxTop5": [
-      "灵画师",
       "跃动小子",
+      "我的花园世界",
+      "灵画师",
       "向僵尸开炮",
-      "疯狂水世界",
-      "三国：冰河时代"
+      "疯狂水世界"
     ],
     "dyTop5": [
       "我的花园世界",
@@ -40,93 +40,93 @@
     "wx": [
       {
         "rank": 1,
-        "name": "灵画师",
-        "category": "ARPG",
-        "change": "霸榜8天",
-        "changeValue": 0,
-        "company": "广州光游网络科技有限公司",
-        "isCrossPlatform": true
-      },
-      {
-        "rank": 2,
         "name": "跃动小子",
         "category": "放置RPG",
-        "change": "- 稳定",
-        "changeValue": 0,
+        "change": "↑1",
+        "changeValue": 1,
         "company": "波克科技集团有限公司",
         "isCrossPlatform": true
       },
       {
-        "rank": 3,
-        "name": "向僵尸开炮",
-        "category": "塔防",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "海南盛昌网络科技有限公司",
-        "isCrossPlatform": true
-      },
-      {
-        "rank": 4,
-        "name": "疯狂水世界",
-        "category": "SLG/策略",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "益世界网络科技有限公司",
-        "isCrossPlatform": true
-      },
-      {
-        "rank": 5,
-        "name": "三国：冰河时代",
-        "category": "SLG/策略",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "欢游互动（北京）科技有限公司",
-        "isCrossPlatform": true
-      },
-      {
-        "rank": 6,
-        "name": "西游降妖记",
-        "category": "ARPG",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "杭州运程网络技术有限公司",
-        "isCrossPlatform": false
-      },
-      {
-        "rank": 7,
-        "name": "永远的蔚蓝星球",
-        "category": "塔防",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "广州颂悦信息技术有限公司",
-        "isCrossPlatform": true
-      },
-      {
-        "rank": 8,
+        "rank": 2,
         "name": "我的花园世界",
         "category": "模拟经营",
-        "change": "- 稳定",
-        "changeValue": 0,
+        "change": "↑6",
+        "changeValue": 6,
         "company": "厦门麟贝互娱科技有限公司",
         "isCrossPlatform": true
       },
       {
+        "rank": 3,
+        "name": "灵画师",
+        "category": "ARPG",
+        "change": "↓2",
+        "changeValue": -2,
+        "company": "广州光游网络科技有限公司",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 4,
+        "name": "向僵尸开炮",
+        "category": "塔防",
+        "change": "↓1",
+        "changeValue": -1,
+        "company": "海南盛昌网络科技有限公司",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 5,
+        "name": "疯狂水世界",
+        "category": "SLG/策略",
+        "change": "↓1",
+        "changeValue": -1,
+        "company": "益世界网络科技有限公司",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 6,
+        "name": "永远的蔚蓝星球",
+        "category": "塔防",
+        "change": "↑1",
+        "changeValue": 1,
+        "company": "广州颂悦信息技术有限公司",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 7,
+        "name": "三国：冰河时代",
+        "category": "SLG/策略",
+        "change": "↓2",
+        "changeValue": -2,
+        "company": "欢游互动（北京）科技有限公司",
+        "isCrossPlatform": true
+      },
+      {
+        "rank": 8,
+        "name": "西游降妖记",
+        "category": "ARPG",
+        "change": "↓2",
+        "changeValue": -2,
+        "company": "杭州运程网络技术有限公司",
+        "isCrossPlatform": false
+      },
+      {
         "rank": 9,
-        "name": "神器传说",
-        "category": "放置RPG",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "深圳全民互动科技有限公司",
+        "name": "奔奔王国",
+        "category": "塔防",
+        "change": "↑4",
+        "changeValue": 4,
+        "company": "福州点点松云网络有限公司",
         "isCrossPlatform": true
       },
       {
         "rank": 10,
-        "name": "城主别慌张",
-        "category": "ARPG",
-        "change": "- 稳定",
-        "changeValue": 0,
-        "company": "广州冠游信息科技有限公司",
-        "isCrossPlatform": false
+        "name": "神器传说",
+        "category": "放置RPG",
+        "change": "↓1",
+        "changeValue": -1,
+        "company": "深圳全民互动科技有限公司",
+        "isCrossPlatform": true
       },
       {
         "rank": 11,
@@ -148,11 +148,11 @@
       },
       {
         "rank": 13,
-        "name": "奔奔王国",
-        "category": "塔防",
+        "name": "道友来挖宝",
+        "category": "放置RPG",
         "change": "- 稳定",
         "changeValue": 0,
-        "company": "福州点点松云网络有限公司",
+        "company": "深圳雷霆信息技术有限公司",
         "isCrossPlatform": true
       },
       {
@@ -175,12 +175,12 @@
       },
       {
         "rank": 16,
-        "name": "道友来挖宝",
-        "category": "放置RPG",
+        "name": "城主别慌张",
+        "category": "ARPG",
         "change": "- 稳定",
         "changeValue": 0,
-        "company": "深圳雷霆信息技术有限公司",
-        "isCrossPlatform": true
+        "company": "广州冠游信息科技有限公司",
+        "isCrossPlatform": false
       },
       {
         "rank": 17,
@@ -2626,7 +2626,7 @@
       "content": "腾讯-微小暑期专项激励（7/9发布，新游首发最高40%返货/封顶500万）；字节-微小暑期冲量政策（7/8-7/24，日均消耗>10w+素材指标环比>10%即享周末返货）。"
     }
   ],
-  "top20Insight": "双平台共同Top20头部：灵画师、跃动小子、向僵尸开炮、疯狂水世界、三国：冰河时代、永远的蔚蓝星球、我的花园世界、无尽冬日、向往的生活、浪漫餐厅、梦幻消除战。微信Top20中模拟经营13席、塔防13席；抖音Top20中3款周变化≥5位，竞争更活跃。",
+  "top20Insight": "双平台共同Top20头部：我的花园世界、灵画师、跃动小子、向僵尸开炮、疯狂水世界、三国：冰河时代、永远的蔚蓝星球、无尽冬日、向往的生活、浪漫餐厅、梦幻消除战。微信Top20中跃动小子今日登顶，奔奔王国↑4、我的花园世界↑6表现亮眼；抖音Top20中3款周变化≥5位，竞争更活跃。",
   "simConclusion": "模拟经营是双平台<strong>最稳定品类</strong>，用户生命周期长、付费模型健康。&ldquo;二合+模拟经营&rdquo;融合玩法占比超40%。微信端社交裂变（QQ经典农场）驱动自然量；抖音端剧情/题材差异化（杜拉拉升职记、时光杂货店）吸量能力更强。修仙/怀旧/体育/宫廷等细分赛道仍有蓝海机会。",
   "catDesc": "微信端：模拟经营（13款）、塔防（13款）、ARPG（14款）、卡牌RPG（15款）为四大支柱。抖音端：模拟经营（9款）、ARPG（18款）、塔防（11款）居前。双平台模拟经营和塔防均为核心赛道，抖音端ARPG和放置RPG占比更高，反映内容营销对展示型品类的偏好。",
   "surgeConclusion": "剧情驱动、融合创新玩法（背包合成+肉鸽、放置卡牌+题材跨界）是本周飙升核心动力。抖音平台对新内容敏感度高，中小团队可通过创意融合快速起量。",
