@@ -62,7 +62,7 @@
         "orders": 2
       },
       "self": {
-        "sales": 3010,
+        "sales": 2998,
         "orders": 3
       }
     },
@@ -75,7 +75,7 @@
         "orders": 2
       },
       "self": {
-        "sales": 3016,
+        "sales": 2998,
         "orders": 4
       }
     },
@@ -123,7 +123,7 @@
       "date": "2026-07-09",
       "label": "7月9日",
       "live": {
-        "sales": 484,
+        "sales": 456,
         "orders": 2
       },
       "self": {
@@ -440,7 +440,7 @@
         "newFans": 1
       },
       "product": {
-        "sales": 484,
+        "sales": 456,
         "exposure": 151,
         "clicks": 11,
         "orders": 2,
