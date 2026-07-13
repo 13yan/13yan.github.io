@@ -1246,8 +1246,6 @@ function renderMultiDay(sessions) {
     '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserMultiChart"></canvas></div></div>',
     '</div>',
     '<div class="chart-card full" style="margin-bottom:16px;"><h3>📈 每日销售额趋势 <span class="tag">柱状+折线</span></h3><div class="chart-wrap tall"><canvas id="rptTrendChart"></canvas></div></div>',
-    '<div class="section-title" style="margin-top:0;">📋 场次明细 <span class="tag">成交状态</span></div>',
-    '<div class="session-list" id="rptSessionList"></div>',
   ].join('');
 
   // 趋势图（柱状+折线）
@@ -1276,16 +1274,6 @@ function renderMultiDay(sessions) {
   // 核心关注 + 销售渠道
   renderCoreFocus(sessions, currentData);
   renderSalesChannels(sessions, currentData);
-  // 场次明细列表
-  var slEl = document.getElementById('rptSessionList');
-  if (slEl) {
-    var sorted = sessions.slice().sort(function(a,b){return a.date.localeCompare(b.date);});
-    slEl.innerHTML = sorted.map(function(sx){
-      var hasSales = (sx.product?.sales||0) > 0;
-      var statTag = hasSales ? '<span class="session-status ok">✅ 有成交</span>' : '<span class="session-status none">❌ 无成交</span>';
-      return '<div class="session-item"><div class="left"><div class="s-date">'+sx.date.substring(5)+'</div><div class="s-brief">'+sx.game+' '+statTag+'</div></div><div class="right"><div class="s-sales">'+fmt(sx.product?.sales||0)+' 元</div><div class="s-orders">'+(sx.product?.orders||0)+' 单</div></div></div>';
-    }).join('');
-  }
 }
 
 // ===== 销售渠道构成 =====
