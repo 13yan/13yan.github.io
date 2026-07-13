@@ -6,7 +6,7 @@
   ],
   "storeSummary": {
     "totalGMV": 21268,
-    "totalOrders": 30,
+    "totalOrders": 31,
     "totalPayUsers": 27,
     "estimatedProfit": 12744.97,
     "profitRate": 60.0,
@@ -15,13 +15,13 @@
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 16794,
-        "settle": 16783.25,
-        "users": 14
+        "amount": 16922,
+        "settle": 16910.482,
+        "users": 15
       },
       "ios": {
-        "amount": 4474,
-        "settle": 4458.36,
+        "amount": 4346,
+        "settle": 4329.962,
         "users": 10
       }
     }
@@ -606,19 +606,19 @@
         "exposure": 25,
         "clicks": 2,
         "orders": 1,
-        "paymentOrders": 1,
+        "paymentOrders": 2,
         "exposureClickRate": 0.08,
         "clickOrderRate": 0.5
       },
       "payment": {
         "android": {
-          "amount": 0,
-          "settle": 0,
-          "users": 0
+          "amount": 128,
+          "settle": 127.232,
+          "users": 1
         },
         "ios": {
-          "amount": 196,
-          "settle": 195.99,
+          "amount": 68,
+          "settle": 67.592,
           "users": 1
         }
       }
