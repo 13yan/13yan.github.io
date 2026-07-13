@@ -569,7 +569,7 @@ function render(data) {
 function updateSidebarSummary(data) {
   var sessions = data.sessions || [];
   var totalSales = sessions.reduce(function(s, sx){return s+(sx.product?.sales||0);},0);
-  var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.orders||0);},0);
+  var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.paymentOrders||sx.product?.orders||0);},0);
   document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
   document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
   document.getElementById('ssGames').textContent = (data.games||[]).length+' 款';
