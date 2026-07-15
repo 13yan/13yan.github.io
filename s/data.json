@@ -5,24 +5,24 @@
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 22692,
-    "totalOrders": 33,
-    "totalPayUsers": 29,
-    "estimatedProfit": 13535.86,
+    "totalGMV": 24704,
+    "totalOrders": 45,
+    "totalPayUsers": 34,
+    "estimatedProfit": 14733.47,
     "profitRate": 60.0,
-    "totalSessions": 12,
-    "avgGMV": 1891.0,
+    "totalSessions": 13,
+    "avgGMV": 1900.3,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 18218,
-        "settle": 18198.706,
-        "users": 16
+        "amount": 18674,
+        "settle": 18671.264,
+        "users": 18
       },
       "ios": {
-        "amount": 4474,
-        "settle": 4457.194,
-        "users": 11
+        "amount": 6030,
+        "settle": 6003.858,
+        "users": 14
       }
     }
   },
@@ -181,6 +181,19 @@
       "self": {
         "sales": 1424,
         "orders": 2
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-14",
+      "label": "7月14日",
+      "live": {
+        "sales": 2012,
+        "orders": 12
+      },
+      "self": {
+        "sales": 0,
+        "orders": 0
       }
     }
   ],
@@ -674,6 +687,47 @@
           "amount": 128,
           "settle": 127.232,
           "users": 1
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-14",
+      "label": "7月14日直播",
+      "traffic": {
+        "exposure": 907,
+        "entry": 263,
+        "entryRate": 0.29,
+        "avgOnline": 4,
+        "maxOnline": 10
+      },
+      "interaction": {
+        "comments": 10,
+        "commentRate": 0.038,
+        "likes": 130,
+        "likeRate": 0.4943,
+        "avgStay": "2.75min",
+        "newFans": 1
+      },
+      "product": {
+        "sales": 2012,
+        "exposure": 160,
+        "clicks": 14,
+        "orders": 5,
+        "paymentOrders": 12,
+        "exposureClickRate": 0.0875,
+        "clickOrderRate": 0.3571
+      },
+      "payment": {
+        "android": {
+          "amount": 456,
+          "settle": 453.264,
+          "users": 2
+        },
+        "ios": {
+          "amount": 1556,
+          "settle": 1546.664,
+          "users": 3
         }
       }
     }
