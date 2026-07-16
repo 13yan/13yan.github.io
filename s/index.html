@@ -1085,12 +1085,19 @@ function renderSingleDay(s) {
 
   // 数据风险评估
   var risk = assessRisk(s, true);
-  var rh = '<div class="risk-bar">';
-  if (risk.high > 0) rh += '<span class="risk-tag high">🔴 '+risk.high+' 项高风险</span>';
-  if (risk.medium > 0) rh += '<span class="risk-tag medium">🟡 '+risk.medium+' 项中风险</span>';
-  rh += '</div><ul class="risk-list">';
-  risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
-  rh += '</ul>';
+  var rh = '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
+  if (risk.high > 0) rh += '<span style="display:flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;background:#fef2f2;color:#dc2626;border:1px solid #fecaca">🔴 '+risk.high+' 项高风险</span>';
+  if (risk.medium > 0) rh += '<span style="display:flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;background:#fffbeb;color:#d97706;border:1px solid #fde68a">🟡 '+risk.medium+' 项中风险</span>';
+  rh += '</div><div style="display:flex;flex-direction:column;gap:8px">';
+  risk.items.forEach(function(r){
+    var bg = r.level==='danger'?'#fef2f2':'#fffbeb';
+    var bc = r.level==='danger'?'#fecaca':'#fde68a';
+    var tc = r.level==='danger'?'#dc2626':'#d97706';
+    rh += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:'+bg+';border:1px solid '+bc+';border-radius:10px;font-size:12px;line-height:1.7">'+
+      '<span style="font-size:16px;flex-shrink:0;margin-top:1px">'+r.icon+'</span>'+
+      '<div><strong style="color:'+tc+'">'+r.title+'</strong><br><span style="color:#64748b">'+r.desc+'</span></div></div>';
+  });
+  rh += '</div>';
   document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">单日</span></div>' + rh;
   // 无数据时清空图表并提前返回
   if (!s) {
@@ -1250,12 +1257,19 @@ function renderMultiDay(sessions) {
 
   // 数据风险评估
   var risk = assessRisk(sessions, false);
-  var rh = '<div class="risk-bar">';
-  if (risk.high > 0) rh += '<span class="risk-tag high">🔴 '+risk.high+' 项高风险</span>';
-  if (risk.medium > 0) rh += '<span class="risk-tag medium">🟡 '+risk.medium+' 项中风险</span>';
-  rh += '</div><ul class="risk-list">';
-  risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
-  rh += '</ul>';
+  var rh = '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">';
+  if (risk.high > 0) rh += '<span style="display:flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;background:#fef2f2;color:#dc2626;border:1px solid #fecaca">🔴 '+risk.high+' 项高风险</span>';
+  if (risk.medium > 0) rh += '<span style="display:flex;align-items:center;gap:4px;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;background:#fffbeb;color:#d97706;border:1px solid #fde68a">🟡 '+risk.medium+' 项中风险</span>';
+  rh += '</div><div style="display:flex;flex-direction:column;gap:8px">';
+  risk.items.forEach(function(r){
+    var bg = r.level==='danger'?'#fef2f2':r.level==='warning'?'#fffbeb':'#f0fdf4';
+    var bc = r.level==='danger'?'#fecaca':r.level==='warning'?'#fde68a':'#86efac';
+    var tc = r.level==='danger'?'#dc2626':r.level==='warning'?'#d97706':'#059669';
+    rh += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:'+bg+';border:1px solid '+bc+';border-radius:10px;font-size:12px;line-height:1.7">'+
+      '<span style="font-size:16px;flex-shrink:0;margin-top:1px">'+r.icon+'</span>'+
+      '<div><strong style="color:'+tc+'">'+r.title+'</strong><br><span style="color:#64748b">'+r.desc+'</span></div></div>';
+  });
+  rh += '</div>';
   document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">多日</span></div>' + rh;
 
   // 趋势图+场次列表
