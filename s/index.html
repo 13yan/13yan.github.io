@@ -282,7 +282,6 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo"><div class="logo-icon">📊</div><div><div>抖店工作台</div><div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
-  <button class="nav-item" data-tab="profit"><span class="nav-icon">💰</span> 利润分析</button>
   <div class="sidebar-summary" id="sidebarSummary">
     <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
     <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
@@ -303,6 +302,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <select id="ovMonthSelect" style="display:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
   </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
+  <div class="profit-row" id="ovProfitRow" style="display:flex;gap:12px;margin:12px 0;flex-wrap:wrap"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
   <div class="summary-grid-2" id="ovPayCards"></div>
   <div class="chart-grid" id="ovPayCharts" style="margin-bottom:20px;">
@@ -353,6 +353,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     </div>
   </div>
 
+  <!-- 利润卡片 -->
+  <div class="profit-row" id="rptProfitRow" style="display:flex;gap:12px;margin:12px 0;flex-wrap:wrap"></div>
+
   <!-- KPI -->
   <div id="rptCoreFocus" style="background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:10px;padding:14px 18px;margin-bottom:18px;"></div>
   <div class="kpi-row" id="rptTrafficKpi"></div>
@@ -388,44 +391,6 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 <div class="tab-content" id="tabCompetitor">
   <div class="header"><h1>🏟️ 竞店数据对比</h1><div class="sub">周期：7天 · 数据更新：<span id="compUpdateTime">-</span></div></div>
   <div id="compContent"></div>
-</div>
-
-<!-- Tab: 利润分析 -->
-<div class="tab-content" id="tabProfit">
-  <div class="header"><h1>💰 利润分析</h1><div class="sub">抖店支付效益评估</div></div>
-  <div id="profitContent">
-    <div id="profitSummary" class="card" style="margin-bottom:16px;text-align:center;padding:30px">
-      <div style="font-size:28px;font-weight:700;color:#059669" id="profitDdAmount">-</div>
-      <div style="font-size:13px;color:var(--text3);margin-top:4px">抖店支付 · 发行方利润</div>
-      <div style="font-size:12px;color:var(--text3)" id="profitDdRate">-</div>
-      
-      <div style="display:flex;gap:20px;justify-content:center;margin-top:16px;flex-wrap:wrap">
-        <div class="card" style="padding:14px 20px;min-width:160px;border-color:#fecaca">
-          <div style="font-size:20px;font-weight:700;color:#dc2626" id="profitVsPlatform">-</div>
-          <div style="font-size:11px;color:#dc2626">同比平台支付 <span id="profitVsPlatformPct">-</span></div>
-        </div>
-        <div class="card" style="padding:14px 20px;min-width:160px;border-color:#bbf7d0">
-          <div style="font-size:20px;font-weight:700;color:#059669" id="profitVsNormal">-</div>
-          <div style="font-size:11px;color:#059669">同比原支付渠道 <span id="profitVsNormalPct">-</span></div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="card" style="margin-bottom:16px">
-      <div class="section-title" style="margin-top:0">📅 每日利润明细</div>
-      <div style="overflow-x:auto">
-        <table class="data-table" id="profitTable">
-          <thead><tr><th>日期</th><th>抖店利润</th><th>同比平台</th><th>同比正常</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="section-title" style="margin-top:0">🎯 决策判断</div>
-      <div id="profitDecision" style="font-size:13px;line-height:1.8;color:var(--text2)"></div>
-    </div>
-  </div>
 </div>
 
 </div>
@@ -576,7 +541,6 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
     else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
-    else if (btn.dataset.tab==='profit' && window.currentData) renderProfit(window.currentData);
   });
 });
 
@@ -602,6 +566,7 @@ function render(data) {
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
   renderOverview(); renderReport(); renderCompetitor(data);
+  renderProfitCards();
 }
 
 // ===== 数据说明弹窗 =====
@@ -924,6 +889,10 @@ function assessRisk(sessions, isSingle) {
   }
   return {items:items, high:high, medium:medium, low:low};
 }
+// 渲染利润卡片
+function renderProfitCards() {
+  var allSessions = currentData?.sessions || [];
+}
 function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 function renderReport() {
@@ -1017,6 +986,8 @@ function applyRange(start, end, sessions) {
     document.getElementById('rptTrendView').style.display='block';
     renderMultiDay(filtered);
   }
+  // 利润卡片
+  renderProfitRow(document.getElementById('rptProfitRow'), filtered);
 }
 
 function renderSingleDay(s) {
@@ -1492,78 +1463,39 @@ function exportCSV() {
   URL.revokeObjectURL(link.href);
 }
 
-// ===== 利润分析 =====
-function renderProfit(data) {
-  var sessions = data.sessions || [];
-  if (!sessions.length) {
-    document.getElementById('profitContent').innerHTML = '<div class="empty-state">暂无数据</div>';
-    return;
-  }
-  
-  // 按日算三个场景利润
+// ===== 利润计算（通用）=====
+function calcProfit(sessions) {
   var totalDd=0, totalPt=0, totalNm=0;
-  var rows = [];
-  
   sessions.forEach(function(s){
     var a = s.payment?.android?.amount || 0;
     var i = s.payment?.ios?.amount || 0;
-    
-    // 正确公式：利润 = 销售额×85%(扣研发) - 渠道费(从总销售额扣)
-    // 抖店: ×85% - ×8%(直播) - ×0.6%(服务费)
-    var dd = (a+i)*0.85 - (a+i)*0.08 - (a+i)*0.006;
-    // 平台: ×85% - ×1%(通道费) 
-    var pt = (a+i)*0.85 - (a+i)*0.01;
-    // 正常: 安卓×85%, iOS×75%×85%（苹果扣25%）
-    var nm = a*0.85 + i*0.75*0.85;
-    
-    totalDd += dd;
-    totalPt += pt;
-    totalNm += nm;
-    
-    var d = s.date.substring(5);
-    var vsPlat = dd - pt;
-    var vsNorm = dd - nm;
-    rows.push({date:d, dd:dd, vsPlat:vsPlat, vsNorm:vsNorm, a:a, i:i});
+    totalDd += (a+i)*0.85 - (a+i)*0.08 - (a+i)*0.006;
+    totalPt += (a+i)*0.85 - (a+i)*0.01;
+    totalNm += a*0.85 + i*0.75*0.85;
   });
-  
-  // 总计卡片
-  document.getElementById('profitDdAmount').textContent = '¥' + totalDd.toFixed(0);
-  document.getElementById('profitDdRate').textContent = '利润率 ' + (totalDd/(totalDd+totalPt+totalNm)*100).toFixed(1) + '% ｜ 按' + sessions.length + '场直播合计';
-  
-  var vsP = totalDd - totalPt;
-  var vsN = totalDd - totalNm;
-  
-  document.getElementById('profitVsPlatform').textContent = (vsP < 0 ? '' : '+') + vsP.toFixed(0);
-  document.getElementById('profitVsPlatformPct').textContent = '(' + (vsP/(totalDd+totalPt)*100).toFixed(1) + '%)';
-  
-  document.getElementById('profitVsNormal').textContent = (vsN >= 0 ? '+' : '') + vsN.toFixed(0);
-  document.getElementById('profitVsNormalPct').textContent = '(' + (vsN/(totalDd+totalNm)*100).toFixed(1) + '%)';
-  
-  // 颜色
-  document.getElementById('profitVsPlatform').style.color = vsP < 0 ? '#dc2626' : '#059669';
-  document.getElementById('profitVsPlatformPct').style.color = vsP < 0 ? '#dc2626' : '#059669';
-  document.getElementById('profitVsNormal').style.color = vsN >= 0 ? '#059669' : '#dc2626';
-  document.getElementById('profitVsNormalPct').style.color = vsN >= 0 ? '#059669' : '#dc2626';
-  
-  // 明细表
-  var tbody = document.querySelector('#profitTable tbody');
-  tbody.innerHTML = rows.map(function(r){
-    var pc = r.vsPlat < 0 ? 'color:#dc2626' : 'color:#059669';
-    var nc = r.vsNorm >= 0 ? 'color:#059669' : 'color:#dc2626';
-    return '<tr><td>'+r.date+'</td><td>'+r.dd.toFixed(0)+'</td>'+
-      '<td style="'+pc+'">'+r.vsPlat.toFixed(0)+'</td>'+
-      '<td style="'+nc+'">'+(r.vsNorm>=0?'+':'')+r.vsNorm.toFixed(0)+'</td></tr>';
-  }).join('');
-  
-  // 决策判断
-  var best = (totalPt > totalNm) ? '平台支付' : '原支付渠道(正常)';
-  var bestDiff = Math.abs(totalPt - totalNm);
-  document.getElementById('profitDecision').innerHTML =
-    '抖店总体' + (vsN >= 0 ? '优于原支付渠道 ' + vsN.toFixed(0) + ' 元' : '不如原支付渠道 ' + (-vsN).toFixed(0) + ' 元') +
-    '，但' + (vsP >= 0 ? '优于平台支付 ' + vsP.toFixed(0) + ' 元' : '不如平台支付 ' + (-vsP).toFixed(0) + ' 元') +
-    '。<br><br>三个渠道中利润最优的是 <strong>' + best + '</strong>，比抖店多赚 <strong>' + bestDiff.toFixed(0) + '</strong> 元。' +
-    '<br><br>抖店的优势在于直播流量入口，适合需要直播间曝光的场景；' +
-    '纯充值引导建议走' + best + '以提高利润率。';
+  return {dd:totalDd, pt:totalPt, nm:totalNm};
+}
+
+function renderProfitRow(containerId, sessions) {
+  var p = calcProfit(sessions);
+  var vsP = p.dd - p.pt;
+  var vsN = p.dd - p.nm;
+  containerId.innerHTML =
+    '<div class="card" style="padding:12px 20px;flex:1;min-width:180px;text-align:center">'+
+      '<div style="font-size:11px;color:var(--text3);margin-bottom:4px">抖店支付 · 发行方利润</div>'+
+      '<div style="font-size:22px;font-weight:700;color:#059669">¥' + p.dd.toFixed(0) + '</div>'+
+      '<div style="font-size:11px;color:var(--text3)"><b>'+(p.dd/(p.dd+p.pt+p.nm)*100).toFixed(1)+'%</b> 利润率</div>'+
+    '</div>'+
+    '<div class="card" style="padding:12px 20px;flex:1;min-width:160px;text-align:center;border-color:#fecaca">'+
+      '<div style="font-size:11px;color:#dc2626;margin-bottom:4px">同比平台支付</div>'+
+      '<div style="font-size:20px;font-weight:700;color:'+(vsP<0?'#dc2626':'#059669')+'">'+(vsP<0?'':'+')+vsP.toFixed(0)+'</div>'+
+      '<div style="font-size:11px;color:'+(vsP<0?'#dc2626':'#059669')+'">'+(vsP/(p.pt||1)*100).toFixed(1)+'%</div>'+
+    '</div>'+
+    '<div class="card" style="padding:12px 20px;flex:1;min-width:160px;text-align:center;border-color:#bbf7d0">'+
+      '<div style="font-size:11px;color:#059669;margin-bottom:4px">同比原支付渠道(正常)</div>'+
+      '<div style="font-size:20px;font-weight:700;color:'+(vsN>=0?'#059669':'#dc2626')+'">'+(vsN>=0?'+':'')+vsN.toFixed(0)+'</div>'+
+      '<div style="font-size:11px;color:'+(vsN>=0?'#059669':'#dc2626')+'">'+(vsN/(p.nm||1)*100).toFixed(1)+'%</div>'+
+    '</div>';
 }
 </script>
 </body>
