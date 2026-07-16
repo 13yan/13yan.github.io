@@ -1002,12 +1002,12 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
-  // 第一行：3个核心卡片（总销售额、预估结算、总订单）
+  // 第一行：3个核心卡片
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(3,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💰 总销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales||0)+'</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+(p.sales?fmt(Math.round(p.sales*0.994*100)/100):'-')+'</div><div class="sub">扣除抖店0.6%服务费</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">📋 总订单（支付订单数）</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
+    '<div class="summary-card" style="border-top:3px solid #2563eb"><div class="lbl" style="color:#1e3a8a">💰 总销售额</div><div class="val">'+fmt(p.sales||0)+'</div></div>',
+    '<div class="summary-card" style="border-top:3px solid #059669"><div class="lbl" style="color:#059669">📈 抖店发行方利润</div><div class="val" style="color:#059669">'+fmt(p.sales?Math.round(p.sales*0.764*100)/100:0)+'</div><div class="sub" style="color:#059669">76.42%利润率(扣0.6%+8%+15%)</div></div>',
+    '<div class="summary-card" style="border-top:3px solid #d97706"><div class="lbl" style="color:#d97706">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单</div></div>',
   ].join('');
   // 直播数据（移动到销售渠道下方）
   var noLive = (!t.exposure && !t.entry && !t.avgOnline);
@@ -1018,16 +1018,16 @@ function renderSingleDay(s) {
     liveHtml = liveHtml.concat([
     // 流量
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
-    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure||0)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans||0)+'</div></div>',
-    '</div>',
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val" style="font-size:22px">'+fmt(t.exposure||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val" style="font-size:22px">'+fmt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👥 新增粉丝</div><div class="val" style="font-size:22px">'+fmt(it.newFans||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val" style="font-size:22px">'+fmt(t.maxOnline||0)+'</div></div>',
     // 互动+停留
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
-    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes||0)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val" style="font-size:22px">'+fmt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val" style="font-size:22px">'+fmt(it.likes||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">⏱️ 人均停留</div><div class="val" style="font-size:22px">'+(it.avgStay||'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val" style="font-size:22px">'+fmt(t.maxOnline||0)+'</div></div>',
     '</div>',
     ]); }
 
