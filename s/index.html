@@ -701,8 +701,8 @@ function renderOverview() {
       pNm+=a*0.85+i*0.75*0.85;
     });
     [{l:'📈 抖店发行方利润',v:fmt(pDd)+' 元',sb:'扣0.6%+8%+15%',cl:'#059669'},
-     {l:'↔ 同比平台支付',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626'},
-     {l:'↔ 同比原支付渠道',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626'}].forEach(function(c){
+     {l:'↔ 同比平台支付利润',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626'},
+     {l:'↔ 同比原支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
@@ -1500,12 +1500,12 @@ function renderProfitRow(containerId, sessions) {
       '<div style="font-size:11px;color:var(--text3)"><b>'+(p.dd/(p.dd+p.pt+p.nm)*100).toFixed(1)+'%</b> 利润率</div>'+
     '</div>'+
     '<div class="card" style="padding:12px 20px;flex:1;min-width:160px;text-align:center;border-color:#fecaca">'+
-      '<div style="font-size:11px;color:#dc2626;margin-bottom:4px">同比平台支付</div>'+
+      '<div style="font-size:11px;color:#dc2626;margin-bottom:4px">同比平台支付利润</div>'+
       '<div style="font-size:20px;font-weight:700;color:'+(vsP<0?'#dc2626':'#059669')+'">'+(vsP<0?'':'+')+(vsP/(p.pt||1)*100).toFixed(2)+'%</div>'+
       '<div style="font-size:11px;color:'+(vsP<0?'#dc2626':'#059669')+'">'+(vsP<0?'':'+')+vsP.toFixed(2)+' 元 · 平台 '+p.pt.toFixed(2)+'</div>'+
     '</div>'+
     '<div class="card" style="padding:12px 20px;flex:1;min-width:160px;text-align:center;border-color:#bbf7d0">'+
-      '<div style="font-size:11px;color:#059669;margin-bottom:4px">同比原支付渠道(正常)</div>'+
+      '<div style="font-size:11px;color:#059669;margin-bottom:4px">同比原支付渠道利润</div>'+
       '<div style="font-size:20px;font-weight:700;color:'+(vsN>=0?'#059669':'#dc2626')+'">'+(vsN>=0?'+':'')+(vsN/(p.nm||1)*100).toFixed(2)+'%</div>'+
       '<div style="font-size:11px;color:'+(vsN>=0?'#059669':'#dc2626')+'">'+(vsN>=0?'+':'')+vsN.toFixed(2)+' 元 · 正常 '+p.nm.toFixed(2)+'</div>'+
     '</div>';
