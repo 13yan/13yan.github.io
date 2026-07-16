@@ -685,10 +685,8 @@ function renderOverview() {
     var totalOrders = s.totalOrders || autoOrders;
     var settleTotal = Math.round(totalGMV * 0.994 * 100) / 100;
     grid.innerHTML = '';
-    // 前三个基础卡片
-    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计'),cl:'#1e3a8a'},
-     {l:'💳 预估结算金额',v:fmt(settleTotal)+' 元',sb:'扣除抖店0.6%服务费',cl:'#059669'},
-     {l:'📋 支付订单数',v:fmt(autoOrders)+' 单',sb:'全部场次累计',cl:'#d97706'}].forEach(function(c){
+    // 基础卡片：只保留销售额
+    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计'),cl:'#1e3a8a'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
@@ -705,6 +703,11 @@ function renderOverview() {
      {l:'↔ 同比原支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
+      grid.appendChild(d);});
+    // 支付订单数放到最后
+    [{l:'📋 支付订单数',v:fmt(autoOrders)+' 单',sb:'全部场次累计',cl:'#d97706'}].forEach(function(c){
+      var d=document.createElement('div');d.className='summary-card';
+      d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
     // 支付渠道占比情况（从筛选场次中计算）
     var pcAmt = {android:0, ios:0}, pcUsr = {android:0, ios:0}, pcSettle = {android:0, ios:0};
