@@ -695,7 +695,7 @@ function renderOverview() {
       pPt+=(a+i)*0.85-(a+i)*0.01;
       pNm+=a*0.85+i*0.75*0.85;
     });
-    [{l:'📈 抖店发行方利润',v:fmt(pDd)+' 元',sb:(pDd/(pDd+pPt+pNm||1)*100).toFixed(2)+'%利润率（扣0.6%+8%+15%）',cl:'#059669',bc:'#86efac'},
+    [{l:'📈 抖店利润',v:fmt(pDd)+' 元',sb:(pDd/(pDd+pPt+pNm||1)*100).toFixed(2)+'%利润率（扣0.6%+8%+15%）',cl:'#059669',bc:'#86efac'},
      {l:'↔ 同比平台支付利润',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626',bc:'#fecaca'},
      {l:'↔ 同比原支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626',bc:'#b3c5ff'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
@@ -1011,7 +1011,7 @@ function renderSingleDay(s) {
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(p.sales||0)+'</div><div class="sub">本场累计</div></div>',
-    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店发行方利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(dd+pt+nm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(dd+pt+nm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
     '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
@@ -1150,7 +1150,7 @@ function renderMultiDay(sessions) {
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalGMV)+'</div><div class="sub">'+cnt+' 场</div></div>',
-    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店发行方利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(tdd+tpt+tnm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(tdd+tpt+tnm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(tvp<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(tvp<0?'#dc2626':'#059669')+'">'+(tvp<0?'':'+')+(tvp/(tpt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvp))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原支付渠道利润</div><div class="val" style="color:'+(tvn>=0?'#059669':'#dc2626')+'">'+(tvn>=0?'+':'')+(tvn/(tnm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvn))+' 元</div></div>',
     '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
