@@ -73,7 +73,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 
 /* ===== 主内容区 ===== */
 .main { flex:1; padding:28px 32px; min-width:0; }
-.header { margin-bottom:20px; }
+.header { margin-bottom:14px; }
 .header h1 { font-size:20px; font-weight:700; color:var(--text); letter-spacing:-0.3px; }
 .header .sub { font-size:12px; color:var(--text3); margin-top:3px; }
 .tab-content { display:none; }
@@ -115,17 +115,17 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   padding:1px 8px; border-radius:8px; font-weight:500; margin-left:4px;
 }
 @media (max-width:480px) { .help-panel { padding:20px 16px; } }
-.section-title { font-size:13px; font-weight:600; color:var(--text2); margin-bottom:14px; display:flex; align-items:center; gap:8px; letter-spacing:0.2px; }
+.section-title { font-size:13px; font-weight:600; color:var(--text2); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
 .section-title .tag { font-size:10px; background:var(--primary-50); color:var(--primary); padding:2px 10px; border-radius:10px; font-weight:500; }
 
 /* ===== 汇总卡片 ===== */
-.summary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin-bottom:24px; }
-.summary-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:14px; }
-.summary-card { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:12px; padding:18px 16px; box-shadow:var(--shadow-sm); transition:box-shadow 0.2s,transform 0.15s; }
+.summary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:14px; }
+.summary-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:10px; }
+.summary-card { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; padding:14px 14px; box-shadow:var(--shadow-sm); transition:box-shadow 0.2s,transform 0.15s; }
 .summary-card:hover { box-shadow:var(--shadow); transform:translateY(-1px); }
 .summary-card .lbl { font-size:11px; color:var(--text3); font-weight:500; }
-.summary-card .val { font-size:24px; font-weight:700; color:var(--primary); margin-top:2px; letter-spacing:-0.3px; }
-.summary-card .sub { font-size:10px; color:var(--text2); margin-top:3px; }
+.summary-card .val { font-size:22px; font-weight:700; color:var(--primary); margin-top:2px; letter-spacing:-0.3px; }
+.summary-card .sub { font-size:10px; color:var(--text2); margin-top:2px; }
 .empty-block { text-align:center; padding:40px; color:var(--text3); font-size:13px; background:#fff; border:1px dashed var(--border); border-radius:12px; }
 
 .analysis-box { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:13px; line-height:1.8; color:var(--text); }
@@ -133,7 +133,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 
 /* ===== 日期筛选 ===== */
 .date-picker-bar {
-  background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:20px;
+  background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:14px;
   box-shadow:var(--shadow-sm);
 }
 .date-picker-bar .presets { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
@@ -698,10 +698,11 @@ function renderOverview() {
       pPt+=(a+i)*0.85-(a+i)*0.01;
       pNm+=a*0.85+i*0.75*0.85;
     });
-    [{l:'📈 抖店发行方利润',v:fmt(pDd)+' 元',sb:(pDd/(pDd+pPt+pNm||1)*100).toFixed(2)+'%利润率（扣0.6%+8%+15%）',cl:'#059669'},
-     {l:'↔ 同比平台支付利润',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626'},
-     {l:'↔ 同比原支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626'}].forEach(function(c){
+    [{l:'📈 抖店发行方利润',v:fmt(pDd)+' 元',sb:(pDd/(pDd+pPt+pNm||1)*100).toFixed(2)+'%利润率（扣0.6%+8%+15%）',cl:'#059669',bc:'#86efac'},
+     {l:'↔ 同比平台支付利润',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626',bc:'#fecaca'},
+     {l:'↔ 同比原支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626',bc:'#b3c5ff'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
+      d.style.borderColor=c.bc;
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
     // 支付订单数放到最后
@@ -1497,21 +1498,21 @@ function renderProfitRow(containerId, sessions) {
   var vsP = p.dd - p.pt;
   var vsN = p.dd - p.nm;
   containerId.innerHTML =
-    '<div style="display:flex;gap:12px;flex-wrap:wrap">'+
-    '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #86efac;border-radius:12px;padding:14px 18px">'+
-      '<div style="font-size:11px;color:#059669;font-weight:500;margin-bottom:2px">抖店支付 · 发行方利润</div>'+
-      '<div style="font-size:24px;font-weight:700;color:#059669;letter-spacing:-0.5px">¥' + p.dd.toFixed(2) + '</div>'+
-      '<div style="font-size:11px;color:#6b7280;margin-top:4px"><span style="font-weight:600;color:#059669">'+(p.dd/(p.dd+p.pt+p.nm||1)*100).toFixed(2)+'%</span> 利润率(扣0.6%+8%+15%)</div>'+
+    '<div style="display:flex;gap:10px;flex-wrap:wrap">'+
+    '<div class="summary-card" style="flex:1;min-width:180px;border-color:#86efac">'+
+      '<div class="lbl" style="color:#059669;font-weight:500">抖店支付 · 发行方利润</div>'+
+      '<div class="val" style="color:#059669;font-size:22px">¥' + p.dd.toFixed(2) + '</div>'+
+      '<div class="sub"><span style="font-weight:600;color:#059669">'+(p.dd/(p.dd+p.pt+p.nm||1)*100).toFixed(2)+'%</span> 利润率(扣0.6%+8%+15%)</div>'+
     '</div>'+
-    '<div style="flex:1;min-width:160px;background:linear-gradient(135deg,#fef2f2,#fff);border:1px solid #fecaca;border-radius:12px;padding:14px 18px">'+
-      '<div style="font-size:11px;color:#dc2626;font-weight:500;margin-bottom:2px">同比平台支付利润</div>'+
-      '<div style="font-size:24px;font-weight:700;color:'+(vsP<0?"#dc2626":"#059669")+';letter-spacing:-0.5px">'+(vsP<0?"":"+")+(vsP/(p.pt||1)*100).toFixed(2)+'%</div>'+
-      '<div style="font-size:11px;color:'+(vsP<0?"#dc2626":"#059669")+';margin-top:4px">'+(vsP<0?"":"+")+vsP.toFixed(2)+' 元 · 平台利润 '+p.pt.toFixed(2)+'</div>'+
+    '<div class="summary-card" style="flex:1;min-width:160px;border-color:#fecaca">'+
+      '<div class="lbl" style="color:'+(vsP<0?"#dc2626":"#059669")+'">同比平台支付利润</div>'+
+      '<div class="val" style="color:'+(vsP<0?"#dc2626":"#059669")+';font-size:22px">'+(vsP<0?"":"+")+(vsP/(p.pt||1)*100).toFixed(2)+'%</div>'+
+      '<div class="sub" style="color:'+(vsP<0?"#dc2626":"#059669")+'">'+(vsP<0?"":"+")+vsP.toFixed(2)+' 元 · 平台利润 '+p.pt.toFixed(2)+'</div>'+
     '</div>'+
-    '<div style="flex:1;min-width:160px;background:linear-gradient(135deg,#f0f9ff,#fff);border:1px solid #b3c5ff;border-radius:12px;padding:14px 18px">'+
-      '<div style="font-size:11px;color:#2563eb;font-weight:500;margin-bottom:2px">同比原支付渠道利润</div>'+
-      '<div style="font-size:24px;font-weight:700;color:'+(vsN>=0?"#059669":"#dc2626")+';letter-spacing:-0.5px">'+(vsN>=0?"+":"")+(vsN/(p.nm||1)*100).toFixed(2)+'%</div>'+
-      '<div style="font-size:11px;color:'+(vsN>=0?"#059669":"#dc2626")+';margin-top:4px">'+(vsN>=0?"+":"")+vsN.toFixed(2)+' 元 · 正常利润 '+p.nm.toFixed(2)+'</div>'+
+    '<div class="summary-card" style="flex:1;min-width:160px;border-color:#b3c5ff">'+
+      '<div class="lbl" style="color:#2563eb">同比原支付渠道利润</div>'+
+      '<div class="val" style="color:'+(vsN>=0?"#059669":"#dc2626")+';font-size:22px">'+(vsN>=0?"+":"")+(vsN/(p.nm||1)*100).toFixed(2)+'%</div>'+
+      '<div class="sub" style="color:'+(vsN>=0?"#059669":"#dc2626")+'">'+(vsN>=0?"+":"")+vsN.toFixed(2)+' 元 · 正常利润 '+p.nm.toFixed(2)+'</div>'+
     '</div>'+
     '</div>';
 }
