@@ -524,7 +524,7 @@ document.getElementById('accessKeyInput').addEventListener('keydown', function(e
   if (e.key === 'Enter') document.getElementById('accessKeyBtn').click();
 });
 
-function fmt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function fmt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return Number(n).toLocaleString('zh-CN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
