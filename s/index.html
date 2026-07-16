@@ -352,9 +352,6 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     </div>
   </div>
 
-  <!-- 利润卡片 -->
-  <div class="profit-row" id="rptProfitRow" style="display:flex;gap:12px;margin:12px 0;flex-wrap:wrap"></div>
-
   <!-- KPI -->
   <div id="rptCoreFocus" style="background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:10px;padding:14px 18px;margin-bottom:18px;"></div>
   <div class="kpi-row" id="rptTrafficKpi"></div>
@@ -1003,18 +1000,21 @@ function applyRange(start, end, sessions) {
     document.getElementById('rptTrendView').style.display='block';
     renderMultiDay(filtered);
   }
-  // 利润卡片
-  renderProfitRow(document.getElementById('rptProfitRow'), filtered);
 }
 
 function renderSingleDay(s) {
   var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
-  // 第一行：3个核心卡片（总销售额、预估结算、总订单）
-  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(3,1fr)';
+  // 第一行：5个核心卡片（合并利润+销售额+订单）
+  var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0;
+  var dd=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006, pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
+  var vsPlat=dd-pt, vsNorm=dd-nm;
+  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💰 总销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales||0)+'</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+(p.sales?fmt(Math.round(p.sales*0.994*100)/100):'-')+'</div><div class="sub">扣除抖店0.6%服务费</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">📋 总订单（支付订单数）</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
+    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(p.sales||0)+'</div><div class="sub">本场累计</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店发行方利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(dd+pt+nm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
+    '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
+    '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
   ].join('');
   // 直播数据（移动到销售渠道下方）
   var noLive = (!t.exposure && !t.entry && !t.avgOnline);
@@ -1142,12 +1142,18 @@ function renderMultiDay(sessions) {
     totalExp+=s.traffic?.exposure||0; totalEntry+=s.traffic?.entry||0;
     totalBuyers+=s.product?.orders||0;
   });
-  // KPI（顶部：总销售额、预估结算、总订单）
-  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(3,1fr)';
+  // KPI（顶部：销售额+利润+订单，合并置顶）
+  var totalA=0, totalI=0;
+  sessions.forEach(function(s){totalA+=s.payment?.android?.amount||0; totalI+=s.payment?.ios?.amount||0;});
+  var tdd=totalA*0.85+totalI*0.85-(totalA+totalI)*0.08-(totalA+totalI)*0.006, tpt=(totalA+totalI)*0.85-(totalA+totalI)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
+  var tvp=tdd-tpt, tvn=tdd-tnm;
+  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+cnt+' 场</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">💳 预估结算金额</div><div class="val up">'+fmt(Math.round(totalGMV*0.994*100)/100)+' 元</div><div class="sub">扣除抖店0.6%服务费</div></div>',
-    '<div class="kpi-card" style="background:#fff;"><div class="lbl">📦 总订单（支付订单数）</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
+    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalGMV)+'</div><div class="sub">'+cnt+' 场</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店发行方利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(tdd+tpt+tnm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
+    '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(tvp<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(tvp<0?'#dc2626':'#059669')+'">'+(tvp<0?'':'+')+(tvp/(tpt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvp))+' 元</div></div>',
+    '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原支付渠道利润</div><div class="val" style="color:'+(tvn>=0?'#059669':'#dc2626')+'">'+(tvn>=0?'+':'')+(tvn/(tnm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvn))+' 元</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
   ].join('');
   // 直播数据（下方模块+图表）
   // 计算汇总数据用于图表
