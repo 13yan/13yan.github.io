@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-16",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 24704,
-    "totalOrders": 45,
-    "totalPayUsers": 34,
+    "totalGMV": 27830,
+    "totalOrders": 47,
+    "totalPayUsers": 36,
     "estimatedProfit": 14733.47,
     "profitRate": 60.0,
-    "totalSessions": 13,
-    "avgGMV": 1900.3,
+    "totalSessions": 14,
+    "avgGMV": 1987.9,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 18674,
-        "settle": 18671.264,
-        "users": 18
+        "amount": 21672,
+        "settle": 21651.273999999998,
+        "users": 19
       },
       "ios": {
-        "amount": 6030,
-        "settle": 6003.858,
-        "users": 14
+        "amount": 6158,
+        "settle": 6131.088,
+        "users": 15
       }
     }
   },
@@ -190,6 +190,19 @@
       "live": {
         "sales": 2012,
         "orders": 12
+      },
+      "self": {
+        "sales": 0,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-15",
+      "label": "7月15日",
+      "live": {
+        "sales": 3126,
+        "orders": 2
       },
       "self": {
         "sales": 0,
@@ -728,6 +741,47 @@
           "amount": 1556,
           "settle": 1546.664,
           "users": 3
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-15",
+      "label": "7月15日直播",
+      "traffic": {
+        "exposure": 1368,
+        "entry": 290,
+        "entryRate": 0.212,
+        "avgOnline": 3,
+        "maxOnline": 26
+      },
+      "interaction": {
+        "comments": 27,
+        "commentRate": 0.0931,
+        "likes": 233,
+        "likeRate": 0.8034,
+        "avgStay": "2.28min",
+        "newFans": 0
+      },
+      "product": {
+        "sales": 3126,
+        "exposure": 164,
+        "clicks": 11,
+        "orders": 2,
+        "paymentOrders": 2,
+        "exposureClickRate": 0.0671,
+        "clickOrderRate": 0.1818
+      },
+      "payment": {
+        "android": {
+          "amount": 2998,
+          "settle": 2980.01,
+          "users": 1
+        },
+        "ios": {
+          "amount": 128,
+          "settle": 127.23,
+          "users": 1
         }
       }
     }
