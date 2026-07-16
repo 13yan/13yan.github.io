@@ -428,7 +428,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>顶部 3 卡片</td><td>按所选维度叠加：累计销售额 = 筛选场次 sales 之和；预估结算金额 = 筛选销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 筛选场次 paymentOrders 之和</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
-      <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;50% 为✅健康，&gt;50% 为🟡中度风险（抖店利润收益存在风险），&gt;80% 为🔴高度风险</td></tr>
+      <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
       <tr><td>月趋势</td><td>所有场次按月份分组，累计销售额和订单数</td></tr>
       <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值</td></tr>
     </table>
@@ -452,7 +452,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>评论率</td><td>评论人数 ÷ 进房人数，健康线 &gt;3%</td></tr>
       <tr><td>曝光→点击转化率</td><td>商品点击人数 ÷ 商品曝光人数，健康线 &gt;20%</td></tr>
       <tr><td>点击→成交转化率</td><td>成交人数 ÷ 商品点击人数，健康线 &gt;10%</td></tr>
-      <tr><td>支付渠道风险</td><td>安卓占比 &lt;50% ✅健康 / &gt;50% 🟡中度 / &gt;80% 🔴高度</td></tr>
+      <tr><td>支付渠道风险</td><td>安卓占比 &lt;=60% ✅健康（抖店优于正常） / &gt;60% 🟡中度 / &gt;80% 🔴高度</td></tr>
     </table>
 
     <h3>六、新增游戏流程</h3>
