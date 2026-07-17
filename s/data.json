@@ -5,24 +5,24 @@
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 36410,
-    "totalOrders": 69,
-    "totalPayUsers": 44,
-    "estimatedProfit": 27817.24,
+    "totalGMV": 32120,
+    "totalOrders": 58,
+    "totalPayUsers": 39,
+    "estimatedProfit": 24539.68,
     "profitRate": 76.4,
-    "totalSessions": 16,
-    "avgGMV": 2275.6,
+    "totalSessions": 15,
+    "avgGMV": 2141.3,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 29892,
-        "settle": 29712.65,
-        "users": 27
+        "amount": 25782,
+        "settle": 25627.31,
+        "users": 23
       },
       "ios": {
-        "amount": 6518,
-        "settle": 6478.89,
-        "users": 17
+        "amount": 6338,
+        "settle": 6299.97,
+        "users": 16
       }
     }
   },
@@ -200,19 +200,6 @@
       "game": "巨兽战场",
       "date": "2026-07-15",
       "label": "7-15日",
-      "live": {
-        "sales": 4290,
-        "orders": 11
-      },
-      "self": {
-        "sales": 0,
-        "orders": 0
-      }
-    },
-    {
-      "game": "巨兽战场",
-      "date": "2026-07-16",
-      "label": "7月16日",
       "live": {
         "sales": 4290,
         "orders": 11
@@ -828,47 +815,6 @@
         "likes": 257,
         "likeRate": 0.708,
         "avgStay": "1.90minmin",
-        "newFans": 1
-      },
-      "product": {
-        "sales": 4290,
-        "exposure": 271,
-        "clicks": 36,
-        "orders": 11,
-        "paymentOrders": 11,
-        "exposureClickRate": 0.1328,
-        "clickOrderRate": 0.3056
-      },
-      "payment": {
-        "android": {
-          "amount": 4110,
-          "settle": 4085.34,
-          "users": 4
-        },
-        "ios": {
-          "amount": 180,
-          "settle": 178.92,
-          "users": 1
-        }
-      }
-    },
-    {
-      "game": "巨兽战场",
-      "date": "2026-07-16",
-      "label": "07-16直播",
-      "traffic": {
-        "exposure": 1821,
-        "entry": 363,
-        "entryRate": 0.1993,
-        "avgOnline": 3,
-        "maxOnline": 17
-      },
-      "interaction": {
-        "comments": 10,
-        "commentRate": 0.0275,
-        "likes": 257,
-        "likeRate": 0.708,
-        "avgStay": "1.90min",
         "newFans": 1
       },
       "product": {
