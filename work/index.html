@@ -5217,46 +5217,85 @@ function renderMarketing(mkt, weekKey) {
 
 
 
-    // 2.5) 斗兽战场首发（本周新增）
-
+      // 2.5) 重点关注游戏分析（本周新增）
   if (mkt.beastGame) {
 
     var bg = mkt.beastGame;
 
-    html += '<div class="subsection-title" style="margin-top:18px">🦁 ' + escHTML(bg.gameName) + ' · 首发资源评级</div>';
+    html += '<div class="subsection-title" style="margin-top:18px;font-size:16px">🔥 重点关注：' + escHTML(bg.gameName) + '</div>';
 
-    html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th>渠道</th><th>评级</th></tr></thead><tbody>';
+    // 基础信息表
+    html += '<div class="game-analysis-card" style="background:#f8f9ff;border:1px solid #e0e4f0;border-radius:10px;padding:16px;margin-top:10px;">';
 
-    if (Array.isArray(bg.channelRatings)) {
-      bg.channelRatings.forEach(function(r) {
-        var cls = r.rating === 'A' ? ' trend-up' : '';
-        html += '<tr><td>' + escHTML(r.channel) + '</td><td class="' + cls + '" style="font-weight:700;text-align:center">' + escHTML(r.rating) + '</td></tr>';
-      });
-    } else if (bg.channelRatings && typeof bg.channelRatings === 'object') {
-      var labelMap = { ipValue: 'IP价值', publisherCapability: '发行能力', categorySpace: '赛道空间', revenuePotential: '营收潜力' };
-      Object.keys(bg.channelRatings).forEach(function(k) {
-        var label = labelMap[k] || k;
-        html += '<tr><td>' + escHTML(label) + '</td><td class="trend-up" style="font-weight:700;text-align:center">' + escHTML(bg.channelRatings[k]) + '</td></tr>';
-      });
+    html += '<table class="data-table" style="margin:0;width:100%"><tbody>';
+
+    if (bg.publisher) {
+      html += '<tr><td style="width:100px;font-weight:600;color:#555">发行商</td><td>' + escHTML(bg.publisher) + '</td></tr>';
+    }
+    if (bg.category) {
+      html += '<tr><td style="font-weight:600;color:#555">品类</td><td>' + escHTML(bg.category) + (bg.characters ? '（角色:' + bg.characters + '名）' : '') + '</td></tr>';
+    }
+    if (bg.wxRank) {
+      var changeHtml = bg.wxChange > 0 ? '<span class="trend-up">↑' + bg.wxChange + '</span>' : (bg.wxChange < 0 ? '<span class="trend-down">↓' + Math.abs(bg.wxChange) + '</span>' : '<span class="stable">─</span>');
+      html += '<tr><td style="font-weight:600;color:#555">微信排名</td><td>#' + bg.wxRank + ' ' + changeHtml + '</td></tr>';
+    }
+    if (bg.platforms && bg.platforms.length) {
+      html += '<tr><td style="font-weight:600;color:#555">平台策略</td><td>' + escHTML(bg.platforms.join('、'));
+      if (bg.noDouyin) {
+        html += ' <span style="background:#ffebee;color:#c62828;font-size:11px;padding:1px 6px;border-radius:4px;margin-left:6px">未上抖音</span>';
+      }
+      html += '</td></tr>';
     }
 
-    html += '</tbody></table></div>';
+    // 评级
+    if (bg.channelRatings && typeof bg.channelRatings === 'object') {
+      html += '<tr><td style="font-weight:600;color:#555">能力评级</td><td>';
+      if (Array.isArray(bg.channelRatings)) {
+        bg.channelRatings.forEach(function(r) {
+          var cls = r.rating === 'A' || r.rating === 'A+' ? 'trend-up' : '';
+          html += '<span style="display:inline-block;margin:2px 8px 2px 0;font-size:12px">' + escHTML(r.channel) + '：<strong class="' + cls + '">' + escHTML(r.rating) + '</strong></span>';
+        });
+      } else {
+        var labelMap = { ipValue: 'IP价值', publisherCapability: '发行能力', categorySpace: '赛道空间', revenuePotential: '营收潜力' };
+        Object.keys(bg.channelRatings).forEach(function(k) {
+          var label = labelMap[k] || k;
+          var v = bg.channelRatings[k];
+          var cls = v === 'A' || v === 'A+' ? 'trend-up' : '';
+          html += '<span style="display:inline-block;margin:2px 8px 2px 0;font-size:12px">' + label + '：<strong class="' + cls + '">' + escHTML(v) + '</strong></span>';
+        });
+      }
+      html += '</td></tr>';
+    }
 
+    html += '</tbody></table>';
+
+    // ROI评估
     if (bg.roiAssessment) {
-      html += '<div class="insight-box" style="margin-top:12px"><strong>📌 ROI评估：</strong>' + escHTML(bg.roiAssessment) + '</div>';
+      html += '<div style="margin-top:10px;padding:10px 12px;background:#e8f5e9;border-radius:6px;font-size:13px;color:#2e7d32"><strong>📈 ROI评估：</strong>' + escHTML(bg.roiAssessment) + '</div>';
     }
 
+    // 抖音未上原因
     if (bg.noDouyinReasons && bg.noDouyinReasons.length) {
-      html += '<div class="insight-box" style="margin-top:12px;background:#fff3e0;border-left-color:#ff9800;"><strong>⚠️ 抖音未上原因：</strong><ul style="margin:6px 0 0 16px;padding:0">';
+      html += '<div style="margin-top:8px;padding:10px 12px;background:#fff3e0;border-radius:6px;font-size:13px;color:#e65100"><strong>⚠️ 未上抖音原因：</strong><ul style="margin:4px 0 0 16px;padding:0">';
       bg.noDouyinReasons.forEach(function(r) {
-        html += '<li style="margin-bottom:4px">' + escHTML(r) + '</li>';
+        html += '<li style="margin-bottom:3px">' + escHTML(r) + '</li>';
       });
       html += '</ul></div>';
     }
 
-  }
+    // 三七系对比侧写
+    if (bg.dyGames37Count !== undefined || bg.douyin37Example) {
+      html += '<div style="margin-top:8px;padding:8px 12px;background:#f3e5f5;border-radius:6px;font-size:12px;color:#6a1b9a">';
+      html += '<strong>📊 三七互娱双平台布局：</strong>微信Top100 3款';
+      if (bg.douyin37Example) {
+        html += ' · 抖音Top100 ' + escHTML(bg.douyin37Example);
+      }
+      html += '</div>';
+    }
 
-  // 3) 消耗透视（5月第4周）
+    html += '</div>'; // end game-analysis-card
+
+  }  // 3) 消耗透视（5月第4周）
 
 
   if (mkt.consumeOverview) {
