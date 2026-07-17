@@ -5,23 +5,23 @@
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 27830,
-    "totalOrders": 47,
-    "totalPayUsers": 36,
-    "estimatedProfit": 14733.47,
-    "profitRate": 60.0,
+    "totalGMV": 28994,
+    "totalOrders": 56,
+    "totalPayUsers": 37,
+    "estimatedProfit": 22151.42,
+    "profitRate": 76.4,
     "totalSessions": 14,
-    "avgGMV": 1987.9,
+    "avgGMV": 2071.0,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 21672,
-        "settle": 21651.273999999998,
-        "users": 19
+        "amount": 22784,
+        "settle": 22647.3,
+        "users": 22
       },
       "ios": {
-        "amount": 6158,
-        "settle": 6131.088,
+        "amount": 6210,
+        "settle": 6172.74,
         "users": 15
       }
     }
@@ -199,10 +199,10 @@
     {
       "game": "巨兽战场",
       "date": "2026-07-15",
-      "label": "7月15日",
+      "label": "7-15日",
       "live": {
-        "sales": 3126,
-        "orders": 2
+        "sales": 4290,
+        "orders": 11
       },
       "self": {
         "sales": 0,
@@ -747,40 +747,40 @@
     {
       "game": "巨兽战场",
       "date": "2026-07-15",
-      "label": "7月15日直播",
+      "label": "07-15直播",
       "traffic": {
-        "exposure": 1368,
-        "entry": 290,
-        "entryRate": 0.212,
+        "exposure": 1821,
+        "entry": 363,
+        "entryRate": 0.1993,
         "avgOnline": 3,
-        "maxOnline": 26
+        "maxOnline": 17
       },
       "interaction": {
-        "comments": 27,
-        "commentRate": 0.0931,
-        "likes": 233,
-        "likeRate": 0.8034,
-        "avgStay": "2.28min",
-        "newFans": 0
+        "comments": 10,
+        "commentRate": 0.0275,
+        "likes": 257,
+        "likeRate": 0.708,
+        "avgStay": "1.90minmin",
+        "newFans": 1
       },
       "product": {
-        "sales": 3126,
-        "exposure": 164,
-        "clicks": 11,
-        "orders": 2,
-        "paymentOrders": 2,
-        "exposureClickRate": 0.0671,
-        "clickOrderRate": 0.1818
+        "sales": 4290,
+        "exposure": 271,
+        "clicks": 36,
+        "orders": 11,
+        "paymentOrders": 11,
+        "exposureClickRate": 0.1328,
+        "clickOrderRate": 0.3056
       },
       "payment": {
         "android": {
-          "amount": 2998,
-          "settle": 2980.01,
-          "users": 1
+          "amount": 4110,
+          "settle": 4085.34,
+          "users": 4
         },
         "ios": {
-          "amount": 128,
-          "settle": 127.23,
+          "amount": 180,
+          "settle": 178.92,
           "users": 1
         }
       }
