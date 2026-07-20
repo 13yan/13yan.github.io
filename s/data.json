@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-07-16",
+  "updatedAt": "2026-07-20",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 32120,
-    "totalOrders": 58,
-    "totalPayUsers": 39,
-    "estimatedProfit": 24539.68,
-    "profitRate": 76.4,
-    "totalSessions": 15,
-    "avgGMV": 2141.3,
+    "totalGMV": 48286,
+    "totalOrders": 92,
+    "totalPayUsers": 57,
+    "estimatedProfit": 40881.89,
+    "profitRate": 84.7,
+    "totalSessions": 18,
+    "avgGMV": 2682.6,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 25782,
-        "settle": 25627.31,
-        "users": 23
+        "amount": 38660,
+        "settle": 38518.06,
+        "users": 34
       },
       "ios": {
-        "amount": 6338,
-        "settle": 6299.97,
-        "users": 16
+        "amount": 9626,
+        "settle": 9578.28,
+        "users": 23
       }
     }
   },
@@ -219,6 +219,45 @@
       },
       "self": {
         "sales": 3634,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-17",
+      "label": "7月17日",
+      "live": {
+        "sales": 1522,
+        "orders": 4
+      },
+      "self": {
+        "sales": 0,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-18",
+      "label": "7月18日",
+      "live": {
+        "sales": 1106,
+        "orders": 9
+      },
+      "self": {
+        "sales": 8016,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-19",
+      "label": "7月19日",
+      "live": {
+        "sales": 2314,
+        "orders": 8
+      },
+      "self": {
+        "sales": 3208,
         "orders": 0
       }
     }
@@ -836,6 +875,129 @@
           "amount": 180,
           "settle": 178.92,
           "users": 1
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-17",
+      "label": "7月17日直播",
+      "traffic": {
+        "exposure": 1495,
+        "entry": 446,
+        "entryRate": 0.2983,
+        "avgOnline": 3,
+        "maxOnline": 7
+      },
+      "interaction": {
+        "comments": 11,
+        "commentRate": 0.0247,
+        "likes": 383,
+        "likeRate": 0.8587,
+        "avgStay": "1.42min",
+        "newFans": 2
+      },
+      "product": {
+        "sales": 1522,
+        "exposure": 354,
+        "clicks": 42,
+        "orders": 4,
+        "paymentOrders": 4,
+        "exposureClickRate": 0.1186,
+        "clickOrderRate": 0.0952
+      },
+      "payment": {
+        "android": {
+          "amount": 1522,
+          "settle": 1512.87,
+          "users": 2
+        },
+        "ios": {
+          "amount": 0,
+          "settle": 0,
+          "users": 0
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-18",
+      "label": "7月18日直播",
+      "traffic": {
+        "exposure": 860,
+        "entry": 296,
+        "entryRate": 0.3442,
+        "avgOnline": 3,
+        "maxOnline": 11
+      },
+      "interaction": {
+        "comments": 14,
+        "commentRate": 0.0473,
+        "likes": 719,
+        "likeRate": 2.4291,
+        "avgStay": "2.02min",
+        "newFans": 2
+      },
+      "product": {
+        "sales": 9122,
+        "exposure": 179,
+        "clicks": 24,
+        "orders": 9,
+        "paymentOrders": 9,
+        "exposureClickRate": 0.1341,
+        "clickOrderRate": 0.375
+      },
+      "payment": {
+        "android": {
+          "amount": 7934,
+          "settle": 7886.4,
+          "users": 4
+        },
+        "ios": {
+          "amount": 1188,
+          "settle": 1180.87,
+          "users": 4
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-19",
+      "label": "7月19日直播",
+      "traffic": {
+        "exposure": 1882,
+        "entry": 393,
+        "entryRate": 0.2088,
+        "avgOnline": 5,
+        "maxOnline": 13
+      },
+      "interaction": {
+        "comments": 28,
+        "commentRate": 0.0712,
+        "likes": 2166,
+        "likeRate": 5.5115,
+        "avgStay": "2.99min",
+        "newFans": 7
+      },
+      "product": {
+        "sales": 5522,
+        "exposure": 263,
+        "clicks": 60,
+        "orders": 8,
+        "paymentOrders": 8,
+        "exposureClickRate": 0.2281,
+        "clickOrderRate": 0.1333
+      },
+      "payment": {
+        "android": {
+          "amount": 3422,
+          "settle": 3401.47,
+          "users": 5
+        },
+        "ios": {
+          "amount": 2100,
+          "settle": 2087.4,
+          "users": 3
         }
       }
     }
