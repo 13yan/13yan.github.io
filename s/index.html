@@ -1456,15 +1456,21 @@ function exportCSV() {
   if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
   var rows = [];
   // Header
-  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),支付订单数,曝光(商品),点击(商品),成交人数,安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),成交人数,安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  // Build date->salesChannel lookup
+  var scMap = {};
+  (currentData.salesChannels||[]).forEach(function(c){ scMap[c.date] = c; });
   // Data rows
   ed.sessions.forEach(function(s){
     var t = s.traffic||{}, it = s.interaction||{}, p = s.product||{}, pay = s.payment||{};
+    var sc = scMap[s.date] || {};
     rows.push([
       s.date, s.game||'',
       t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
       it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
-      p.sales||0, p.orders||0, p.exposure||0, p.clicks||0, p.payUsers||p.orders||0,
+      p.sales||0,
+      (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
+      p.orders||0, p.exposure||0, p.clicks||0, p.payUsers||p.orders||0,
       pay.android?.amount||0, pay.ios?.amount||0,
       pay.android?.users||0, pay.ios?.users||0
     ].join(','));
@@ -1472,7 +1478,7 @@ function exportCSV() {
   // Summary row
   var totalS = ed.sessions.reduce(function(a,b){return a+(b.product?.sales||0);},0);
   var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.orders||0);},0);
-  rows.push('合计,,,,,,,,,,'+totalS+','+totalO+',,,,,,');
+  rows.push('合计,,,,,,,,,,'+totalS+',,'+totalO+',,,,,,,,');
   // Create blob and download
   var bom = '\uFEFF';
   var csv = bom + rows.join('\n');
