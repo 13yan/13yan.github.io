@@ -188,24 +188,24 @@
       "date": "2026-07-14",
       "label": "7月14日",
       "live": {
-        "sales": 2012,
+        "sales": 478,
         "orders": 12
       },
       "self": {
-        "sales": 0,
+        "sales": 1534,
         "orders": 0
       }
     },
     {
       "game": "巨兽战场",
       "date": "2026-07-15",
-      "label": "7-15日",
+      "label": "7月15日",
       "live": {
-        "sales": 4290,
+        "sales": 128,
         "orders": 11
       },
       "self": {
-        "sales": 0,
+        "sales": 2998,
         "orders": 0
       }
     },
@@ -214,11 +214,11 @@
       "date": "2026-07-16",
       "label": "7月16日",
       "live": {
-        "sales": 4290,
+        "sales": 656,
         "orders": 11
       },
       "self": {
-        "sales": 0,
+        "sales": 3634,
         "orders": 0
       }
     }
@@ -760,7 +760,7 @@
     {
       "game": "巨兽战场",
       "date": "2026-07-15",
-      "label": "07-15直播",
+      "label": "7月15日直播",
       "traffic": {
         "exposure": 1368,
         "entry": 290,
@@ -801,7 +801,7 @@
     {
       "game": "巨兽战场",
       "date": "2026-07-16",
-      "label": "07-16直播",
+      "label": "7月16日直播",
       "traffic": {
         "exposure": 1821,
         "entry": 363,
