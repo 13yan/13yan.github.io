@@ -149,11 +149,11 @@
       "date": "2026-07-11",
       "label": "7月11日",
       "live": {
-        "sales": 0,
+        "sales": 98,
         "orders": 0
       },
       "self": {
-        "sales": 294,
+        "sales": 196,
         "orders": 6
       }
     },
