@@ -1,28 +1,28 @@
 {
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-07-21",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 48286,
-    "totalOrders": 92,
-    "totalPayUsers": 57,
-    "estimatedProfit": 40881.89,
-    "profitRate": 84.7,
-    "totalSessions": 18,
-    "avgGMV": 2682.6,
+    "totalGMV": 60194,
+    "totalOrders": 144,
+    "totalPayUsers": 80,
+    "estimatedProfit": 50432.64,
+    "profitRate": 83.8,
+    "totalSessions": 20,
+    "avgGMV": 3009.7,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 38660,
-        "settle": 38518.06,
-        "users": 34
+        "amount": 42672,
+        "settle": 42505.99,
+        "users": 47
       },
       "ios": {
-        "amount": 9626,
-        "settle": 9578.28,
-        "users": 23
+        "amount": 16918,
+        "settle": 16826.53,
+        "users": 33
       }
     }
   },
@@ -258,6 +258,32 @@
       },
       "self": {
         "sales": 3208,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-20",
+      "label": "7月20日",
+      "live": {
+        "sales": 0,
+        "orders": 11
+      },
+      "self": {
+        "sales": 604,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-21",
+      "label": "7月21日",
+      "live": {
+        "sales": 3312,
+        "orders": 41
+      },
+      "self": {
+        "sales": 7992,
         "orders": 0
       }
     }
@@ -998,6 +1024,88 @@
           "amount": 2100,
           "settle": 2087.4,
           "users": 3
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-20",
+      "label": "7月20日直播",
+      "traffic": {
+        "exposure": 0,
+        "entry": 0,
+        "entryRate": 0,
+        "avgOnline": 0,
+        "maxOnline": 0
+      },
+      "interaction": {
+        "comments": 0,
+        "commentRate": 0,
+        "likes": 0,
+        "likeRate": 0,
+        "avgStay": "0",
+        "newFans": 0
+      },
+      "product": {
+        "sales": 604,
+        "exposure": 46,
+        "clicks": 7,
+        "orders": 11,
+        "paymentOrders": 11,
+        "exposureClickRate": 0.1522,
+        "clickOrderRate": 1.5714
+      },
+      "payment": {
+        "android": {
+          "amount": 120,
+          "settle": 119.28,
+          "users": 1
+        },
+        "ios": {
+          "amount": 484,
+          "settle": 481.1,
+          "users": 3
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-21",
+      "label": "7月21日直播",
+      "traffic": {
+        "exposure": 8028,
+        "entry": 1288,
+        "entryRate": 0.1604,
+        "avgOnline": 12,
+        "maxOnline": 24
+      },
+      "interaction": {
+        "comments": 117,
+        "commentRate": 0.0908,
+        "likes": 501,
+        "likeRate": 0.389,
+        "avgStay": "1.74min",
+        "newFans": 28
+      },
+      "product": {
+        "sales": 11304,
+        "exposure": 942,
+        "clicks": 260,
+        "orders": 41,
+        "paymentOrders": 41,
+        "exposureClickRate": 0.276,
+        "clickOrderRate": 0.1577
+      },
+      "payment": {
+        "android": {
+          "amount": 3892,
+          "settle": 3868.65,
+          "users": 12
+        },
+        "ios": {
+          "amount": 6808,
+          "settle": 6767.15,
+          "users": 7
         }
       }
     }
