@@ -5,13 +5,13 @@
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 60194,
+    "totalGMV": 59590,
     "totalOrders": 144,
     "totalPayUsers": 80,
     "estimatedProfit": 50432.64,
-    "profitRate": 83.8,
+    "profitRate": 84.6,
     "totalSessions": 20,
-    "avgGMV": 3009.7,
+    "avgGMV": 2979.5,
     "analysis": "",
     "paymentChannels": {
       "android": {
@@ -283,7 +283,7 @@
         "orders": 41
       },
       "self": {
-        "sales": 7992,
+        "sales": 7388,
         "orders": 0
       }
     }
@@ -1088,7 +1088,7 @@
         "newFans": 28
       },
       "product": {
-        "sales": 11304,
+        "sales": 10700,
         "exposure": 942,
         "clicks": 260,
         "orders": 41,
