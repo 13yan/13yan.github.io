@@ -3006,33 +3006,17 @@ function init() {
     var reports = manifest.reports;
 
 
-    var promises = [];
-
-
-    reports.forEach(function(r) {
-
-
+    var promises = []; var INITIAL_LOAD = 3;
+    reports.forEach(function(r, i) {
       if (r.hasData === false) return;
-
-
       weekKeys.push(r.id);
-
-
+      if (i >= INITIAL_LOAD) { reportMap[r.id] = r; return; }
       promises.push(
-
-
         fetchJSON(BASE + r.dirName + '/report-data.json').then(function(data) {
-
-
           DATA[r.id] = normalizeData(data, r);
-
-
+          reportMap[r.id] = r;
         }).catch(function() { })
-
-
       );
-
-
     });
 
 
@@ -6057,7 +6041,17 @@ function renderWeekButtons(activeKey) {
       var wk = this.getAttribute('data-week');
 
 
-      if (wk && wk !== currentKey && DATA[wk]) renderPage(wk);
+      if (wk && wk !== currentKey) {
+        if (DATA[wk]) renderPage(wk);
+        else {
+          var r = reportMap[wk];
+          if (r) { this.textContent = '加载中...';
+            fetchJSON(BASE + r.dirName + '/report-data.json').then(function(d) {
+              DATA[wk] = normalizeData(d, r); renderPage(wk);
+            }).catch(function() { renderPage(wk); });
+          }
+        }
+      }
 
 
     });
