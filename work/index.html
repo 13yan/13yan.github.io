@@ -3956,17 +3956,17 @@ function fillData(d, key) {
   renderInsightBox('catDescWrap', d.catDesc, '品类结构结论');
 
 
-  _allMovers = d.movers || []; _surgeTab = 'all'; renderSurgeGrid(_allMovers);
+  _allMovers = d.movers || []; _surgeTab = 'all'; try { renderSurgeGrid(_allMovers); } catch(e) { console.warn('Surge err',e); }
 
 
-  renderInsightBox('surgeConclusionWrap', d.surgeConclusion, '飙升结论');
+  try { renderInsightBox('surgeConclusionWrap', d.surgeConclusion, '飙升结论'); } catch(e) {}
 
 
-  renderPolicies(d.policies || {});
+  try { renderPolicies(d.policies || {}); } catch(e) { console.warn('Policies err',e); }
 
 
-  renderGameAnalysis(d.gameAnalysis || []);
-  renderTrends(d.trends || []);
+  try { renderGameAnalysis(d.gameAnalysis || []); } catch(e) { console.warn('GameAnalysis err',e); }
+  try { renderTrends(d.trends || []); } catch(e) { console.warn('Trends err',e); }
 
 
 }
@@ -4810,7 +4810,7 @@ function switchSurgeTab(tab) {
   document.querySelectorAll('#surgeTabs .surge-tab').forEach(function(t) { t.classList.toggle('active', t.dataset.surge === tab); });
 
 
-  renderSurgeGrid(_allMovers);
+  try { renderSurgeGrid(_allMovers); } catch(e) { console.warn('Surge err',e); }
 
 
 }
