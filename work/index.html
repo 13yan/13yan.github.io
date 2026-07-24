@@ -5219,16 +5219,19 @@ function renderMarketing(mkt, weekKey) {
     html += '<div class="table-wrap" style="margin-bottom:14px"><table><thead><tr><th>渠道</th><th>首发资源评级</th></tr></thead><tbody>';
 
 
-    bg.channelRatings.forEach(function(r) {
-
-
-      var cls = r.rating === 'A' ? ' trend-up' : '';
-
-
-      html += '<tr><td>' + escHTML(r.channel) + '</td><td class="' + cls + '" style="font-weight:700;text-align:center">' + escHTML(r.rating) + '</td></tr>';
-
-
-    });
+    var cr = bg.channelRatings;
+    if (Array.isArray(cr)) {
+      cr.forEach(function(r) {
+        var cls = r.rating === 'A' ? ' trend-up' : '';
+        html += '<tr><td>' + escHTML(r.channel) + '</td><td class="' + cls + '" style="font-weight:700;text-align:center">' + escHTML(r.rating) + '</td></tr>';
+      });
+    } else if (typeof cr === 'object') {
+      Object.keys(cr).forEach(function(k) {
+        var v = cr[k];
+        var cls = v === 'A' ? ' trend-up' : '';
+        html += '<tr><td>' + escHTML(k) + '</td><td class="' + cls + '" style="font-weight:700;text-align:center">' + escHTML(v) + '</td></tr>';
+      });
+    }
 
 
     html += '</tbody></table></div>';
