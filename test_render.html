@@ -1,0 +1,56 @@
+<html><body>
+<div id="marketing" style="display:none">
+  <div id="marketingContent"></div>
+</div>
+<script>
+var mkt = {
+  "beastGame": {
+    "gameName": "斗罗大陆：传承",
+    "publisher": "三七互娱（A股上市，微信买量资深玩家）",
+    "category": "ARPG",
+    "characters": 6,
+    "wxRank": 19,
+    "wxChange": 3,
+    "platforms": ["微信"],
+    "noDouyin": true,
+    "channelRatings": {"ipValue":"A+","publisherCapability":"A","categorySpace":"B+","revenuePotential":"A-"},
+    "roiAssessment": "IP自然量占比高降买量成本，多角色ARPG LTV模型成熟，预期ROI稳健",
+    "noDouyinReasons": ["IP授权可能有腾讯系排他条款", "阶段性策略：先微信验证"],
+    "douyin37Example": "生存33天(#32)"
+  }
+};
+
+var el = document.getElementById('marketingContent');
+var section = document.getElementById('marketing');
+
+// Check condition
+if (!mkt || (!mkt.roi && !mkt.consumeOverview && !mkt.blueStar && !mkt.beastGame)) {
+  section.style.display = 'none';
+  document.body.innerHTML += '<p>❌ HIDDEN by condition</p>';
+} else {
+  section.style.display = '';
+  var html = '';
+  
+  if (mkt.beastGame) {
+    var bg = mkt.beastGame;
+    html += '<h3>🔥 ' + bg.gameName + '</h3>';
+    html += '<table border="1"><tbody>';
+    html += '<tr><td>发行商</td><td>' + bg.publisher + '</td></tr>';
+    html += '<tr><td>品类</td><td>' + bg.category + '（角色:' + bg.characters + '名）</td></tr>';
+    html += '<tr><td>微信排名</td><td>#' + bg.wxRank + ' ↑' + bg.wxChange + '</td></tr>';
+    html += '<tr><td>平台策略</td><td>' + bg.platforms.join('、') + ' <span style="background:#ffebee;color:red">未上抖音</span></td></tr>';
+    html += '<tr><td>IP价值</td><td><strong>' + bg.channelRatings.ipValue + '</strong></td></tr>';
+    html += '<tr><td>发行能力</td><td><strong>' + bg.channelRatings.publisherCapability + '</strong></td></tr>';
+    html += '</tbody></table>';
+    html += '<div style="background:#e8f5e9;padding:10px"><strong>ROI评估：</strong>' + bg.roiAssessment + '</div>';
+    html += '<div style="background:#fff3e0;padding:10px"><strong>未上抖音原因：</strong><ul>';
+    bg.noDouyinReasons.forEach(function(r) { html += '<li>' + r + '</li>'; });
+    html += '</ul></div>';
+  }
+  
+  el.innerHTML = html;
+  document.body.innerHTML += '<p>✅ RENDERED - content length: ' + html.length + ' chars</p>';
+  document.body.innerHTML += html;
+}
+</script>
+</body></html>

@@ -3957,7 +3957,10 @@ function fillData(d, key) {
   renderInsightBox('simConclusionWrap', d.simConclusion, '结论');
 
 
+  // DIAG: about to call renderMarketing
+  if (diag) diag.innerHTML += ' | calling renderMarketing';
   renderMarketing(d.marketing || {}, key);
+  if (diag) diag.innerHTML += ' | renderMarketing returned';
 
 
   var charts = d.charts || {};

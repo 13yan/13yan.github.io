@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>斗罗大陆测试</title></head>
+<body style="font-family:sans-serif;padding:20px;background:#f5f5f5">
+<h2>🔥 重点关注：斗罗大陆：传承</h2>
+<div id="result">Loading...</div>
+<script>
+fetch('/w/2026/2026%E5%B9%B47%E6%9C%88%E7%AC%AC3%E5%91%A8%EF%BC%88%E6%95%B0%E6%8D%AE%E6%88%AA%E6%AD%A27%E6%9C%8817%E6%97%A5%EF%BC%89/report-data.json')
+  .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+  .then(function(d) {
+    var bg = d.marketing && d.marketing.beastGame;
+    if (!bg) { document.getElementById('result').innerHTML = '❌ beastGame not found'; return; }
+    
+    var html = '<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;background:white;width:100%;max-width:600px">';
+    html += '<tr><td style="font-weight:bold">发行商</td><td>' + bg.publisher + '</td></tr>';
+    html += '<tr><td style="font-weight:bold">品类</td><td>' + bg.category + '（角色:' + bg.characters + '名）</td></tr>';
+    html += '<tr><td style="font-weight:bold">微信排名</td><td>#' + bg.wxRank + ' ↑' + bg.wxChange + '</td></tr>';
+    html += '<tr><td style="font-weight:bold">平台策略</td><td>' + bg.platforms.join('、') + ' <span style="background:#ffebee;color:#c62828;padding:2px 8px;border-radius:4px">未上抖音</span></td></tr>';
+    
+    var ratings = '';
+    var labels = {ipValue:'IP价值',publisherCapability:'发行能力',categorySpace:'赛道空间',revenuePotential:'营收潜力'};
+    for (var k in bg.channelRatings) {
+      ratings += '<span style="margin:0 8px 4px 0;display:inline-block">' + (labels[k]||k) + ': <strong>' + bg.channelRatings[k] + '</strong></span>';
+    }
+    html += '<tr><td style="font-weight:bold">能力评级</td><td>' + ratings + '</td></tr>';
+    html += '</table>';
+    
+    html += '<div style="margin-top:12px;padding:12px;background:#e8f5e9;border-radius:6px"><strong>📈 ROI评估：</strong>' + bg.roiAssessment + '</div>';
+    
+    html += '<div style="margin-top:8px;padding:12px;background:#fff3e0;border-radius:6px"><strong>⚠️ 未上抖音原因：</strong><ul>';
+    bg.noDouyinReasons.forEach(function(r) { html += '<li>' + r + '</li>'; });
+    html += '</ul></div>';
+    
+    html += '<div style="margin-top:8px;padding:12px;background:#f3e5f5;border-radius:6px"><strong>📊 三七双平台：</strong>微信3款 · 抖音' + bg.douyin37Example + '</div>';
+    
+    document.getElementById('result').innerHTML = html;
+    document.getElementById('result').innerHTML += '<p style="color:green;font-weight:bold">✅ 渲染成功！' + html.length + '字符</p>';
+  })
+  .catch(function(e) {
+    document.getElementById('result').innerHTML = '❌ 错误: ' + e.message;
+  });
+</script>
+<p style="margin-top:20px;color:#999;font-size:12px">直接从 report-data.json 读取数据，绕过工作台JS流程</p>
+</body>
+</html>
