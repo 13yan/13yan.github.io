@@ -3468,7 +3468,7 @@ function renderPage(key) {
   var d = DATA[key];
 
 
-  if (!d) return;
+  if (!d) { document.getElementById('mainContent').innerHTML = '<div style="padding:40px;text-align:center;color:red">数据未加载: ' + key + '</div>'; return; }
 
 
   currentKey = key;
@@ -3477,7 +3477,9 @@ function renderPage(key) {
   document.getElementById('mainContent').innerHTML = buildPageHTML(d, key);
 
 
-  fillData(d, key);
+  try { fillData(d, key); } catch(e) { 
+    document.getElementById('mainContent').innerHTML += '<div style="padding:20px;margin:20px;background:#fff3e0;border:2px solid #f44336;border-radius:8px"><h3>渲染错误</h3><pre style="font-size:12px;overflow:auto">' + escHTML(e.stack || e.message || e) + '</pre></div>';
+  }
 
 
   updateNavStates(key);
