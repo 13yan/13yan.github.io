@@ -6273,46 +6273,23 @@ function renderCharts(charts) {
   var pieOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, boxWidth: 10, padding: 8 } } } };
 
 
-  var wxC = document.getElementById('wxCatChart');
+  try {
+    var wxC = document.getElementById("wxCatChart");
+    if (wxC) chartInstances.wx = new Chart(wxC, { type: "doughnut", data: { labels: cats, datasets: [{ data: wxData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
+    var dyC = document.getElementById("dyCatChart");
+    if (dyC) chartInstances.dy = new Chart(dyC, { type: "doughnut", data: { labels: cats, datasets: [{ data: dyData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
+    var cmpC = document.getElementById("cmpChart");
+    if (cmpC) chartInstances.cmp = new Chart(cmpC, {
+      type: "bar",
+      data: { labels: cats, datasets: [
+        { label: "微信", data: wxData, backgroundColor: "rgba(30, 58, 138, 0.85)", borderRadius: 4, maxBarThickness: 28 },
+        { label: "抖音", data: dyData, backgroundColor: "rgba(59, 130, 246, 0.85)", borderRadius: 4, maxBarThickness: 28 }
+      ]},
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top", labels: { font: { size: 10 }, boxWidth: 12 } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { stepSize: 2, font: { size: 9 } }, grid: { color: "rgba(0,0,0,0.06)" } } } }
+    });
+  } catch(e) { console.warn("Chart render failed:", e); }
+}
 
-
-  if (wxC) chartInstances.wx = new Chart(wxC, { type: 'doughnut', data: { labels: cats, datasets: [{ data: wxData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
-
-
-  var dyC = document.getElementById('dyCatChart');
-
-
-  if (dyC) chartInstances.dy = new Chart(dyC, { type: 'doughnut', data: { labels: cats, datasets: [{ data: dyData, backgroundColor: CHART_COLORS, borderWidth: 0 }] }, options: pieOpts });
-
-
-  var cmpC = document.getElementById('cmpChart');
-
-
-  if (cmpC) chartInstances.cmp = new Chart(cmpC, {
-
-
-    type: 'bar',
-
-
-    data: { labels: cats, datasets: [
-
-
-      { label: '微信', data: wxData, backgroundColor: 'rgba(30, 58, 138, 0.85)', borderRadius: 4, maxBarThickness: 28 },
-
-
-      { label: '抖音', data: dyData, backgroundColor: 'rgba(59, 130, 246, 0.85)', borderRadius: 4, maxBarThickness: 28 }
-
-
-    ]},
-
-
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { size: 10 }, boxWidth: 12 } } }, scales: { x: { grid: { display: false }, ticks: { font: { size: 9 } } }, y: { beginAtZero: true, ticks: { stepSize: 2, font: { size: 9 } }, grid: { color: 'rgba(0,0,0,0.06)' } } } }
-
-
-  });
-
-
- catch(e) { console.warn('Chart render failed:', e); } }
 
 
 
