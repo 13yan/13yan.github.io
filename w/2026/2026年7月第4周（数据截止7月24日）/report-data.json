@@ -6,13 +6,15 @@
     "weekNumber": 30
   },
   "summary": {
-    "core": "<strong>【市场格局】</strong>微信小游戏畅销榜Top100覆盖13个品类，模拟经营（19款）、ARPG（14款）、塔防（11款）为三大支柱；抖音畅销榜模拟经营（11款）、塔防（11款）、ARPG（17款）居前。双平台Top100中<span class=\"hl\">46款游戏跨平台上榜</span>，跨平台发行已成行业标配。<br><strong>【头部表现】</strong>微信Top5：三国：冰河时代、向僵尸开炮、镇邪人、无尽冬日、我的花园世界；抖音Top5：我的花园世界、三国：冰河时代、灵画师、赵云与阿斗、传奇之业。三国：冰河时代、向僵尸开炮、无尽冬日、我的花园世界、灵画师、向往的生活等10款游戏同时进入双平台Top20。<br><strong>【模拟经营聚焦】</strong>微信19款/抖音11款上榜。\"二合+模拟经营\"融合玩法占比超<span class=\"hl\">40%</span>，低门槛+长留存成为品类核心竞争力。修仙、怀旧、体育、职场等差异化题材表现亮眼。<br><strong>【政策动态】</strong>本周多平台政策密集发布：微信暑期激励单款最高500万元、抖音7-8月开发者内容激励+巨量引擎IAP返点最高40%、Apple年龄分级问卷更新、Google Play开放第三方应用商店（7/22）、7月197款游戏获批版号创今年单月新高。<br><strong>【核心关注】</strong>本周新游《斗罗大陆：传承》由三七互娱发行，首周即冲入微信畅销榜#19（↑3），ARPG角色:6名架构提升付费深度。斗罗大陆IP（阅文集团顶级网文）降获客成本、三七买量能力+暑期档三重利好驱动。目前仅布局微信端，未上抖音小游戏（三七系产品如生存33天在抖音#32有稳定表现，但斗罗大陆：传承具体原因待分析）。模拟经营、塔防、SLG三大品类持续领跑。<br><strong>【竞品动态】</strong>三七互娱《斗罗大陆：传承》首周冲入微信畅销榜Top20，详情见下方买量板块。",
-    "highlight": "本周多平台政策密集发布，7月197款游戏获批版号",
+    "core": "<strong>【市场格局】</strong>微信小游戏畅销榜Top100覆盖13个品类，模拟经营（19款）、ARPG（14款）、塔防（11款）为三大支柱；抖音畅销榜模拟经营（11款）、塔防（11款）、ARPG（17款）居前。双平台Top100中<span class=\"hl\">46款游戏跨平台上榜</span>，跨平台发行已成行业标配。<br><strong>【头部表现】</strong>微信Top5：三国：冰河时代（霸榜6天）、向僵尸开炮、镇邪人、无尽冬日、我的花园世界；抖音Top5：我的花园世界（↑4）、三国：冰河时代（↓1）、灵画师（↓1）、赵云与阿斗（↓1）、传奇之业（↑8）。<br><strong>【政策动态】</strong>本周（7/19-7/24）各平台均无新小游戏政策发布。<span class=\"hl\">7月版号公布</span>：193款国产+4款进口游戏获批，《影之刃零》《梦幻西游：再续前缘》等重点产品过审。<br><strong>【核心关注】</strong>本周无新增微信/抖音小游戏政策。7月版号维持高位（197款），年内累计1147个版号。",
+    "highlight": "7月版号公布（197款），《影之刃零》等过审；Google Play开放第三方商店；《无畏契约》注册破1亿。微信三国：冰河时代霸榜6天，抖音我的花园世界↑4登顶。跨平台46款。",
     "keyEvents": [
       "微信/抖音暑期激励加码（7-9月）、Apple年龄分级问卷更新（7/9）、Google Play开放第三方商店（7/22）、7月197款版号获批（7/23）"
     ],
     "coreConcerns": [
-      "微信/抖音暑期激励持续加码、Apple年龄分级新政9月强制生效、Google Play生态开放、版号审批提速"
+      "7月版号公布：193款国产+4款进口获批，《影之刃零》《梦幻西游：再续前缘》等重点产品过审",
+      "Google Play正式向第三方应用商店开放，Android分发格局面临变革",
+      "《无畏契约：源能行动》注册用户破1亿"
     ]
   },
   "stats": {
@@ -2505,40 +2507,13 @@
     }
   ],
   "policies": {
-    "_combinedHtml": "<div class=\"insight-box\" style=\"background:#fff3e0;border-left-color:#ff9800;\">\n    <strong>&#9200; 本周行业资讯：</strong>本周（7/19-7/24）多平台政策密集发布。<span class=\"hl\">微信小游戏暑期激励加码</span>，单款最高500万元（7/9）；<span class=\"hl\">抖音小游戏7-8月开发者内容激励</span>发布；<span class=\"hl\">Apple更新年龄分级问卷</span>，新增社交媒体审核（7/9）；<span class=\"hl\">Google Play正式向第三方应用商店开放</span>（7/22）；<span class=\"hl\">7月197款游戏获批版号</span>（7/23）；<span class=\"hl\">三七互娱轻量化MMO《荒无之下》杀入微信TOP10</span>，小游戏赛道迎精品化拐点。\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#2196F3;\">\n    <h4>微信小游戏平台</h4>\n    <ol>\n      <li><strong>暑期专项激励政策发布（7月9日）：</strong>覆盖7月1日至9月30日，增量消耗返点模式，<span class=\"hl\">单款最高500万元，单客户封顶1000万元</span>。首发游戏享40%返点，已发布非首发享10%返点，棋牌/传奇类不参与。（来源：<a href=\"https://developers.weixin.qq.com/minigame/introduction/commercialization/\" target=\"_blank\">微信小游戏官方 7/9</a>）</li>\n      <li><strong>2026 IAP激励升级版：</strong>首发新游首1000万流水不分成，单款最高2000万元激励金，合计5000万流水不分成。（来源：<a href=\"https://developers.weixin.qq.com/community/minigame/doc/000e006da28788b6efc4fd5256b408\" target=\"_blank\">微信开放社区 7/9</a>）</li>\n      <li><strong>iOS虚拟支付协议调整：</strong>因苹果下调Mini Apps Partner Program佣金，微信iOS侧激励现金比例调整为18%，开发者累计获苹果内购流水88%，有效期至<span class=\"hl\">2026年12月31日</span>。</li>\n    </ol>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#E91E63;\">\n    <h4>抖音小游戏平台</h4>\n    <ol>\n      <li><strong>7-8月开发者内容激励政策：</strong>2026年7月1日-8月31日。新游内容流水≥50万元获<span class=\"hl\">10万元</span>任务金激励，非新游增量流水≥100万元获10万元激励金，每月可重复参与。（来源：<a href=\"https://partner.open-douyin.com/docs/resource/zh-CN/mini-game/guide/business-guide/revenue/sharingclause/2026mini-gamedeveloperlimited-timecontentincentivepolicyjuly-august\" target=\"_blank\">抖音开放平台官方</a>）</li>\n      <li><strong>巨量引擎IAP投放返点：</strong>抖小同发新游最高<span class=\"hl\">40%返货</span>、单款封顶<span class=\"hl\">500万元</span>，全周期7月1日-9月30日。新增素材数量门槛和抖音端素材占比考核指标。（来源：<a href=\"http://www.nadianshi.com/2026/06/413759\" target=\"_blank\">那点事 6/26</a>）</li>\n    </ol>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#4CAF50;\">\n    <h4>App Store &amp; Google Play 平台政策</h4>\n    <ol>\n      <li><strong>Apple年龄分级问卷更新（7月9日）：</strong>新增社交媒体功能专项问题，含社交动态/内容发现功能的应用最低评级<span class=\"hl\">13+</span>，9月起成为强制要求。游戏含玩家动态/内容分享等社交元素可能被归入社交媒体类别。（来源：<a href=\"https://developer.apple.com/news/?id=tlur8uvi\" target=\"_blank\">Apple Developer 7/9</a>）</li>\n      <li><strong>Google Play开放第三方应用商店（7月22日）：</strong>Epic Games反垄断禁令正式落地，美国市场Google Play可直接下载第三方应用商店，开发者可选退出。第三方商店需年费5000美元并通过安全审核。（来源：<a href=\"https://www.ithome.com/0/976/940.htm\" target=\"_blank\">IT之家 7/21</a>）</li>\n      <li><strong>Android目标API级别更新：</strong>8月31日起新应用需以<span class=\"hl\">Android 16（API 36）</span>为目标编译；9月30日起巴西/印尼等4国先行侧载限制，2027年扩展全球。（来源：<a href=\"https://developer.android.google.cn/google/play/requirements/target-sdk?hl=en\" target=\"_blank\">Android Developers</a>）</li>\n    </ol>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#FF5722;\">\n    <h4>版号信息</h4>\n    <ol>\n      <li><strong>7月197款游戏获批版号：</strong>7月22日批准，7月23日发布。<span class=\"hl\">193款国产游戏+4款进口游戏</span>，创今年单月新高。其中<span class=\"hl\">51款移动-休闲益智类</span>属于小游戏范畴。《影之刃零》《暗影世界》《大鹅工厂》《猫咪整理师》等在列。（来源：<a href=\"https://news.qq.com/rain/a/20260723A0BD9B00\" target=\"_blank\">腾讯新闻 7/23</a>）</li>\n      <li><strong>上半年累计过审近千款：</strong>2026年上半年累计获批版号约950款，版号发放保持稳定增长趋势。</li>\n    </ol>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#9C27B0;\">\n    <h4>行业动态</h4>\n    <ol>\n      <li><strong>轻量化MMO崛起：</strong>三七互娱《荒无之下》6月19日上线微信小游戏，截至7月5日攻入畅销榜TOP10。采用\"高流量题材+开箱爽感+轻量化MMO长线养成\"复合打法，标志小游戏赛道从超休闲向精品化转型。（来源：<a href=\"https://m.jiemian.com/article/14707984.html\" target=\"_blank\">界面新闻 7/5</a>）</li>\n      <li><strong>夏季流量前移109%：</strong>巨量引擎数据显示2026年6月游戏流量同比暴涨<span class=\"hl\">109%</span>，厂商从传统\"7-8月集中冲量\"转向\"5-6月提前抢跑\"。（来源：<a href=\"https://www.thepaper.cn/newsDetail_forward_33503528\" target=\"_blank\">澎湃新闻 7/22</a>）</li>\n      <li><strong>TapTap发布会52款游戏亮相：</strong>7月2日涵盖腾讯网易等旗舰和独立作品，AI游戏创作工具\"TapTap制造\"公布新进展。（来源：<a href=\"http://www.gamelook.com.cn/2026/07/596758/\" target=\"_blank\">GameLook 7/2</a>）</li>\n      <li><strong>海外H5平台Poki月活破1亿：</strong>头部工作室年收入达100万美元级别，为国内休闲游戏提供零成本出海渠道。（来源：<a href=\"http://www.gamelook.com.cn/2026/07/598093/\" target=\"_blank\">GameLook 7/23</a>）</li>\n    </ol>\n  </div>"
+    "_combinedHtml": "<div class=\"insight-box\" style=\"background:#fff3e0;border-left-color:#ff9800;\">\n    <strong>&#9200; 本周行业资讯：</strong>本周（7/19-7/24）<span class=\"hl\">7月197款游戏获批版号</span>（7/23），国产193款+进口4款；<span class=\"hl\">Google Play正式向第三方应用商店开放</span>（7/22）；<span class=\"hl\">《无畏契约：源能行动》注册用户突破1亿</span>（7/23）。本周各平台均无新小游戏政策发布。\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#FF5722;\">\n    <h4>【版号-国产/进口】7月版号：193款国产+4款进口游戏获批</h4>\n    <p><strong>发布日期：</strong>2026年7月23日</p>\n    <p>国家新闻出版署发布2026年7月网络游戏审批信息，共197款游戏获批：</p>\n    <ul>\n      <li><strong>国产网络游戏193款：</strong>灵游坊《影之刃零》（客户端+PS5，10月29日全球发售，虚幻引擎5打造）等。</li>\n      <li><strong>进口网络游戏4款：</strong>网易《梦幻西游：再续前缘》、B站《护核纪元》、心动《仙境传说：守护永恒的爱》等。</li>\n      <li>年内累计发放1147个版号，版号常态化供给预期稳定。</li>\n    </ul>\n    <p style=\"font-size:12px;color:#888;\">来源：<a href=\"https://news.qq.com/rain/a/20260724A038S300\" target=\"_blank\">每日经济新闻 2026-07-24</a></p>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#9C27B0;\">\n    <h4>【行业-趋势】Google Play正式向第三方应用商店开放</h4>\n    <p><strong>发布日期：</strong>2026年7月22日</p>\n    <p>Google Play宣布正式向第三方应用商店开放，开发者可通过第三方商店分发Android应用，Google Play抽成模式面临新一轮调整压力。</p>\n  </div>\n\n  <div class=\"policy-box\" style=\"border-left-color:#FF9800;\">\n    <h4>【行业-趋势】《无畏契约：源能行动》注册用户突破1亿</h4>\n    <p><strong>发布日期：</strong>2026年7月23日</p>\n    <p>《无畏契约》手游版《无畏契约：源能行动》官方宣布注册用户数正式突破1亿，上线前预约超7000万。同步宣布与国漫《镖人》开启跨界联动，一周年庆典版本将于8月19日推出。</p>\n    <p style=\"font-size:12px;color:#888;\">来源：<a href=\"https://news.qq.com/rain/a/20260724A038S300\" target=\"_blank\">每日经济新闻 2026-07-24</a></p>\n  </div>"
   },
-  "marketing": {
-    "beastGame": {
-      "gameName": "斗罗大陆：传承",
-      "publisher": "三七互娱（A股上市，微信买量资深玩家）",
-      "category": "ARPG",
-      "characters": 6,
-      "wxRank": 19,
-      "wxChange": 3,
-      "platforms": [
-        "微信"
-      ],
-      "noDouyin": true,
-      "dyGames37Count": 1,
-      "douyin37Example": "生存33天(#32, 三七系)",
-      "channelRatings": {
-        "ipValue": "A+",
-        "publisherCapability": "A",
-        "categorySpace": "B+",
-        "revenuePotential": "A-"
-      },
-      "roiAssessment": "IP自然量占比高降买量成本，多角色ARPG LTV模型成熟，预期ROI稳健",
-      "noDouyinReasons": [
-        "IP授权可能有腾讯系排他条款",
-        "阶段性策略：先微信验证",
-        "ARPG在抖音操作复杂度适配需优化"
-      ]
-    }
-  },
+  "marketing": {},
   "trends": [
     {
       "title": "SLG品类双平台领先",
-      "content": "三国：冰河时代、无尽冬日、疯狂水世界等SLG/策略游戏在双平台均表现强势，小游戏渠道的SLG LTV潜力已被验证。"
+      "content": "三国：冰河时代、无尽冬日、疯狂水世界等SLG/策略游戏在双平台均表现强势。"
     },
     {
       "title": "塔防品类供给旺盛",
@@ -2554,11 +2529,11 @@
     },
     {
       "title": "抖音端内容营销效应显著",
-      "content": "永远的蔚蓝星球(↑17)、杜拉拉升职记(↑18)等依赖达人内容带量，与微信端获量逻辑差异明显。"
+      "content": "三界无双(↑40)、欢乐战三国(↑33)等依赖达人内容带量，与微信端获量逻辑差异明显。"
     },
     {
-      "title": "本周政策：各平台有新政策发布",
-      "content": "请查看下方政策详情"
+      "title": "7月版号维持高位",
+      "content": "7月197款游戏获批版号（国产193+进口4），年内累计1147个版号。"
     }
   ],
   "top20Insight": "双平台共同Top20头部：三国：冰河时代、向僵尸开炮、无尽冬日、我的花园世界、灵画师、向往的生活、浪漫餐厅、跃动小子、梦幻消除战、疯狂水世界。微信Top20中模拟经营19席、塔防11席；抖音Top20中2款周变化≥5位，竞争更活跃。",
