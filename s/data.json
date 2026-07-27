@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-07-24",
+  "updatedAt": "2026-07-26",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 76602,
-    "totalOrders": 169,
-    "totalPayUsers": 92,
-    "estimatedProfit": 65111.7,
+    "totalGMV": 135738,
+    "totalOrders": 251,
+    "totalPayUsers": 130,
+    "estimatedProfit": 115377.3,
     "profitRate": 85.0,
-    "totalSessions": 19,
-    "avgGMV": 4031.7,
+    "totalSessions": 21,
+    "avgGMV": 6463.7,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 47480,
-        "users": 54
+        "amount": 61028,
+        "users": 69
       },
       "ios": {
-        "amount": 29122,
-        "users": 38
+        "amount": 74710,
+        "users": 61
       }
     }
   },
@@ -265,7 +265,7 @@
       "label": "7月20日",
       "live": {
         "sales": 0,
-        "orders": 11
+        "orders": 49
       },
       "self": {
         "sales": 604,
@@ -278,7 +278,7 @@
       "label": "7月21日",
       "live": {
         "sales": 3312,
-        "orders": 41
+        "orders": 18
       },
       "self": {
         "sales": 7388,
@@ -291,7 +291,7 @@
       "label": "7月22日",
       "live": {
         "sales": 2130,
-        "orders": 25
+        "orders": 27
       },
       "self": {
         "sales": 3646,
@@ -304,10 +304,49 @@
       "label": "7月23日",
       "live": {
         "sales": 2732,
-        "orders": 0
+        "orders": 24
       },
       "self": {
         "sales": 8504,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-24",
+      "label": "7月24日",
+      "live": {
+        "sales": 16874,
+        "orders": 19
+      },
+      "self": {
+        "sales": 10078,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-25",
+      "label": "7月25日",
+      "live": {
+        "sales": 7288,
+        "orders": 14
+      },
+      "self": {
+        "sales": 12672,
+        "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-26",
+      "label": "7月26日",
+      "live": {
+        "sales": 9226,
+        "orders": 21
+      },
+      "self": {
+        "sales": 2998,
         "orders": 0
       }
     }
@@ -1074,10 +1113,10 @@
         "sales": 604,
         "exposure": 46,
         "clicks": 7,
-        "orders": 11,
-        "paymentOrders": 11,
+        "orders": 49,
+        "paymentOrders": 49,
         "exposureClickRate": 0.1522,
-        "clickOrderRate": 1.5714
+        "clickOrderRate": 7.0
       },
       "payment": {
         "android": {
@@ -1115,10 +1154,10 @@
         "sales": 10700,
         "exposure": 942,
         "clicks": 260,
-        "orders": 41,
-        "paymentOrders": 41,
+        "orders": 18,
+        "paymentOrders": 18,
         "exposureClickRate": 0.276,
-        "clickOrderRate": 0.1577
+        "clickOrderRate": 0.0692
       },
       "payment": {
         "android": {
@@ -1152,10 +1191,11 @@
       },
       "product": {
         "sales": 5776,
-        "orders": 25,
+        "orders": 27,
         "exposure": 562,
         "clicks": 133,
-        "paymentOrders": 25
+        "paymentOrders": 27,
+        "clickOrderRate": 0.203
       },
       "payment": {
         "android": {
@@ -1187,10 +1227,11 @@
       },
       "product": {
         "sales": 11236,
-        "orders": 0,
+        "orders": 24,
         "exposure": 498,
         "clicks": 145,
-        "paymentOrders": 0
+        "paymentOrders": 24,
+        "clickOrderRate": 0.1655
       },
       "payment": {
         "android": {
@@ -1200,6 +1241,129 @@
         "ios": {
           "amount": 9720,
           "users": 2
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-24",
+      "label": "7月24日直播",
+      "traffic": {
+        "exposure": 7853,
+        "entry": 1059,
+        "entryRate": 0.1349,
+        "avgOnline": 8,
+        "maxOnline": 21
+      },
+      "interaction": {
+        "comments": 79,
+        "commentRate": 0.0746,
+        "likes": 1020,
+        "likeRate": 0.9632,
+        "avgStay": "1.4min",
+        "newFans": 13
+      },
+      "product": {
+        "sales": 26952,
+        "exposure": 562,
+        "clicks": 144,
+        "orders": 19,
+        "paymentOrders": 19,
+        "exposureClickRate": 0.2562,
+        "clickOrderRate": 0.1319
+      },
+      "payment": {
+        "android": {
+          "amount": 6218,
+          "settle": 6218,
+          "users": 5
+        },
+        "ios": {
+          "amount": 20734,
+          "settle": 20734,
+          "users": 8
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-25",
+      "label": "7月25日直播",
+      "traffic": {
+        "exposure": 3915,
+        "entry": 800,
+        "entryRate": 0.2043,
+        "avgOnline": 6,
+        "maxOnline": 20
+      },
+      "interaction": {
+        "comments": 47,
+        "commentRate": 0.0587,
+        "likes": 419,
+        "likeRate": 0.5238,
+        "avgStay": "1.3min",
+        "newFans": 5
+      },
+      "product": {
+        "sales": 19960,
+        "exposure": 230,
+        "clicks": 56,
+        "orders": 14,
+        "paymentOrders": 14,
+        "exposureClickRate": 0.2435,
+        "clickOrderRate": 0.25
+      },
+      "payment": {
+        "android": {
+          "amount": 632,
+          "settle": 632,
+          "users": 5
+        },
+        "ios": {
+          "amount": 19328,
+          "settle": 19328,
+          "users": 10
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-26",
+      "label": "7月26日直播",
+      "traffic": {
+        "exposure": 3736,
+        "entry": 832,
+        "entryRate": 0.2227,
+        "avgOnline": 5,
+        "maxOnline": 15
+      },
+      "interaction": {
+        "comments": 44,
+        "commentRate": 0.0529,
+        "likes": 337,
+        "likeRate": 0.405,
+        "avgStay": "0.9min",
+        "newFans": 8
+      },
+      "product": {
+        "sales": 12224,
+        "exposure": 882,
+        "clicks": 73,
+        "orders": 21,
+        "paymentOrders": 21,
+        "exposureClickRate": 0.0828,
+        "clickOrderRate": 0.2877
+      },
+      "payment": {
+        "android": {
+          "amount": 6698,
+          "settle": 6698,
+          "users": 5
+        },
+        "ios": {
+          "amount": 5526,
+          "settle": 5526,
+          "users": 5
         }
       }
     }
