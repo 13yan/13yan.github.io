@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平台与抖店充值用户分析报告 2026年7月</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f6fa; color: #2d3436; padding: 20px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 24px; margin-bottom: 6px; color: #2d3436; }
+  .subtitle { color: #636e72; font-size: 14px; margin-bottom: 24px; }
+  .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .card { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .card .num { font-size: 28px; font-weight: 700; color: #0984e3; margin-bottom: 2px; }
+  .card .num.warn { color: #e17055; }
+  .card .num.green { color: #00b894; }
+  .card .label { font-size: 13px; color: #636e72; }
+  .card .sub { font-size: 12px; color: #b2bec3; margin-top: 4px; }
+  .section { background: #fff; border-radius: 10px; padding: 22px 24px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 20px; }
+  .section h2 { font-size: 17px; font-weight: 600; color: #2d3436; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid #0984e3; }
+  .section h3 { font-size: 14px; font-weight: 600; color: #636e72; margin: 16px 0 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: #f8f9fa; text-align: left; padding: 10px 12px; font-weight: 600; color: #636e72; border-bottom: 2px solid #dfe6e9; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid #f1f2f6; }
+  tbody tr:hover { background: #f8f9fa; }
+  .num-col { text-align: right; font-variant-numeric: tabular-nums; }
+  .pct { color: #636e72; font-size: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .chart-box { background: #fafbfc; border-radius: 8px; padding: 12px; }
+  .chart-box canvas { max-height: 220px; }
+  .highlight { background: #ffeaa7; padding: 1px 4px; border-radius: 3px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 500; }
+  .badge-blue { background: #dfe6fd; color: #0984e3; }
+  .badge-green { background: #d4f5e9; color: #00b894; }
+  .badge-orange { background: #ffe8d6; color: #e17055; }
+  .badge-red { background: #ffe0e0; color: #d63031; }
+  .insight-box { background: #f0f8ff; border-left: 4px solid #0984e3; padding: 14px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 13px; line-height: 1.7; }
+  .insight-box strong { color: #0984e3; }
+  .kpi-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+  .kpi-item { background: #f8f9fa; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 120px; }
+  .kpi-item .kpi-num { font-size: 18px; font-weight: 700; }
+  .kpi-item .kpi-label { font-size: 12px; color: #636e72; }
+  @media (max-width: 768px) { .summary-cards { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } }
+  .trend-table td:first-child { font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>📊 平台与抖店充值用户分析报告</h1>
+<p class="subtitle">数据截止：2026年7月26日｜数据来源：平台充值记录（23,840笔）& 抖店充值记录（274笔）</p>
+
+<!-- === 核心指标卡 === -->
+<div class="summary-cards">
+  <div class="card">
+    <div class="num">46</div>
+    <div class="label">抖店累计充值用户</div>
+    <div class="sub">占平台充值用户 7.7%</div>
+  </div>
+  <div class="card">
+    <div class="num green">135,738</div>
+    <div class="label">抖店7月流水（元）</div>
+    <div class="sub">占大盘流水 2.28%</div>
+  </div>
+  <div class="card">
+    <div class="num">84.78%</div>
+    <div class="label">抖店-平台用户重合度</div>
+    <div class="sub">39人已在平台充值过</div>
+  </div>
+  <div class="card">
+    <div class="num warn">7</div>
+    <div class="label">纯抖店用户（未用平台充值）</div>
+    <div class="sub">累计充值 2,106 元</div>
+  </div>
+</div>
+
+<!-- === 一、大盘对比 === -->
+<div class="section">
+  <h2>一、抖店充值情况同比大盘</h2>
+  <div class="kpi-row">
+    <div class="kpi-item"><div class="kpi-num">5,940,180</div><div class="kpi-label">7月总流水（元，截至7/26）</div></div>
+    <div class="kpi-item"><div class="kpi-num">135,738</div><div class="kpi-label">抖店流水（元，截至7/26）</div></div>
+    <div class="kpi-item"><div class="kpi-num">485,040</div><div class="kpi-label">平台充值流水（元，截至7/26）</div></div>
+    <div class="kpi-item"><div class="kpi-num" style="color:#e17055;">2.28%</div><div class="kpi-label">抖店-大盘占比</div></div>
+    <div class="kpi-item"><div class="kpi-num">27.98%</div><div class="kpi-label">抖店-平台充值占比</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>7月</th><th class="num-col">总流水（元）</th><th class="num-col">抖店流水（元）</th><th class="num-col">平台充值流水（元）</th><th class="num-col">抖店-大盘占比</th><th class="num-col">抖店-平台充值占比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>3k安卓大盘</td><td class="num-col">3,279,915</td><td class="num-col">60,900</td><td class="num-col">49,468</td><td class="num-col">1.86%</td><td class="num-col"><span class="badge badge-red">123.11%</span></td></tr>
+      <tr><td>3k-ios大盘</td><td class="num-col">2,660,265</td><td class="num-col">74,838</td><td class="num-col">434,954</td><td class="num-col">2.81%</td><td class="num-col">17.21%</td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>汇总</td><td class="num-col">5,940,180</td><td class="num-col">135,738</td><td class="num-col">485,040</td><td class="num-col">2.28%</td><td class="num-col">27.98%</td></tr>
+    </tbody>
+  </table>
+  <div class="insight-box">
+    <strong>📌 核心发现：</strong>抖店安卓流水（60,900元）已大幅超过平台安卓充值（49,468元），占比达123.11%，抖店已成为安卓用户<strong>首要充值渠道</strong>。iOS端抖店占比17.21%。
+  </div>
+
+  <h3>📅 6月 vs 7月平台充值对比</h3>
+  <table>
+    <thead>
+      <tr><th></th><th class="num-col">6月总流水（元）</th><th class="num-col">7月平台充值（元）</th><th class="num-col">6月平台充值-大盘占比</th><th class="num-col">7月平台充值-大盘占比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>3k安卓大盘</td><td class="num-col">1,235,381</td><td class="num-col">152,477</td><td class="num-col">12.34%</td><td class="num-col">5.67%</td></tr>
+      <tr><td>3k-ios大盘</td><td class="num-col">1,454,450</td><td class="num-col">671,961</td><td class="num-col">46.20%</td><td class="num-col">43.41%</td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>汇总</td><td class="num-col">2,689,831</td><td class="num-col">824,438</td><td class="num-col">30.65%</td><td class="num-col">25.61%</td></tr>
+    </tbody>
+  </table>
+  <div class="insight-box">
+    <strong>📌 月度对比：</strong>6月大盘总流水269万元，平台充值占比30.65%；7月截至26日大盘总流水594万元（环比+120.8%），平台充值占比降至25.61%。大盘规模翻倍增长的同时，平台充值占比下降，抖店等新兴渠道正在分流充值。
+  </div>
+</div>
+
+<!-- === 二、抖店充值用户画像 === -->
+<div class="section">
+  <h2>二、抖店充值用户画像</h2>
+
+  <div class="grid-2">
+    <div>
+      <h3>📱 渠道分布</h3>
+      <table>
+        <thead>
+          <tr><th>渠道</th><th class="num-col">笔数</th><th class="num-col">金额（元）</th><th class="num-col">用户数</th><th class="num-col">人均充值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>3k[3k]</td><td class="num-col">125</td><td class="num-col">60,900</td><td class="num-col">21</td><td class="num-col">2,900</td></tr>
+          <tr><td>混合苹果3k[apple3k]</td><td class="num-col">149</td><td class="num-col">74,838</td><td class="num-col">26</td><td class="num-col">2,878</td></tr>
+          <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">274</td><td class="num-col">135,738</td><td class="num-col">46*</td><td class="num-col">2,951</td></tr>
+        </tbody>
+      </table>
+      <div class="pct" style="margin-top:4px;">* 1人同时在两个渠道充值</div>
+    </div>
+    <div>
+      <h3>💰 充值金额分布</h3>
+      <div class="chart-box">
+        <canvas id="amtChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <h3>📊 渠道维度汇总对比</h3>
+  <table>
+    <thead>
+      <tr><th>渠道标签</th><th class="num-col">用户数</th><th class="num-col">抖店累充金额（元）</th><th class="num-col">7月平台充值（元）</th><th class="num-col">7月总充值（元）</th><th class="num-col">抖店/7月总充值占比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>3k[3k]</td><td class="num-col">21</td><td class="num-col">62,196</td><td class="num-col">29,560</td><td class="num-col">117,035</td><td class="num-col"><span class="badge badge-red">53.14%</span></td></tr>
+      <tr><td>混合苹果3k[apple3k]</td><td class="num-col">25</td><td class="num-col">73,542</td><td class="num-col">71,588</td><td class="num-col">161,846</td><td class="num-col">45.44%</td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">46</td><td class="num-col">135,738</td><td class="num-col">101,148</td><td class="num-col">278,881</td><td class="num-col">48.67%</td></tr>
+    </tbody>
+  </table>
+  <div class="insight-box">
+    <strong>📌 渠道对比：</strong>安卓（3k）用户大盘总充值11.7万，抖店占 <strong>53.14%</strong>，抖店已成安卓用户<strong>主要充值渠道</strong>。苹果用户大盘总充值16.2万，抖店占45.44%，接近一半。46名抖店用户7月大盘总充值27.9万元，抖店渠道贡献<strong>48.67%</strong>。
+  </div>
+
+  <h3>🏆 抖店高价值用户情况（累充≥3,000元）</h3>
+  <div class="insight-box">
+    <strong>📌 概览：</strong>抖店累充≥3,000元的高价值用户共 <strong>9人</strong>，贡献抖店总流水 <strong>111,210元</strong>，占全部抖店流水的 <strong>81.93%</strong>。其中安卓用户3人（51,612元），苹果用户6人（59,598元）。
+  </div>
+  <table>
+    <thead>
+      <tr><th>渠道用户ID</th><th>渠道标签</th><th class="num-col">抖店累充金额（元）</th><th class="num-col">平台充值累计（今年来，元）</th><th class="num-col">7月平台充值（元）</th><th class="num-col">7月抖店/平台占比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2041342398</td><td>3k[3k]</td><td class="num-col">41,694</td><td class="num-col">135,827.6</td><td class="num-col">5,184</td><td class="num-col">88.9%</td></tr>
+      <tr><td>2045103570</td><td>混合苹果3k[apple3k]</td><td class="num-col">22,350</td><td class="num-col">371,078.0</td><td class="num-col">1,632</td><td class="num-col">93.2%</td></tr>
+      <tr><td>2024455593</td><td>混合苹果3k[apple3k]</td><td class="num-col">11,976</td><td class="num-col">10,075.2</td><td class="num-col">648</td><td class="num-col">94.9%</td></tr>
+      <tr><td>2031175130</td><td>混合苹果3k[apple3k]</td><td class="num-col">11,750</td><td class="num-col">328,255.0</td><td class="num-col">19,464</td><td class="num-col">37.6%</td></tr>
+      <tr><td>2023847129</td><td>混合苹果3k[apple3k]</td><td class="num-col">5,502</td><td class="num-col">11,352.4</td><td class="num-col">0</td><td class="num-col">100%</td></tr>
+      <tr><td>2020879315</td><td>3k[3k]</td><td class="num-col">5,164</td><td class="num-col">9,941.2</td><td class="num-col">0</td><td class="num-col">100%</td></tr>
+      <tr><td>2024235107</td><td>3k[3k]</td><td class="num-col">4,754</td><td class="num-col">213,502.0</td><td class="num-col">0</td><td class="num-col">100%</td></tr>
+      <tr><td>2030458256</td><td>混合苹果3k[apple3k]</td><td class="num-col">4,294</td><td class="num-col">2,310.6</td><td class="num-col">0</td><td class="num-col">100%</td></tr>
+      <tr><td>2019906769</td><td>混合苹果3k[apple3k]</td><td class="num-col">3,726</td><td class="num-col">16,830.4</td><td class="num-col">300</td><td class="num-col">92.5%</td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td></td><td class="num-col">111,210</td><td class="num-col">—</td><td class="num-col">—</td><td class="num-col">—</td></tr>
+    </tbody>
+  </table>
+  <div class="insight-box">
+    <strong>📌 关键发现：</strong>
+    <br>1️⃣ <strong>用户2041342398（3k安卓）</strong> 以41,694元位居抖店充值榜首，占全渠道30.72%，是核心大客户。
+    <br>2️⃣ <strong>4名用户7月平台充值=0</strong>——他们完全转向了抖店渠道，属于"渠道迁移"用户。
+    <br>3️⃣ <strong>用户2045103570</strong> 全年平台充值37.1万，7月抖店也充了2.2万（占比93.2%），是最高价值的双渠道用户。
+    <br>4️⃣ 高价值用户中苹果用户6人（59,598元）已大幅超越安卓3人（51,612元），苹果端高价值用户阵容更强大。
+  </div>
+
+  <h3>⏰ 用户距上次平台充值时间</h3>
+  <div class="grid-2">
+    <div>
+      <table>
+        <thead>
+          <tr><th>时间区间</th><th class="num-col">人数</th><th class="num-col">占比</th><th>活跃度</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>7天内（活跃用户）</td><td class="num-col">19</td><td class="num-col">41.30%</td><td><span class="badge badge-green">高活</span></td></tr>
+          <tr><td>7-15天</td><td class="num-col">8</td><td class="num-col">17.39%</td><td><span class="badge badge-blue">中活</span></td></tr>
+          <tr><td>15-30天</td><td class="num-col">7</td><td class="num-col">15.22%</td><td><span class="badge badge-blue">中活</span></td></tr>
+          <tr><td>30-90天</td><td class="num-col">4</td><td class="num-col">8.70%</td><td><span class="badge badge-orange">低活</span></td></tr>
+          <tr><td>90-180天</td><td class="num-col">1</td><td class="num-col">2.17%</td><td><span class="badge badge-red">沉睡</span></td></tr>
+          <tr><td>从未使用平台充值</td><td class="num-col">7</td><td class="num-col">15.22%</td><td><span class="badge" style="background:#dfe6e9;color:#636e72;">纯抖店</span></td></tr>
+          <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">46</td><td class="num-col">100%</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <div class="chart-box">
+        <canvas id="daysChart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="insight-box">
+    <strong>📌 关键洞察：</strong>抖店充值用户中<strong>41.30%</strong>在7天内仍在平台充值，属于高活跃用户；<strong>73.91%</strong>在30天内有平台充值行为。纯抖店新增用户占15.22%（7人）。这表明抖店主要承担了<strong>存量高价值用户的充值渠道迁移</strong>角色，而非纯拉新渠道。
+  </div>
+</div>
+
+<!-- === 三、纯抖店用户分析 === -->
+<div class="section">
+  <h2>三、纯抖店用户分析（未使用过平台充值）</h2>
+  <div class="insight-box">
+    <strong>📌 概览：</strong>抖店充值中有 <strong>7人</strong> 从未在平台充值，累计充值 <strong>2,106元</strong>。其中 3k安卓用户5人（累计2,094元），iOS用户2人（累计12元）。纯抖店用户贡献仅占抖店总流水的 <strong>1.51%</strong>。
+  </div>
+  <table>
+    <thead>
+      <tr><th>融合用户ID</th><th>融合渠道</th><th class="num-col">抖店充值累计（元）</th><th class="num-col">总充值金额（元）</th><th class="num-col">抖店充值占比</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>2029300692</td><td>3k[3k]</td><td class="num-col">116</td><td class="num-col">434</td><td class="num-col">26.73%</td></tr>
+      <tr><td>2046640367</td><td>混合苹果3k[apple3k]</td><td class="num-col">6</td><td class="num-col">126</td><td class="num-col">4.76%</td></tr>
+      <tr><td>2062265386</td><td>3k[3k]</td><td class="num-col">1,296</td><td class="num-col">16,772</td><td class="num-col">7.73%</td></tr>
+      <tr><td>2072818668</td><td>3k[3k]</td><td class="num-col">68</td><td class="num-col">594</td><td class="num-col">11.45%</td></tr>
+      <tr><td>2076790433</td><td>3k[3k]</td><td class="num-col">554</td><td class="num-col">1,989</td><td class="num-col">27.85%</td></tr>
+      <tr><td>2077159523</td><td>3k[3k]</td><td class="num-col">60</td><td class="num-col">60</td><td class="num-col">100%</td></tr>
+      <tr><td>2078749344</td><td>混合苹果3k[apple3k]</td><td class="num-col">6</td><td class="num-col">6</td><td class="num-col">100%</td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td></td><td class="num-col">2,106</td><td class="num-col">19,981</td><td class="num-col">10.54%</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- === 四、日趋势分析 === -->
+<div class="section">
+  <h2>四、7月抖店充值日趋势</h2>
+  <div class="chart-box" style="padding:10px 0;">
+    <canvas id="trendChart" height="80"></canvas>
+  </div>
+
+  <table class="trend-table" style="margin-top:12px;">
+    <thead>
+      <tr><th>日期</th><th class="num-col">笔数</th><th class="num-col">金额（元）</th><th>趋势</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>7月1日-7月10日</td><td class="num-col">23</td><td class="num-col">20,778</td><td>平稳起步</td></tr>
+      <tr><td>7月11日-7月15日</td><td class="num-col">24</td><td class="num-col">7,052</td><td>中位震荡</td></tr>
+      <tr><td>7月16日-7月20日</td><td class="num-col">63</td><td class="num-col">21,060</td><td>稳步增长</td></tr>
+      <tr><td>7月21日-7月26日</td><td class="num-col">164</td><td class="num-col">86,848</td><td><span class="badge badge-red">爆发期</span></td></tr>
+      <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">274</td><td class="num-col">135,738</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight-box">
+    <strong>📌 趋势解读：</strong>抖店充值在7月<strong>下旬（21-26日）</strong>迎来爆发，6天流水达86,848元，占全月截至7/26的63.97%。<strong>7月24日</strong>达到峰值26,952元（39笔），为单日最高。7月25日19,960元、7月26日12,224元，势头持续但略有回落。
+  </div>
+</div>
+
+</div>
+
+<script>
+// 充值金额分布
+new Chart(document.getElementById('amtChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['<100元 (10人, 21.74%)', '100-500元 (10人, 21.74%)', '500-1000元 (7人, 15.22%)', '1000-5000元 (13人, 28.26%)', '5000元以上 (6人, 13.04%)'],
+    datasets: [{
+      data: [10, 10, 7, 13, 6],
+      backgroundColor: ['#74b9ff', '#81ecec', '#fdcb6e', '#e17055', '#00b894'],
+      borderWidth: 0
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+});
+
+// 距上次平台充值天数分布
+new Chart(document.getElementById('daysChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['7天内 (19人, 41.30%)', '7-15天 (8人, 17.39%)', '15-30天 (7人, 15.22%)', '30-90天 (4人, 8.70%)', '90-180天 (1人, 2.17%)', '从未平台充值 (7人, 15.22%)'],
+    datasets: [{
+      data: [19, 8, 7, 4, 1, 7],
+      backgroundColor: ['#00b894', '#81ecec', '#fdcb6e', '#e17055', '#d63031', '#b2bec3'],
+      borderWidth: 0
+    }]
+  },
+  options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+});
+
+// 日趋势折线图
+const dates = ['7/2','7/3','7/4','7/5','7/6','7/7','7/8','7/9','7/11','7/12','7/13','7/14','7/15','7/16','7/17','7/18','7/19','7/20','7/21','7/22','7/23','7/24','7/25','7/26'];
+const amounts = [1140,3726,3974,3676,648,6510,648,456,294,196,1424,2012,3126,4290,1522,9122,5522,604,10700,5776,11236,26952,19960,12224];
+const counts = [5,6,3,3,1,2,1,2,6,2,2,12,2,11,4,23,14,11,41,25,14,39,23,22];
+
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [
+      { label: '金额（元）', data: amounts, backgroundColor: '#0984e3', yAxisID: 'y', borderRadius: 3 },
+      { label: '笔数', data: counts, backgroundColor: '#fdcb6e', yAxisID: 'y1', borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+    scales: {
+      y: { type: 'linear', position: 'left', beginAtZero: true, grid: { color: '#f1f2f6' }, ticks: { font: { size: 10 } } },
+      y1: { type: 'linear', position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
