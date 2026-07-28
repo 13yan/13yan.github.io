@@ -42,7 +42,46 @@
   .kpi-item { background: #f8f9fa; padding: 10px 14px; border-radius: 8px; flex: 1; min-width: 120px; }
   .kpi-item .kpi-num { font-size: 18px; font-weight: 700; }
   .kpi-item .kpi-label { font-size: 12px; color: #636e72; }
-  @media (max-width: 768px) { .summary-cards { grid-template-columns: repeat(2, 1fr); } .grid-2 { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) {
+    .summary-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    body { padding: 10px; }
+    h1 { font-size: 20px; }
+    .section { padding: 16px; }
+    .section h2 { font-size: 15px; }
+    .card { padding: 14px; }
+    .card .num { font-size: 22px; }
+    .kpi-item { min-width: 80px; padding: 8px 10px; }
+    .kpi-item .kpi-num { font-size: 15px; }
+    table { font-size: 12px; }
+    thead th, tbody td { padding: 7px 6px; }
+    .chart-box canvas { max-height: 180px; }
+    .insight-box { font-size: 12px; padding: 10px 12px; }
+  }
+  @media (max-width: 480px) {
+    .summary-cards { grid-template-columns: 1fr 1fr; gap: 8px; }
+    body { padding: 8px; }
+    h1 { font-size: 17px; }
+    .subtitle { font-size: 12px; }
+    .section { padding: 12px; border-radius: 8px; }
+    .section h2 { font-size: 14px; }
+    .card { padding: 10px; }
+    .card .num { font-size: 18px; }
+    .card .label { font-size: 11px; }
+    .card .sub { font-size: 10px; }
+    table { font-size: 11px; }
+    thead th, tbody td { padding: 5px 4px; }
+    .kpi-row { gap: 6px; }
+    .kpi-item { min-width: 60px; padding: 6px 8px; }
+    .kpi-item .kpi-num { font-size: 13px; }
+    .kpi-item .kpi-label { font-size: 10px; }
+    .badge { font-size: 10px; padding: 1px 5px; }
+    .chart-box { padding: 6px; }
+    .chart-box canvas { max-height: 150px; }
+    .insight-box { font-size: 11px; line-height: 1.6; padding: 8px 10px; }
+  }
+  .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .table-wrap table { min-width: 500px; }
   .trend-table td:first-child { font-weight: 500; }
 </style>
 </head>
@@ -87,6 +126,7 @@
     <div class="kpi-item"><div class="kpi-num">27.98%</div><div class="kpi-label">抖店-平台充值占比</div></div>
   </div>
 
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>7月</th><th class="num-col">总流水（元）</th><th class="num-col">抖店流水（元）</th><th class="num-col">平台充值流水（元）</th><th class="num-col">抖店-大盘占比</th><th class="num-col">抖店-平台充值占比</th></tr>
@@ -97,11 +137,13 @@
       <tr style="font-weight:600;background:#f8f9fa;"><td>汇总</td><td class="num-col">1,867,599</td><td class="num-col">135,738</td><td class="num-col">485,040</td><td class="num-col">7.27%</td><td class="num-col">27.98%</td></tr>
     </tbody>
   </table>
+  </div>
   <div class="insight-box">
     <strong>📌 核心发现：</strong>抖店安卓流水（60,900元）已大幅超过平台安卓充值（49,468元），占比达123.11%，抖店已成为安卓用户<strong>首要充值渠道</strong>。iOS端抖店占比17.21%。抖店整体占大盘流水7.27%。
   </div>
 
   <h3>📅 6月 vs 7月平台充值对比</h3>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th></th><th class="num-col">6月总流水（元）</th><th class="num-col">6月平台充值（元）</th><th class="num-col">6月平台充值-大盘占比</th><th class="num-col">7月平台充值-大盘占比</th></tr>
@@ -112,6 +154,7 @@
       <tr style="font-weight:600;background:#f8f9fa;"><td>汇总</td><td class="num-col">2,689,831</td><td class="num-col">824,438</td><td class="num-col">30.65%</td><td class="num-col">25.97%</td></tr>
     </tbody>
   </table>
+  </div>
   <div class="insight-box">
     <strong>📌 月度对比：</strong>6月大盘总流水269万元，平台充值82.4万元（占比30.65%）；7月大盘总流水187万元，平台充值48.5万元（占比25.97%）。平台充值占比从30.65%降至25.97%，抖店等新兴渠道正在分流充值。
   </div>
@@ -124,6 +167,7 @@
   <div class="grid-2">
     <div>
       <h3>📱 渠道分布</h3>
+      <div class="table-wrap">
       <table>
         <thead>
           <tr><th>渠道</th><th class="num-col">笔数</th><th class="num-col">金额（元）</th><th class="num-col">用户数</th><th class="num-col">人均充值</th></tr>
@@ -135,6 +179,7 @@
         </tbody>
       </table>
       <div class="pct" style="margin-top:4px;">* 1人同时在两个渠道充值</div>
+      </div>
     </div>
     <div>
       <h3>💰 充值金额分布</h3>
@@ -145,6 +190,7 @@
   </div>
 
   <h3>📊 渠道维度汇总对比</h3>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>渠道标签</th><th class="num-col">用户数</th><th class="num-col">抖店累充金额（元）</th><th class="num-col">7月平台充值（元）</th><th class="num-col">7月总充值（元）</th><th class="num-col">抖店/7月总充值占比</th></tr>
@@ -155,6 +201,7 @@
       <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">46</td><td class="num-col">135,738</td><td class="num-col">101,148</td><td class="num-col">278,881</td><td class="num-col">48.67%</td></tr>
     </tbody>
   </table>
+  </div>
   <div class="insight-box">
     <strong>📌 渠道对比：</strong>安卓（3k）用户大盘总充值11.7万，抖店占 <strong>53.14%</strong>，抖店已成安卓用户<strong>主要充值渠道</strong>。苹果用户大盘总充值16.2万，抖店占45.44%，接近一半。46名抖店用户7月大盘总充值27.9万元，抖店渠道贡献<strong>48.67%</strong>。
   </div>
@@ -163,6 +210,7 @@
   <div class="insight-box">
     <strong>📌 概览：</strong>抖店累充≥3,000元的高价值用户共 <strong>9人</strong>，贡献抖店总流水 <strong>111,210元</strong>，占全部抖店流水的 <strong>81.93%</strong>。其中安卓用户3人（51,612元），苹果用户6人（59,598元）。
   </div>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>渠道用户ID</th><th>渠道标签</th><th class="num-col">抖店累充金额（元）</th><th class="num-col">平台充值累计（今年来，元）</th><th class="num-col">7月平台充值（元）</th><th class="num-col">7月抖店/平台占比</th></tr>
@@ -180,6 +228,7 @@
       <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td></td><td class="num-col">111,210</td><td class="num-col">—</td><td class="num-col">—</td><td class="num-col">—</td></tr>
     </tbody>
   </table>
+  </div>
   <div class="insight-box">
     <strong>📌 关键发现：</strong>
     <br>1️⃣ <strong>用户2041342398（3k安卓）</strong> 以41,694元位居抖店充值榜首，占全渠道30.72%，是核心大客户。
@@ -191,6 +240,7 @@
   <h3>⏰ 用户距上次平台充值时间</h3>
   <div class="grid-2">
     <div>
+      <div class="table-wrap">
       <table>
         <thead>
           <tr><th>时间区间</th><th class="num-col">人数</th><th class="num-col">占比</th><th>活跃度</th></tr>
@@ -205,6 +255,7 @@
           <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">46</td><td class="num-col">100%</td><td></td></tr>
         </tbody>
       </table>
+      </div>
     </div>
     <div>
       <div class="chart-box">
@@ -223,6 +274,7 @@
   <div class="insight-box">
     <strong>📌 概览：</strong>抖店充值中有 <strong>7人</strong> 从未在平台充值，累计充值 <strong>2,106元</strong>。其中 3k安卓用户5人（累计2,094元），iOS用户2人（累计12元）。纯抖店用户贡献仅占抖店总流水的 <strong>1.51%</strong>。
   </div>
+  <div class="table-wrap">
   <table>
     <thead>
       <tr><th>融合用户ID</th><th>融合渠道</th><th class="num-col">抖店充值累计（元）</th><th class="num-col">总充值金额（元）</th><th class="num-col">抖店充值占比</th></tr>
@@ -239,6 +291,7 @@
     </tbody>
   </table>
 </div>
+</div>
 
 <!-- === 四、日趋势分析 === -->
 <div class="section">
@@ -247,6 +300,7 @@
     <canvas id="trendChart" height="80"></canvas>
   </div>
 
+  <div class="table-wrap">
   <table class="trend-table" style="margin-top:12px;">
     <thead>
       <tr><th>日期</th><th class="num-col">笔数</th><th class="num-col">金额（元）</th><th>趋势</th></tr>
@@ -259,6 +313,7 @@
       <tr style="font-weight:600;background:#f8f9fa;"><td>合计</td><td class="num-col">274</td><td class="num-col">135,738</td><td></td></tr>
     </tbody>
   </table>
+  </div>
 
   <div class="insight-box">
     <strong>📌 趋势解读：</strong>抖店充值在7月<strong>下旬（21-26日）</strong>迎来爆发，6天流水达86,848元，占全月截至7/26的63.97%。<strong>7月24日</strong>达到峰值26,952元（39笔），为单日最高。7月25日19,960元、7月26日12,224元，势头持续但略有回落。
