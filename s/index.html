@@ -282,6 +282,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo"><div class="logo-icon">📊</div><div><div>抖店工作台</div><div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
+  <button class="nav-item" data-tab="logs"><span class="nav-icon">📋</span> 操作记录</button>
   <div class="sidebar-summary" id="sidebarSummary">
     <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
     <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
@@ -463,6 +464,21 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     5. 基础数据报表下拉自动出现新游戏选项</p>
   </div>
 </div>
+
+<!-- Tab: 操作记录 -->
+<div class="tab-content" id="tabLogs">
+  <div class="header"><h1>📋 操作记录</h1><div class="sub">访客登录与导出操作日志</div></div>
+  <div style="padding:12px 0;">
+    <button onclick="clearLogs()" style="padding:5px 14px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;font-size:12px;cursor:pointer;">🗑️ 清空记录</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>时间</th><th>类型</th><th>密钥</th><th>操作详情</th></tr></thead>
+      <tbody id="logTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
 <script>
 var charts = {}, currentData = null;
 var allowedGames = null; // null = all games
@@ -499,6 +515,7 @@ function checkAccess() {
     allowedGames = ACCESS_KEYS[key];
     localStorage.setItem('ds_key', key);
     document.getElementById('accessOverlay').style.display = 'none';
+    addLog('访客登录', '通过URL参数或本地存储验证');
     return true;
   }
   document.getElementById('accessOverlay').style.display = 'flex';
@@ -512,6 +529,7 @@ document.getElementById('accessKeyBtn').addEventListener('click', function(){
     localStorage.setItem('ds_key', val);
     document.getElementById('accessOverlay').style.display = 'none';
     document.getElementById('accessError').style.display = 'none';
+    addLog('访客登录', '手动输入密钥登录');
     fetch('./data.json').then(function(r){return r.json();}).then(function(data){render(data);});
   } else {
     document.getElementById('accessError').style.display = 'block';
@@ -536,6 +554,22 @@ function getTotalSales(s, scMap) {
 // 构建 date_game -> salesChannel 映射
 function buildSCMap(data) { var m={}; (data.salesChannels||[]).forEach(function(c){ m[c.date+'_'+c.game]=c; }); return m; }
 
+// ===== 操作记录 =====
+function addLog(type, detail) {
+  var key = localStorage.getItem('ds_key') || 'unknown';
+  var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
+  logs.unshift({time: new Date().toLocaleString('zh-CN'), type: type, key: key, detail: detail});
+  if (logs.length > 200) logs = logs.slice(0, 200);
+  localStorage.setItem('ds_logs', JSON.stringify(logs));
+}
+function renderLogs() {
+  var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
+  document.getElementById('logTableBody').innerHTML = logs.map(function(l){
+    return '<tr><td>'+l.time+'</td><td><span class=\"badge '+(l.type==='访客登录'?'badge-blue':'badge-orange')+'\">'+l.type+'</span></td><td>'+l.key+'</td><td>'+l.detail+'</td></tr>';
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:#94a0b0;padding:30px;">暂无操作记录</td></tr>';
+}
+function clearLogs() { if(confirm('确定清空所有操作记录？')){ localStorage.removeItem('ds_logs'); renderLogs(); } }
+
 // ===== 侧边栏切换 =====
 document.querySelectorAll('.nav-item').forEach(function(btn){
   btn.addEventListener('click',function(){
@@ -546,6 +580,7 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     document.getElementById(id).classList.add('active');
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
+    else if (btn.dataset.tab==='logs') renderLogs();
     else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
   });
 });
@@ -1468,6 +1503,7 @@ document.getElementById('ovMonthSelect').addEventListener('change', function(){
 function exportCSV() {
   var ed = window._exportData;
   if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
+  addLog('导出记录', '导出CSV '+(ed.start||'')+'~'+(ed.end||'')+' 共'+ed.sessions.length+'场');
   var rows = [];
   // Header
   rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),成交人数,安卓支付(元),iOS支付(元),安卓用户,iOS用户');
