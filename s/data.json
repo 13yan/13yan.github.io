@@ -1379,6 +1379,47 @@
           "users": 5
         }
       }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-27",
+      "label": "7月27日直播",
+      "traffic": {
+        "exposure": 0,
+        "entry": 0,
+        "entryRate": 0,
+        "avgOnline": 0,
+        "maxOnline": 0
+      },
+      "interaction": {
+        "comments": 0,
+        "commentRate": 0,
+        "likes": 0,
+        "likeRate": 0,
+        "avgStay": "0min",
+        "newFans": 0
+      },
+      "product": {
+        "sales": 0,
+        "exposure": 779,
+        "clicks": 18,
+        "orders": 0,
+        "paymentOrders": 5,
+        "exposureClickRate": 0.0231,
+        "clickOrderRate": 0
+      },
+      "payment": {
+        "android": {
+          "amount": 2998,
+          "settle": 2998,
+          "users": 1
+        },
+        "ios": {
+          "amount": 14904,
+          "settle": 14904,
+          "users": 3
+        }
+      }
     }
   ],
   "competitor": {
