@@ -282,7 +282,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo"><div class="logo-icon">📊</div><div><div>抖店工作台</div><div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
-  <button class="nav-item" data-tab="logs"><span class="nav-icon">📋</span> 操作记录</button>
+  <button class="nav-item admin-only" data-tab="logs" style="display:none;"><span class="nav-icon">📋</span> 操作记录</button>
   <div class="sidebar-summary" id="sidebarSummary">
     <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
     <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
@@ -580,7 +580,7 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     document.getElementById(id).classList.add('active');
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
-    else if (btn.dataset.tab==='logs') renderLogs();
+    else if (btn.dataset.tab==='logs') { if (allowedGames !== null) return; renderLogs(); }
     else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
   });
 });
@@ -601,6 +601,11 @@ function render(data) {
     };
   }
   currentData = data;
+  // 主账号才显示操作记录
+  if (allowedGames === null) {
+    var adminBtn = document.querySelector('.admin-only');
+    if (adminBtn) adminBtn.style.display = '';
+  }
   // 更新侧边栏概览
   updateSidebarSummary(data);
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
