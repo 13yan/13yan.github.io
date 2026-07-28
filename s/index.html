@@ -526,6 +526,17 @@ function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
+// 获取单场总销售额（直播+店铺自营）
+function getTotalSales(s, scMap) {
+  if (!s) return 0;
+  var live = s.product?.sales||0;
+  if (!scMap) return live;
+  var sc = scMap[s.date+'_'+s.game];
+  return live + ((sc&&sc.self&&sc.self.sales)||0);
+}
+// 构建 date_game -> salesChannel 映射
+function buildSCMap(data) { var m={}; (data.salesChannels||[]).forEach(function(c){ m[c.date+'_'+c.game]=c; }); return m; }
+
 // ===== 侧边栏切换 =====
 document.querySelectorAll('.nav-item').forEach(function(btn){
   btn.addEventListener('click',function(){
@@ -569,7 +580,8 @@ function render(data) {
 // 侧边栏概览更新
 function updateSidebarSummary(data) {
   var sessions = data.sessions || [];
-  var totalSales = sessions.reduce(function(s, sx){return s+(sx.product?.sales||0);},0);
+  var scMap = buildSCMap(data);
+  var totalSales = sessions.reduce(function(s, sx){return s+getTotalSales(sx, scMap);},0);
   var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.paymentOrders||sx.product?.orders||0);},0);
   document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
   document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
@@ -639,9 +651,10 @@ function renderGameCharts(data) {
   }
   document.getElementById('ovGameCompareCharts').style.display = 'block';
   // 计算各游戏累计销售额（按维度筛选）
+  var scMap = buildSCMap(data);
   var gData = games.map(function(g){
     var ss = dimSessions.filter(function(s){return s.game===g;});
-    var gmv = ss.reduce(function(s, sx){return s + (sx.product?.sales||0);}, 0);
+    var gmv = ss.reduce(function(s, sx){return s + getTotalSales(sx, scMap);}, 0);
     return {name:g, gmv:gmv};
   });
   // 柱状图（带数据标注）
@@ -675,8 +688,9 @@ function renderOverview() {
   var dimLabels = {'all':'累计经营数据与趋势','month':(ovMonth||'')+'数据'};
   var dimDesc = dimLabels[ovDimension] || '累计经营数据与趋势';
   document.querySelector('#tabOverview .sub').textContent = dimDesc;
+  var ovSCMap = buildSCMap(data);
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
-    var autoGMV = sessions.reduce(function(sum,ss){return sum + (ss.product?.sales||0);}, 0);
+    var autoGMV = sessions.reduce(function(sum,ss){return sum + getTotalSales(ss, ovSCMap);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
     var totalGMV = s.totalGMV || autoGMV;
     var totalOrders = s.totalOrders || autoOrders;
@@ -759,7 +773,7 @@ function renderOverview() {
     sessions.forEach(function(sx){
       var m = sx.date.substring(0,7);
       if (!monthMap[m]) { var mNum2 = parseInt(m.substring(5,7), 10); monthMap[m] = {label:m.substring(0,4)+'年'+(isNaN(mNum2)?m.substring(5,7):mNum2)+'月', totalGMV:0, totalOrders:0}; }
-      monthMap[m].totalGMV += sx.product?.sales||0;
+      monthMap[m].totalGMV += getTotalSales(sx, ovSCMap);
       monthMap[m].totalOrders += sx.product?.orders||0;
     });
     months = Object.keys(monthMap).sort().map(function(k){return monthMap[k];});
@@ -853,8 +867,9 @@ function assessRisk(sessions, isSingle) {
   } else {
     // 多日风险评估
     var totalGMV=0, totalOrd=0, totalExp=0, totalEnt=0;
+    var riskSCMap = buildSCMap(currentData);
     sessions.forEach(function(sx){
-      totalGMV+=sx.product?.sales||0; totalOrd+=sx.product?.orders||0;
+      totalGMV+=getTotalSales(sx, riskSCMap); totalOrd+=sx.product?.orders||0;
       totalExp+=sx.traffic?.exposure||0; totalEnt+=sx.traffic?.entry||0;
     });
     var avgEntryRate = totalExp>0 ? totalEnt/totalExp : -1;
@@ -869,7 +884,7 @@ function assessRisk(sessions, isSingle) {
       high++;
     }
     if (sessions.length > 1) {
-      var gmvs = sessions.map(function(sx){return sx.product?.sales||0;});
+      var gmvs = sessions.map(function(sx){return getTotalSales(sx, riskSCMap);});
       var maxG = Math.max.apply(null,gmvs), minG = Math.min.apply(null,gmvs);
       if (maxG > 0 && minG === 0) {
         items.push({level:'warning', icon:'🟡', title:'存在零成交场次', desc:'周期内有场次0成交，建议对比分析其与成交场次的差异'});
@@ -1143,8 +1158,9 @@ function renderSingleDay(s) {
 
 function renderMultiDay(sessions) {
   var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0, cnt=sessions.length, totalBuyers=0;
+  var mdSCMap = buildSCMap(currentData);
   sessions.forEach(function(s){
-    totalGMV+=s.product?.sales||0; totalOrders+=s.product?.paymentOrders||s.product?.orders||0;
+    totalGMV+=getTotalSales(s, mdSCMap); totalOrders+=s.product?.paymentOrders||s.product?.orders||0;
     totalExp+=s.traffic?.exposure||0; totalEntry+=s.traffic?.entry||0;
     totalBuyers+=s.product?.orders||0;
   });
@@ -1295,8 +1311,8 @@ function renderMultiDay(sessions) {
     if(c) charts.rptTrend=new Chart(c.getContext('2d'),{
       type:'bar',
       data:{labels:sorted.map(function(s){return s.date.substring(5);}), datasets:[
-        {label:'销售额',data:sorted.map(function(s){return s.product?.sales||0;}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.5,order:2},
-        {label:'趋势',data:sorted.map(function(s){return s.product?.sales||0;}),type:'line',borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',borderWidth:2,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.3,order:1}
+        {label:'销售额',data:sorted.map(function(s){return getTotalSales(s, mdSCMap);}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.5,order:2},
+        {label:'趋势',data:sorted.map(function(s){return getTotalSales(s, mdSCMap);}),type:'line',borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',borderWidth:2,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.3,order:1}
       ]},
       options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' 元'}}}},
@@ -1478,7 +1494,8 @@ function exportCSV() {
     ].join(','));
   });
   // Summary row
-  var totalS = ed.sessions.reduce(function(a,b){return a+(b.product?.sales||0);},0);
+  var expSCMap = buildSCMap(currentData);
+  var totalS = ed.sessions.reduce(function(a,b){return a+getTotalSales(b, expSCMap);},0);
   var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.orders||0);},0);
   rows.push('合计,,,,,,,,,,'+totalS+',,'+totalO+',,,,,,,,');
   // Create blob and download
