@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-07-26",
+  "updatedAt": "2026-07-27",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 135738,
-    "totalOrders": 251,
-    "totalPayUsers": 130,
-    "estimatedProfit": 115377.3,
+    "totalGMV": 153640,
+    "totalOrders": 256,
+    "totalPayUsers": 134,
+    "estimatedProfit": 130594.0,
     "profitRate": 85.0,
     "totalSessions": 21,
-    "avgGMV": 6463.7,
+    "avgGMV": 7316.2,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 61028,
-        "users": 69
+        "amount": 64026,
+        "users": 70
       },
       "ios": {
-        "amount": 74710,
-        "users": 61
+        "amount": 89614,
+        "users": 64
       }
     }
   },
@@ -348,6 +348,19 @@
       "self": {
         "sales": 2998,
         "orders": 0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-27",
+      "label": "7月27日",
+      "live": {
+        "sales": 0,
+        "orders": 0
+      },
+      "self": {
+        "sales": 17902,
+        "orders": 5
       }
     }
   ],
