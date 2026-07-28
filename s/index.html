@@ -526,13 +526,12 @@ function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
-// 获取单场总销售额（直播+店铺自营）
+// 获取单场总销售额（从 salesChannels 取直播+自营，最准确）
 function getTotalSales(s, scMap) {
-  if (!s) return 0;
-  var live = s.product?.sales||0;
-  if (!scMap) return live;
+  if (!s || !scMap) return s?.product?.sales||0;
   var sc = scMap[s.date+'_'+s.game];
-  return live + ((sc&&sc.self&&sc.self.sales)||0);
+  if (!sc) return s.product?.sales||0;
+  return (sc.live?.sales||0) + (sc.self?.sales||0);
 }
 // 构建 date_game -> salesChannel 映射
 function buildSCMap(data) { var m={}; (data.salesChannels||[]).forEach(function(c){ m[c.date+'_'+c.game]=c; }); return m; }
@@ -1002,11 +1001,8 @@ function applyRange(start, end, sessions) {
   var filtered = sessions.filter(function(s){return s.date>=start && s.date<=end;});
   window._exportData = {start: start, end: end, sessions: filtered};
   var isSingle = (start===end) || (filtered.length===1);
-  var scMap2 = {}; (currentData.salesChannels||[]).forEach(function(c){ scMap2[c.date+'_'+c.game] = c; });
-  var totalSales = filtered.reduce(function(s,ss){ 
-    var sc = scMap2[ss.date+'_'+ss.game];
-    return s + (ss.product?.sales||0) + ((sc&&sc.self&&sc.self.sales)||0);
-  }, 0);
+  var scMap2 = buildSCMap(currentData);
+  var totalSales = filtered.reduce(function(s,ss){return s + getTotalSales(ss, scMap2);}, 0);
   document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(totalSales)+' 元' + (filtered.length===0?' · 该游戏暂无数据':'');
 
   if(isSingle) {
