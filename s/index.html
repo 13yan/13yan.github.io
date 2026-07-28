@@ -987,7 +987,11 @@ function applyRange(start, end, sessions) {
   var filtered = sessions.filter(function(s){return s.date>=start && s.date<=end;});
   window._exportData = {start: start, end: end, sessions: filtered};
   var isSingle = (start===end) || (filtered.length===1);
-  var totalSales = filtered.reduce(function(s,ss){return s+(ss.product?.sales||0);},0);
+  var scMap2 = {}; (currentData.salesChannels||[]).forEach(function(c){ scMap2[c.date+'_'+c.game] = c; });
+  var totalSales = filtered.reduce(function(s,ss){ 
+    var sc = scMap2[ss.date+'_'+ss.game];
+    return s + (ss.product?.sales||0) + ((sc&&sc.self&&sc.self.sales)||0);
+  }, 0);
   document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(totalSales)+' 元' + (filtered.length===0?' · 该游戏暂无数据':'');
 
   if(isSingle) {
@@ -1003,13 +1007,16 @@ function applyRange(start, end, sessions) {
 
 function renderSingleDay(s) {
   var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
+  var sc = s ? (currentData.salesChannels||[]).find(function(c){return c.date===s.date && c.game===s.game;}) : null;
+  var selfSales = sc ? (sc.self&&sc.self.sales)||0 : 0;
+  var totalSales = (p.sales||0) + selfSales;
   // 第一行：5个核心卡片（合并利润+销售额+订单）
   var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0;
   var dd=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006, pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
   var vsPlat=dd-pt, vsNorm=dd-nm;
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(p.sales||0)+'</div><div class="sub">本场累计</div></div>',
+    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalSales)+'</div><div class="sub">'+(selfSales>0?'直播 '+fmt(p.sales||0)+' + 自营 '+fmt(selfSales):'本场累计')+'</div></div>',
     '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(dd+pt+nm||1)*100).toFixed(2)+'%</b> 利润率</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
