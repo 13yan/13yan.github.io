@@ -5,13 +5,13 @@
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 257582,
+    "totalGMV": 182000.0,
     "totalOrders": 271,
     "totalPayUsers": 142,
     "estimatedProfit": 139048.0,
     "profitRate": 76.4,
     "totalSessions": 27,
-    "avgGMV": 9540.1,
+    "avgGMV": 6740.7,
     "analysis": "",
     "paymentChannels": {
       "android": {
@@ -27,7 +27,7 @@
         "share": 52.4
       }
     },
-    "totalLiveGMV": 146844,
+    "totalLiveGMV": 71262.0,
     "totalSelfGMV": 110738,
     "androidRisk": "健康"
   },
@@ -351,7 +351,7 @@
         "newFans": 8
       },
       "product": {
-        "sales": 1140,
+        "sales": 1110.0,
         "exposure": 126,
         "clicks": 20,
         "paymentOrders": 5,
@@ -391,7 +391,7 @@
         "newFans": 3
       },
       "product": {
-        "sales": 3726,
+        "sales": 1944.0,
         "exposure": 156,
         "clicks": 24,
         "paymentOrders": 6,
@@ -431,7 +431,7 @@
         "newFans": 1
       },
       "product": {
-        "sales": 3974,
+        "sales": 976.0,
         "exposure": 164,
         "clicks": 14,
         "paymentOrders": 3,
@@ -471,7 +471,7 @@
         "newFans": 2
       },
       "product": {
-        "sales": 3676,
+        "sales": 678.0,
         "exposure": 137,
         "clicks": 13,
         "paymentOrders": 3,
@@ -511,7 +511,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 648,
+        "sales": 0.0,
         "exposure": 40,
         "clicks": 6,
         "paymentOrders": 1,
@@ -551,7 +551,7 @@
         "newFans": 4
       },
       "product": {
-        "sales": 6510,
+        "sales": 6480.0,
         "exposure": 126,
         "clicks": 20,
         "paymentOrders": 2,
@@ -591,7 +591,7 @@
         "newFans": 3
       },
       "product": {
-        "sales": 648,
+        "sales": 648.0,
         "exposure": 356,
         "clicks": 52,
         "paymentOrders": 1,
@@ -631,7 +631,7 @@
         "newFans": 1
       },
       "product": {
-        "sales": 456,
+        "sales": 456.0,
         "exposure": 151,
         "clicks": 11,
         "paymentOrders": 2,
@@ -671,7 +671,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 0,
+        "sales": 0.0,
         "exposure": 147,
         "clicks": 11,
         "paymentOrders": 0,
@@ -711,7 +711,7 @@
         "newFans": 2
       },
       "product": {
-        "sales": 294,
+        "sales": 98.0,
         "exposure": 124,
         "clicks": 20,
         "paymentOrders": 6,
@@ -751,7 +751,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 196,
+        "sales": 0.0,
         "exposure": 25,
         "clicks": 2,
         "paymentOrders": 2,
@@ -791,7 +791,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 1424,
+        "sales": 0.0,
         "exposure": 39,
         "clicks": 4,
         "paymentOrders": 2,
@@ -831,7 +831,7 @@
         "newFans": 1
       },
       "product": {
-        "sales": 2012,
+        "sales": 478.0,
         "exposure": 160,
         "clicks": 14,
         "paymentOrders": 12,
@@ -871,7 +871,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 3126,
+        "sales": 128.0,
         "exposure": 164,
         "clicks": 11,
         "paymentOrders": 2,
@@ -911,7 +911,7 @@
         "newFans": 1
       },
       "product": {
-        "sales": 4290,
+        "sales": 656.0,
         "exposure": 271,
         "clicks": 36,
         "paymentOrders": 11,
@@ -951,7 +951,7 @@
         "newFans": 2
       },
       "product": {
-        "sales": 1522,
+        "sales": 1522.0,
         "exposure": 354,
         "clicks": 42,
         "paymentOrders": 4,
@@ -991,7 +991,7 @@
         "newFans": 2
       },
       "product": {
-        "sales": 9122,
+        "sales": 1106.0,
         "exposure": 179,
         "clicks": 24,
         "paymentOrders": 9,
@@ -1031,7 +1031,7 @@
         "newFans": 7
       },
       "product": {
-        "sales": 5522,
+        "sales": 2314.0,
         "exposure": 263,
         "clicks": 60,
         "paymentOrders": 8,
@@ -1071,7 +1071,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 604,
+        "sales": 0.0,
         "exposure": 46,
         "clicks": 7,
         "paymentOrders": 49,
@@ -1111,7 +1111,7 @@
         "newFans": 28
       },
       "product": {
-        "sales": 10700,
+        "sales": 3312.0,
         "exposure": 942,
         "clicks": 260,
         "paymentOrders": 18,
@@ -1149,7 +1149,7 @@
         "avgStay": "1.2min"
       },
       "product": {
-        "sales": 5776,
+        "sales": 2130.0,
         "exposure": 562,
         "clicks": 133,
         "paymentOrders": 27,
@@ -1184,7 +1184,7 @@
         "avgStay": "1.6min"
       },
       "product": {
-        "sales": 11236,
+        "sales": 2732.0,
         "exposure": 498,
         "clicks": 145,
         "paymentOrders": 24,
@@ -1221,7 +1221,7 @@
         "newFans": 13
       },
       "product": {
-        "sales": 26952,
+        "sales": 16874.0,
         "exposure": 562,
         "clicks": 144,
         "paymentOrders": 19,
@@ -1261,7 +1261,7 @@
         "newFans": 5
       },
       "product": {
-        "sales": 19960,
+        "sales": 7288.0,
         "exposure": 230,
         "clicks": 56,
         "paymentOrders": 14,
@@ -1301,7 +1301,7 @@
         "newFans": 8
       },
       "product": {
-        "sales": 12224,
+        "sales": 9226.0,
         "exposure": 882,
         "clicks": 73,
         "paymentOrders": 21,
@@ -1341,7 +1341,7 @@
         "newFans": 0
       },
       "product": {
-        "sales": 0,
+        "sales": 0.0,
         "exposure": 779,
         "clicks": 18,
         "paymentOrders": 5,
@@ -1381,7 +1381,7 @@
         "newFans": 8
       },
       "product": {
-        "sales": 11106,
+        "sales": 11106.0,
         "exposure": 1805,
         "clicks": 82,
         "paymentOrders": 15,
