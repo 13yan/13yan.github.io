@@ -1825,5 +1825,39 @@
         "0%-2.5%"
       ]
     ]
+  },
+  "_meta": {
+    "schemaVersion": "1.0",
+    "fieldRules": {
+      "session.product.sales": "CSV 直播间销售额(元) 列 - 仅直播部分",
+      "session.product.paymentOrders": "CSV 支付订单数 列",
+      "salesChannel.live.sales": "CSV 直播间销售额(元) 列（与 product.sales 同源）",
+      "salesChannel.self.sales": "CSV 店铺自营(元) 列",
+      "storeSummary.totalGMV": "Σ product.sales + Σ self.sales = 直播+自营"
+    },
+    "antiMistake": {
+      "DO_NOT": [
+        "不要把 CSV 销售额(元) 列填入 product.sales（那是直播+自营合并值）",
+        "不要把 salesChannel.self.sales 加进 totalGMV 时再和 product.sales 相加两次",
+        "不要在 salesChannel 里加 orders 字段（CSV 没有此维度）"
+      ],
+      "VERIFY_BEFORE_WRITE": [
+        "总GMV = Σ product.sales + Σ self.sales（必须和 CSV 末行'合计'行一致）",
+        "Σ product.sales 累加应等于 CSV 直播间销售额(元) 累加"
+      ]
+    },
+    "csvSnapshot": {
+      "source": "E:/抖店数据_2026-07-02~2026-07-28.csv",
+      "rowCount": 28,
+      "dataRowCount": 27,
+      "expectTotalGMV": 182000.0,
+      "actualTotalGMV": 182000.0,
+      "sumLiveSales": 71262.0,
+      "sumSelfSales": 110738,
+      "verify": true
+    },
+    "dataHash": "e1db6ce36d1e4bdb",
+    "lastWrite": "2026-07-28",
+    "writtenBy": "hermes-agent"
   }
 }
