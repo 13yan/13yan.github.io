@@ -1,28 +1,35 @@
 {
-  "updatedAt": "2026-07-27",
+  "updatedAt": "2026-07-28",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 153640,
-    "totalOrders": 256,
-    "totalPayUsers": 134,
-    "estimatedProfit": 130594.0,
-    "profitRate": 85.0,
-    "totalSessions": 21,
-    "avgGMV": 7316.2,
+    "totalGMV": 257582,
+    "totalOrders": 271,
+    "totalPayUsers": 142,
+    "estimatedProfit": 139048.0,
+    "profitRate": 76.4,
+    "totalSessions": 27,
+    "avgGMV": 9540.1,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 64026,
-        "users": 70
+        "amount": 86562,
+        "users": 75,
+        "settle": 86042.63,
+        "share": 47.6
       },
       "ios": {
-        "amount": 89614,
-        "users": 64
+        "amount": 95438,
+        "users": 67,
+        "settle": 94865.37,
+        "share": 52.4
       }
-    }
+    },
+    "totalLiveGMV": 146844,
+    "totalSelfGMV": 110738,
+    "androidRisk": "健康"
   },
   "salesChannels": [
     {
@@ -30,12 +37,10 @@
       "date": "2026-07-02",
       "label": "7月2日",
       "live": {
-        "sales": 1110,
-        "orders": 4
+        "sales": 1110
       },
       "self": {
-        "sales": 30,
-        "orders": 1
+        "sales": 30
       }
     },
     {
@@ -43,12 +48,10 @@
       "date": "2026-07-03",
       "label": "7月3日",
       "live": {
-        "sales": 1944,
-        "orders": 2
+        "sales": 1944
       },
       "self": {
-        "sales": 1782,
-        "orders": 4
+        "sales": 1782
       }
     },
     {
@@ -56,12 +59,10 @@
       "date": "2026-07-04",
       "label": "7月4日",
       "live": {
-        "sales": 976,
-        "orders": 2
+        "sales": 976
       },
       "self": {
-        "sales": 2998,
-        "orders": 3
+        "sales": 2998
       }
     },
     {
@@ -69,12 +70,10 @@
       "date": "2026-07-05",
       "label": "7月5日",
       "live": {
-        "sales": 678,
-        "orders": 2
+        "sales": 678
       },
       "self": {
-        "sales": 2998,
-        "orders": 4
+        "sales": 2998
       }
     },
     {
@@ -82,12 +81,10 @@
       "date": "2026-07-06",
       "label": "7月6日",
       "live": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       },
       "self": {
-        "sales": 648,
-        "orders": 1
+        "sales": 648
       }
     },
     {
@@ -95,12 +92,10 @@
       "date": "2026-07-07",
       "label": "7月7日",
       "live": {
-        "sales": 6480,
-        "orders": 1
+        "sales": 6480
       },
       "self": {
-        "sales": 30,
-        "orders": 1
+        "sales": 30
       }
     },
     {
@@ -108,12 +103,10 @@
       "date": "2026-07-08",
       "label": "7月8日",
       "live": {
-        "sales": 648,
-        "orders": 1
+        "sales": 648
       },
       "self": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       }
     },
     {
@@ -121,12 +114,10 @@
       "date": "2026-07-09",
       "label": "7月9日",
       "live": {
-        "sales": 456,
-        "orders": 2
+        "sales": 456
       },
       "self": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       }
     },
     {
@@ -134,12 +125,10 @@
       "date": "2026-07-10",
       "label": "7月10日",
       "live": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       },
       "self": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       }
     },
     {
@@ -147,12 +136,10 @@
       "date": "2026-07-11",
       "label": "7月11日",
       "live": {
-        "sales": 98,
-        "orders": 0
+        "sales": 98
       },
       "self": {
-        "sales": 196,
-        "orders": 6
+        "sales": 196
       }
     },
     {
@@ -160,12 +147,10 @@
       "date": "2026-07-12",
       "label": "7月12日",
       "live": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       },
       "self": {
-        "sales": 196,
-        "orders": 1
+        "sales": 196
       }
     },
     {
@@ -173,12 +158,10 @@
       "date": "2026-07-13",
       "label": "7月13日",
       "live": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       },
       "self": {
-        "sales": 1424,
-        "orders": 2
+        "sales": 1424
       }
     },
     {
@@ -186,12 +169,10 @@
       "date": "2026-07-14",
       "label": "7月14日",
       "live": {
-        "sales": 478,
-        "orders": 12
+        "sales": 478
       },
       "self": {
-        "sales": 1534,
-        "orders": 0
+        "sales": 1534
       }
     },
     {
@@ -199,12 +180,10 @@
       "date": "2026-07-15",
       "label": "7月15日",
       "live": {
-        "sales": 128,
-        "orders": 11
+        "sales": 128
       },
       "self": {
-        "sales": 2998,
-        "orders": 0
+        "sales": 2998
       }
     },
     {
@@ -212,12 +191,10 @@
       "date": "2026-07-16",
       "label": "7月16日",
       "live": {
-        "sales": 656,
-        "orders": 11
+        "sales": 656
       },
       "self": {
-        "sales": 3634,
-        "orders": 0
+        "sales": 3634
       }
     },
     {
@@ -225,12 +202,10 @@
       "date": "2026-07-17",
       "label": "7月17日",
       "live": {
-        "sales": 1522,
-        "orders": 4
+        "sales": 1522
       },
       "self": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       }
     },
     {
@@ -238,12 +213,10 @@
       "date": "2026-07-18",
       "label": "7月18日",
       "live": {
-        "sales": 1106,
-        "orders": 9
+        "sales": 1106
       },
       "self": {
-        "sales": 8016,
-        "orders": 0
+        "sales": 8016
       }
     },
     {
@@ -251,12 +224,10 @@
       "date": "2026-07-19",
       "label": "7月19日",
       "live": {
-        "sales": 2314,
-        "orders": 8
+        "sales": 2314
       },
       "self": {
-        "sales": 3208,
-        "orders": 0
+        "sales": 3208
       }
     },
     {
@@ -264,12 +235,10 @@
       "date": "2026-07-20",
       "label": "7月20日",
       "live": {
-        "sales": 0,
-        "orders": 49
+        "sales": 0
       },
       "self": {
-        "sales": 604,
-        "orders": 0
+        "sales": 604
       }
     },
     {
@@ -277,12 +246,10 @@
       "date": "2026-07-21",
       "label": "7月21日",
       "live": {
-        "sales": 3312,
-        "orders": 18
+        "sales": 3312
       },
       "self": {
-        "sales": 7388,
-        "orders": 0
+        "sales": 7388
       }
     },
     {
@@ -290,12 +257,10 @@
       "date": "2026-07-22",
       "label": "7月22日",
       "live": {
-        "sales": 2130,
-        "orders": 27
+        "sales": 2130
       },
       "self": {
-        "sales": 3646,
-        "orders": 0
+        "sales": 3646
       }
     },
     {
@@ -303,12 +268,10 @@
       "date": "2026-07-23",
       "label": "7月23日",
       "live": {
-        "sales": 2732,
-        "orders": 24
+        "sales": 2732
       },
       "self": {
-        "sales": 8504,
-        "orders": 0
+        "sales": 8504
       }
     },
     {
@@ -316,12 +279,10 @@
       "date": "2026-07-24",
       "label": "7月24日",
       "live": {
-        "sales": 16874,
-        "orders": 19
+        "sales": 16874
       },
       "self": {
-        "sales": 10078,
-        "orders": 0
+        "sales": 10078
       }
     },
     {
@@ -329,12 +290,10 @@
       "date": "2026-07-25",
       "label": "7月25日",
       "live": {
-        "sales": 7288,
-        "orders": 14
+        "sales": 7288
       },
       "self": {
-        "sales": 12672,
-        "orders": 0
+        "sales": 12672
       }
     },
     {
@@ -342,12 +301,10 @@
       "date": "2026-07-26",
       "label": "7月26日",
       "live": {
-        "sales": 9226,
-        "orders": 21
+        "sales": 9226
       },
       "self": {
-        "sales": 2998,
-        "orders": 0
+        "sales": 2998
       }
     },
     {
@@ -355,12 +312,21 @@
       "date": "2026-07-27",
       "label": "7月27日",
       "live": {
-        "sales": 0,
-        "orders": 0
+        "sales": 0
       },
       "self": {
-        "sales": 17902,
-        "orders": 5
+        "sales": 17902
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-28",
+      "label": "7月28日",
+      "live": {
+        "sales": 11106
+      },
+      "self": {
+        "sales": 17254
       }
     }
   ],
@@ -388,7 +354,6 @@
         "sales": 1140,
         "exposure": 126,
         "clicks": 20,
-        "orders": 3,
         "paymentOrders": 5,
         "exposureClickRate": 0.1587,
         "clickOrderRate": 0.1
@@ -429,7 +394,6 @@
         "sales": 3726,
         "exposure": 156,
         "clicks": 24,
-        "orders": 4,
         "paymentOrders": 6,
         "exposureClickRate": 0.1538,
         "clickOrderRate": 0.1667
@@ -470,7 +434,6 @@
         "sales": 3974,
         "exposure": 164,
         "clicks": 14,
-        "orders": 4,
         "paymentOrders": 3,
         "exposureClickRate": 0.0854,
         "clickOrderRate": 0.2857
@@ -511,7 +474,6 @@
         "sales": 3676,
         "exposure": 137,
         "clicks": 13,
-        "orders": 4,
         "paymentOrders": 3,
         "exposureClickRate": 0.0949,
         "clickOrderRate": 0.3077
@@ -552,7 +514,6 @@
         "sales": 648,
         "exposure": 40,
         "clicks": 6,
-        "orders": 1,
         "paymentOrders": 1,
         "exposureClickRate": 0,
         "clickOrderRate": 0
@@ -593,7 +554,6 @@
         "sales": 6510,
         "exposure": 126,
         "clicks": 20,
-        "orders": 2,
         "paymentOrders": 2,
         "exposureClickRate": 0.1587,
         "clickOrderRate": 0.1
@@ -634,7 +594,6 @@
         "sales": 648,
         "exposure": 356,
         "clicks": 52,
-        "orders": 1,
         "paymentOrders": 1,
         "exposureClickRate": 0.1461,
         "clickOrderRate": 0.0192
@@ -675,7 +634,6 @@
         "sales": 456,
         "exposure": 151,
         "clicks": 11,
-        "orders": 2,
         "paymentOrders": 2,
         "exposureClickRate": 0.0728,
         "clickOrderRate": 0.1818
@@ -716,7 +674,6 @@
         "sales": 0,
         "exposure": 147,
         "clicks": 11,
-        "orders": 0,
         "paymentOrders": 0,
         "exposureClickRate": 0.0748,
         "clickOrderRate": 0
@@ -757,7 +714,6 @@
         "sales": 294,
         "exposure": 124,
         "clicks": 20,
-        "orders": 5,
         "paymentOrders": 6,
         "exposureClickRate": 0.1613,
         "clickOrderRate": 0.25
@@ -798,7 +754,6 @@
         "sales": 196,
         "exposure": 25,
         "clicks": 2,
-        "orders": 1,
         "paymentOrders": 2,
         "exposureClickRate": 0.08,
         "clickOrderRate": 0.5
@@ -839,7 +794,6 @@
         "sales": 1424,
         "exposure": 39,
         "clicks": 4,
-        "orders": 2,
         "paymentOrders": 2,
         "exposureClickRate": 0.1026,
         "clickOrderRate": 0.5
@@ -880,7 +834,6 @@
         "sales": 2012,
         "exposure": 160,
         "clicks": 14,
-        "orders": 5,
         "paymentOrders": 12,
         "exposureClickRate": 0.0875,
         "clickOrderRate": 0.3571
@@ -921,7 +874,6 @@
         "sales": 3126,
         "exposure": 164,
         "clicks": 11,
-        "orders": 2,
         "paymentOrders": 2,
         "exposureClickRate": 0.0671,
         "clickOrderRate": 0.1818
@@ -962,7 +914,6 @@
         "sales": 4290,
         "exposure": 271,
         "clicks": 36,
-        "orders": 11,
         "paymentOrders": 11,
         "exposureClickRate": 0.1328,
         "clickOrderRate": 0.3056
@@ -1003,7 +954,6 @@
         "sales": 1522,
         "exposure": 354,
         "clicks": 42,
-        "orders": 4,
         "paymentOrders": 4,
         "exposureClickRate": 0.1186,
         "clickOrderRate": 0.0952
@@ -1044,7 +994,6 @@
         "sales": 9122,
         "exposure": 179,
         "clicks": 24,
-        "orders": 9,
         "paymentOrders": 9,
         "exposureClickRate": 0.1341,
         "clickOrderRate": 0.375
@@ -1085,7 +1034,6 @@
         "sales": 5522,
         "exposure": 263,
         "clicks": 60,
-        "orders": 8,
         "paymentOrders": 8,
         "exposureClickRate": 0.2281,
         "clickOrderRate": 0.1333
@@ -1126,7 +1074,6 @@
         "sales": 604,
         "exposure": 46,
         "clicks": 7,
-        "orders": 49,
         "paymentOrders": 49,
         "exposureClickRate": 0.1522,
         "clickOrderRate": 7.0
@@ -1167,7 +1114,6 @@
         "sales": 10700,
         "exposure": 942,
         "clicks": 260,
-        "orders": 18,
         "paymentOrders": 18,
         "exposureClickRate": 0.276,
         "clickOrderRate": 0.0692
@@ -1204,7 +1150,6 @@
       },
       "product": {
         "sales": 5776,
-        "orders": 27,
         "exposure": 562,
         "clicks": 133,
         "paymentOrders": 27,
@@ -1240,7 +1185,6 @@
       },
       "product": {
         "sales": 11236,
-        "orders": 24,
         "exposure": 498,
         "clicks": 145,
         "paymentOrders": 24,
@@ -1280,7 +1224,6 @@
         "sales": 26952,
         "exposure": 562,
         "clicks": 144,
-        "orders": 19,
         "paymentOrders": 19,
         "exposureClickRate": 0.2562,
         "clickOrderRate": 0.1319
@@ -1321,7 +1264,6 @@
         "sales": 19960,
         "exposure": 230,
         "clicks": 56,
-        "orders": 14,
         "paymentOrders": 14,
         "exposureClickRate": 0.2435,
         "clickOrderRate": 0.25
@@ -1362,7 +1304,6 @@
         "sales": 12224,
         "exposure": 882,
         "clicks": 73,
-        "orders": 21,
         "paymentOrders": 21,
         "exposureClickRate": 0.0828,
         "clickOrderRate": 0.2877
@@ -1403,7 +1344,6 @@
         "sales": 0,
         "exposure": 779,
         "clicks": 18,
-        "orders": 0,
         "paymentOrders": 5,
         "exposureClickRate": 0.0231,
         "clickOrderRate": 0
@@ -1417,6 +1357,46 @@
         "ios": {
           "amount": 14904,
           "settle": 14904,
+          "users": 3
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-28",
+      "label": "7月28日直播",
+      "traffic": {
+        "exposure": 5705,
+        "entry": 1153,
+        "entryRate": 0.2021,
+        "avgOnline": 6,
+        "maxOnline": 18
+      },
+      "interaction": {
+        "comments": 45,
+        "commentRate": 0.039,
+        "likes": 969,
+        "likeRate": 0.8404,
+        "avgStay": "0.8min",
+        "newFans": 8
+      },
+      "product": {
+        "sales": 11106,
+        "exposure": 1805,
+        "clicks": 82,
+        "paymentOrders": 15,
+        "exposureClickRate": 0.0454,
+        "clickOrderRate": 0.1829
+      },
+      "payment": {
+        "android": {
+          "amount": 22536,
+          "settle": 22536,
+          "users": 5
+        },
+        "ios": {
+          "amount": 5824,
+          "settle": 5824,
           "users": 3
         }
       }
