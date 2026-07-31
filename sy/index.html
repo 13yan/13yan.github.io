@@ -62,8 +62,8 @@ body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 <div class="footer">数据来源：引力引擎 · 品类划分统一标准</div>
 
 <script>
-var BASE = 'https://13yan.github.io/weekly-reports/';
-var MANIFEST = BASE + 'workbench/manifest.json';
+var BASE = '../w/';
+var MANIFEST = '../work/manifest.json';
 
 fetch(MANIFEST).then(r => r.json()).then(data => {
   var list = document.getElementById('reportList');

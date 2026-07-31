@@ -6400,7 +6400,7 @@ function syncData() {
   btn.disabled = true; btn.innerHTML = '⏳ 同步中...';
 
 
-  fetch('https://13yan.github.io/weekly-reports/').then(function(r) {
+  fetch('../w/').then(function(r) {
 
 
     if (r.ok) { btn.innerHTML = '✅ 同步成功'; setTimeout(function() { btn.innerHTML = '🔄 同步最新数据'; btn.disabled = false; }, 2000); }
