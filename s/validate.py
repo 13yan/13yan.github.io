@@ -13,6 +13,11 @@ from pathlib import Path
 
 DATA = Path(__file__).parent / 'data.json'
 CSV_CANDIDATES = [
+    # 最新合并 CSV (优先)
+    r'E:\抖店数据_2026-07-02~2026-07-30.csv',
+    '/mnt/e/抖店数据_2026-07-02~2026-07-30.csv',
+    r'/mnt/e/抖店数据_2026-07-02~2026-07-30.csv',
+    # 旧版 fallback
     r'E:\抖店数据_2026-07-02~2026-07-28.csv',
     '/mnt/e/抖店数据_2026-07-02~2026-07-28.csv',
     r'/mnt/e/抖店数据_2026-07-02~2026-07-28.csv',
