@@ -1,34 +1,34 @@
 {
-  "updatedAt": "2026-07-31 15:39:24",
+  "updatedAt": "2026-08-03 10:45:00",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 198620.0,
-    "totalOrders": 288,
-    "totalPayUsers": 154,
-    "estimatedProfit": 151745.68,
+    "totalGMV": 257220.0,
+    "totalOrders": 344,
+    "totalPayUsers": 192,
+    "estimatedProfit": 196516.08,
     "profitRate": 76.4,
-    "totalSessions": 29,
-    "avgGMV": 6848.97,
+    "totalSessions": 32,
+    "avgGMV": 8038.12,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 100776,
-        "users": 81,
-        "settle": 100609.99,
-        "share": 50.7
+        "amount": 127672.0,
+        "users": 96,
+        "settle": 127672.0,
+        "share": 49.6
       },
       "ios": {
-        "amount": 97844,
-        "users": 73,
-        "settle": 97752.53,
-        "share": 49.3
+        "amount": 129548.0,
+        "users": 96,
+        "settle": 129548.0,
+        "share": 50.4
       }
     },
-    "totalLiveGMV": 85200.0,
-    "totalSelfGMV": 113420,
+    "totalLiveGMV": 114470.0,
+    "totalSelfGMV": 142750.0,
     "androidRisk": "健康"
   },
   "salesChannels": [
@@ -349,6 +349,39 @@
       },
       "self": {
         "sales": 306
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-31",
+      "label": "7月31日直播",
+      "live": {
+        "sales": 4938.0
+      },
+      "self": {
+        "sales": 5918.0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-01",
+      "label": "8月1日直播",
+      "live": {
+        "sales": 13900.0
+      },
+      "self": {
+        "sales": 16432.0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-02",
+      "label": "8月2日直播",
+      "live": {
+        "sales": 10432.0
+      },
+      "self": {
+        "sales": 6980.0
       }
     }
   ],
@@ -1502,6 +1535,126 @@
           "users": 1
         }
       }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-07-31",
+      "label": "7月31日直播",
+      "traffic": {
+        "exposure": 8819.0,
+        "entry": 904.0,
+        "entryRate": 0.1025,
+        "avgOnline": 6,
+        "maxOnline": 13
+      },
+      "interaction": {
+        "comments": 41.0,
+        "commentRate": 0.0454,
+        "likes": 1145.0,
+        "likeRate": 1.2666,
+        "avgStay": "1.03min",
+        "newFans": 4
+      },
+      "product": {
+        "sales": 4938.0,
+        "exposure": 1032.0,
+        "clicks": 68.0,
+        "paymentOrders": 14,
+        "exposureClickRate": 0.0659,
+        "clickOrderRate": 0.2059
+      },
+      "payment": {
+        "android": {
+          "amount": 4392.0,
+          "settle": 4392.0,
+          "users": 2
+        },
+        "ios": {
+          "amount": 6464.0,
+          "settle": 6464.0,
+          "users": 8
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-01",
+      "label": "8月1日直播",
+      "traffic": {
+        "exposure": 4332.0,
+        "entry": 883.0,
+        "entryRate": 0.2038,
+        "avgOnline": 4,
+        "maxOnline": 14
+      },
+      "interaction": {
+        "comments": 30.0,
+        "commentRate": 0.034,
+        "likes": 1895.0,
+        "likeRate": 2.1461,
+        "avgStay": "0.96min",
+        "newFans": 3
+      },
+      "product": {
+        "sales": 13900.0,
+        "exposure": 1065.0,
+        "clicks": 39.0,
+        "paymentOrders": 21,
+        "exposureClickRate": 0.0366,
+        "clickOrderRate": 0.5385
+      },
+      "payment": {
+        "android": {
+          "amount": 13558.0,
+          "settle": 13558.0,
+          "users": 6
+        },
+        "ios": {
+          "amount": 16774.0,
+          "settle": 16774.0,
+          "users": 7
+        }
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-02",
+      "label": "8月2日直播",
+      "traffic": {
+        "exposure": 6264.0,
+        "entry": 677.0,
+        "entryRate": 0.1081,
+        "avgOnline": 5,
+        "maxOnline": 12
+      },
+      "interaction": {
+        "comments": 34.0,
+        "commentRate": 0.0502,
+        "likes": 445.0,
+        "likeRate": 0.6573,
+        "avgStay": "1.31min",
+        "newFans": 3
+      },
+      "product": {
+        "sales": 10432.0,
+        "exposure": 856.0,
+        "clicks": 56.0,
+        "paymentOrders": 21,
+        "exposureClickRate": 0.0654,
+        "clickOrderRate": 0.375
+      },
+      "payment": {
+        "android": {
+          "amount": 8946.0,
+          "settle": 8946.0,
+          "users": 7
+        },
+        "ios": {
+          "amount": 8466.0,
+          "settle": 8466.0,
+          "users": 8
+        }
+      }
     }
   ],
   "competitor": {
@@ -1961,6 +2114,11 @@
     },
     "dataHash": "77f94cdb7fb6178d",
     "lastWrite": "2026-07-31",
-    "writtenBy": "hermes-agent"
+    "writtenBy": "hermes-agent",
+    "lastUpdate": {
+      "csv": "抖店数据_0716.csv",
+      "dates": "7/31-8/2",
+      "note": "追加3天"
+    }
   }
 }
