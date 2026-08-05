@@ -1,34 +1,34 @@
 {
-  "updatedAt": "2026-08-04 14:35:10",
+  "updatedAt": "2026-08-05 10:17:56",
   "games": [
     "巨兽战场",
     "我的使命"
   ],
   "storeSummary": {
-    "totalGMV": 257668.0,
-    "totalOrders": 347,
-    "totalPayUsers": 195,
-    "estimatedProfit": 196858.35,
+    "totalGMV": 262904.0,
+    "totalOrders": 362,
+    "totalPayUsers": 205,
+    "estimatedProfit": 200858.66,
     "profitRate": 76.4,
-    "totalSessions": 33,
-    "avgGMV": 7808.12,
+    "totalSessions": 34,
+    "avgGMV": 7732.47,
     "analysis": "",
     "paymentChannels": {
       "android": {
-        "amount": 127702.0,
-        "users": 97,
-        "settle": 127702.0,
-        "share": 49.6
+        "amount": 130560.0,
+        "users": 102,
+        "settle": 130560.0,
+        "share": 49.7
       },
       "ios": {
-        "amount": 129966.0,
-        "users": 98,
-        "settle": 129966.0,
-        "share": 50.4
+        "amount": 132344.0,
+        "users": 103,
+        "settle": 132344.0,
+        "share": 50.3
       }
     },
-    "totalLiveGMV": 114470.0,
-    "totalSelfGMV": 143198.0,
+    "totalLiveGMV": 117336.0,
+    "totalSelfGMV": 145568.0,
     "androidRisk": "健康"
   },
   "salesChannels": [
@@ -393,6 +393,17 @@
       },
       "self": {
         "sales": 448.0
+      }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-04",
+      "label": "8月4日直播",
+      "live": {
+        "sales": 2866.0
+      },
+      "self": {
+        "sales": 2370.0
       }
     }
   ],
@@ -1706,6 +1717,46 @@
           "users": 2
         }
       }
+    },
+    {
+      "game": "巨兽战场",
+      "date": "2026-08-04",
+      "label": "8月4日直播",
+      "traffic": {
+        "exposure": 4566,
+        "entry": 427,
+        "entryRate": 0.0935,
+        "avgOnline": 5,
+        "maxOnline": 12
+      },
+      "interaction": {
+        "comments": 45,
+        "commentRate": 0.1054,
+        "likes": 1152,
+        "likeRate": 2.6979,
+        "avgStay": "2.3min",
+        "newFans": 2
+      },
+      "product": {
+        "sales": 2866.0,
+        "exposure": 797.0,
+        "clicks": 65.0,
+        "paymentOrders": 15,
+        "exposureClickRate": 0.0816,
+        "clickOrderRate": 0.2308
+      },
+      "payment": {
+        "android": {
+          "amount": 2858.0,
+          "settle": 2858.0,
+          "users": 5
+        },
+        "ios": {
+          "amount": 2378.0,
+          "settle": 2378.0,
+          "users": 5
+        }
+      }
     }
   ],
   "competitor": {
@@ -2163,13 +2214,13 @@
       "verify": true,
       "note": "validate.py 的 CSV 路径仍指向 E:/抖店数据_2026-07-02~2026-07-28.csv（27 天旧版），下次校验前需用户确认：合并新 CSV + 更新 validate.py 路径，或保持增量追加模式"
     },
-    "dataHash": "6af7038314cf0f2b",
-    "lastWrite": "2026-08-03",
+    "dataHash": "656be5dbcc31b86d",
+    "lastWrite": "2026-08-04",
     "writtenBy": "hermes-agent",
     "lastUpdate": {
       "csv": "手动贴入单行",
-      "dates": "8/3",
-      "note": "无直播日追加1天"
+      "dates": "8/4",
+      "note": "直播日追加1天"
     }
   }
 }
