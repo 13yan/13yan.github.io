@@ -4077,6 +4077,21 @@ function renderSummary(d) {
       var parts = html.split(/(?=<strong>【.+?】<\/strong>)/).filter(function(s) { return s.trim(); });
 
 
+
+      // 合并【核心关注】+【竞品动态】：竞品动态内容并入核心关注卡片（2026-08-07 用户要求）
+      var mergedParts = [];
+      for (var mi = 0; mi < parts.length; mi++) {
+        var lm = parts[mi].match(/<strong>【(.+?)】<\/strong>/);
+        var lbl = lm ? lm[1] : '';
+        if (lbl === '竞品动态' && mergedParts.length > 0) {
+          // 去掉前段末尾 <br>（段落分隔符残留）再拼接，避免产生多余空格/换行
+          var prev = mergedParts[mergedParts.length - 1].replace(/<br>\s*$/, '');
+          mergedParts[mergedParts.length - 1] = prev + '；' + parts[mi].replace(/<strong>【.+?】<\/strong>/, '').replace(/<br>\s*$/, '');
+        } else {
+          mergedParts.push(parts[mi]);
+        }
+      }
+      parts = mergedParts;
       coreEl.innerHTML = parts.map(function(p) {
 
 
