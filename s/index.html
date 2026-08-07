@@ -469,7 +469,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 <!-- Tab: 抖店充值转移效果分析（仅主账号可见） -->
 <div class="tab-content" id="tabRecharge">
   <div class="header"><h1>📈 抖店充值转移效果分析</h1><div class="sub">平台与抖店充值用户分析报告 · 仅主账号可见</div></div>
-  <iframe id="rechargeFrame" src="/report.html" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析" onload="fixRechargeFrame(this)"></iframe>
+  <iframe id="rechargeFrame" src="/report.html" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析"></iframe>
 </div>
 
 <!-- Tab: 操作记录 -->
@@ -569,7 +569,7 @@ function addLog(type, detail) {
   if (logs.length > 200) logs = logs.slice(0, 200);
   localStorage.setItem('ds_logs', JSON.stringify(logs));
 }
-// iframe 内 report.html 排版适配：同域注入样式，让内容填满 iframe（去掉 max-width 居中留白）
+// iframe 内 report.html 排版适配：同域注入样式，让内容适配 iframe 宽度（避免 1200px 容器溢出挤到右侧）
 function fixRechargeFrame(frame) {
   try {
     var doc = frame.contentDocument;
@@ -579,6 +579,23 @@ function fixRechargeFrame(frame) {
     doc.head.appendChild(st);
   } catch (e) { /* 跨域或加载失败时静默 */ }
 }
+// 绑定 iframe load（不能依赖 onload 属性：iframe 在 HTML 中先于 script，onload 可能在函数定义前触发）
+(function() {
+  var f = document.getElementById('rechargeFrame');
+  if (!f) return;
+  f.addEventListener('load', function() { fixRechargeFrame(f); });
+  // 兜底：页面加载完成后延迟注入（iframe 可能已加载完成，load 事件已过）
+  window.addEventListener('load', function() {
+    setTimeout(function() { fixRechargeFrame(f); }, 300);
+  });
+  // 再兜底：tab 切换时再次注入（display:none 的 iframe 加载时序不可靠）
+  var checkTimer = setInterval(function() {
+    if (f.contentDocument && f.contentDocument.body && !f.contentDocument.getElementById('recharge-fix-style')) {
+      fixRechargeFrame(f);
+    }
+  }, 1500);
+  setTimeout(function() { clearInterval(checkTimer); }, 20000); // 20s 后停止轮询
+})();
 
 function renderLogs() {
   var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
