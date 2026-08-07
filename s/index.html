@@ -1547,6 +1547,7 @@ function exportCSV() {
   addLog('导出记录', '导出CSV '+(ed.start||'')+'~'+(ed.end||'')+' 共'+ed.sessions.length+'场');
   var rows = [];
   // Header（20列：无成交人数——用户原始CSV无此列，data.json 无 orders 字段）
+  // 字段定义：销售额(元) = 直播间销售额(元) + 店铺自营(元) = 安卓支付(元) + iOS支付(元)（数据自洽时三式相等）
   rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),安卓支付(元),iOS支付(元),安卓用户,iOS用户');
   // Build date->salesChannel lookup
   var scMap = {};
@@ -1556,11 +1557,13 @@ function exportCSV() {
   ed.sessions.forEach(function(s){
     var t = s.traffic||{}, it = s.interaction||{}, p = s.product||{}, pay = s.payment||{};
     var sc = scMap[s.date] || {};
+    // 销售额(元) = 直播间销售额 + 店铺自营（= 安卓支付 + iOS支付，数据自洽时相等；以销售渠道口径为准）
+    var totalSales = ((sc.live&&sc.live.sales)||0) + ((sc.self&&sc.self.sales)||0);
     rows.push([
       s.date, s.game||'',
       t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
       it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
-      getTotalSales(s, expSCMap),
+      totalSales,
       (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
       p.paymentOrders||0, p.exposure||0, p.clicks||0,
       pay.android?.amount||0, pay.ios?.amount||0,
