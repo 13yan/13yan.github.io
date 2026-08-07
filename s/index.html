@@ -282,6 +282,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="logo"><div class="logo-icon">📊</div><div><div>抖店工作台</div><div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
+  <button class="nav-item admin-only" data-tab="recharge" style="display:none;"><span class="nav-icon">📈</span> 抖店充值转移效果分析</button>
   <button class="nav-item admin-only" data-tab="logs" style="display:none;"><span class="nav-icon">📋</span> 操作记录</button>
   <div class="sidebar-summary" id="sidebarSummary">
     <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
@@ -465,6 +466,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   </div>
 </div>
 
+<!-- Tab: 抖店充值转移效果分析（仅主账号可见） -->
+<div class="tab-content" id="tabRecharge">
+  <div class="header"><h1>📈 抖店充值转移效果分析</h1><div class="sub">平台与抖店充值用户分析报告 · 仅主账号可见</div></div>
+  <iframe id="rechargeFrame" src="/report.html" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析" onload="fixRechargeFrame(this)"></iframe>
+</div>
+
 <!-- Tab: 操作记录 -->
 <div class="tab-content" id="tabLogs">
   <div class="header"><h1>📋 操作记录</h1><div class="sub">访客登录与导出操作日志</div></div>
@@ -562,6 +569,17 @@ function addLog(type, detail) {
   if (logs.length > 200) logs = logs.slice(0, 200);
   localStorage.setItem('ds_logs', JSON.stringify(logs));
 }
+// iframe 内 report.html 排版适配：同域注入样式，让内容填满 iframe（去掉 max-width 居中留白）
+function fixRechargeFrame(frame) {
+  try {
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var st = doc.createElement('style');
+    st.textContent = '.container { max-width: 100% !important; padding: 0 4px; } body { padding: 10px 14px; }';
+    doc.head.appendChild(st);
+  } catch (e) { /* 跨域或加载失败时静默 */ }
+}
+
 function renderLogs() {
   var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
   document.getElementById('logTableBody').innerHTML = logs.map(function(l){
@@ -580,6 +598,7 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     document.getElementById(id).classList.add('active');
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
+    else if (btn.dataset.tab==='recharge') { if (allowedGames !== null) return; }
     else if (btn.dataset.tab==='logs') { if (allowedGames !== null) return; renderLogs(); }
     else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
   });
@@ -601,10 +620,10 @@ function render(data) {
     };
   }
   currentData = data;
-  // 主账号才显示操作记录
+  // 主账号才显示管理类导航（操作记录 / 抖店充值转移效果分析）
   if (allowedGames === null) {
-    var adminBtn = document.querySelector('.admin-only');
-    if (adminBtn) adminBtn.style.display = '';
+    var adminBtns = document.querySelectorAll('.admin-only');
+    adminBtns.forEach(function(b){ b.style.display = ''; });
   }
   // 更新侧边栏概览
   updateSidebarSummary(data);
