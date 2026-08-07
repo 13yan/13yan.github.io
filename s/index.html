@@ -1559,7 +1559,7 @@ function exportCSV() {
       s.date, s.game||'',
       t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
       it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
-      p.sales||0,
+      (p.sales||0)+((sc.self&&sc.self.sales)||0),
       (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
       p.orders||0, p.exposure||0, p.clicks||0, p.payUsers||p.orders||0,
       pay.android?.amount||0, pay.ios?.amount||0,
