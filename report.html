@@ -5,10 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>平台与抖店充值用户分析报告 2026年7月-8月</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// embed 模式：iframe 嵌入工作台时铺满内容（URL 带 embed 参数）
+if (location.search.indexOf('embed') >= 0) {
+  document.documentElement.className += ' embed-mode';
+}
+</script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f5f6fa; color: #2d3436; padding: 12px; }
   .container { max-width: 1200px; margin: 0 auto; }
+  /* embed 模式（iframe 嵌入抖店工作台时）：内容铺满容器，避免居中留白 */
+  .embed-mode .container { max-width: 100% !important; }
+  .embed-mode body { padding: 8px 12px; }
   h1 { font-size: 20px; margin-bottom: 4px; color: #2d3436; }
   .subtitle { color: #636e72; font-size: 13px; margin-bottom: 12px; }
   .summary-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
