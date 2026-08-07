@@ -390,6 +390,27 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="header"><h1>🏟️ 竞店数据对比</h1><div class="sub">周期：7天 · 数据更新：<span id="compUpdateTime">-</span></div></div>
   <div id="compContent"></div>
 </div>
+<!-- Tab: 抖店充值转移效果分析（仅主账号可见） -->
+<div class="tab-content" id="tabRecharge">
+  <div class="header"><h1>📈 抖店充值转移效果分析</h1><div class="sub">平台与抖店充值用户分析报告 · 仅主账号可见</div></div>
+  <iframe id="rechargeFrame" src="/report.html?embed=1" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析"></iframe>
+</div>
+
+<!-- Tab: 操作记录 -->
+<div class="tab-content" id="tabLogs">
+  <div class="header"><h1>📋 操作记录</h1><div class="sub">访客登录与导出操作日志</div></div>
+  <div style="padding:12px 0;">
+    <button onclick="clearLogs()" style="padding:5px 14px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;font-size:12px;cursor:pointer;">🗑️ 清空记录</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>时间</th><th>类型</th><th>密钥</th><th>操作详情</th></tr></thead>
+      <tbody id="logTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+
 
 </div>
 
@@ -463,26 +484,6 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     3. 全店汇总自动累计所有游戏数据<br>
     4. 游戏对比图表自动识别新游戏<br>
     5. 基础数据报表下拉自动出现新游戏选项</p>
-  </div>
-</div>
-
-<!-- Tab: 抖店充值转移效果分析（仅主账号可见） -->
-<div class="tab-content" id="tabRecharge">
-  <div class="header"><h1>📈 抖店充值转移效果分析</h1><div class="sub">平台与抖店充值用户分析报告 · 仅主账号可见</div></div>
-  <iframe id="rechargeFrame" src="/report.html?embed=1" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析"></iframe>
-</div>
-
-<!-- Tab: 操作记录 -->
-<div class="tab-content" id="tabLogs">
-  <div class="header"><h1>📋 操作记录</h1><div class="sub">访客登录与导出操作日志</div></div>
-  <div style="padding:12px 0;">
-    <button onclick="clearLogs()" style="padding:5px 14px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;font-size:12px;cursor:pointer;">🗑️ 清空记录</button>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>时间</th><th>类型</th><th>密钥</th><th>操作详情</th></tr></thead>
-      <tbody id="logTableBody"></tbody>
-    </table>
   </div>
 </div>
 
