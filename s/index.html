@@ -1546,11 +1546,12 @@ function exportCSV() {
   if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
   addLog('导出记录', '导出CSV '+(ed.start||'')+'~'+(ed.end||'')+' 共'+ed.sessions.length+'场');
   var rows = [];
-  // Header
-  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),成交人数,安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  // Header（20列：无成交人数——用户原始CSV无此列，data.json 无 orders 字段）
+  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),安卓支付(元),iOS支付(元),安卓用户,iOS用户');
   // Build date->salesChannel lookup
   var scMap = {};
   (currentData.salesChannels||[]).forEach(function(c){ scMap[c.date] = c; });
+  var expSCMap = buildSCMap(currentData);
   // Data rows
   ed.sessions.forEach(function(s){
     var t = s.traffic||{}, it = s.interaction||{}, p = s.product||{}, pay = s.payment||{};
@@ -1559,18 +1560,19 @@ function exportCSV() {
       s.date, s.game||'',
       t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
       it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
-      (p.sales||0)+((sc.self&&sc.self.sales)||0),
+      getTotalSales(s, expSCMap),
       (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
-      p.orders||0, p.exposure||0, p.clicks||0, p.payUsers||p.orders||0,
+      p.paymentOrders||0, p.exposure||0, p.clicks||0,
       pay.android?.amount||0, pay.ios?.amount||0,
       pay.android?.users||0, pay.ios?.users||0
     ].join(','));
   });
-  // Summary row
-  var expSCMap = buildSCMap(currentData);
+  // Summary row（构造数组避免逗号错位）
   var totalS = ed.sessions.reduce(function(a,b){return a+getTotalSales(b, expSCMap);},0);
-  var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.orders||0);},0);
-  rows.push('合计,,,,,,,,,,'+totalS+',,'+totalO+',,,,,,,,');
+  var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.paymentOrders||0);},0);
+  var sumCols = ['合计'];
+  for (var ci = 1; ci < 20; ci++) { sumCols.push(ci === 10 ? totalS : (ci === 13 ? totalO : '')); }
+  rows.push(sumCols.join(','));
   // Create blob and download
   var bom = '\uFEFF';
   var csv = bom + rows.join('\n');
