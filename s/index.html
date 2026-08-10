@@ -852,7 +852,7 @@ function renderOverview() {
       var m = sx.date.substring(0,7);
       if (!monthMap[m]) { var mNum2 = parseInt(m.substring(5,7), 10); monthMap[m] = {label:m.substring(0,4)+'年'+(isNaN(mNum2)?m.substring(5,7):mNum2)+'月', totalGMV:0, totalOrders:0}; }
       monthMap[m].totalGMV += getTotalSales(sx, ovSCMap);
-      monthMap[m].totalOrders += sx.product?.orders||0;
+      monthMap[m].totalOrders += sx.product?.paymentOrders||sx.product?.orders||0;
     });
     months = Object.keys(monthMap).sort().map(function(k){return monthMap[k];});
     var ctx=document.getElementById('ovTrendChart').getContext('2d');
@@ -911,7 +911,7 @@ function assessRisk(sessions, isSingle) {
       high++;
     }
 
-    if (p.orders === 0) {
+    if ((p.paymentOrders||p.orders) === 0) {
       high++;
     }
 
@@ -947,7 +947,7 @@ function assessRisk(sessions, isSingle) {
     var totalGMV=0, totalOrd=0, totalExp=0, totalEnt=0;
     var riskSCMap = buildSCMap(currentData);
     sessions.forEach(function(sx){
-      totalGMV+=getTotalSales(sx, riskSCMap); totalOrd+=sx.product?.orders||0;
+      totalGMV+=getTotalSales(sx, riskSCMap); totalOrd+=sx.product?.paymentOrders||sx.product?.orders||0;
       totalExp+=sx.traffic?.exposure||0; totalEnt+=sx.traffic?.entry||0;
     });
     var avgEntryRate = totalExp>0 ? totalEnt/totalExp : -1;
@@ -1178,7 +1178,7 @@ function renderSingleDay(s) {
     '<div class="flow-step"><div class="num">'+fmt(t.avgOnline)+'</div><div class="lbl">平均在线</div></div><div class="flow-arrow">→</div>',
     '<div class="flow-step"><div class="num">'+fmt(p.exposure)+'</div><div class="lbl">商品曝光</div></div><div class="flow-arrow">→</div>',
     '<div class="flow-step"><div class="num">'+fmt(p.clicks)+'</div><div class="lbl">点击</div>'+(p.exposureClickRate?'<div class="flow-rate">'+pct(p.exposureClickRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
+    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
     '</div></div>',
   ].join('');
   // 写入直播数据到下方模块（含漏斗+转化图表）
@@ -1214,7 +1214,7 @@ function renderSingleDay(s) {
     var c2=document.getElementById('rptInteractChart');
     if(c2) charts.rptInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'本场',data:[it.comments,(it.likes||0)/60,it.newFans,parseFloat(it.avgStay)||0,(t.entryRate||0)*100],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     var c3=document.getElementById('rptFunnelChart');
-    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.paymentOrders||p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.paymentOrders||p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
     // 支付渠道饼图
     var pa=document.getElementById('rptPayAmountChart');
     if(pa && paTotal>0){
@@ -1266,7 +1266,7 @@ function renderMultiDay(sessions) {
     totalAvgStay += parseFloat(it.avgStay) || 0;
     totalPExp += p.exposure || 0;
     totalPClicks += p.clicks || 0;
-    totalPOrders += p.orders || 0;
+    totalPOrders += p.paymentOrders || p.orders || 0;
   });
   var avgOnlineVal = cnt > 0 ? Math.round(totalAvgOnline / cnt) : 0;
   var avgStayVal = cnt > 0 ? (totalAvgStay / cnt).toFixed(2) : '0';
