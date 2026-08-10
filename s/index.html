@@ -301,7 +301,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div class="dimension-bar" id="ovDimensionBar">
     <button class="dim-btn active" data-dim="all">累计汇总</button>
     <button class="dim-btn" data-dim="month">单月数据</button>
+    <button class="dim-btn" data-dim="year">全年汇总</button>
     <select id="ovMonthSelect" style="display:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+    <select id="ovYearSelect" style="display:none;padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
   </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
@@ -321,6 +323,19 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   </div>
   <div class="section-title">📈 月趋势 <span class="tag">逐月变化</span></div>
   <div class="chart-card" style="margin-bottom:20px;"><div class="chart-wrap tall"><canvas id="ovTrendChart"></canvas></div></div>
+  <!-- 多月数据对比（单月维度隐藏，累计/全年展示） -->
+  <div id="ovMonthCompareWrap" style="display:none;">
+    <div class="section-title" style="margin-top:20px;">📊 多月数据对比 <span class="tag">环比分析</span>
+      <span style="float:right;" id="ovCompareModeBar">
+        <button class="dim-btn active" data-cmode="month" style="font-size:11px;padding:3px 10px;">按月度</button>
+        <button class="dim-btn" data-cmode="year" style="font-size:11px;padding:3px 10px;">按年度</button>
+      </span>
+    </div>
+    <div class="chart-card" style="margin-bottom:20px;">
+      <div class="table-wrap" id="ovCompareTableWrap"></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;" id="ovCompareNote"></div>
+    </div>
+  </div>
 </div>
 
 <!-- Tab: 数据报表（合并分日+分月） -->
@@ -447,12 +462,13 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
-      <tr><td>维度筛选</td><td>顶部按钮切换：累计汇总（全部场次）/ 单月数据（选择具体月份），切换后所有模块联动更新，月份从2026年7月起可选</td></tr>
+      <tr><td>维度筛选</td><td>顶部按钮切换：累计汇总（全部场次）/ 单月数据（选择具体月份）/ 全年汇总（选择具体年份，2026年起），切换后所有模块联动更新，月份从2026年7月起可选</td></tr>
       <tr><td>顶部 3 卡片</td><td>按所选维度叠加：累计销售额 = 筛选场次 sales 之和；预估结算金额 = 筛选销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 筛选场次 paymentOrders 之和</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
       <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
       <tr><td>月趋势</td><td>所有场次按月份分组，累计销售额和订单数</td></tr>
+      <tr><td>多月数据对比</td><td>单月维度隐藏；累计/全年维度展示。可按月度或年度对比 8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），带相邻期环比红↑绿↓</td></tr>
       <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值</td></tr>
     </table>
 
@@ -648,6 +664,7 @@ function render(data) {
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
   populateMonthSelect(data.sessions || []);
+  populateYearSelect(data.sessions || []);
   renderOverview(); renderReport(); renderCompetitor(data);
   renderProfitCards();
 }
@@ -676,6 +693,8 @@ document.getElementById('helpOverlay').addEventListener('click', function(e){
 // ===== 全店汇总 =====
 var ovDimension = 'all';
 var ovMonth = '';
+var ovYear = '';
+var ovCompareMode = 'month'; // month=按月度 year=按年度
 
 function getAvailableMonths(sessions) {
   var months = {};
@@ -684,6 +703,32 @@ function getAvailableMonths(sessions) {
     if (m) months[m] = true;
   });
   return Object.keys(months).sort();
+}
+
+function getAvailableYears(sessions) {
+  var years = {};
+  sessions.forEach(function(s){
+    var y = s.date ? s.date.substring(0,4) : '';
+    if (y && parseInt(y,10) >= 2026) years[y] = true;
+  });
+  return Object.keys(years).sort();
+}
+
+function populateYearSelect(sessions) {
+  var sel = document.getElementById('ovYearSelect');
+  if (!sel) return;
+  var years = getAvailableYears(sessions);
+  if (years.length === 0) { sel.style.display = 'none'; return; }
+  sel.innerHTML = '';
+  years.forEach(function(y){
+    var opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + '年';
+    sel.appendChild(opt);
+  });
+  // Default to latest year
+  sel.value = years[years.length-1];
+  ovYear = sel.value;
 }
 
 function populateMonthSelect(sessions) {
@@ -713,6 +758,14 @@ function filterSessionsByDim(sessions, dim) {
       target = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
     }
     return sessions.filter(function(s){ return s.date && s.date.substring(0,7) === target; });
+  }
+  if (dim === 'year') {
+    var targetY = ovYear;
+    if (!targetY) {
+      var nowY = new Date();
+      targetY = String(nowY.getFullYear());
+    }
+    return sessions.filter(function(s){ return s.date && s.date.substring(0,4) === targetY; });
   }
   return sessions;
 }
@@ -761,7 +814,7 @@ function renderOverview() {
   var s=data.storeSummary||{}, months=data.monthlySummary||[];
   var grid=document.getElementById('ovSummaryGrid');
   // 更新维度标签
-  var dimLabels = {'all':'累计经营数据与趋势','month':(ovMonth||'')+'数据'};
+  var dimLabels = {'all':'累计经营数据与趋势','month':(ovMonth||'')+'数据','year':(ovYear||'')+'年全年数据'};
   var dimDesc = dimLabels[ovDimension] || '累计经营数据与趋势';
   document.querySelector('#tabOverview .sub').textContent = dimDesc;
   var ovSCMap = buildSCMap(data);
@@ -843,6 +896,8 @@ function renderOverview() {
   } else { grid.innerHTML='<div class="empty-block">暂无汇总数据，等你提供后更新</div>'; }
   // 游戏对比图表
   renderGameCharts(data);
+  // 多月数据对比（单月维度隐藏，累计/全年展示）
+  renderMonthCompare(data, sessions);
   // 月趋势图 - 自动从 sessions 按月汇总
   destroyChart('ovTrend');
   if (sessions.length > 0) {
@@ -868,6 +923,126 @@ function renderOverview() {
         scales:{y:{beginAtZero:true,position:'left',ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}},
           y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false}}}}});
   }
+}
+
+// ===== 多月数据对比（按月度 / 按年度 环比表） =====
+function monthAgg(sessions, scMap) {
+  // 按月聚合 8 指标
+  var mMap = {};
+  sessions.forEach(function(sx){
+    var m = sx.date.substring(0,7);
+    if (!mMap[m]) mMap[m] = {label:m.substring(0,4)+'年'+parseInt(m.substring(5,7),10)+'月', gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
+    var sc = scMap[sx.date+'_'+sx.game];
+    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
+    var selfS = sc ? (sc.self?.sales||0) : 0;
+    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
+    var g = mMap[m];
+    g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
+    g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
+    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
+    g.androidAmt += a; g.iosAmt += i;
+    g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    g.cnt++;
+  });
+  return Object.keys(mMap).sort().map(function(k){ return mMap[k]; });
+}
+
+function yearAgg(sessions, scMap) {
+  // 按年聚合（与月结构一致的 8 指标）
+  var yMap = {};
+  sessions.forEach(function(sx){
+    var y = sx.date.substring(0,4);
+    if (!yMap[y]) yMap[y] = {label:y+'年', gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
+    var sc = scMap[sx.date+'_'+sx.game];
+    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
+    var selfS = sc ? (sc.self?.sales||0) : 0;
+    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
+    var g = yMap[y];
+    g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
+    g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
+    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
+    g.androidAmt += a; g.iosAmt += i;
+    g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    g.cnt++;
+  });
+  return Object.keys(yMap).sort().map(function(k){ return yMap[k]; });
+}
+
+function renderMonthCompare(data, sessions) {
+  var wrap = document.getElementById('ovMonthCompareWrap');
+  if (!wrap) return;
+  var isMonthDim = (ovDimension === 'month');
+  var isYearMode = (ovCompareMode === 'year') && (ovDimension !== 'year');
+  // 单月维度：隐藏；否则展示
+  if (isMonthDim) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  // 全年汇总维度下仅按月度（该年各月）；累计汇总下可切换月度/年度
+  var modeBar = document.getElementById('ovCompareModeBar');
+  if (modeBar) {
+    modeBar.style.display = (ovDimension === 'year') ? 'none' : '';
+    modeBar.querySelectorAll('.dim-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.cmode === ovCompareMode);
+    });
+  }
+  var scMap = buildSCMap(data);
+  var agg = isYearMode ? yearAgg(sessions, scMap) : monthAgg(sessions, scMap);
+  if (agg.length < 2) {
+    wrap.style.display = 'none';
+    return;
+  }
+  var metricDefs = [
+    {k:'gmv',  t:'总GMV(元)',      money:true},
+    {k:'live', t:'直播GMV(元)',    money:true},
+    {k:'self', t:'自营GMV(元)',    money:true},
+    {k:'orders', t:'支付订单数',   money:false},
+    {k:'payUsers', t:'支付用户数', money:false},
+    {k:'androidShare', t:'安卓支付占比', pct:true},
+    {k:'profit', t:'抖店利润(元)', money:true},
+    {k:'avgGMV', t:'场均GMV(元)',  money:true}
+  ];
+  var header = '<tr><th style="text-align:left;min-width:110px;">指标</th>';
+  agg.forEach(function(g){ header += '<th>'+g.label+'</th>'; });
+  header += '</tr>';
+  var body = '';
+  metricDefs.forEach(function(md){
+    body += '<tr class="section"><td style="text-align:left;">'+md.t+'</td>';
+    var prev = null;
+    agg.forEach(function(g){
+      var v;
+      if (md.k === 'androidShare') v = (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
+      else if (md.k === 'avgGMV') v = g.cnt > 0 ? (g.gmv / g.cnt) : 0;
+      else v = g[md.k];
+      var txt = md.pct ? v.toFixed(1)+'%' : (md.money ? fmt(v) : fmt(v));
+      body += '<td>'+txt+'</td>';
+      prev = v;
+    });
+    body += '</tr>';
+    // 环比行
+    body += '<tr style="color:var(--text3);">';
+    body += '<td style="text-align:left;font-size:10px;color:var(--text3);">↕ 环比</td>';
+    var prevV = null;
+    agg.forEach(function(g){
+      var v;
+      if (md.k === 'androidShare') v = (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
+      else if (md.k === 'avgGMV') v = g.cnt > 0 ? (g.gmv / g.cnt) : 0;
+      else v = g[md.k];
+      if (prevV === null) { body += '<td style="font-size:10px;">—</td>'; }
+      else {
+        var diff = prevV !== 0 ? ((v - prevV) / Math.abs(prevV) * 100) : (v > 0 ? 100 : 0);
+        var up = diff >= 0;
+        // 红↑绿↓
+        body += '<td style="font-size:10px;color:'+(up?'#dc2626':'#059669')+';">'+(up?'↑':'↓')+Math.abs(diff).toFixed(1)+'%</td>';
+      }
+      prevV = v;
+    });
+    body += '</tr>';
+  });
+  var wrapEl = document.getElementById('ovCompareTableWrap');
+  wrapEl.innerHTML = '<table class="data-table" style="width:100%;">'+header+body+'</table>';
+  // 注释：场次数 + 模式说明
+  var note = document.getElementById('ovCompareNote');
+  var cntTxt = agg.map(function(g){ return g.label+' '+g.cnt+'场'; }).join(' / ');
+  note.textContent = '场次数：'+cntTxt+'。'+(isYearMode ? '按年度对比各年份累计经营数据；' : '按月对比，场次不同时以场均GMV为公平口径；')+'环比=相邻期增减，红↑绿↓。';
 }
 
 function assessRisk(sessions, isSingle) {
@@ -1532,14 +1707,32 @@ document.getElementById('ovDimensionBar').addEventListener('click', function(e){
   this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   ovDimension = btn.getAttribute('data-dim');
-  var sel = document.getElementById('ovMonthSelect');
-  if (sel) sel.style.display = (ovDimension === 'month') ? 'inline-block' : 'none';
+  var selM = document.getElementById('ovMonthSelect');
+  var selY = document.getElementById('ovYearSelect');
+  if (selM) selM.style.display = (ovDimension === 'month') ? 'inline-block' : 'none';
+  if (selY) selY.style.display = (ovDimension === 'year') ? 'inline-block' : 'none';
   renderOverview();
 });
 
 // 月份选择切换
 document.getElementById('ovMonthSelect').addEventListener('change', function(){
   ovMonth = this.value;
+  renderOverview();
+});
+
+// 年份选择切换
+document.getElementById('ovYearSelect').addEventListener('change', function(){
+  ovYear = this.value;
+  renderOverview();
+});
+
+// 多月对比 按月度/按年度 切换
+document.getElementById('ovCompareModeBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.dim-btn');
+  if (!btn || btn.classList.contains('active')) return;
+  this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  ovCompareMode = btn.getAttribute('data-cmode');
   renderOverview();
 });
 
