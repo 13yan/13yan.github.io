@@ -768,12 +768,14 @@ function renderOverview() {
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
     var autoGMV = sessions.reduce(function(sum,ss){return sum + getTotalSales(ss, ovSCMap);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
-    var totalGMV = s.totalGMV || autoGMV;
-    var totalOrders = s.totalOrders || autoOrders;
+    // 优先用按维度筛选后的 sessions 累加值；无筛选场次时才回退到 storeSummary 累计值
+    var totalGMV = sessions.length > 0 ? autoGMV : (s.totalGMV || 0);
+    var totalOrders = sessions.length > 0 ? autoOrders : (s.totalOrders || 0);
+    var totalSessionsTxt = (ovDimension === 'month' ? '当月 ' : '') + sessions.length + ' 场';
     var settleTotal = Math.round(totalGMV * 0.994 * 100) / 100;
     grid.innerHTML = '';
     // 基础卡片：只保留销售额
-    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计'),cl:'#1e3a8a'}].forEach(function(c){
+    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:totalSessionsTxt+' · '+(ovDimension==='month'?'单月':'累计'),cl:'#1e3a8a'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
@@ -793,7 +795,7 @@ function renderOverview() {
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
     // 支付订单数放到最后
-    [{l:'📋 支付订单数',v:fmt(autoOrders)+' 单',sb:'全部场次累计',cl:'#d97706'}].forEach(function(c){
+    [{l:'📋 支付订单数',v:fmt(totalOrders)+' 单',sb:totalSessionsTxt,cl:'#d97706'}].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
