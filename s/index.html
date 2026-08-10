@@ -299,6 +299,10 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 <div class="tab-content active" id="tabOverview">
   <div class="header"><h1>📊 全店汇总</h1><div class="sub">累计经营数据与趋势</div></div>
   <div class="dimension-bar" id="ovDimensionBar">
+    <span style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:12px;color:var(--text2);font-weight:500;">🎮 游戏</span>
+      <select id="ovGameSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:#fff;cursor:pointer;min-width:120px;"></select>
+    </span>
     <button class="dim-btn active" data-dim="all">累计汇总</button>
     <button class="dim-btn" data-dim="month">月度数据</button>
     <button class="dim-btn" data-dim="year">年度数据</button>
@@ -310,10 +314,6 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <span style="font-size:11px;color:var(--text3);margin:0 4px;">开始</span><select id="ovYearFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
       <span style="font-size:11px;color:var(--text3);margin:0 4px;">结束</span><select id="ovYearToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
     </span>
-    <span style="margin-left:auto;display:flex;align-items:center;gap:6px;">
-      <span style="font-size:12px;color:var(--text2);font-weight:500;">🎮 游戏</span>
-      <select id="ovGameSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:#fff;cursor:pointer;min-width:120px;"></select>
-    </span>
   </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
@@ -324,12 +324,17 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   </div>
   <div class="section-title" style="margin-top:20px;">⚠️ 数据风险评估 <span class="tag">支付渠道风险</span></div>
   <div id="ovRiskSection" class="risk-section"></div>
+  <!-- 利润方案对比（仅累计汇总维度显示） -->
+  <div id="ovProfitCompareWrap" style="display:none;">
+    <div class="section-title" style="margin-top:20px;">📊 利润方案对比 <span class="tag">三种支付渠道利润</span></div>
+    <div class="chart-card" style="margin-bottom:20px;">
+      <div class="table-wrap" id="ovProfitCompareTableWrap"></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;">公式：抖店利润 = (安卓+iOS)×85% - 0.6% - 8% - 15%；平台支付 = (安卓+iOS)×85% - 1%；原 iOS = 安卓×85% + iOS×75%×85%</div>
+    </div>
+  </div>
   <div class="section-title" style="margin-top:20px;">🎮 游戏对比 <span class="tag">累计销售额</span></div>
   <div id="ovGameCompareCharts" style="margin-bottom:20px;">
-    <div class="chart-grid" style="margin-top:0;">
-      <div class="chart-card"><h3>📊 各游戏累计销售额</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
-      <div class="chart-card"><h3>🥧 销售额占比</h3><div class="chart-wrap"><canvas id="ovGamePieChart"></canvas></div></div>
-    </div>
+    <div class="chart-card"><h3>📊 各游戏累计销售额</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
   </div>
   <!-- 月度趋势（累计汇总 / 月度数据多月 时显示） -->
   <div id="ovMonthTrendWrap" style="display:none;">
@@ -486,15 +491,17 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
-      <tr><td>维度筛选</td><td>顶部 3 个按钮：① 累计汇总（全部场次叠加）；② 月度数据（开始月份~结束月份，相等=单月，不同=多月范围）；③ 年度数据（开始年份~结束年份，相等=单年，不同=多年范围）。叠加右侧游戏下拉（默认全部游戏）。所有模块（顶部卡片/支付渠道/游戏对比/月度趋势/年度趋势/多期对比）随筛选联动</td></tr>
-      <tr><td>顶部 3 卡片</td><td>按所选维度叠加：累计销售额 = 筛选场次 sales 之和；预估结算金额 = 筛选销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 筛选场次 paymentOrders 之和</td></tr>
+      <tr><td>维度筛选</td><td>顶部游戏下拉（默认全部游戏）+ 3 个维度按钮：① 累计汇总（全部场次叠加，无趋势/对比）；② 月度数据（开始月份~结束月份，相等=单月，不同=多月范围；多月时显示月度趋势+对比）；③ 年度数据（开始年份~结束年份，相等=单年，不同=多年范围；多年时显示年度趋势+对比）。所有模块（顶部卡片/支付渠道/游戏对比）随筛选联动</td></tr>
+      <tr><td>顶部 4 卡片</td><td>按所选维度叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = 筛选场次 paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%所得税 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
+      <tr><td>利润方案对比表</td><td>仅累计汇总维度展示。对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
       <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
-      <tr><td>月度趋势</td><td>累计汇总 或 月度数据多月范围 时显示，按月份聚合销售额和订单数两个独立柱状图</td></tr>
-      <tr><td>年度趋势</td><td>累计汇总 或 年度数据多年范围 时显示，按年份聚合销售额和订单数两个独立柱状图</td></tr>
-      <tr><td>多期数据对比</td><td>单月/单年维度隐藏；累计/多月/多年维度展示。8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），每项下带相邻期环比红↑绿↓。累计汇总可切换月度/年度；多月仅按月；多年仅按年</td></tr>
+      <tr><td>月度趋势</td><td>仅月度数据多月范围 时显示，按月份聚合销售额和订单数两个独立柱状图</td></tr>
+      <tr><td>年度趋势</td><td>仅年度数据多年范围 时显示，按年份聚合销售额和订单数两个独立柱状图</td></tr>
+      <tr><td>多期数据对比</td><td>累计汇总/单月/单年维度隐藏；仅多月（按月）/多年（按年）维度展示。8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），每项下带相邻期环比红↑绿↓</td></tr>
       <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值。选具体游戏时整块隐藏（单游戏无对比意义）</td></tr>
+      <tr><td>支付渠道子卡</td><td>仅显示金额+结算字段；占比信息由下方饼图呈现，避免重复</td></tr>
     </table>
 
     <h3>四、基础数据报表 数据逻辑</h3>
@@ -848,7 +855,7 @@ function filterByGame(sessions, game) {
 }
 
 function renderGameCharts(data) {
-  destroyChart('ovGameSales');destroyChart('ovGamePie');
+  destroyChart('ovGameSales');
   var games = data.games || [];
   var dimSessions = filterSessionsByDim(data.sessions || [], ovDimension);
   if (!games.length || !dimSessions.length) {
@@ -876,12 +883,35 @@ function renderGameCharts(data) {
       scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}},
     plugins:[{id:'vl',afterDraw:function(c){c.data.datasets.forEach(function(ds,di){var m=c.getDatasetMeta(di);m.data.forEach(function(e,i){var v=ds.data[i];if(v>0){var x=e.x,y=e.y-8;c.ctx.save();c.ctx.fillStyle='#1e40af';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='bottom';c.ctx.fillText(fmt(v)+' 元',x,y);c.ctx.restore();}});})}}]}
   });
-  // 饼图：销售额占比
-  var c2=document.getElementById('ovGamePieChart');
-  if(c2){
-    var pieTotal = gData.reduce(function(s,g){return s+g.gmv;},0);
-    charts.ovGamePie=new Chart(c2.getContext('2d'),{type:'pie',data:{labels:gData.map(function(g){return g.name+' ('+((g.gmv/pieTotal)*100).toFixed(1)+'%)';}), datasets:[{data:gData.map(function(g){return g.gmv;}),backgroundColor:gData.map(function(g,i){return gameColors[i%gameColors.length];})}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元';}}}}},plugins:[pieLabelPlugin]});
+}
+
+// 利润方案对比表（仅累计汇总维度显示）
+function renderProfitCompare(pDd, pPt, pNm, totalGMV) {
+  var wrap = document.getElementById('ovProfitCompareWrap');
+  if (!wrap) return;
+  if (ovDimension !== 'all') { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  var tw = document.getElementById('ovProfitCompareTableWrap');
+  if (!tw) return;
+  var rateDd = totalGMV > 0 ? (pDd/totalGMV*100) : 0;
+  var ratePt = totalGMV > 0 ? (pPt/totalGMV*100) : 0;
+  var rateNm = totalGMV > 0 ? (pNm/totalGMV*100) : 0;
+  // vs 抖店：替代方案 - 抖店利润，抖店更赚 = 正数 = 绿色（之前的同比卡配色）
+  function diffCell(other, base) {
+    var d = other - base;
+    if (Math.abs(d) < 0.01) return '<td style="color:var(--text3);">—</td>';
+    var pct = base !== 0 ? (d / Math.abs(base) * 100) : 0;
+    var color = d > 0 ? '#059669' : '#dc2626'; // 抖店优势 = 绿色
+    var sign = d > 0 ? '+' : '';
+    return '<td style="color:'+color+';font-weight:600;">'+sign+fmt(d)+' 元<br><span style="font-size:10px;font-weight:400;">('+sign+pct.toFixed(2)+'%)</span></td>';
   }
+  var html = '<table class="rule-table" style="width:100%;">';
+  html += '<thead><tr><th style="text-align:left;min-width:120px;">支付渠道方案</th><th style="text-align:right;">利润（元）</th><th style="text-align:right;">利润率</th><th style="text-align:left;">vs 抖店</th></tr></thead><tbody>';
+  html += '<tr style="background:#f0fdf4;"><td style="text-align:left;font-weight:600;color:#059669;">🟢 抖店（当前）</td><td style="text-align:right;font-weight:600;">'+fmt(pDd)+'</td><td style="text-align:right;font-weight:600;color:#059669;">'+rateDd.toFixed(2)+'%</td><td style="color:var(--text3);">—</td></tr>';
+  html += '<tr><td style="text-align:left;">平台支付</td><td style="text-align:right;">'+fmt(pPt)+'</td><td style="text-align:right;color:var(--text2);">'+ratePt.toFixed(2)+'%</td>'+diffCell(pPt, pDd)+'</tr>';
+  html += '<tr><td style="text-align:left;">原 iOS 支付</td><td style="text-align:right;">'+fmt(pNm)+'</td><td style="text-align:right;color:var(--text2);">'+rateNm.toFixed(2)+'%</td>'+diffCell(pNm, pDd)+'</tr>';
+  html += '</tbody></table>';
+  tw.innerHTML = html;
 }
 
 function renderOverview() {
@@ -909,6 +939,8 @@ function renderOverview() {
     subModeLabel = yearRangeIsSingle() ? '单年' : '多年范围';
   }
   var ovSCMap = buildSCMap(data);
+  // 利润计算（默认 0，sessions 为空时也不会报错）
+  var pDd=0, pPt=0, pNm=0, totalPayAmt=0;
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
     var autoGMV = sessions.reduce(function(sum,ss){return sum + getTotalSales(ss, ovSCMap);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
@@ -916,30 +948,24 @@ function renderOverview() {
     var totalGMV = sessions.length > 0 ? autoGMV : (s.totalGMV || 0);
     var totalOrders = sessions.length > 0 ? autoOrders : (s.totalOrders || 0);
     grid.innerHTML = '';
-    // 基础卡片：只保留销售额
-    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:sessionsLabel+' · '+subModeLabel,cl:'#1e3a8a'}].forEach(function(c){
-      var d=document.createElement('div');d.className='summary-card';
-      d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
-      grid.appendChild(d);});
-    // 利润卡片（用当前筛选场次的安卓/iOS数据计算）
-    var pDd=0,pPt=0,pNm=0;
+    // 利润累加
     sessions.forEach(function(sx){
       var a=sx.payment?.android?.amount||0,i=sx.payment?.ios?.amount||0;
+      totalPayAmt += a+i;
       pDd+=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
       pPt+=(a+i)*0.85-(a+i)*0.01;
       pNm+=a*0.85+i*0.75*0.85;
     });
-    [{l:'📈 抖店利润',v:fmt(pDd)+' 元',sb:(pDd/(pDd+pPt+pNm||1)*100).toFixed(2)+'%利润率（扣0.6%+8%+15%）',cl:'#059669',bc:'#86efac'},
-     {l:'↔ 同比平台支付利润',v:((pDd-pPt)/(pPt||1)*100).toFixed(2)+'%',sb:((pDd-pPt)>=0?'+':'')+fmt(Math.abs(pDd-pPt))+' 元 · 平台 '+fmt(pPt)+' 元',cl:pDd-pPt>=0?'#059669':'#dc2626',bc:'#fecaca'},
-     {l:'↔ 同比原IOS支付渠道利润',v:((pDd-pNm)/(pNm||1)*100).toFixed(2)+'%',sb:((pDd-pNm)>=0?'+':'')+fmt(Math.abs(pDd-pNm))+' 元 · 正常 '+fmt(pNm)+' 元',cl:pDd-pNm>=0?'#059669':'#dc2626',bc:'#b3c5ff'}].forEach(function(c){
+    var profitRate = totalGMV > 0 ? (pDd / totalGMV * 100) : 0;
+    // 4 张核心 KPI：销售额 / 订单数 / 利润 / 利润率
+    [
+      {l:'💰 销售额', v:fmt(totalGMV)+' 元', sb:sessionsLabel+' · '+subModeLabel, cl:'#1e3a8a'},
+      {l:'📋 支付订单数', v:fmt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
+      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:'扣 0.6%服务费 + 8%所得税 + 15%分成', cl:'#059669'},
+      {l:'📊 利润率', v:profitRate.toFixed(2)+'%', sb:'利润 / 销售额（GMV口径）', cl:'#7c3aed'}
+    ].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
-      d.style.borderColor=c.bc;
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
-      grid.appendChild(d);});
-    // 支付订单数放到最后
-    [{l:'📋 支付订单数',v:fmt(totalOrders)+' 单',sb:sessionsLabel,cl:'#d97706'}].forEach(function(c){
-      var d=document.createElement('div');d.className='summary-card';
-      d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
     // 支付渠道占比情况（从筛选场次中计算）
     var pcAmt = {android:0, ios:0}, pcUsr = {android:0, ios:0}, pcSettle = {android:0, ios:0};
@@ -957,8 +983,8 @@ function renderOverview() {
       var androidSettle = pcSettle.android || Math.round(pcAmt.android * 0.994 * 100) / 100;
       var iosSettle = pcSettle.ios || Math.round(pcAmt.ios * 0.994 * 100) / 100;
       pcCards.innerHTML = [
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.android)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元 · 占比 '+androidPct+'%</div></div>',
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.ios)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元 · 占比 '+iosPct+'%</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.android)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.ios)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元</div></div>',
       ].join('');
       // 支付渠道饼图
       setTimeout(function(){
@@ -989,6 +1015,8 @@ function renderOverview() {
     ovGameWrap.style.display = (ovGame && ovGame !== 'all') ? 'none' : '';
   }
   renderGameCharts(data);
+  // 利润方案对比表（仅累计汇总维度）
+  renderProfitCompare(pDd, pPt, pNm, totalGMV);
   // 多期数据对比
   renderMonthCompare(data, sessions);
   // 月度趋势 / 年度趋势
@@ -999,8 +1027,8 @@ function renderOverview() {
 function renderMonthTrend(sessions, ovSCMap) {
   var wrap = document.getElementById('ovMonthTrendWrap');
   if (!wrap) return;
-  // 显示条件：累计汇总 OR 月度数据多月范围
-  var show = (ovDimension === 'all') || (ovDimension === 'month' && !monthRangeIsSingle());
+  // 显示条件：仅「月度数据多月范围」时显示（累计汇总不再展示趋势）
+  var show = (ovDimension === 'month' && !monthRangeIsSingle());
   if (!show || sessions.length === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
   destroyChart('ovTrendGMV');destroyChart('ovTrendOrders');
@@ -1041,8 +1069,8 @@ function renderMonthTrend(sessions, ovSCMap) {
 function renderYearTrend(sessions, ovSCMap) {
   var wrap = document.getElementById('ovYearTrendWrap');
   if (!wrap) return;
-  // 显示条件：累计汇总 OR 年度数据多年范围
-  var show = (ovDimension === 'all') || (ovDimension === 'year' && !yearRangeIsSingle());
+  // 显示条件：仅「年度数据多年范围」时显示（累计汇总不再展示趋势）
+  var show = (ovDimension === 'year' && !yearRangeIsSingle());
   if (!show || sessions.length === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
   destroyChart('ovYearGMV');destroyChart('ovYearOrders');
@@ -1121,40 +1149,22 @@ function yearAgg(sessions, scMap) {
 function renderMonthCompare(data, sessions) {
   var wrap = document.getElementById('ovMonthCompareWrap');
   if (!wrap) return;
-  // 累计汇总：可按月度/按年度切换
-  // 月度数据：单月→隐藏；多月→仅按月度，隐藏切换按钮
-  // 年度数据：单年→隐藏；多年→仅按年度，隐藏切换按钮
+  // 累计汇总不再展示对比区；仅「月度数据多月」按月、「年度数据多年」按年 展示
   var show = false;
-  var forceMode = null; // null=按 ovCompareMode；'month'/'year'=强制
-  if (ovDimension === 'all') {
+  var forceMode = null; // 'month'/'year'=强制
+  if (ovDimension === 'month' && !monthRangeIsSingle()) {
     show = true;
-    forceMode = null;
-  } else if (ovDimension === 'month') {
-    if (monthRangeIsSingle()) {
-      show = false;
-    } else {
-      show = true;
-      forceMode = 'month';
-    }
-  } else if (ovDimension === 'year') {
-    if (yearRangeIsSingle()) {
-      show = false;
-    } else {
-      show = true;
-      forceMode = 'year';
-    }
+    forceMode = 'month';
+  } else if (ovDimension === 'year' && !yearRangeIsSingle()) {
+    show = true;
+    forceMode = 'year';
   }
   if (!show) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  // 切换按钮：累计汇总显示；月度/年度数据维度隐藏
+  // 切换按钮已无意义（永远只有一种模式），整组隐藏
   var modeBar = document.getElementById('ovCompareModeBar');
-  if (modeBar) {
-    modeBar.style.display = (ovDimension === 'all') ? '' : 'none';
-    modeBar.querySelectorAll('.dim-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.cmode === (forceMode || ovCompareMode));
-    });
-  }
-  var isYearMode = (forceMode || ovCompareMode) === 'year';
+  if (modeBar) { modeBar.style.display = 'none'; }
+  var isYearMode = (forceMode === 'year');
   var scMap = buildSCMap(data);
   var agg = isYearMode ? yearAgg(sessions, scMap) : monthAgg(sessions, scMap);
   if (agg.length < 2) {
