@@ -2884,7 +2884,7 @@ button { font-family: inherit; cursor: pointer; }
    市场资讯工作台 v2 — UI 重设计版
 
 
-   数据流：manifest.json → report-data.json（每个周报）
+   数据流：manifest.enc → report-data.enc（每个周报，加密传输）
 
 
    ============================================================ */
@@ -2893,7 +2893,30 @@ button { font-family: inherit; cursor: pointer; }
 
 
 
-var BASE = '../w/', MANIFEST_URL = './manifest.json';
+var BASE = '../w/', MANIFEST_URL = './manifest.enc';
+
+// ===== 反爬虫：数据加密传输（与 encrypt_data.py 的 ENC_KEY 一致） =====
+var ENC_KEY = '3ksDd2026@workbench#dscs';
+function xorDecrypt(b64, key) {
+  var kb = [];
+  for (var i = 0; i < key.length; i++) kb.push(key.charCodeAt(i));
+  var bin = atob(b64);
+  var out = new Uint8Array(bin.length);
+  for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i) ^ kb[i % kb.length];
+  return new TextDecoder('utf-8').decode(out);
+}
+// 浏览器环境检测：无头/自动化环境不渲染数据
+function isAutomatedEnv() {
+  try {
+    if (navigator.webdriver === true) return true;
+    if (window._phantom || window.callPhantom) return true;
+    if (window.domAutomation && window.domAutomationController) return true;
+    var ua = navigator.userAgent || '';
+    if (/HeadlessChrome|PhantomJS|Selenium/i.test(ua)) return true;
+    if (typeof window.addEventListener !== 'function' || typeof window.setTimeout !== 'function') return true;
+  } catch (e) { return true; }
+  return false;
+}
 
 
 var CHART_COLORS = ['#1e3a8a', '#60a5fa', '#f97316', '#8b5cf6', '#ef4444', '#06b6d4', '#84cc16', '#ec4899', '#6366f1', '#14b8a6', '#f59e0b', '#a855f7', '#10b981', '#dc2626', '#0ea5e9', '#7c3aed'];
@@ -2992,6 +3015,14 @@ window.addEventListener('resize', function() {
 function init() {
 
 
+  // 反爬：自动化/无头环境不加载数据
+  if (isAutomatedEnv()) {
+    document.getElementById('mainContent').innerHTML =
+      '<div class="loading-state"><div class="spinner"></div><p>🛡️ 数据保护中，请使用浏览器访问</p></div>';
+    return;
+  }
+
+
   document.getElementById('mainContent').innerHTML =
 
 
@@ -3013,7 +3044,7 @@ function init() {
       weekKeys.push(r.id);
       if (i >= INITIAL_LOAD) { reportMap[r.id] = r; return; }
       promises.push(
-        fetchJSON(BASE + r.dirName + '/report-data.json').then(function(data) {
+        fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(data) {
           DATA[r.id] = normalizeData(data, r);
           reportMap[r.id] = r;
         }).catch(function() { })
@@ -6070,7 +6101,7 @@ function renderWeekButtons(activeKey) {
         else {
           var r = reportMap[wk];
           if (r) { this.textContent = '加载中...';
-            fetchJSON(BASE + r.dirName + '/report-data.json').then(function(d) {
+            fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(d) {
               DATA[wk] = normalizeData(d, r); renderPage(wk);
             }).catch(function() { renderPage(wk); });
           }
@@ -6493,7 +6524,11 @@ function fetchJSON(url, timeout) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
 
 
-    return r.json();
+    return r.text().then(function(txt) {
+      // .enc 文件为 XOR+base64 加密，需解密后解析
+      if (url.indexOf('.enc') > 0) return JSON.parse(xorDecrypt(txt, ENC_KEY));
+      return JSON.parse(txt);
+    });
 
 
   }).catch(function(e) { clearTimeout(timer); throw e; });
