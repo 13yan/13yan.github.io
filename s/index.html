@@ -303,16 +303,23 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <span style="font-size:12px;color:var(--text2);font-weight:500;">🎮 游戏</span>
       <select id="ovGameSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:#fff;cursor:pointer;min-width:120px;"></select>
     </span>
-    <!-- 范围筛选控件（常显）：月趋势范围 + 年趋势区间 -->
+    <!-- 月/年度趋势（合并切换：按月显示月份范围，按年显示年份区间） -->
     <span id="ovTrendYearCtl" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">
-      <span style="font-size:11px;color:var(--text3);margin-left:8px;">📅 月趋势范围</span>
-      <select id="ovMonthFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
-      <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
-      <select id="ovMonthToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
-      <span style="font-size:11px;color:var(--text3);margin-left:10px;">📅 年趋势区间</span>
-      <select id="ovTrendYearFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
-      <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
-      <select id="ovTrendYearToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      <span style="font-size:12px;color:var(--text2);font-weight:500;margin-left:8px;">📅 月/年度趋势</span>
+      <span id="ovTrendModeBar">
+        <button class="dim-btn active" data-tmode="month" style="font-size:11px;padding:3px 10px;">按月</button>
+        <button class="dim-btn" data-tmode="year" style="font-size:11px;padding:3px 10px;">按年</button>
+      </span>
+      <span id="ovMonthRangeGroup" style="display:inline-flex;align-items:center;">
+        <select id="ovMonthFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+        <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
+        <select id="ovMonthToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      </span>
+      <span id="ovYearRangeGroup" style="display:none;align-items:center;">
+        <select id="ovTrendYearFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+        <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
+        <select id="ovTrendYearToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      </span>
     </span>
   </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
@@ -332,14 +339,9 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <div style="font-size:10px;color:var(--text3);margin-top:8px;">公式：抖店利润 = (安卓+iOS)×85% - 0.6% - 8% - 15%；平台支付 = (安卓+iOS)×85% - 1%；原 iOS = 安卓×85% + iOS×75%×85%</div>
     </div>
   </div>
-  <!-- 月/年度趋势（合并：切换按钮选择按月或按年查看） -->
+  <!-- 趋势图（跟随顶部「月/年度趋势」选择：按月显示月趋势，按年显示年趋势） -->
   <div id="ovTrendWrap" style="display:none;">
-    <div class="section-title">📈 月/年度趋势 <span class="tag">趋势变化</span>
-      <span style="float:right;" id="ovTrendModeBar">
-        <button class="dim-btn active" data-tmode="month" style="font-size:11px;padding:3px 10px;">📅 按月</button>
-        <button class="dim-btn" data-tmode="year" style="font-size:11px;padding:3px 10px;">📅 按年</button>
-      </span>
-    </div>
+    <div class="section-title" id="ovTrendTitle">📈 月度趋势 <span class="tag">逐月变化</span></div>
     <div id="ovMonthTrendGroup">
       <div class="chart-grid" style="margin-bottom:20px;">
         <div class="chart-card"><h3>💰 月度销售额趋势</h3><div class="chart-wrap tall"><canvas id="ovTrendGMVChart"></canvas></div></div>
@@ -941,18 +943,23 @@ function renderProfitCompare(sessions, scMap) {
 function renderOverview() {
   var data=currentData; if(!data) return;
   var allSessions = data.sessions || [];
-  // 先按游戏过滤，再按月趋势范围过滤 → KPI/支付渠道/风险/利润/月趋势 数据源
-  var sessions = filterByGame(allSessions, ovGame);
-  sessions = filterByMonthRange(sessions);
-  // 年度趋势数据源：按游戏 + 年趋势区间
-  var gameAll = filterByGame(allSessions, ovGame);
-  var yearSessions = filterByYearRange(gameAll);
+  // 先按游戏过滤 → gameSessions（用于按钮置灰判断两个粒度的点数）
+  var gameSessions = filterByGame(allSessions, ovGame);
+  // 数据源跟随当前粒度：按月=月趋势范围；按年=年趋势区间
+  var sessions = (ovTrendMode === 'month') ? filterByMonthRange(gameSessions) : filterByYearRange(gameSessions);
+  // 更新顶部「按月/按年」按钮置灰 + 范围组显示 + 当前模式兜底切换
+  updateTrendModeBtns(gameSessions);
   var s=data.storeSummary||{};
   var grid=document.getElementById('ovSummaryGrid');
   // 更新副标题
   var dimDesc = (ovGame && ovGame !== 'all') ? (ovGame+' · 经营数据与趋势') : '全店 · 经营数据与趋势';
-  if (monthRangeIsSingle()) dimDesc += ' · 单月 '+ovMonthFrom.replace('-','年')+'月';
-  else if (!monthRangeIsSingle() && sessions.length > 0) dimDesc += ' · '+ovMonthFrom+'~'+ovMonthTo;
+  if (ovTrendMode === 'month') {
+    if (monthRangeIsSingle()) dimDesc += ' · 单月 '+ovMonthFrom.replace('-','年')+'月';
+    else if (sessions.length > 0) dimDesc += ' · '+ovMonthFrom+'~'+ovMonthTo;
+  } else {
+    if (yearRangeIsSingle()) dimDesc += ' · '+ovTrendYearFrom+'年 单年';
+    else if (sessions.length > 0) dimDesc += ' · '+ovTrendYearFrom+'~'+ovTrendYearTo+'年';
+  }
   document.querySelector('#tabOverview .sub').textContent = dimDesc;
   // 总场次描述
   var sessionsLabel = sessions.length + ' 场';
@@ -963,7 +970,7 @@ function renderOverview() {
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
     var autoGMV = sessions.reduce(function(sum,ss){return sum + getTotalSales(ss, ovSCMap);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
-    // 优先用按游戏筛选后的 sessions 累加值；无筛选场次时才回退到 storeSummary 累计值
+    // 优先用按游戏+粒度筛选后的 sessions 累加值；无筛选场次时才回退到 storeSummary 累计值
     var totalGMV = sessions.length > 0 ? autoGMV : (s.totalGMV || 0);
     var totalOrders = sessions.length > 0 ? autoOrders : (s.totalOrders || 0);
     grid.innerHTML = '';
@@ -1030,77 +1037,73 @@ function renderOverview() {
   } else { grid.innerHTML='<div class="empty-block">暂无汇总数据，等你提供后更新</div>'; }
   // 游戏对比图表（renderGameCharts 内部已处理选具体游戏时隐藏）
   renderGameCharts(data);
-  // 利润方案对比表（跟随当前范围：全部游戏=全店范围累计；单游戏=该游戏范围内）
+  // 利润方案对比表（跟随当前筛选）
   renderProfitCompare(sessions, ovSCMap);
-  // 多期数据对比（仅单游戏；按月用月范围数据，按年用年区间数据）
-  var cmpSessions = (ovCompareMode === 'year') ? yearSessions : sessions;
-  renderMonthCompare(data, cmpSessions);
-  // 月度趋势 / 年度趋势（合并模块：按月/按年切换）
-  renderTrend(sessions, yearSessions, ovSCMap);
+  // 多期数据对比（仅单游戏；数据已按当前粒度过滤）
+  renderMonthCompare(data, sessions);
+  // 趋势图（跟随顶部「按月/按年」选择）
+  renderTrend(sessions, ovSCMap);
 }
 
-// ===== 月/年度趋势（合并模块） =====
-// monthSessions=月趋势范围过滤后；yearSessions=年趋势区间过滤后
-function renderTrend(monthSessions, yearSessions, scMap) {
+// 更新顶部「按月/按年」按钮置灰 + 范围组显示；当前模式无数据时兜底切换
+function updateTrendModeBtns(gameSessions) {
+  var bar = document.getElementById('ovTrendModeBar');
+  if (!bar) return;
+  var mKeys = {}, yKeys = {};
+  filterByMonthRange(gameSessions).forEach(function(s){ var k = s.date ? s.date.substring(0,7) : ''; if (k) mKeys[k] = true; });
+  filterByYearRange(gameSessions).forEach(function(s){ var k = s.date ? s.date.substring(0,4) : ''; if (k) yKeys[k] = true; });
+  var mCnt = Object.keys(mKeys).length;
+  var yCnt = Object.keys(yKeys).length;
+  var mOk = mCnt >= 2, yOk = yCnt >= 2;
+  bar.querySelectorAll('.dim-btn').forEach(function(b){
+    var ok = (b.dataset.tmode === 'month') ? mOk : yOk;
+    b.disabled = !ok;
+    b.title = ok ? '' : (b.dataset.tmode === 'month'
+      ? '月趋势范围需跨多月（当前仅 ' + mCnt + ' 个月）'
+      : '年趋势区间需跨多年（当前仅 ' + yCnt + ' 年）');
+    b.style.opacity = ok ? '' : '0.45';
+    b.style.cursor = ok ? '' : 'not-allowed';
+  });
+  // 当前模式无数据 → 兜底切换到可用模式
+  if (ovTrendMode === 'month' && !mOk && yOk) ovTrendMode = 'year';
+  else if (ovTrendMode === 'year' && !yOk && mOk) ovTrendMode = 'month';
+  // 范围组显示 + 按钮 active
+  var mGrp = document.getElementById('ovMonthRangeGroup');
+  var yGrp = document.getElementById('ovYearRangeGroup');
+  if (mGrp) mGrp.style.display = (ovTrendMode === 'month') ? 'inline-flex' : 'none';
+  if (yGrp) yGrp.style.display = (ovTrendMode === 'year') ? 'inline-flex' : 'none';
+  bar.querySelectorAll('.dim-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.tmode === ovTrendMode);
+  });
+}
+
+// ===== 趋势图（顶部「按月/按年」决定显示哪组） =====
+function renderTrend(sessions, scMap) {
   var wrap = document.getElementById('ovTrendWrap');
   if (!wrap) return;
-  // 实际数据点数判断（趋势需 ≥2 个时间点才有意义）
-  var monthKeys = {}, yearKeys = {};
-  monthSessions.forEach(function(s){ var m = s.date ? s.date.substring(0,7) : ''; if (m) monthKeys[m] = true; });
-  yearSessions.forEach(function(s){ var y = s.date ? s.date.substring(0,4) : ''; if (y) yearKeys[y] = true; });
-  var monthCnt = Object.keys(monthKeys).length;
-  var yearCnt = Object.keys(yearKeys).length;
-  var monthOk = monthCnt >= 2;
-  var yearOk = yearCnt >= 2;
-  // 按钮置灰 + 悬停提示
-  var bar = document.getElementById('ovTrendModeBar');
-  if (bar) {
-    bar.querySelectorAll('.dim-btn').forEach(function(b){
-      var ok = (b.dataset.tmode === 'month') ? monthOk : yearOk;
-      b.disabled = !ok;
-      b.title = ok ? '' : (b.dataset.tmode === 'month'
-        ? '月趋势范围需跨多月（当前仅 ' + monthCnt + ' 个月）'
-        : '年趋势区间需跨多年（当前仅 ' + yearCnt + ' 年）');
-      b.style.opacity = ok ? '' : '0.45';
-      b.style.cursor = ok ? '' : 'not-allowed';
-    });
-  }
-  // 当前模式不可用 → 自动切到可用模式
-  if (ovTrendMode === 'month' && !monthOk && yearOk) ovTrendMode = 'year';
-  else if (ovTrendMode === 'year' && !yearOk && monthOk) ovTrendMode = 'month';
-  // 两种都不可用 → 空态提示
-  var hint = document.getElementById('ovTrendEmptyHint');
-  if (!monthOk && !yearOk) {
-    wrap.style.display = 'block';
-    if (bar) bar.querySelectorAll('.dim-btn').forEach(function(b){ b.classList.remove('active'); });
-    document.getElementById('ovMonthTrendGroup').style.display = 'none';
-    document.getElementById('ovYearTrendGroup').style.display = 'none';
-    if (!hint) {
-      hint = document.createElement('div');
-      hint.id = 'ovTrendEmptyHint';
-      hint.className = 'empty-block';
-      hint.style.marginBottom = '20px';
-      wrap.appendChild(hint);
-    }
-    hint.style.display = 'block';
-    hint.textContent = '当前范围无趋势数据（趋势需要 ≥2 个时间点：月趋势范围跨多月 或 年趋势区间跨多年）';
-    return;
-  }
+  // 当前粒度数据点数（趋势需 ≥2 个时间点）
+  var keys = {};
+  sessions.forEach(function(s){
+    var k = s.date ? s.date.substring(0, (ovTrendMode === 'month') ? 7 : 4) : '';
+    if (k) keys[k] = true;
+  });
+  var cnt = Object.keys(keys).length;
+  if (cnt < 2 || sessions.length === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  if (hint) hint.style.display = 'none';
-  // 按钮 active 同步
-  if (bar) {
-    bar.querySelectorAll('.dim-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.tmode === ovTrendMode);
-    });
-  }
-  // 切换组显示 + 渲染对应图
+  var title = document.getElementById('ovTrendTitle');
   var monthGrp = document.getElementById('ovMonthTrendGroup');
   var yearGrp = document.getElementById('ovYearTrendGroup');
-  if (monthGrp) monthGrp.style.display = (ovTrendMode === 'month') ? '' : 'none';
-  if (yearGrp) yearGrp.style.display = (ovTrendMode === 'year') ? '' : 'none';
-  if (ovTrendMode === 'month') renderMonthTrendCharts(monthSessions, scMap);
-  else renderYearTrendCharts(yearSessions, scMap);
+  if (ovTrendMode === 'month') {
+    if (title) title.innerHTML = '📈 月度趋势 <span class="tag">逐月变化</span>';
+    if (monthGrp) monthGrp.style.display = '';
+    if (yearGrp) yearGrp.style.display = 'none';
+    renderMonthTrendCharts(sessions, scMap);
+  } else {
+    if (title) title.innerHTML = '📈 年度趋势 <span class="tag">逐年变化</span>';
+    if (monthGrp) monthGrp.style.display = 'none';
+    if (yearGrp) yearGrp.style.display = '';
+    renderYearTrendCharts(sessions, scMap);
+  }
 }
 
 function renderMonthTrendCharts(sessions, ovSCMap) {
