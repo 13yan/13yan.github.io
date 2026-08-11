@@ -331,12 +331,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   </div>
   <div class="section-title" style="margin-top:20px;">⚠️ 数据风险评估 <span class="tag">支付渠道风险</span></div>
   <div id="ovRiskSection" class="risk-section"></div>
-  <!-- 利润方案对比（仅累计汇总维度显示） -->
+  <!-- 利润方案对比（三渠道卡片横排） -->
   <div id="ovProfitCompareWrap" style="display:none;">
     <div class="section-title" style="margin-top:20px;">📊 利润方案对比 <span class="tag">三种支付渠道利润</span></div>
-    <div class="chart-card" style="margin-bottom:20px;">
-      <div class="table-wrap" id="ovProfitCompareTableWrap"></div>
-      <div style="font-size:10px;color:var(--text3);margin-top:8px;">公式：抖店利润 = (安卓+iOS)×85% - 0.6% - 8% - 15%；平台支付 = (安卓+iOS)×85% - 1%；原 iOS = 安卓×85% + iOS×75%×85%</div>
+    <div style="margin-bottom:20px;">
+      <div id="ovProfitCompareCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;"></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;" id="ovProfitCompareNote"></div>
     </div>
   </div>
   <!-- 趋势图（跟随顶部「月/年度趋势」选择：按月显示月趋势，按年显示年趋势） -->
@@ -898,14 +898,14 @@ function renderGameCharts(data) {
   });
 }
 
-// 利润方案对比表
+// 利润方案对比（三渠道卡片横排）
 // 数据范围：跟随当前筛选（sessions 已按游戏+月趋势范围过滤）
 function renderProfitCompare(sessions, scMap) {
   var wrap = document.getElementById('ovProfitCompareWrap');
   if (!wrap) return;
   wrap.style.display = 'block';
-  var tw = document.getElementById('ovProfitCompareTableWrap');
-  if (!tw) return;
+  var cards = document.getElementById('ovProfitCompareCards');
+  if (!cards) return;
   var pDd=0, pPt=0, pNm=0, totalGMV=0;
   sessions.forEach(function(sx){
     var a=sx.payment?.android?.amount||0, i=sx.payment?.ios?.amount||0;
@@ -919,25 +919,41 @@ function renderProfitCompare(sessions, scMap) {
   var rateNm = totalGMV > 0 ? (pNm/totalGMV*100) : 0;
   // 抖店同比：以抖店为基准 = 抖店利润 - 该渠道利润；正=抖店更赚（红↑），负=抖店更亏（绿↓）
   // 百分比基准 = 对比渠道利润（同比口径）
-  function diffCell(dd, other) {
+  function diffTxt(dd, other) {
     var d = dd - other;
-    if (Math.abs(d) < 0.01) return '<td style="color:var(--text3);">—</td>';
+    if (Math.abs(d) < 0.01) return '<span style="color:var(--text3);">—</span>';
     var pct = other !== 0 ? (d / Math.abs(other) * 100) : 0;
     var up = d >= 0;
     var color = up ? '#dc2626' : '#059669'; // 红↑绿↓（用户偏好）
-    return '<td style="color:'+color+';font-weight:600;">'+(up?'↑+':'↓')+fmt(Math.abs(d))+' 元<br><span style="font-size:10px;font-weight:400;">('+(up?'+':'')+pct.toFixed(2)+'%)</span></td>';
+    return '<span style="color:'+color+';font-weight:600;">'+(up?'↑ +':'↓ -')+Math.abs(pct).toFixed(2)+'%</span>'
+      + '<span style="color:var(--text3);font-size:10px;font-weight:400;"> ('+(up?'+':'')+fmt(Math.abs(d))+' 元)</span>';
   }
-  var scopeTxt = (ovGame && ovGame !== 'all')
-    ? '（'+ovGame+' · '+ovMonthFrom+'~'+ovMonthTo+'）'
-    : '（全店 · '+ovMonthFrom+'~'+ovMonthTo+'）';
-  var html = '<table class="rule-table" style="width:100%;">';
-  html += '<thead><tr><th style="text-align:left;min-width:120px;">支付渠道方案'+scopeTxt+'</th><th style="text-align:right;">利润（元）</th><th style="text-align:right;">利润率</th><th style="text-align:left;">抖店同比</th></tr></thead><tbody>';
-  html += '<tr style="background:#f0fdf4;"><td style="text-align:left;font-weight:600;color:#059669;">🟢 抖店（当前）</td><td style="text-align:right;font-weight:600;">'+fmt(pDd)+'</td><td style="text-align:right;font-weight:600;color:#059669;">'+rateDd.toFixed(2)+'%</td><td style="color:var(--text3);">—</td></tr>';
-  html += '<tr><td style="text-align:left;">平台支付</td><td style="text-align:right;">'+fmt(pPt)+'</td><td style="text-align:right;color:var(--text2);">'+ratePt.toFixed(2)+'%</td>'+diffCell(pDd, pPt)+'</tr>';
-  html += '<tr><td style="text-align:left;">原 iOS 支付</td><td style="text-align:right;">'+fmt(pNm)+'</td><td style="text-align:right;color:var(--text2);">'+rateNm.toFixed(2)+'%</td>'+diffCell(pDd, pNm)+'</tr>';
-  html += '</tbody></table>';
-  html += '<div style="font-size:10px;color:var(--text3);margin-top:4px;">抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道利润）。↑红=抖店比该渠道更赚；↓绿=抖店比该渠道更亏。</div>';
-  tw.innerHTML = html;
+  function card(icon, name, profitTxt, rateTxt, bottomHtml, style) {
+    return '<div style="'+(style||'background:#f8fafc;border:1px solid var(--border)')+';border-radius:10px;padding:14px 16px;box-shadow:var(--shadow-sm);">'
+      + '<div style="font-size:11px;color:var(--text3);font-weight:500;">'+icon+' '+name+'</div>'
+      + '<div style="font-size:22px;font-weight:700;color:var(--primary);margin-top:5px;letter-spacing:-0.3px;">'+profitTxt+'</div>'
+      + '<div style="font-size:11px;color:var(--text2);margin-top:2px;">利润率 '+rateTxt+'%</div>'
+      + '<div style="margin-top:9px;font-size:11px;line-height:1.5;">'+bottomHtml+'</div>'
+      + '</div>';
+  }
+  // 抖店卡（当前方案高亮：绿底绿边 + 当前方案徽章）
+  var ddCard = card('🟢', '抖店（当前方案）', fmt(pDd)+' 元', rateDd.toFixed(2),
+    '<span style="display:inline-block;background:#dcfce7;color:#059669;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;">当前方案</span>',
+    'background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #86efac;');
+  // 平台支付卡 / 原iOS卡：主值利润 + 抖店同比徽章
+  var ptCard = card('🤝', '平台支付', fmt(pPt)+' 元', ratePt.toFixed(2),
+    '抖店同比 '+diffTxt(pDd, pPt));
+  var nmCard = card('🍎', '原 iOS 支付', fmt(pNm)+' 元', rateNm.toFixed(2),
+    '抖店同比 '+diffTxt(pDd, pNm));
+  cards.innerHTML = ddCard + ptCard + nmCard;
+  // 底部说明
+  var note = document.getElementById('ovProfitCompareNote');
+  if (note) {
+    var scopeTxt = (ovGame && ovGame !== 'all')
+      ? ovGame+' · '+ovMonthFrom+'~'+ovMonthTo
+      : '全店 · '+ovMonthFrom+'~'+ovMonthTo;
+    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6% − 8% − 15%；平台支付 = (安卓+iOS)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
+  }
 }
 
 function renderOverview() {
