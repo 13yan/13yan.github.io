@@ -355,13 +355,19 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       </div>
     </div>
   </div>
-  <!-- 多期数据对比（累计汇总+单游戏可切换月/年；月度数据多月仅按月；年度数据多年仅按年；其余隐藏） -->
+  <!-- 多期数据对比（仅单游戏：指定两个期间对比，月度/年度可切换） -->
   <div id="ovMonthCompareWrap" style="display:none;">
-    <div class="section-title" style="margin-top:20px;">📊 多期数据对比 <span class="tag">环比分析</span>
+    <div class="section-title" style="margin-top:20px;">📊 多期数据对比 <span class="tag">双期对比</span>
       <span style="float:right;" id="ovCompareModeBar">
-        <button class="dim-btn active" data-cmode="month" style="font-size:11px;padding:3px 10px;">按月度</button>
-        <button class="dim-btn" data-cmode="year" style="font-size:11px;padding:3px 10px;">按年度</button>
+        <button class="dim-btn active" data-cmode="month" style="font-size:11px;padding:3px 10px;">📅 按月度</button>
+        <button class="dim-btn" data-cmode="year" style="font-size:11px;padding:3px 10px;">📅 按年度</button>
       </span>
+    </div>
+    <div style="margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--text3);">期间A</span>
+      <select id="ovCmpASelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      <span style="font-size:11px;color:var(--text3);font-weight:600;">VS</span>
+      <select id="ovCmpBSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
     </div>
     <div class="chart-card" style="margin-bottom:20px;">
       <div class="table-wrap" id="ovCompareTableWrap"></div>
@@ -734,6 +740,8 @@ var ovMonthFrom = '';       // 月趋势范围：开始月份
 var ovMonthTo = '';         // 月趋势范围：结束月份
 var ovGame = 'all';         // 游戏筛选
 var ovCompareMode = 'month'; // 多期对比：month=按月度 year=按年度
+var ovCmpA = '';             // 多期对比 期间A（月份 YYYY-MM 或年份 YYYY）
+var ovCmpB = '';             // 多期对比 期间B
 var ovTrendMode = 'month';   // 月/年度趋势：month=按月 year=按年
 var ovTrendYearFrom = '';   // 年趋势区间：开始年份
 var ovTrendYearTo = '';     // 年趋势区间：结束年份
@@ -1054,8 +1062,8 @@ function renderOverview() {
   renderGameCharts(data);
   // 利润方案对比表（跟随当前筛选）
   renderProfitCompare(sessions, ovSCMap);
-  // 多期数据对比（仅单游戏；数据已按当前粒度过滤）
-  renderMonthCompare(data, sessions);
+  // 多期数据对比（仅单游戏；双期对比）
+  renderMonthCompare(data);
   // 趋势图（跟随顶部「按月/按年」选择）
   renderTrend(sessions, ovSCMap);
 }
@@ -1188,18 +1196,17 @@ function renderYearTrendCharts(sessions, ovSCMap) {
   });
 }
 
-// ===== 多月数据对比（按月度 / 按年度 环比表） =====
-function monthAgg(sessions, scMap) {
-  // 按月聚合 8 指标
-  var mMap = {};
+// ===== 多期数据对比（双期对比：指定两个期间 A VS B） =====
+// 单期间 8 指标聚合
+function periodAgg(sessions, period, isYearMode, scMap) {
+  var g = {label:period, gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
   sessions.forEach(function(sx){
-    var m = sx.date.substring(0,7);
-    if (!mMap[m]) mMap[m] = {label:m.substring(0,4)+'年'+parseInt(m.substring(5,7),10)+'月', gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
+    var k = isYearMode ? sx.date.substring(0,4) : sx.date.substring(0,7);
+    if (k !== period) return;
     var sc = scMap[sx.date+'_'+sx.game];
     var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
     var selfS = sc ? (sc.self?.sales||0) : 0;
     var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
-    var g = mMap[m];
     g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
     g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
     g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
@@ -1207,52 +1214,90 @@ function monthAgg(sessions, scMap) {
     g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
     g.cnt++;
   });
-  return Object.keys(mMap).sort().map(function(k){ return mMap[k]; });
+  return g;
 }
 
-function yearAgg(sessions, scMap) {
-  // 按年聚合（与月结构一致的 8 指标）
-  var yMap = {};
-  sessions.forEach(function(sx){
-    var y = sx.date.substring(0,4);
-    if (!yMap[y]) yMap[y] = {label:y+'年', gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
-    var sc = scMap[sx.date+'_'+sx.game];
-    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
-    var selfS = sc ? (sc.self?.sales||0) : 0;
-    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
-    var g = yMap[y];
-    g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
-    g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
-    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
-    g.androidAmt += a; g.iosAmt += i;
-    g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
-    g.cnt++;
+// 填充期间A/B下拉（跟随模式：月度=月份选项，年度=年份选项）
+// 保留用户上次选择（若在新粒度下仍存在）
+function populateCompareSelects(sessions, mode) {
+  var selA = document.getElementById('ovCmpASelect');
+  var selB = document.getElementById('ovCmpBSelect');
+  if (!selA || !selB) return;
+  var opts;
+  if (mode === 'year') {
+    opts = getAvailableYears(sessions).map(function(y){ return {v:y, label:y+'年'}; });
+  } else {
+    opts = getAvailableMonths(sessions).map(function(m){
+      var mo = parseInt(m.substring(5,7), 10);
+      return {v:m, label:m.substring(0,4)+'年'+(isNaN(mo)?m.substring(5,7):mo)+'月'};
+    });
+  }
+  if (opts.length < 2) return;
+  var keepA = (ovCmpA && opts.some(function(o){ return o.v === ovCmpA; })) ? ovCmpA : opts[opts.length-2].v;
+  var keepB = (ovCmpB && opts.some(function(o){ return o.v === ovCmpB; })) ? ovCmpB : opts[opts.length-1].v;
+  selA.innerHTML = '';
+  selB.innerHTML = '';
+  opts.forEach(function(o){
+    var optA = document.createElement('option'); optA.value = o.v; optA.textContent = o.label; selA.appendChild(optA);
+    var optB = document.createElement('option'); optB.value = o.v; optB.textContent = o.label; selB.appendChild(optB);
   });
-  return Object.keys(yMap).sort().map(function(k){ return yMap[k]; });
+  selA.value = keepA;
+  selB.value = keepB;
+  ovCmpA = keepA;
+  ovCmpB = keepB;
 }
 
-function renderMonthCompare(data, sessions) {
+function renderMonthCompare(data) {
   var wrap = document.getElementById('ovMonthCompareWrap');
   if (!wrap) return;
-  // 显示条件：仅选单游戏时展示（可按月度/按年度切换）
-  // 全部游戏 / 无数据 时隐藏
-  if (!ovGame || ovGame === 'all' || sessions.length === 0) { wrap.style.display = 'none'; return; }
-  wrap.style.display = 'block';
-  // 切换按钮：始终显示（单游戏时月/年均可选）
+  // 仅单游戏显示
+  if (!ovGame || ovGame === 'all') { wrap.style.display = 'none'; return; }
+  // 该游戏全量数据（期间下拉可跨范围自由选）
+  var cmpBase = filterByGame(data.sessions || [], ovGame);
+  var months = getAvailableMonths(cmpBase);
+  var years = getAvailableYears(cmpBase);
+  var monthOk = months.length >= 2;
+  var yearOk = years.length >= 2;
+  // 切换按钮置灰（数据不足时禁用，防止模块消失 bug）
   var modeBar = document.getElementById('ovCompareModeBar');
   if (modeBar) {
-    modeBar.style.display = '';
+    modeBar.querySelectorAll('.dim-btn').forEach(function(b){
+      var ok = (b.dataset.cmode === 'month') ? monthOk : yearOk;
+      b.disabled = !ok;
+      b.title = ok ? '' : (b.dataset.cmode === 'month'
+        ? '可用月份不足 2 个（当前 ' + months.length + ' 个）'
+        : '可用年份不足 2 年（当前 ' + years.length + ' 年）');
+      b.style.opacity = ok ? '' : '0.45';
+      b.style.cursor = ok ? '' : 'not-allowed';
+    });
+  }
+  // 当前模式不可用 → 兜底切到可用模式
+  if (ovCompareMode === 'month' && !monthOk && yearOk) ovCompareMode = 'year';
+  else if (ovCompareMode === 'year' && !yearOk && monthOk) ovCompareMode = 'month';
+  // 两种都不可用 → 隐藏模块（无对比意义）
+  if (!monthOk && !yearOk) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  // 按钮 active 同步
+  if (modeBar) {
     modeBar.querySelectorAll('.dim-btn').forEach(function(b){
       b.classList.toggle('active', b.dataset.cmode === ovCompareMode);
     });
   }
   var isYearMode = (ovCompareMode === 'year');
+  // 填充期间下拉
+  populateCompareSelects(cmpBase, ovCompareMode);
+  // 聚合两个期间
   var scMap = buildSCMap(data);
-  var agg = isYearMode ? yearAgg(sessions, scMap) : monthAgg(sessions, scMap);
-  if (agg.length < 2) {
-    wrap.style.display = 'none';
-    return;
+  var aggA = periodAgg(cmpBase, ovCmpA, isYearMode, scMap);
+  var aggB = periodAgg(cmpBase, ovCmpB, isYearMode, scMap);
+  // 期间展示名
+  function periodLabel(p) {
+    if (isYearMode) return p + '年';
+    var mo = parseInt(p.substring(5,7), 10);
+    return p.substring(0,4) + '年' + (isNaN(mo) ? p.substring(5,7) : mo) + '月';
   }
+  var labelA = periodLabel(ovCmpA || '');
+  var labelB = periodLabel(ovCmpB || '');
   var metricDefs = [
     {k:'gmv',  t:'总GMV(元)',      money:true},
     {k:'live', t:'直播GMV(元)',    money:true},
@@ -1263,49 +1308,35 @@ function renderMonthCompare(data, sessions) {
     {k:'profit', t:'抖店利润(元)', money:true},
     {k:'avgGMV', t:'场均GMV(元)',  money:true}
   ];
-  var header = '<tr><th style="text-align:left;min-width:110px;">指标</th>';
-  agg.forEach(function(g){ header += '<th>'+g.label+'</th>'; });
-  header += '</tr>';
+  function metricVal(g, md) {
+    if (md.k === 'androidShare') return (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
+    if (md.k === 'avgGMV') return g.cnt > 0 ? (g.gmv / g.cnt) : 0;
+    return g[md.k];
+  }
+  function metricTxt(v, md) {
+    if (md.pct) return v.toFixed(1) + '%';
+    return fmt(v);
+  }
+  // 表格：内容居中，指标+环比合并一行
+  var header = '<tr><th style="text-align:center;min-width:110px;">指标</th><th style="text-align:center;">'+labelA+'</th><th style="text-align:center;">'+labelB+'</th><th style="text-align:center;">环比</th></tr>';
   var body = '';
   metricDefs.forEach(function(md){
-    body += '<tr class="section"><td style="text-align:left;">'+md.t+'</td>';
-    var prev = null;
-    agg.forEach(function(g){
-      var v;
-      if (md.k === 'androidShare') v = (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
-      else if (md.k === 'avgGMV') v = g.cnt > 0 ? (g.gmv / g.cnt) : 0;
-      else v = g[md.k];
-      var txt = md.pct ? v.toFixed(1)+'%' : (md.money ? fmt(v) : fmt(v));
-      body += '<td>'+txt+'</td>';
-      prev = v;
-    });
-    body += '</tr>';
-    // 环比行
-    body += '<tr style="color:var(--text3);">';
-    body += '<td style="text-align:left;font-size:10px;color:var(--text3);">↕ 环比</td>';
-    var prevV = null;
-    agg.forEach(function(g){
-      var v;
-      if (md.k === 'androidShare') v = (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
-      else if (md.k === 'avgGMV') v = g.cnt > 0 ? (g.gmv / g.cnt) : 0;
-      else v = g[md.k];
-      if (prevV === null) { body += '<td style="font-size:10px;">—</td>'; }
-      else {
-        var diff = prevV !== 0 ? ((v - prevV) / Math.abs(prevV) * 100) : (v > 0 ? 100 : 0);
-        var up = diff >= 0;
-        // 红↑绿↓
-        body += '<td style="font-size:10px;color:'+(up?'#dc2626':'#059669')+';">'+(up?'↑':'↓')+Math.abs(diff).toFixed(1)+'%</td>';
-      }
-      prevV = v;
-    });
-    body += '</tr>';
+    var vA = metricVal(aggA, md);
+    var vB = metricVal(aggB, md);
+    var diff = vA !== 0 ? ((vB - vA) / Math.abs(vA) * 100) : (vB > 0 ? 100 : 0);
+    var up = diff >= 0;
+    body += '<tr><td style="text-align:center;">'+md.t+'</td>'
+      + '<td style="text-align:center;">'+metricTxt(vA, md)+'</td>'
+      + '<td style="text-align:center;">'+metricTxt(vB, md)+'</td>'
+      + '<td style="text-align:center;color:'+(up?'#dc2626':'#059669')+';font-weight:600;">'+(up?'↑':'↓')+Math.abs(diff).toFixed(1)+'%</td></tr>';
   });
   var wrapEl = document.getElementById('ovCompareTableWrap');
-  wrapEl.innerHTML = '<table class="data-table" style="width:100%;">'+header+body+'</table>';
-  // 注释：场次数 + 模式说明
+  if (wrapEl) wrapEl.innerHTML = '<table class="data-table" style="width:100%;">'+header+body+'</table>';
+  // 注释：场次数 + 口径
   var note = document.getElementById('ovCompareNote');
-  var cntTxt = agg.map(function(g){ return g.label+' '+g.cnt+'场'; }).join(' / ');
-  note.textContent = '场次数：'+cntTxt+'。'+(isYearMode ? '按年度对比各年份累计经营数据；' : '按月对比，场次不同时以场均GMV为公平口径；')+'环比=相邻期增减，红↑绿↓。';
+  if (note) {
+    note.textContent = '场次数：'+labelA+' '+aggA.cnt+'场 / '+labelB+' '+aggB.cnt+'场。'+(isYearMode?'按年度对比各年汇总；':'按月对比，场次不同时以场均GMV为公平口径；')+'环比 = ('+labelB+' − '+labelA+') / '+labelA+'，红↑绿↓。';
+  }
 }
 
 function assessRisk(sessions, isSingle) {
@@ -2010,10 +2041,20 @@ document.getElementById('ovGameSelect').addEventListener('change', function(){
 // 多期对比 按月度/按年度 切换
 document.getElementById('ovCompareModeBar').addEventListener('click', function(e){
   var btn = e.target.closest('.dim-btn');
-  if (!btn || btn.classList.contains('active')) return;
+  if (!btn || btn.classList.contains('active') || btn.disabled) return;
   this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
   ovCompareMode = btn.getAttribute('data-cmode');
+  renderOverview();
+});
+
+// 多期对比 期间A/B 切换
+document.getElementById('ovCmpASelect').addEventListener('change', function(){
+  ovCmpA = this.value;
+  renderOverview();
+});
+document.getElementById('ovCmpBSelect').addEventListener('change', function(){
+  ovCmpB = this.value;
   renderOverview();
 });
 
