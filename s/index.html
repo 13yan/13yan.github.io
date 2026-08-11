@@ -936,10 +936,9 @@ function renderProfitCompare(sessions, scMap) {
       + '<div style="margin-top:9px;font-size:11px;line-height:1.5;">'+bottomHtml+'</div>'
       + '</div>';
   }
-  // 抖店卡（当前方案高亮：绿底绿边 + 当前方案徽章）
+  // 抖店卡：与其他卡片颜色统一（去掉绿色高亮底/边）
   var ddCard = card('🟢', '抖店（当前方案）', fmt(pDd)+' 元', rateDd.toFixed(2),
-    '<span style="display:inline-block;background:#dcfce7;color:#059669;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;">当前方案</span>',
-    'background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:1px solid #86efac;');
+    '<span style="display:inline-block;background:#dcfce7;color:#059669;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;">当前方案</span>');
   // 平台支付卡 / 原iOS卡：主值利润 + 抖店同比徽章
   var ptCard = card('🤝', '平台支付', fmt(pPt)+' 元', ratePt.toFixed(2),
     '抖店同比 '+diffTxt(pDd, pPt));
