@@ -536,7 +536,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>范围筛选</td><td>顶部游戏下拉（默认全部游戏）+ 两个范围控件：① 📅 月趋势范围（开始月份~结束月份，KPI/支付渠道/风险/利润对比/月度趋势 均跟随该范围）；② 📅 年趋势区间（开始年份~结束年份，控制年度趋势图显示哪些年）。多期对比（单游戏时）：按月用月范围、按年用年区间</td></tr>
-      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%所得税 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
+      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%直播服务费 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
       <tr><td>利润方案对比表</td><td>对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异，数据跟随所选游戏+月趋势范围</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
@@ -1045,7 +1045,7 @@ function renderOverview() {
     [
       {l:'💰 销售额', v:fmt(totalGMV)+' 元', sb:sessionsLabel+' · '+subModeLabel, cl:'#1e3a8a'},
       {l:'📋 支付订单数', v:fmt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
-      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:'扣 0.6%服务费 + 8%所得税 + 15%分成', cl:'#059669'},
+      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:'扣 0.6%服务费 + 8%直播服务费 + 15%分成', cl:'#059669'},
       {l:'📊 利润率', v:profitRate.toFixed(2)+'%', sb:'利润 / 销售额（GMV口径）', cl:'#7c3aed'}
     ].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
