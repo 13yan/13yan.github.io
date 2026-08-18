@@ -273,6 +273,24 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 }
 .dim-btn:hover { border-color:var(--primary); color:var(--primary); }
 .dim-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+/* 汇总按钮：未选中时蓝边浅蓝底，选中时实色蓝（提示为全局视图入口） */
+.dim-btn.dim-btn-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #eef2ff;
+  font-weight: 600;
+}
+.dim-btn.dim-btn-primary:hover {
+  background: #dbeafe;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.dim-btn.dim-btn-primary.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+}
 </style>
 </head>
 <body>
@@ -303,14 +321,15 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <span style="font-size:12px;color:var(--text2);font-weight:500;">🎮 游戏</span>
       <select id="ovGameSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:#fff;cursor:pointer;min-width:120px;"></select>
     </span>
-    <!-- 月/年度趋势（合并切换：按月显示月份范围，按年显示年份区间） -->
+    <!-- 月/年度趋势（合并切换：汇总=全量数据；按月/按年=趋势范围） -->
     <span id="ovTrendYearCtl" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">
       <span style="font-size:12px;color:var(--text2);font-weight:500;margin-left:8px;">📅 月/年度趋势</span>
       <span id="ovTrendModeBar">
-        <button class="dim-btn active" data-tmode="month" style="font-size:11px;padding:3px 10px;">按月</button>
+        <button class="dim-btn dim-btn-primary active" data-tmode="summary" style="font-size:11px;padding:3px 10px;">📊 汇总</button>
+        <button class="dim-btn" data-tmode="month" style="font-size:11px;padding:3px 10px;">按月</button>
         <button class="dim-btn" data-tmode="year" style="font-size:11px;padding:3px 10px;">按年</button>
       </span>
-      <span id="ovMonthRangeGroup" style="display:inline-flex;align-items:center;">
+      <span id="ovMonthRangeGroup" style="display:none;align-items:center;">
         <select id="ovMonthFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
         <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
         <select id="ovMonthToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
@@ -339,9 +358,21 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <div style="font-size:10px;color:var(--text3);margin-top:8px;" id="ovProfitCompareNote"></div>
     </div>
   </div>
-  <!-- 趋势图（跟随顶部「月/年度趋势」选择：按月显示月趋势，按年显示年趋势） -->
+  <!-- 趋势图（跟随顶部「月/年度趋势」选择：汇总/按月/按年） -->
   <div id="ovTrendWrap" style="display:none;">
     <div class="section-title" id="ovTrendTitle">📈 月度趋势 <span class="tag">逐月变化</span></div>
+    <!-- 汇总视图：6 张小指标卡 + 累计增长曲线 + 平台构成饼图 -->
+    <div id="ovSummaryGroup" style="display:none;">
+      <div class="summary-grid" id="ovSummaryStats" style="margin-bottom:20px;"></div>
+      <div class="chart-card" style="margin-bottom:20px;">
+        <h3>📈 累计增长曲线 <span class="tag">从首场到末场</span></h3>
+        <div class="chart-wrap tall"><canvas id="ovCumulativeChart"></canvas></div>
+      </div>
+      <div class="chart-grid" style="margin-bottom:20px;">
+        <div class="chart-card"><h3>🥧 销售渠道构成（汇总）</h3><div class="chart-wrap"><canvas id="ovSummaryChannelChart"></canvas></div></div>
+        <div class="chart-card"><h3>🥧 支付渠道构成（汇总）</h3><div class="chart-wrap"><canvas id="ovSummaryPaymentChart"></canvas></div></div>
+      </div>
+    </div>
     <div id="ovMonthTrendGroup">
       <div class="chart-grid" style="margin-bottom:20px;">
         <div class="chart-card"><h3>💰 月度销售额趋势</h3><div class="chart-wrap tall"><canvas id="ovTrendGMVChart"></canvas></div></div>
@@ -742,7 +773,7 @@ var ovGame = 'all';         // 游戏筛选
 var ovCompareMode = 'month'; // 多期对比：month=按月度 year=按年度
 var ovCmpA = '';             // 多期对比 期间A（月份 YYYY-MM 或年份 YYYY）
 var ovCmpB = '';             // 多期对比 期间B
-var ovTrendMode = 'month';   // 月/年度趋势：month=按月 year=按年
+var ovTrendMode = 'summary'; // 月/年度趋势：summary=汇总全量  month=按月  year=按年
 var ovTrendYearFrom = '';   // 年趋势区间：开始年份
 var ovTrendYearTo = '';     // 年趋势区间：结束年份
 
@@ -968,15 +999,19 @@ function renderOverview() {
   var allSessions = data.sessions || [];
   // 先按游戏过滤 → gameSessions（用于按钮置灰判断两个粒度的点数）
   var gameSessions = filterByGame(allSessions, ovGame);
-  // 数据源跟随当前粒度：按月=月趋势范围；按年=年趋势区间
-  var sessions = (ovTrendMode === 'month') ? filterByMonthRange(gameSessions) : filterByYearRange(gameSessions);
-  // 更新顶部「按月/按年」按钮置灰 + 范围组显示 + 当前模式兜底切换
+  // 数据源跟随当前粒度：汇总=全量；按月=月趋势范围；按年=年趋势区间
+  var sessions = (ovTrendMode === 'month') ? filterByMonthRange(gameSessions)
+                 : (ovTrendMode === 'year') ? filterByYearRange(gameSessions)
+                 : gameSessions;
+  // 更新顶部「汇总/按月/按年」按钮置灰 + 范围组显示 + 当前模式兜底切换
   updateTrendModeBtns(gameSessions);
   var s=data.storeSummary||{};
   var grid=document.getElementById('ovSummaryGrid');
   // 更新副标题
   var dimDesc = (ovGame && ovGame !== 'all') ? (ovGame+' · 经营数据与趋势') : '全店 · 经营数据与趋势';
-  if (ovTrendMode === 'month') {
+  if (ovTrendMode === 'summary') {
+    dimDesc += ' · 累计汇总';
+  } else if (ovTrendMode === 'month') {
     if (monthRangeIsSingle()) dimDesc += ' · 单月 '+ovMonthFrom.replace('-','年')+'月';
     else if (sessions.length > 0) dimDesc += ' · '+ovMonthFrom+'~'+ovMonthTo;
   } else {
@@ -1068,7 +1103,7 @@ function renderOverview() {
   renderTrend(sessions, ovSCMap);
 }
 
-// 更新顶部「按月/按年」按钮置灰 + 范围组显示；当前模式无数据时兜底切换
+// 更新顶部「汇总/按月/按年」按钮置灰 + 范围组显示；当前模式无数据时兜底切换
 function updateTrendModeBtns(gameSessions) {
   var bar = document.getElementById('ovTrendModeBar');
   if (!bar) return;
@@ -1079,9 +1114,19 @@ function updateTrendModeBtns(gameSessions) {
   var yCnt = Object.keys(yKeys).length;
   var mOk = mCnt >= 2, yOk = yCnt >= 2;
   bar.querySelectorAll('.dim-btn').forEach(function(b){
-    var ok = (b.dataset.tmode === 'month') ? mOk : yOk;
+    var tm = b.dataset.tmode;
+    if (tm === 'summary') {
+      // 汇总按钮永远可点（只要有数据）
+      var has = gameSessions.length > 0;
+      b.disabled = !has;
+      b.title = has ? '' : '暂无数据';
+      b.style.opacity = has ? '' : '0.45';
+      b.style.cursor = has ? '' : 'not-allowed';
+      return;
+    }
+    var ok = (tm === 'month') ? mOk : yOk;
     b.disabled = !ok;
-    b.title = ok ? '' : (b.dataset.tmode === 'month'
+    b.title = ok ? '' : (tm === 'month'
       ? '月趋势范围需跨多月（当前仅 ' + mCnt + ' 个月）'
       : '年趋势区间需跨多年（当前仅 ' + yCnt + ' 年）');
     b.style.opacity = ok ? '' : '0.45';
@@ -1090,6 +1135,7 @@ function updateTrendModeBtns(gameSessions) {
   // 当前模式无数据 → 兜底切换到可用模式
   if (ovTrendMode === 'month' && !mOk && yOk) ovTrendMode = 'year';
   else if (ovTrendMode === 'year' && !yOk && mOk) ovTrendMode = 'month';
+  else if (ovTrendMode === 'summary' && gameSessions.length === 0) ovTrendMode = mOk ? 'month' : (yOk ? 'year' : 'summary');
   // 范围组显示 + 按钮 active
   var mGrp = document.getElementById('ovMonthRangeGroup');
   var yGrp = document.getElementById('ovYearRangeGroup');
@@ -1100,11 +1146,26 @@ function updateTrendModeBtns(gameSessions) {
   });
 }
 
-// ===== 趋势图（顶部「按月/按年」决定显示哪组） =====
+// ===== 趋势图（顶部「汇总/按月/按年」决定显示哪组） =====
 function renderTrend(sessions, scMap) {
   var wrap = document.getElementById('ovTrendWrap');
   if (!wrap) return;
-  // 当前粒度数据点数（趋势需 ≥2 个时间点）
+  var title = document.getElementById('ovTrendTitle');
+  var summaryGrp = document.getElementById('ovSummaryGroup');
+  var monthGrp = document.getElementById('ovMonthTrendGroup');
+  var yearGrp = document.getElementById('ovYearTrendGroup');
+  // 汇总：只需 1 场即可展示（≥2 个时间点不强制要求）
+  if (ovTrendMode === 'summary') {
+    if (sessions.length === 0) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    if (title) title.innerHTML = '📊 累计汇总 <span class="tag">从首场到末场</span>';
+    if (summaryGrp) summaryGrp.style.display = '';
+    if (monthGrp) monthGrp.style.display = 'none';
+    if (yearGrp) yearGrp.style.display = 'none';
+    renderSummaryCharts(sessions, scMap);
+    return;
+  }
+  // 按月/按年：当前粒度数据点数（趋势需 ≥2 个时间点）
   var keys = {};
   sessions.forEach(function(s){
     var k = s.date ? s.date.substring(0, (ovTrendMode === 'month') ? 7 : 4) : '';
@@ -1113,9 +1174,7 @@ function renderTrend(sessions, scMap) {
   var cnt = Object.keys(keys).length;
   if (cnt < 2 || sessions.length === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-  var title = document.getElementById('ovTrendTitle');
-  var monthGrp = document.getElementById('ovMonthTrendGroup');
-  var yearGrp = document.getElementById('ovYearTrendGroup');
+  if (summaryGrp) summaryGrp.style.display = 'none';
   if (ovTrendMode === 'month') {
     if (title) title.innerHTML = '📈 月度趋势 <span class="tag">逐月变化</span>';
     if (monthGrp) monthGrp.style.display = '';
@@ -1194,6 +1253,127 @@ function renderYearTrendCharts(sessions, ovSCMap) {
       plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 单';}}}},
       scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
   });
+}
+
+// ===== 汇总视图（6 张小指标卡 + 累计增长曲线 + 平台构成饼图） =====
+function renderSummaryCharts(sessions, scMap) {
+  // 销毁旧图
+  destroyChart('ovCumulative');destroyChart('ovSummaryChannel');destroyChart('ovSummaryPayment');
+  if (sessions.length === 0) return;
+
+  // ---- 按日聚合（用于累计曲线和极值/均值） ----
+  var sorted = sessions.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+  var byDate = {};
+  sorted.forEach(function(sx){
+    var d = sx.date;
+    if (!byDate[d]) byDate[d] = {date:d, gmv:0, orders:0, live:0, self:0, androidAmt:0, iosAmt:0};
+    var sc = scMap[sx.date+'_'+sx.game];
+    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
+    var selfS = sc ? (sc.self?.sales||0) : 0;
+    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
+    byDate[d].gmv += liveS + selfS;
+    byDate[d].live += liveS;
+    byDate[d].self += selfS;
+    byDate[d].orders += sx.product?.paymentOrders||sx.product?.orders||0;
+    byDate[d].androidAmt += a;
+    byDate[d].iosAmt += i;
+  });
+  var dateKeys = Object.keys(byDate).sort();
+  var firstDate = dateKeys[0], lastDate = dateKeys[dateKeys.length-1];
+  var activeDayCnt = dateKeys.length; // 有场次的日数
+  // 累计 GMV / 订单
+  var cumGMV = [], cumOrders = [];
+  var runningG = 0, runningO = 0;
+  dateKeys.forEach(function(d){
+    runningG += byDate[d].gmv;
+    runningO += byDate[d].orders;
+    cumGMV.push(runningG);
+    cumOrders.push(runningO);
+  });
+
+  // ---- 6 项汇总指标 ----
+  var totalGMV = runningG;
+  var totalOrders = runningO;
+  var totalSessions = sessions.length;
+  // 运营天数 = 首场→末场（按日历天数算，含中间无数据日）
+  var daySpan = 1;
+  try {
+    var d1 = new Date(firstDate), d2 = new Date(lastDate);
+    daySpan = Math.round((d2 - d1) / 86400000) + 1;
+  } catch(e) {}
+  // 日均 GMV = 累计 GMV / 有场次的日数（反映真实产出效率）
+  var avgDailyGMV = activeDayCnt > 0 ? totalGMV / activeDayCnt : 0;
+  // 最高单日 GMV
+  var maxDailyGMV = 0, maxDate = '';
+  dateKeys.forEach(function(d){ if (byDate[d].gmv > maxDailyGMV) { maxDailyGMV = byDate[d].gmv; maxDate = d; } });
+
+  // ---- 渲染 6 张指标卡 ----
+  var stats = document.getElementById('ovSummaryStats');
+  if (stats) {
+    stats.innerHTML =
+      '<div class="summary-card"><div class="lbl">💰 累计 GMV</div><div class="val">'+fmt(totalGMV)+' 元</div><div class="sub">'+totalSessions+' 场 · '+activeDayCnt+' 个有数据日</div></div>'+
+      '<div class="summary-card"><div class="lbl">📋 累计订单</div><div class="val">'+fmt(totalOrders)+' 单</div><div class="sub">场均 '+(totalSessions>0?(totalOrders/totalSessions).toFixed(1):'0')+' 单</div></div>'+
+      '<div class="summary-card"><div class="lbl">📅 运营天数</div><div class="val">'+daySpan+' 天</div><div class="sub">'+firstDate+' → '+lastDate+'</div></div>'+
+      '<div class="summary-card"><div class="lbl">📊 日均 GMV</div><div class="val">'+fmt(avgDailyGMV)+' 元</div><div class="sub">÷ '+activeDayCnt+' 个有数据日</div></div>'+
+      '<div class="summary-card"><div class="lbl">🚀 最高单日 GMV</div><div class="val">'+fmt(maxDailyGMV)+' 元</div><div class="sub">'+maxDate+'</div></div>'+
+      '<div class="summary-card"><div class="lbl">📅 月均 GMV</div><div class="val">'+fmt(totalGMV/Math.max(1,Math.ceil(daySpan/30)))+' 元</div><div class="sub">÷ '+Math.ceil(daySpan/30)+' 个月</div></div>';
+  }
+
+  // ---- 累计增长曲线（双轴：GMV 左轴，订单右轴） ----
+  var cumCanvas = document.getElementById('ovCumulativeChart');
+  if (cumCanvas) {
+    charts.ovCumulative = new Chart(cumCanvas.getContext('2d'), {
+      type:'line',
+      data:{
+        labels:dateKeys,
+        datasets:[
+          {label:'累计 GMV (元)', data:cumGMV, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.12)', borderWidth:2, fill:true, tension:0.25, yAxisID:'y', pointRadius:2, pointHoverRadius:5},
+          {label:'累计订单 (单)', data:cumOrders, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.05)', borderWidth:2, fill:false, tension:0.25, yAxisID:'y1', pointRadius:2, pointHoverRadius:5}
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index', intersect:false},
+        plugins:{
+          legend:{position:'top', labels:{font:{size:11}, boxWidth:12}},
+          tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' '+(ctx.dataset.label.indexOf('订单')>-1?'单':'元');}}}
+        },
+        scales:{
+          y:{position:'left', beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}, title:{display:true, text:'累计 GMV (元)', font:{size:11}}},
+          y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}, title:{display:true, text:'累计订单 (单)', font:{size:11}}},
+          x:{ticks:{font:{size:10}, maxRotation:45, autoSkip:true, maxTicksLimit:12}}
+        }
+      }
+    });
+  }
+
+  // ---- 销售渠道构成饼图（直播 vs 自营） ----
+  var totLive = 0, totSelf = 0;
+  dateKeys.forEach(function(d){ totLive += byDate[d].live; totSelf += byDate[d].self; });
+  var chCanvas = document.getElementById('ovSummaryChannelChart');
+  if (chCanvas && (totLive + totSelf) > 0) {
+    charts.ovSummaryChannel = new Chart(chCanvas.getContext('2d'), {
+      type:'doughnut',
+      data:{labels:['直播间','店铺自营'], datasets:[{data:[totLive, totSelf], backgroundColor:['#1e3a8a','#f59e0b'], borderWidth:2, borderColor:'#fff'}]},
+      options:{responsive:true, maintainAspectRatio:false, cutout:'60%',
+        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed,total=v+(totLive+totSelf-v); var pct=((v/(totLive+totSelf))*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
+      }
+    });
+  }
+
+  // ---- 支付渠道构成饼图（安卓 vs iOS） ----
+  var totA = 0, totI = 0;
+  dateKeys.forEach(function(d){ totA += byDate[d].androidAmt; totI += byDate[d].iosAmt; });
+  var payCanvas = document.getElementById('ovSummaryPaymentChart');
+  if (payCanvas && (totA + totI) > 0) {
+    charts.ovSummaryPayment = new Chart(payCanvas.getContext('2d'), {
+      type:'doughnut',
+      data:{labels:['安卓','iOS'], datasets:[{data:[totA, totI], backgroundColor:['#2563eb','#f59e0b'], borderWidth:2, borderColor:'#fff'}]},
+      options:{responsive:true, maintainAspectRatio:false, cutout:'60%',
+        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed,total=v+(totA+totI-v); var pct=((v/(totA+totI))*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
+      }
+    });
+  }
 }
 
 // ===== 多期数据对比（双期对比：指定两个期间 A VS B） =====
