@@ -4152,43 +4152,22 @@ function renderSummary(d) {
 
         var items = body.split(/[；;]\s*/).filter(function(s) { return s.trim(); });
 
-
-        if (items.length > 1 && label === '核心关注') {
-
-
+        // 核心关注段保留手动 ①②③④⑤ 编号 + \n → <br>；其它段维持自动加 1.2. 序号
+        if (label === '核心关注') {
+          // 摘要核心段在 JSON 中以 "\n"（反斜杠+n）作为 ①②③ 分隔符，渲染时转 <br>
+          body = body.replace(/\\n/g, '<br>');
+        } else if (items.length > 1) {
           body = items.map(function(s, i) {
-
-
             // 红字高亮关键数字：百分比、日期、金额、倍数
-
-
             var highlighted = s
-
-
               .replace(/(\d+月\d+日)/g, '<span class="hl">$1</span>')
-
-
               .replace(/(\d+%)/g, '<span class="hl">$1</span>')
-
-
               .replace(/(\+\d+%)/g, '<span class="hl">$1</span>')
-
-
               .replace(/(\d+→\d+%)/g, '<span class="hl">$1</span>')
-
-
               .replace(/(\d+倍)/g, '<span class="hl">$1</span>')
-
-
               .replace(/封停\/降星/g, '<span class="hl">封停/降星</span>');
-
-
             return '<strong>' + (i + 1) + '.</strong> ' + highlighted.trim();
-
-
           }).join('<br>');
-
-
         }
 
 
