@@ -912,6 +912,53 @@ button { font-family: inherit; cursor: pointer; }
 
 
 .subsection-title::before { content: ''; width: 3px; height: 14px; background: var(--primary); border-radius: 2px; }
+.new-games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.new-game-card {
+  background: linear-gradient(135deg, var(--primary-50), #fff);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 12px 14px;
+  transition: transform 0.2s;
+}
+.new-game-card:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(102,126,234,0.15); }
+.new-game-card .ngc-header {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.new-game-card .ngc-rank {
+  background: var(--primary); color: #fff; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px; font-size: 12px;
+}
+.new-game-card .ngc-platform {
+  background: rgba(102,126,234,0.1); color: var(--primary);
+  padding: 1px 6px; border-radius: 3px; font-size: 10px;
+}
+.new-game-card .ngc-title { font-size: 14px; margin: 4px 0; color: var(--text); }
+.new-game-card .ngc-title strong { font-weight: 600; }
+.new-game-card .ngc-meta {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;
+}
+.new-game-card .ngc-change {
+  background: rgba(231,76,60,0.12); color: #e74c3c;
+  padding: 1px 5px; border-radius: 3px; font-weight: 600;
+}
+.new-game-card .ngc-cat {
+  background: rgba(149,165,166,0.15); color: var(--text-secondary);
+  padding: 1px 5px; border-radius: 3px;
+}
+.new-game-card .ngc-company { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+.new-game-card .ngc-desc { font-size: 12px; color: var(--text); line-height: 1.6; }
+@media (max-width: 640px) {
+  .new-games-grid { grid-template-columns: 1fr; }
+}
+
 
 
 
@@ -5053,16 +5100,38 @@ function renderMarketing(mkt, weekKey) {
 
 
   }
+  if (!mkt || (!mkt.roi && !mkt.consumeOverview && !mkt.blueStar && !mkt.beastGame && !mkt.newGames)) {
 
+      if (section) section.style.display = 'none';
 
-  if (section) section.style.display = '';
+      return;
 
-
-
-
+    }
 
   var html = '', useNewChart = false;
 
+
+
+
+  // 1.5) 本周新游重点关注（任意周报都可展示）
+  if (mkt.newGames && mkt.newGames.length) {
+    html += '<div class="subsection-title">本周新游重点关注</div>';
+    html += '<div class="new-games-grid">';
+    mkt.newGames.forEach(function(g) {
+      html += '<div class="new-game-card">'
+        + '<div class="ngc-header"><span class="ngc-rank">#' + g.rank + '</span>'
+        + '<span class="ngc-platform">' + escHTML(g.platform || '') + '</span></div>'
+        + '<div class="ngc-title"><strong>' + escHTML(g.name) + '</strong></div>'
+        + '<div class="ngc-meta">'
+        + (g.change ? '<span class="ngc-change">' + escHTML(g.change) + '</span>' : '')
+        + (g.category ? '<span class="ngc-cat">' + escHTML(g.category) + '</span>' : '')
+        + '</div>'
+        + '<div class="ngc-company">' + escHTML(g.company || '') + '</div>'
+        + '<div class="ngc-desc">' + (g.description || '') + '</div>'
+        + '</div>';
+    });
+    html += '</div>';
+  }
 
 
 
