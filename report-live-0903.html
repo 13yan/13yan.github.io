@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>巨兽战场 · 抖店运营效益分析（0903 · 含利润口径）</title>
+<script src="chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f6f7f9;--card:#fff;--bd:#e5e8ee;
+  --t1:#18191c;--t2:#5c6470;--t3:#98a1ad;
+  --blue:#2563eb;--blue-d:#1e3a8a;--blue-l:#dbeafe;
+  --amber:#f59e0b;--amber-l:#fef3c7;
+  --green:#059669;--green-l:#d1fae5;
+  --red:#dc2626;--red-l:#fee2e2;
+  --violet:#7c5cf0;--violet-l:#ede9fe;
+  /* 语义化色彩 */
+  --color-live:#f59e0b;  /* 直播/橙色 */
+  --color-ios:#7c5cf0;   /* iOS/紫色 */
+  --color-plat:#2563eb;  /* 平台/蓝色 */
+  --color-risk:#dc2626; /* 风险/红色 */
+  --color-good:#059669; /* 正向/绿色 */
+  /* 字号体系 */
+  --fs-xs:10.5px;--fs-sm:11.5px;--fs-base:12.5px;--fs-md:13.5px;--fs-lg:15px;--fs-xl:16px;--fs-2xl:18px;--fs-3xl:21px;
+  /* 间距 */
+  --gap-sm:8px;--gap-md:12px;--gap-lg:16px;--gap-xl:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t1);padding:22px 14px;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:var(--fs-base);}
+.wrap{max-width:1200px;margin:0 auto;}
+.up{color:var(--red);font-weight:700} .down{color:var(--green);font-weight:700}
+.up2{color:var(--red)} .down2{color:var(--green)}
+/* ---------- 顶部 header ---------- */
+.hd{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:16px;padding:22px 28px;margin-bottom:16px;box-shadow:0 6px 18px rgba(37,99,235,.18);}
+.hd h1{font-size:var(--fs-3xl);margin-bottom:6px;line-height:1.4;letter-spacing:.2px;}
+.hd h1 span{font-size:var(--fs-base)!important;font-weight:400;opacity:.8;}
+.hd .sub{font-size:var(--fs-sm);opacity:.9;line-height:1.7;}
+.hd .tags{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+.hd .tags::-webkit-scrollbar{height:0}
+.tag{background:rgba(255,255,255,.16);padding:3px 11px;border-radius:20px;font-size:var(--fs-xs);text-decoration:none;color:#fff;transition:background .15s;display:inline-flex;align-items:center;white-space:nowrap;}
+.tag:hover{background:rgba(255,255,255,.38);}
+/* ---------- 色彩语义图例 ---------- */
+.legend{display:flex;gap:var(--gap-md);flex-wrap:wrap;padding:10px 16px;background:var(--card);border:1px solid var(--bd);border-radius:12px;margin-bottom:14px;font-size:var(--fs-sm)}
+.legend-item{display:flex;align-items:center;gap:5px;color:var(--t2)}
+.legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.legend-dot.live{background:var(--color-live)}
+.legend-dot.ios{background:var(--color-ios)}
+.legend-dot.plat{background:var(--color-plat)}
+.legend-dot.risk{background:var(--color-risk)}
+.legend-dot.good{background:var(--color-good)}
+/* ---------- KPI ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md);margin-bottom:var(--gap-lg);}
+.kpi{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:15px 17px;box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.kpi .lb{font-size:var(--fs-sm);color:var(--t2);margin-bottom:7px;line-height:1.45;}
+.kpi .vl{font-size:var(--fs-3xl);font-weight:800;letter-spacing:-.5px;line-height:1.3;}
+.kpi .vl small{font-size:var(--fs-sm);font-weight:500;color:var(--t2);}
+.kpi .ds{font-size:var(--fs-xs);color:var(--t3);margin-top:6px;line-height:1.5;}
+.kpi.warn .vl{color:var(--blue)} .kpi.vio .vl{color:var(--violet)} .kpi.amb .vl{color:var(--amber)}
+/* ---------- 核心结论 ---------- */
+.concl{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;margin-bottom:var(--gap-lg);box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.concl h2{font-size:var(--fs-lg);margin-bottom:12px;display:flex;align-items:center;gap:8px;padding-left:10px;border-left:4px solid var(--amber);}
+.crow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.citem{background:#f7f9fc;border:1px solid var(--bd);border-left:4px solid var(--blue);border-radius:10px;padding:11px 14px;line-height:1.65;color:var(--t2);transition:box-shadow .15s}
+.citem:hover{box-shadow:0 2px 8px rgba(16,24,40,.08)}
+.citem .t{font-weight:800;color:var(--t1);font-size:var(--fs-md);margin-bottom:4px;display:block;}
+.citem .t em{font-style:normal;color:var(--blue)}
+.citem.red{border-left-color:var(--red)} .citem.red .t em{color:var(--red)}
+.citem.amb{border-left-color:var(--amber)} .citem.amb .t em{color:var(--amber)}
+.citem.grn{border-left-color:var(--green)} .citem.grn .t em{color:var(--green)}
+.citem.vio{border-left-color:var(--violet)} .citem.vio .t em{color:var(--violet)}
+/* ---------- section ---------- */
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;margin-bottom:var(--gap-lg);box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.sec h2{font-size:var(--fs-xl);margin-bottom:4px;display:flex;align-items:center;gap:8px;line-height:1.5;}
+.sec h3,.subttl{font-size:var(--fs-md);color:var(--blue-d);margin:18px 0 10px;line-height:1.5;font-weight:700;letter-spacing:.2px;}
+.subttl.tight{margin-top:2px;}
+.sec .desc{font-size:var(--fs-base);color:var(--t2);margin:6px 0 13px;line-height:1.75;}
+.section-tag{display:inline-block;background:#eef2ff;color:#4338ca;font-size:var(--fs-xs);padding:2px 9px;border-radius:10px;font-weight:700;margin-right:2px;flex:0 0 auto;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-xl);}
+.chartbox{background:#fafbfc;border:1px solid var(--bd);border-radius:12px;padding:14px;min-width:0;overflow:hidden}
+.chartbox h4{font-size:var(--fs-base);color:var(--t2);font-weight:600;margin-bottom:9px;line-height:1.5;}
+.chartbox canvas{display:block;width:100%;}
+.piewrap{position:relative;height:170px;}
+.piewrap canvas{max-height:100%}
+/* ---------- 表格 ---------- */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;margin:4px 0;min-width:0}
+.tbl-wrap::-webkit-scrollbar{height:7px;}
+.tbl-wrap::-webkit-scrollbar-thumb{background:#d3d9e3;border-radius:4px;}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-base);}
+th{background:#f0f2f6;text-align:left;padding:7px 10px;color:var(--t2);font-weight:700;border-bottom:2px solid var(--bd);font-size:var(--fs-sm);white-space:nowrap;}
+td{padding:7px 10px;border-bottom:1px solid #eef1f6;vertical-align:middle;transition:background .1s}
+tr:hover td{background:#f8fafc}
+tr:last-child td{border-bottom:none;}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+td.br,th.br{border-right:2px solid #e2e8f0;}
+th[colspan]{text-align:center;}
+td small,th small{font-size:var(--fs-xs);color:var(--t3);font-weight:400;white-space:nowrap;}
+/* ---------- 提示卡 ---------- */
+.hl{background:var(--red-l);border:1px solid #fecaca;border-radius:10px;padding:10px 15px;line-height:1.75;color:#7c2d12;margin-top:12px;}
+.hl-amber{background:var(--amber-l);border:1px solid #fde68a;color:#92400e;}
+.hl-blue{background:var(--blue-l);border:1px solid #bfdbfe;color:#1e40af;}
+.hl-green{background:var(--green-l);border:1px solid #86efac;color:#166534;}
+.hl .miniT{font-weight:800}
+.foot{font-size:var(--fs-xs);color:var(--t3);line-height:1.8;padding:6px 2px;}
+/* ---------- 框架 & 标注 ---------- */
+a{color:inherit;}
+[id]{scroll-margin-top:16px;}
+.sec h2{border-left:4px solid #bfdbfe;padding-left:11px;}
+.concl h2{padding-left:11px;}
+.totop{display:inline-block;margin-top:8px;color:var(--blue);text-decoration:none;font-size:var(--fs-sm);font-weight:600;}
+.totop:hover{text-decoration:underline;}
+b,strong{font-weight:700;}
+.kpi .vl,.num{font-variant-numeric:tabular-nums;}
+.up,.down,.up2,.down2{letter-spacing:-.2px;}
+/* ---------- 平板 ---------- */
+@media(max-width:900px){
+  .crow{grid-template-columns:repeat(2,1fr);}
+  .kpis{grid-template-columns:repeat(2,1fr);}
+  .grid2{grid-template-columns:1fr;}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-wrap table{min-width:600px}
+}
+/* ---------- 手机 ---------- */
+@media(max-width:600px){
+  body{padding:10px 8px;}
+  .hd{padding:16px 16px;border-radius:12px;margin-bottom:12px;}
+  .hd h1{font-size:var(--fs-2xl);}
+  .hd .sub{font-size:var(--fs-xs);}
+  .kpis{gap:var(--gap-sm);margin-bottom:var(--gap-md);}
+  .kpi{padding:11px 12px;border-radius:11px;}
+  .kpi .vl{font-size:var(--fs-2xl);}
+  .kpi .ds{font-size:var(--fs-xs);}
+  .concl{padding:13px 14px;margin-bottom:var(--gap-md);}
+  .crow{grid-template-columns:1fr;gap:var(--gap-sm);}
+  .citem{padding:9px 12px;}
+  .sec{padding:14px 13px;border-radius:11px;margin-bottom:var(--gap-md);}
+  .sec h2{font-size:var(--fs-lg);flex-wrap:wrap;}
+  .sec h3,.subttl{font-size:var(--fs-base);margin:14px 0 8px;}
+  .sec .desc{font-size:var(--fs-sm);margin:5px 0 10px;}
+  .chartbox{padding:11px;border-radius:10px;}
+  .grid2{gap:var(--gap-sm);}
+  table{font-size:var(--fs-sm);}
+  th{font-size:var(--fs-xs);padding:6px 8px;}
+  td{padding:6px 8px;}
+  .hl,.hl-amber,.hl-blue,.hl-green{font-size:var(--fs-sm);padding:9px 12px;line-height:1.7;margin-top:10px;}
+  .tbl-wrap table{min-width:500px}
+  .piewrap{height:140px;}
+  .piewrap[style*="128"]{height:120px;}
+  .foot{font-size:var(--fs-xs);}
+  .legend{gap:var(--gap-sm);padding:8px 12px;font-size:var(--fs-xs);}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== 顶部标题 ===== -->
+<div class="hd" id="top">
+  <h1>🛰️ 巨兽战场 · 抖店运营效益分析 <span>报告期 7/2–9/2（含 8/17–8/31 周年庆）</span></h1>
+  <div class="sub">数据窗口：2026-07-02 ~ 2026-09-02 · 三充值入口互斥口径（游戏内直充 / 平台收银台 / 抖店）· iOS=混合苹果3k · 利润按研发分成15%后计算（你确认公式）</div>
+<nav class="tags"><a class="tag" href="#sec-c">核心结论</a><a class="tag" href="#sec-1">维度一 · 拉新</a><a class="tag" href="#sec-2">维度二 · 周年庆</a><a class="tag" href="#sec-3">维度三 · iOS切支付</a><a class="tag" href="#sec-4">维度四 · 用户构成</a><a class="tag" href="#sec-5">维度五 · 利润</a><a class="tag" href="#sec-6">维度六 · 直播复盘</a><a class="tag" href="#sec-r">口径说明</a></nav>
+</div>
+<!-- 色彩语义图例 -->
+<div class="legend">
+  <span class="legend-item"><span class="legend-dot live"></span>直播/橙色</span>
+  <span class="legend-item"><span class="legend-dot ios"></span>iOS/紫色</span>
+  <span class="legend-item"><span class="legend-dot plat"></span>平台/蓝色</span>
+  <span class="legend-item"><span class="legend-dot risk"></span>风险/红色</span>
+  <span class="legend-item"><span class="legend-dot good"></span>正向/绿色</span>
+</div>
+
+<!-- ===== 顶部 KPI ===== -->
+<div class="kpis">
+  <div class="kpi"><div class="lb">抖店累计流水</div><div class="vl">¥119.2万 <small>/189人</small></div><div class="ds">笔均 ¥503 · 7/2–9/2</div></div>
+  <div class="kpi warn"><div class="lb">8月抖店流水 / 官包渠道占比</div><div class="vl">¥95.9万 <small>· 24.0%</small></div><div class="ds">官包(全口径)=直充+平台+抖店 · 7月 8.2% → 8月 24% · 环比 +358%</div></div>
+  <div class="kpi vio"><div class="lb">抖店 iOS 流水 / 切支付净增</div><div class="vl">¥44.1万 <small>→ +9.10万</small></div><div class="ds">每百元多拿 20.65 元 · 报告期</div></div>
+  <div class="kpi amb"><div class="lb">周年庆抖店窗口流水</div><div class="vl">¥76.3万</div><div class="ds">8/17–8/31 · 环比前窗 +359%</div></div>
+</div>
+
+<!-- ===== 核心结论 ===== -->
+<div class="concl" id="sec-c">
+  <h2>📌 核心结论</h2>
+  <div class="crow">
+    <div class="citem"><div class="t em">① 抖店 = 真·增长引擎</div>8月 <b>95.9万</b> 占官包全口径(直充+平台+抖店) <b>24%</b>（7月 8.2%），报告期累计 <b>119.2万</b>，拉动 8月官包总流水环比 <b>+56.1%</b>。</div>
+    <div class="citem amb"><div class="t em">② 抖店非拉新渠道 · 存量转移工具</div>新增创角付费用户落抖店 <b>仅 1人/¥328</b>、iOS 新增 <b>0 人</b> → 抖店<b>承接存量充值转移</b>，<b>不承担拉新</b>。</div>
+    <div class="citem vio"><div class="t em">③ iOS 切支付 = 成立且划算</div>iOS 玩家在抖店充值 <b>44.1万</b>；其中原 iOS 平台用户流水 <b>39.78万</b>（充值占抖店 iOS 流水 <b>90.2%</b>）；<b>纯增量</b>：iOS 直充用户转入流水 <b>4.05万（9.2%）</b>。iOS 切支付<b>存量空间大，增量可观</b>：现存 iOS 直充用户 <b>1,251人/流水161.4万</b>，仅 <b>93人（7.4%）</b> 转过抖店 → <b>1,158人/105.6万 从未进抖店，最大挖掘池</b>。</div>
+    <div class="citem red"><div class="t em">④ 直播必须留 · 改单场结算</div>直播首充扛 <b>77% 流水 + 95% iOS 切支付净增</b>（转化 iOS 关键入口）；现状全店×8% 分成吃红利（8月倒挂 <b>-7,913</b>）→ <b>后续建议改直播模式，按单场 ≤¥1,000 结算</b>。</div>
+  </div>
+</div>
+
+<!-- ========== 维度一：拉新 ========== -->
+<div class="sec" id="sec-1">
+  <h2><span class="section-tag">维度一</span>📌 拉新 · 游戏内新增创角付费用户在抖店的充值渗透</h2>
+  <div class="desc">口径：抖店运营期（7/2–9/2）游戏内<b>新增创角付费用户</b>（官方注册 26 人 / ¥24,618），看其中有几人、多少钱<b>落到抖店</b> —— 衡量抖店承接“真新增”的能力，而非存量激活。</div>
+  <div class="grid2">
+    <div class="chartbox"><h4>新增创角付费用户 · 创角节奏（人/周）</h4><canvas id="cNew" height="170"></canvas></div>
+    <div class="tbl-wrap wide"><table>
+      <tr><th>充值落点</th><th colspan="2" class="num br">📱 iOS（13人）</th><th colspan="2" class="num">🤖 安卓（13人）</th><th class="num">全端金额占比</th></tr>
+      <tr><th></th><th class="num">人数</th><th class="num br">金额</th><th class="num">人数</th><th class="num">金额</th><th class="num"></th></tr>
+      <tr><td>游戏内直充(官包/IAP)</td><td class="num">11</td><td class="num br">¥6,379</td><td class="num">12</td><td class="num">¥16,140</td><td class="num up2"><b>91.5%</b></td></tr>
+      <tr><td>平台(收银台)</td><td class="num">2</td><td class="num br">¥752</td><td class="num">1</td><td class="num">¥1,296</td><td class="num">8.3%</td></tr>
+      <tr><td class="down2">抖店</td><td class="num down2">0</td><td class="num down2 br"><b>¥0</b></td><td class="num down2">1</td><td class="num down2"><b>¥328</b></td><td class="num down2"><b>1.3%</b></td></tr>
+      <tr><td>新增合计</td><td class="num"><b>13</b></td><td class="num br"><b>¥7,158</b></td><td class="num"><b>13</b></td><td class="num"><b>¥17,460</b></td><td class="num"><b>¥24,618</b></td></tr>
+    </table>
+    <div class="hl-red" style="margin-top:9px">🔴 <b>iOS 新增 13人 抖店承接 = 0人/0元</b>，全走直充(IAP)/平台；安卓 13人 也仅 1人落 ¥328。虽抖店 iOS 切支付是最大卖点（每百元多拿 20.65 元），iOS 新号却一个都没进抖店 —— 新增 iOS 切支付引导基本为 0。</div></div>
+  </div>
+  <div class="hl"><b>结论：</b>抖店运营期“真新增付费”26人的钱<b>几乎全留在游戏内直充（91.5%）</b>，落抖店仅 <b>1.3%</b>。两端都几乎接不到新增：<b>安卓 13人 只 1人落抖店（¥328）</b>；<b>iOS 13人 抖店承接为 0</b> —— 新增 iOS 玩家仍走 App Store/IAP，白白损失“每百元多拿 20.65 元”的切支付红利。抖店<b>不是拉新渠道，而是存量渠道</b>，存在<b>明确的新增 iOS 首充引导缺口</b>。</div>
+</div>
+
+<!-- ========== 维度二：周年庆 ========== -->
+<div class="sec" id="sec-2">
+  <h2><span class="section-tag">维度二</span>📌 周年庆窗口 vs 全月验证：抖店 = 真·增长引擎</h2>
+  <div class="desc">周年庆窗口（8/17–31）：官包渠道 = 平台 + 抖店（不含直充）。核心结论"8月抖店占官包渠道24%"的定义是<b>官包含抖店全口径（直充+平台+抖店）</b>，对应渗透率 8.2%→24.0%。8月全月抖店 ¥95.9万，周年庆前16天仅 ¥16.6万（CVS数据验证），说明周年庆是抖店真正爆发的核心节点。</div>
+  <div class="grid2">
+    <div class="chartbox"><h4>窗口对比（万元 · 官包渠道）</h4><canvas id="cWin" height="185"></canvas></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>官包渠道</th><th class="num">前15天<br><small>8/2–8/16</small></th><th class="num">周年庆<br><small>8/17–8/31</small></th><th class="num">涨幅</th><th class="num">占增量</th></tr>
+      <tr><td><b>官包合计</b></td><td class="num">¥34.2万</td><td class="num"><b>¥110.4万</b></td><td class="num up">+223%</td><td class="num">100%</td></tr>
+      <tr><td>🟢 抖店</td><td class="num">¥16.6万</td><td class="num up2"><b>¥76.3万</b></td><td class="num up">+359%</td><td class="num up2"><b>78.2%</b></td></tr>
+      <tr><td>🔵 平台</td><td class="num">¥17.6万</td><td class="num">¥34.2万</td><td class="num up">+94%</td><td class="num">21.8%</td></tr>
+      <tr><td>iOS（平台+抖店）</td><td class="num">¥5.1万</td><td class="num up2"><b>¥25.7万</b></td><td class="num up">+404%</td><td class="num">—</td></tr>
+      <tr style="background:#f0f9ff"><td colspan="5" style="font-size:var(--fs-sm);color:var(--blue-d);text-align:left;padding:6px 10px"><b>📊 8月全月对照（验证真·增长引擎）</b></td></tr>
+      <tr><td>8月全月 抖店</td><td class="num" colspan="2"><b>¥95.9万</b></td><td class="num" colspan="2" style="color:var(--blue-d)">7月→8月 抖店渗透率 <b>8.2% → 24.0%</b></td></tr>
+    </table></div>
+  </div>
+  <div class="hl-green" style="border-left-width:5px;"><b>结论：</b>抖店是全周期增长引擎而非活动工具——8月全月渗透率（官包全口径）从 7月 8.2% 升至 <b>24.0%</b>，周年庆窗口更达到 <b>69.1%</b>（抖店/官包渠道=平台+抖店）。增长是结构性的，周年庆放大而非创造了抖店优势；前16天日均仅 ¥1.2万（非爆发期），说明大活动是抖店放大的核心杠杆，<b>大活动需以抖店为主承接场</b>，ROI 显著优于其他渠道。</div>
+</div>
+
+<!-- ========== 维度三：iOS 切支付 ========== -->
+<div class="sec" id="sec-3">
+  <h2><span class="section-tag">维度三</span>📌 iOS 切支付效益 · 平台/直充/抖店 三入口构成与承接</h2>
+  <div class="desc">iOS=apple3k · 口径＝<b>抖店 iOS 渠道单据流水 44.1万</b>。切支付 = 把 iOS 玩家的钱从 <b>App Store/平台</b> 引到 <b>抖店</b>，每百元多拿 <b>20.65 元</b>。</div>
+
+  <!-- 1. 平台vs抖店月度趋势 + 6-8月三入口构成 -->
+  <div class="grid2">
+    <div class="chartbox"><h4>平台 iOS 月度下行 vs 抖店 iOS 承接爬升（万元）</h4><canvas id="cIos" height="185"></canvas></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>入口</th><th class="num">6月</th><th class="num">7月</th><th class="num">8月</th><th class="num">7→8 变化</th></tr>
+      <tr><td>🎮 游戏直充(IAP)</td><td class="num">¥77.0万 <small>(53.4%)</small></td><td class="num">¥72.1万 <small>(53.3%)</small></td><td class="num up">¥92.3万 <small>(53.5%)</small></td><td class="num up">+28.1%</td></tr>
+      <tr><td>🏪 平台充值</td><td class="num">¥67.2万 <small>(46.6%)</small></td><td class="num">¥52.8万 <small>(39.0%)</small></td><td class="num down">¥46.9万 <small>(27.2%)</small></td><td class="num down">-11.1%</td></tr>
+      <tr><td>🎁 抖店</td><td class="num">¥0 <small>(0%)</small></td><td class="num up2"><b>¥10.4万</b> <small>(7.7%)</small></td><td class="num up2"><b>¥33.3万</b> <small>(19.3%)</small></td><td class="num up2">+219%</td></tr>
+      <tr><td style="background:#f8fafc"><b>三入口合计</b></td><td class="num" style="background:#f8fafc"><b>¥144.2万</b></td><td class="num" style="background:#f8fafc"><b>¥135.3万</b></td><td class="num" style="background:#f8fafc up2"><b>¥172.6万</b></td><td class="num" style="background:#f8fafc up">+27.6%</td></tr>
+    </table>
+    <div class="hl-blue" style="margin-top:9px">📊 <b>iOS 端三入口构成剧变</b>：平台占比 6月 46.6% → 8月 <b>27.2%</b>（-19.4pp），抖店从 0 爬到 <b>19.3%</b>；游戏直充稳坐半壁江山（53%）。</div></div>
+  </div>
+
+  <!-- 2. 93 名 iOS 抖店付费用户 · 两链路承接（去图）-->
+  <div class="desc" style="margin-top:14px"><b>93 名 iOS 抖店付费用户 · 抖店承接的 44.1万 来自谁？</b>按 7/2 前充值史互斥归类：有平台史 → <b>平台充值转移</b>；无平台史但有 iOS 直充(IAP)史 → <b>iOS直充转移</b>；两路均无史 → 纯新。</div>
+  <div class="grid2">
+    <div class="tbl-wrap wide"><table>
+      <tr><th>类型 · 原充值史</th><th class="num">人数</th><th class="num">iOS抖店承接</th><th class="num">占iOS盘</th><th class="num">切支付净增</th></tr>
+      <tr><td><b>🏪 平台充值转移</b><br><small style="color:#94a3b8">原平台收银台用户 → 抖店</small></td><td class="num"><b>59</b></td><td class="num up2"><b>¥39.78万</b></td><td class="num up2"><b>90.2%</b></td><td class="num up2"><b>≈+8.21万</b></td></tr>
+      <tr><td><b>📱 iOS直充转移</b><br><small style="color:#94a3b8">原 App Store/IAP 直充用户 → 抖店<br>（含1名 2月直充、4-6月沉寂被唤醒）</small></td><td class="num">27</td><td class="num">¥4.05万</td><td class="num">9.2%</td><td class="num">≈+0.84万</td></tr>
+      <tr><td>纯新 · 无史<br><small style="color:#94a3b8">7/2前平台/直充均无史，首充即抖店</small></td><td class="num">7</td><td class="num">¥0.25万</td><td class="num">0.6%</td><td class="num">≈+0.05万</td></tr>
+      <tr><td style="background:#f8fafc"><b>合计</b></td><td class="num" style="background:#f8fafc"><b>93</b></td><td class="num" style="background:#f8fafc up2"><b>¥44.1万</b></td><td class="num" style="background:#f8fafc">100%</td><td class="num" style="background:#f8fafc up2"><b>≈+9.10万</b></td></tr>
+    </table></div>
+    <div class="chartbox">
+      <h4>现存 iOS 直充用户 → 抖店 · 人数占比（1251人）</h4>
+      <div class="piewrap" style="height:128px"><canvas id="cIapN"></canvas></div>
+      <h4 style="margin-top:9px">iOS 存量直充资金池 · 流水去向占比</h4>
+      <div class="piewrap" style="height:128px"><canvas id="cIapA"></canvas></div>
+    </div>
+  </div>
+  <div class="hl-blue" style="margin-top:8px">📱 <b>现存 iOS 直充(IAP)用户转移渗透率仍低、剩余挖掘空间大</b>：运营期还在 App Store/IAP 充值的 iOS 用户共 <b>1,251人 / 流水161.4万</b>（这部分公司只拿 63.75%）。其中仅 <b>93人（7.4%）</b>开始转抖店，为抖店贡献 iOS 流水 <b>44.1万</b>（存量 iOS 玩家总充值 205.5万 中，已 21.5% 落进抖店、78.5% 仍在苹果）。<b>还有 1,158人 / 流水105.6万 从未进过抖店</b> —— 把他们引导到抖店，每百元可多拿 20.65 元，是最直接的切支付挖掘池。</div>
+
+  <!-- 3. 原平台充值用户转移情况 -->
+  <div class="desc" style="margin-top:14px"><b>🏪 原平台充值用户转移情况</b>：把 59 人按 7/2 前是否已弃平台转 App Store/IAP 拆两组（承接金额合计 39.78万），下图按<b>人数占比</b>与<b>流水占比</b>展示构成：</div>
+  <div class="grid2">
+    <div class="chartbox"><h4>被抖店承接的平台用户 · 人数占比</h4><div class="piewrap" style="height:150px"><canvas id="cL1N"></canvas></div></div>
+    <div class="chartbox"><h4>被抖店承接的平台用户 · 流水占比</h4><div class="piewrap" style="height:150px"><canvas id="cL1A"></canvas></div></div>
+  </div>
+  <div class="grid2" style="margin-top:10px;grid-template-columns:1.4fr 1fr">
+    <div class="tbl-wrap wide"><table>
+      <tr><th>类型 · 原平台用户去向</th><th class="num">人数</th><th class="num">抖店iOS承接</th><th class="num">流水占比</th><th class="num">切支付净增</th></tr>
+      <tr><td><b>平台充值现存用户转移</b><br><small style="color:#94a3b8">7/2前仍在平台充 → 7/2后被抖店分流</small></td><td class="num"><b>48 (81.4%)</b></td><td class="num up2"><b>¥37.16万</b></td><td class="num up2"><b>93.4%</b></td><td class="num up2"><b>≈+7.67万</b></td></tr>
+      <tr><td><b>平台充值流失用户转移</b><br><small style="color:#94a3b8">7/2前已弃平台转游戏直充（1-2月7人、5-6月3人）→ 现被抖店接回</small></td><td class="num"><b>11 (18.6%)</b></td><td class="num">¥2.62万</td><td class="num">6.6%</td><td class="num">≈+0.54万</td></tr>
+    </table>
+    <div class="hl-red" style="margin-top:0">📝 <b>备注：</b>「平台充值流失用户转移」= 用户从 <b>平台充值 → 游戏直充(IAP)</b> 后，再在抖店运营期被抖店承接的群体。真正 7/2 前就流失到苹果的用户<b>只被接回 11人/¥2.62万</b> —— 大量已流失用户仍留在 App Store，是切支付引导最薄弱环节。</div></div>
+  </div>
+
+  <!-- 4. 1-9月 平台充值 iOS 用户衰减趋势 -->
+  <div class="desc" style="margin-top:14px"><b>📉 平台充值 iOS 用户衰减 vs 抖店承接（1–9月）</b>—— 核心看平台充值 iOS 持续下行，7月起抖店爬升承接：</div>
+  <div class="grid2">
+    <div class="chartbox"><h4>平台充值 iOS 衰减 vs 抖店 iOS 承接（万元/月）</h4><canvas id="cPlatDec" height="180"></canvas></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="hl-red" style="margin:0">🔻 <b>平台充值 iOS 持续衰减</b>：2月峰值 <b>104.3万</b> → 8月 <b>46.9万（-55%）</b>；人数 275 → 200（-27%）；7月(-21.5%)、8月(-11.1%) 仍在加速下行。</div>
+      <div class="hl-blue" style="margin:0">🔺 <b>抖店 iOS 爬升承接</b>：7月上线首月 10.4万 → 8月 <b>33.3万</b>，已达当月平台 iOS（46.9万）的 <b>71%</b>；平台+抖店 iOS 合计 8月 80.2万 &gt; 5月 63.6万（+26%）→ 平台衰减的坑正被抖店逐步填上并多出增量。</div>
+    </div>
+  </div>
+  <div class="tbl-wrap wide" style="margin-top:10px"><table>
+    <tr><th>月份</th><th class="num">1月</th><th class="num">2月</th><th class="num">3月</th><th class="num">4月</th><th class="num">5月</th><th class="num">6月</th><th class="num">7月</th><th class="num">8月</th><th class="num">9月*</th></tr>
+    <tr><td>金额</td><td class="num">¥90.9万</td><td class="num"><b>¥104.3万</b></td><td class="num">¥81.4万</td><td class="num">¥80.6万</td><td class="num">¥63.6万</td><td class="num">¥67.2万</td><td class="num">¥52.8万</td><td class="num down2"><b>¥46.9万</b></td><td class="num">¥1.2万</td></tr>
+    <tr><td>环比金额</td><td class="num">—</td><td class="num up">+14.7%</td><td class="num down">-22.0%</td><td class="num down">-0.9%</td><td class="num down">-21.1%</td><td class="num up">+5.7%</td><td class="num down">-21.5%</td><td class="num down2"><b>-11.1%</b></td><td class="num down2"><b>-97.5%</b></td></tr>
+    <tr><td>人数</td><td class="num">284</td><td class="num"><b>275</b></td><td class="num">257</td><td class="num">281</td><td class="num">259</td><td class="num">242</td><td class="num">219</td><td class="num down2"><b>200</b></td><td class="num">44</td></tr>
+    <tr><td>环比人数</td><td class="num">—</td><td class="num">-3.2%</td><td class="num">-6.5%</td><td class="num up">+9.3%</td><td class="num">-7.8%</td><td class="num">-6.6%</td><td class="num">-9.5%</td><td class="num down2"><b>-8.7%</b></td><td class="num">—</td></tr>
+    <tr><td>较峰值 (2月)</td><td class="num down">-12.8%</td><td class="num">—</td><td class="num down">-22.0%</td><td class="num down">-22.7%</td><td class="num down">-39.0%</td><td class="num down">-35.6%</td><td class="num down2"><b>-49.4%</b></td><td class="num down2"><b>-55.0%</b></td><td class="num">—</td></tr>
+  </table></div>
+
+  <!-- 5. 核心结论 -->
+  <div class="hl"><b>核心结论：</b>① <b>平台充值 iOS 用户流失趋势</b>：金额从 2月峰值 104.3万 单调下滑至 8月 <b>46.9万（-55%）</b>，人数 275 → 200（-27%），且 7-8月 流失加速（-21.5% / -11.1%）。② <b>抖店价值及数据验证</b>：抖店 iOS 8月 33.3万 占 iOS 端 <b>19.3%</b>，平台 + 抖店 iOS 合计 8月 80.2万 > 5月 63.6万（+26%），"平台坑"被抖店<b>填住还多出增量</b>；链路1(平台充值转移)90.2%承接主力 + 链路2(iOS直充转移)9.2%纯切支付红利 = 净增 9.10万。③ <b>剩余挖掘空间</b>：<b>iOS直充用户</b>运营期 IAP 总流水 <b>166.6万</b>，仅 <b>4.0%</b>(6.67万)被抖店接回 → <b>96% (159.9万)仍留苹果</b>；<b>流失平台充值 iOS 用户</b> 7/2前已转 IAP 群体庞大（仅 6月活跃 243人中就有 34人 ¥9.22万 漏去 IAP 而几乎未进抖店），是切支付引导最薄弱、也最该主攻的池子。</div>
+</div>
+
+<!-- ========== 维度四：抖店用户构成 ========== -->
+<div class="sec" id="sec-4">
+  <h2><span class="section-tag">维度四</span>📌 抖店充值用户构成</h2>
+  <div class="desc">189 名付费角色：首充来源 / 付费习惯 / 大R（累充≥3000）。</div>
+  <div class="grid2">
+    <div class="chartbox"><h4>① 抖店首充来源：直播 vs 自营（人数/流水）</h4><div class="piewrap"><canvas id="cSrc"></canvas></div></div>
+    <div class="chartbox"><h4>② 充值金额区间（人数）</h4><canvas id="cAmt" height="150"></canvas></div>
+    <div class="tbl-wrap" style="grid-column:1/-1"><table>
+      <tr><th>首充来源</th><th class="num">人数</th><th class="num">累充</th><th class="num">iOS累充/净增</th><th>画像</th></tr>
+      <tr><td>🎥 直播首充</td><td class="num"><b>148人 (78.3%)</b></td><td class="num"><b>¥92.3万 (77.4%)</b></td><td class="num up2"><b>¥40.2万 / +8.30万</b></td><td>贡献 iOS切支付净增 <b>95.2%</b> → 直播首充=切支付主入口</td></tr>
+      <tr><td>🛍️ 自营首充</td><td class="num">41人 (21.7%)</td><td class="num">¥26.9万 (22.6%)</td><td class="num">¥2.0万 / +0.42万</td><td>iOS占比仅 8%（直播 44%）→ 自然成交几乎不产生切支付</td></tr>
+      <tr><td>💰 大R（累充≥3000）</td><td class="num"><b>58人</b></td><td class="num up2"><b>¥109.5万 (91.9%)</b></td><td class="num">iOS 24人</td><td>其中 <b>47人(85.3万)首充来自直播</b>、iOS大R 24人里22人来自直播</td></tr>
+    </table></div>
+  </div>
+  <div class="hl-amber"><b>大R高度集中：</b>前 10 大R累充 <b>¥70.0万（占大R 64%）</b>，Top1(安卓/自营)¥14.9万·298笔、Top2(iOS/直播)¥11.2万、Top3(安卓/直播)¥9.8万。<b>前 5 个用户撑起近一半流水</b>，对头部稳定性极敏感——建议建 Top10 专属维护机制（专属客服/福利/返场礼）。</div>
+  <div class="hl-green"><b>直播与切支付的关系（本报告核心论点）：</b>把 189 名抖店用户的 iOS 切支付净增按首充来源拆分 —— <b>直播首充用户贡献 8.30万（95.2%），自营仅 0.42万（4.8%）</b>。直播是把 iOS 玩家引入抖店充值、从而拿到“每百元多 20.65 元”切支付红利的<b>唯一放大器</b>；没有直播，抖店 iOS 盘只剩自营 2 万，切支付红利几乎归零。直播的必要性不取决于“它本身赚不赚”，而取决于它是否扛起了抖店大头流水与 iOS 切支付。</div>
+  <div class="grid2" style="margin-top:12px">
+    <div class="chartbox"><h4>iOS 切支付净增 · 按首充来源拆分（元）</h4><canvas id="cNetSrc" height="150"></canvas></div>
+    <div class="tbl-wrap"><table>
+      <tr><th>直播首充用户 · 扛起</th><th class="num">数值</th></tr>
+      <tr><td>抖店总流水占比</td><td class="num up2"><b>77.4%</b>（¥92.3万/119.2万）</td></tr>
+      <tr><td>iOS 切支付净增占比</td><td class="num up2"><b>95.2%</b>（¥8.30万/8.72万）</td></tr>
+      <tr><td>直播首充 iOS 净增 vs 现状8%分成(76,750)</td><td class="num up"><b>108%</b> → 直播红利已覆盖自身分成</td></tr>
+      <tr><td>自营 iOS 净增</td><td class="num">仅 ¥0.42万（4.8%）</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ========== 维度五：利润情况 ========== -->
+<div class="sec" id="sec-5">
+  <h2><span class="section-tag">维度五</span>📌 利润情况（你确认公式口径）</h2>
+  <div class="desc">利润 = GMV×85%（研发分成15%）后扣费：<b>抖店 −0.6%服务费 −8%直播分成(全店)</b>=76.4%；<b>平台 −1%通道</b>=84%；<b>iOS原渠道</b>苹果抽25%再×85%=63.75%；<b>iOS切支付净增系数</b>=20.65%。</div>
+  <!-- ① 月度流水 + 利润测算 -->
+  <h3 class="subttl tight">① 月度三通道流水（万元，全景）</h3>
+  <div class="chartbox"><canvas id="cFlow" height="185"></canvas></div>
+  <div class="desc" style="margin-top:10px"><b>月度利润测算（元，按 7/2–9/2）</b>：</div>
+  <div class="tbl-wrap"><table>
+    <tr><th>利润口径</th><th class="num">7月</th><th class="num">8月</th><th class="num">报告期合计</th></tr>
+    <tr><td>抖店流水 GMV</td><td class="num">209,476</td><td class="num">959,374</td><td class="num">1,191,552</td></tr>
+    <tr><td><b>抖店利润(×76.4%)</b></td><td class="num"><b>160,040</b></td><td class="num"><b>732,962</b></td><td class="num"><b>910,346</b></td></tr>
+    <tr><td>原iOS路径(安卓×85%+iOS×63.75%)</td><td class="num">155,862</td><td class="num">744,631</td><td class="num">919,147</td></tr>
+    <tr><td><b>抖店利润 − 原iOS路径</b></td><td class="num up">+4,178</td><td class="num down">−11,669</td><td class="num down">−8,801</td></tr>
+  </table></div>
+  <div class="hl" style="margin-top:10px"><b>8月抖店利润 73.3万 &lt; 原路径 74.5万（差 1.17万）</b>——差额 = 全店 8% 直播分成(76,750) <b>超出</b> iOS 切支付净增(68,837)约 0.79万，另有 0.38万来自安卓部分分成损耗。iOS 切支付每单多赚 20.65 元是实打实的，是“<b>按全店 GMV 计提 8% 分成</b>”吃掉了红利。</div>
+</div>
+
+<!-- ========== 维度六：iOS 切支付直播分成模式复盘（依据《直播效益估算》表） ========== -->
+<div class="sec" id="sec-6">
+  <h2><span class="section-tag">维度六</span>📌 iOS 切支付直播分成模式复盘</h2>
+  <div class="desc">来源：《直播效益估算.xlsx》· 复盘抖店运营期（7/2–9/2）直播分成经济性、与新合作模式测算。</div>
+
+  <!-- ① 抖店直播成本分析 -->
+  <h3 class="subttl">① 抖店直播成本分析（按月）</h3>
+  <div class="tbl-wrap wide" style="grid-column:1/-1"><table>
+    <tr><th>月份</th><th class="num">GMV</th><th class="num">直播分成</th><th class="num">当月直播次数</th><th class="num">iOS 流水</th><th class="num">iOS 抖店切支付收益</th><th class="num">扣除分成后 iOS 切支付净增</th><th class="num">单场直播临界值</th></tr>
+    <tr><td>7月</td><td class="num">209,476</td><td class="num">16,758</td><td class="num">26</td><td class="num">104,308</td><td class="num">21,633</td><td class="num up">+4,875</td><td class="num">832</td></tr>
+    <tr><td>8月</td><td class="num">959,374</td><td class="num"><b>76,750</b></td><td class="num">26</td><td class="num"><b>333,350</b></td><td class="num"><b>68,837</b></td><td class="num down"><b>−7,913</b></td><td class="num">2,659</td></tr>
+    <tr><td style="background:#f8fafc"><b>汇总</b></td><td class="num" style="background:#f8fafc"><b>1,168,850</b></td><td class="num" style="background:#f8fafc"><b>93,508</b></td><td class="num" style="background:#f8fafc"><b>52</b></td><td class="num" style="background:#f8fafc"><b>437,658</b></td><td class="num" style="background:#f8fafc"><b>90,470</b></td><td class="num" style="background:#f8fafc down2"><b>−3,038</b></td><td class="num" style="background:#f8fafc"><b>3,491</b></td></tr>
+  </table></div>
+  <div class="hl-red">🔴 <b>结论：</b>抖店运营期间（7–8月），iOS 切支付利润 <b>无法覆盖直播成本</b>（8月倒挂 -7,913元，汇总 -3,038元）。8月单场直播 iOS 临界值 2,659元，实际均值约 12,820元/月/场（=333,350/26）—— <b>单场绝对值达标</b>，但因全店 GMV×8% 计提基数过大，吃掉了红利。</div>
+
+  <!-- ② 抖店渠道占比情况（描述+建议图表位置）-->
+  <h3 class="subttl">② 抖店渠道占比情况</h3>
+  <div class="tbl-wrap wide" style="grid-column:1/-1"><table>
+    <tr><th>渠道</th><th class="num">人数</th><th class="num">占比</th><th class="num">累充</th><th class="num">流水占比</th></tr>
+    <tr><td>📱 iOS（混合苹果3k）</td><td class="num"><b>93人</b></td><td class="num"><b>49.2%</b></td><td class="num"><b>¥44.1万</b></td><td class="num"><b>37.0%</b></td></tr>
+    <tr><td>🤖 安卓（3k官包）</td><td class="num">96人</td><td class="num">50.8%</td><td class="num">¥75.1万</td><td class="num">63.0%</td></tr>
+    <tr><td style="background:#f8fafc"><b>合计</b></td><td class="num" style="background:#f8fafc"><b>189人</b></td><td class="num" style="background:#f8fafc">100%</td><td class="num" style="background:#f8fafc"><b>¥119.2万</b></td><td class="num" style="background:#f8fafc">100%</td></tr>
+  </table></div>
+  <div class="hl-blue">📊 <b>占比解读：</b>iOS 与安卓 人数几乎 1:1（49.2% vs 50.8%），但 iOS 流水占比仅 37.0% &lt; 安卓 63.0%，反映 <b>iOS 用户人均消费偏低</b>（¥4,741 vs 安卓 ¥7,823），主因 iOS 切支付红利 84.4%净得 vs 安卓 76.4%差距已体现在数据中。</div>
+
+  <!-- ③ 新合作模式成本预估 -->
+  <h3 class="subttl">③ 新合作模式成本预估（单场直播结算）</h3>
+  <div class="hl hl-red" style="margin-bottom:12px;border-left-width:5px;">
+    <span class="miniT">⭐ 核心操作建议</span>：按单场 <b>≤¥1,000</b> 结算（月均 26,000 元），可在 iOS 月 GMV 达 125,362 元时覆盖切支付收益，同时降低全店 GMV×8% 的分成倒挂风险。建议优先以 <b>≤800元/场</b> 起步测试。
+  </div>
+  <div class="tbl-wrap wide" style="grid-column:1/-1"><table>
+    <tr><th class="num">单场直播成本</th><th class="num">场次</th><th class="num">直播分成</th><th class="num">iOS 月 GMV 目标值</th><th>是否覆盖 iOS 切支付</th></tr>
+    <tr><td class="num">500</td><td class="num">26</td><td class="num">13,000</td><td class="num">62,681</td><td class="up">低成本、达标线低</td></tr>
+    <tr><td class="num">800</td><td class="num">26</td><td class="num">20,800</td><td class="num">100,289</td><td class="up">推荐起步档</td></tr>
+    <tr style="background:#fef9c3;font-weight:700"><td class="num">1,000 ⭐</td><td class="num">26</td><td class="num">26,000</td><td class="num">125,362</td><td class="up2"><b>→ 建议目标档（≤1000元/场）</b></td></tr>
+    <tr><td class="num">1,200</td><td class="num">26</td><td class="num">31,200</td><td class="num">150,434</td><td class="up">可接受上限</td></tr>
+    <tr><td class="num">1,442</td><td class="num">26</td><td class="num">37,500</td><td class="num">180,810</td><td class="up">临界（不推荐突破）</td></tr>
+  </table></div>
+  <div class="hl-amber"><b>备注（你原表注释）：</b>① 非周年庆抖店，iOS 日均GMV 8K，店铺 GMV 预估 24万；② 安卓流水影响，如果继续按现有抖店 GMV×8% 分成模式，抖店利润会有影响，<b>建议按单场直播形式结算，直播预算不高于 1000元/场</b>；③ 店铺 GMV目标值按当前抖店安卓/iOS 占比临界值，<b>iOS 占比 40% 预估</b>。</div>
+
+  <!-- 总结论 -->
+  <div class="hl-green" style="border-left-width:5px;border-left-color:#059669;"><b>⭐ 复盘总结论：</b>① 抖店 8月直播分成 <b>76,750元</b>，仅占 iOS 切支付收益 68,837元 的 <b>112%</b> —— 分成吃掉红利，账面倒挂；② 按你的测算，<b>单场成本 ≤1,000元</b>（≤26,000元/月）即可让 iOS 月 GMV 目标值 125,362元在 8月水平即可达成；③ <b>改成"单场结算+≤1000元/场"+iOS 占比目标40%</b>，是兼顾"留直播（扛起 95.2% iOS 切支付净增）"与"抖店利润回正"的最优合作模式。</div>
+</div>
+
+<!-- ===== 口径说明 ===== -->
+<div class="sec" id="sec-r">
+  <h2>📋 数据口径说明</h2>
+  <div class="foot">
+    ① 三充值入口按订单级交叉去重后互斥：<b>直充</b>=官包游戏内(IAP+安卓)、<b>平台</b>=3k收银台、<b>抖店</b>=抖音小店；② <b>iOS</b>=混合苹果3k[apple3k]；③ <b>利润公式（你确认）</b>：研发分成15%(×85%)后 —— 抖店=GMV×85%−0.6%服务费−8%直播分成(全店,现状)=76.4%；平台=GMV×(85%−1%)=84%；原iOS=安卓×85%+iOS×(1−25%)×85%=iOS×63.75%；iOS切支付净增系数=84.4%−63.75%=<b>20.65%</b>；④ 大R=抖店累充≥3000元；⑤ 9月数据截至 9/3 导表，仅 2-3 天。
+  </div>
+</div>
+
+<div class="foot">数据源：26年游戏累计充值 / 26年平台充值 / 抖店充值明细0702-0902 / 抖店运营期新用户明细 / 直播效益估算 ｜ 分析日期：2026-09-03 · 口径与你《直播效益估算》表对齐</div><br><a class="totop" href="#top">↑ 返回顶部</a>
+</div>
+
+<script>
+Chart.defaults.font.family="-apple-system,'PingFang SC','Microsoft YaHei',sans-serif";
+Chart.defaults.color="#5c6470";
+Chart.defaults.font.size=11;
+const NUM=n=>'¥'+Math.round(n).toLocaleString();
+const DATA={"months": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月*"], "direct": [2897893, 3067150, 1977522, 1889086, 1970843, 1848397, 1769432, 2511967, 70095], "plat": [1056082, 1199376, 913849, 923831, 748458, 824438, 582492, 525808, 12602], "dd": [0, 0, 0, 0, 0, 0, 209476, 959374, 22702], "plat_ios": [909012, 1042626, 813748, 806154, 635958, 671961, 527546, 468990, 11518], "plat_ios_u": [284, 275, 257, 281, 259, 242, 219, 200, 44], "iap_ios": [955931, 934860, 767365, 755213, 791330, 770318, 720917, 923456, 21764], "dd_ios": [0, 0, 0, 0, 0, 0, 104436, 333350, 3024], "dd_ios_live": [0, 0, 0, 0, 0, 0, 45966, 207454, 840], "dd_ios_self": [0, 0, 0, 0, 0, 0, 58470, 125896, 2184]};
+const ANNIV={"cats": ["官包安卓直充", "iOS官包直充(IAP)", "平台充值(收银台)", "抖店"], "ref": [456060, 287703, 168244, 148928], "wk": [1068547, 579637, 341604, 762702], "grow": [134.3, 101.5, 103.0, 358.5]};
+const NUWEEK={"cats": ["7/6-12", "7/13-19", "7/20-26", "7/27-8/2", "8/3-9", "8/10-16", "8/17-23", "8/24-30"], "n": [4, 2, 2, 2, 0, 1, 12, 3], "amt": [1966, 18, 12, 12, 0, 30, 22532, 48]};
+const LIVESELF={"cats": ["7月", "8月", "9月1-2日"], "live": [90138, 615026, 15810], "self": [119338, 344348, 6892]};
+const COST8={"labels": ["iOS切支付净增\n(全店iOS 33.3万×20.65%)", "直播分成\n(现状: 全店GMV×8%)", "直播分成\n(建议: 直播间流水×8%)", "直播iOS直接切增\n(20.7万直播iOS×20.65%)"], "v": [68837, 76750, 49202, 42839]};
+const PER100={"labels": ["抖店实际\n(含8%直播分成)", "抖店通道\n(不含直播分成)", "平台收银台\n(通道费1%)", "iOS原渠道\n(苹果抽25%后)"], "v": [76.4, 84.4, 84.0, 63.75]};
+const IOSPER={"labels": ["7月", "8月", "9月(2天)", "报告期合计"], "v": [21566, 68837, 624, 91027], "ios_flow": [104436, 333350, 3024, 440810]};
+const SRCBREAK={"cats": ["直播首充用户", "自营首充用户"], "users": [148, 41], "flow": [922510, 269042], "ios_amt": [401772, 20478], "net": [82966, 4229]};
+const TWOLINK={"cats": ["平台充值转移 (原平台→抖店)", "iOS直充转移 (原iOS直充→抖店)", "纯新 · 无史"], "users": [59, 27, 7], "ios_amt": [397806, 40476, 2528], "pct": [90.2, 9.2, 0.6], "net": [82147, 8358, 522]};
+const LINK1SUB={"cats": ["平台充值现存用户转移(平台→抖店)", "平台充值流失用户转移(平台→游戏直充→抖店)"], "users": [48, 11], "amt": [371640, 26166], "pct": [93.4, 6.6], "net": [76744, 5403]};
+const IAPVDD={"cats": ["现存iOS直充(IAP)运营期总流水", "已转抖店(链路2+组A)"], "amt": [1666137, 66700], "pct": [100.0, 4.0]};
+const IAPPIE={"cats": ["未到抖店", "已到抖店"], "users": [1158, 93], "userpct": [92.6, 7.4], "fcats": ["仍留 App Store(IAP)", "已切到抖店"], "flow": [1613725, 440810], "flowpct": [78.5, 21.5], "mine": [1055739, 1158]};
+const PLATTREND={"cats": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月*"], "amt": [909012, 1042626, 813748, 806154, 635958, 671961, 527546, 468990, 11518], "users": [284, 275, 257, 281, 259, 242, 219, 200, 44]};
+const AX={grid:{color:'#eef1f6'},ticks:{font:{size:10}}};
+const mk=(id,cfg)=>{const c=document.getElementById(id);if(c)new Chart(c,cfg);};
+
+// 官方新用户节奏
+mk('cNew',{type:'bar',data:{labels:NUWEEK.cats,datasets:[{label:'创角付费人数',data:NUWEEK.n,backgroundColor:NUWEEK.n.map((v,i)=>i===6?'#f59e0b':'#93c5fd'),borderRadius:5}]},options:{scales:{y:{beginAtZero:true,title:{display:true,text:'人'},...AX},x:{grid:{display:false}}},plugins:{legend:{display:false}}}});
+
+// 周年庆窗口
+mk('cWin',{type:'bar',data:{labels:ANNIV.cats,datasets:[
+{label:'前15天 8/2-16',data:ANNIV.ref.map(v=>+(v/10000).toFixed(1)),backgroundColor:'#cbd5e1',borderRadius:5},
+{label:'周年庆 8/17-31',data:ANNIV.wk.map(v=>+(v/10000).toFixed(1)),backgroundColor:'#f59e0b',borderRadius:5}]},options:{indexAxis:'y',scales:{x:{title:{display:true,text:'万元'},...AX}},plugins:{legend:{position:'bottom'}}}});
+
+// iOS 月度衰减
+const pm=DATA.plat_ios.map(v=>+(v/10000).toFixed(1));
+const dm=DATA.dd_ios.map(v=>+(v/10000).toFixed(1));
+mk('cIos',{type:'line',data:{labels:DATA.months,datasets:[
+{label:'平台 iOS 充值',data:pm,borderColor:'#94a3b8',backgroundColor:'rgba(148,163,184,.10)',tension:.3,borderWidth:2,fill:true},
+{label:'抖店 iOS 充值',data:dm,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.10)',tension:.3,borderWidth:2,fill:true}]},options:{scales:{y:{title:{display:true,text:'万元'},...AX},x:{grid:{display:false}}},plugins:{legend:{position:'bottom'}}}});
+
+// 现存IAP用户 人数饼(已到抖店93 vs 未到1158)
+mk('cIapN',{type:'doughnut',data:{labels:['未到抖店','已到抖店'],datasets:[{data:IAPPIE.users,backgroundColor:['#cbd5e1','#f59e0b'],borderWidth:2,borderColor:'#fff',hoverOffset:4}]},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:6}},tooltip:{callbacks:{label:c=>' '+c.label+'：'+c.parsed+'人 · 占'+(c.dataIndex===0?IAPPIE.userpct[0]:IAPPIE.userpct[1])+'%'}}},maintainAspectRatio:false}});
+// iOS存量资金池 流水去向饼(苹果留161.4万 vs 已切抖店44.1万)
+mk('cIapA',{type:'doughnut',data:{labels:['仍留 App Store','已切到抖店'],datasets:[{data:IAPPIE.flow,backgroundColor:['#94a3b8','#f59e0b'],borderWidth:2,borderColor:'#fff',hoverOffset:4}]},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:6}},tooltip:{callbacks:{label:c=>' '+c.label+'：'+NUM(c.parsed)+' · 占'+(c.dataIndex===0?IAPPIE.flowpct[0]:IAPPIE.flowpct[1])+'%'}}},maintainAspectRatio:false}});
+
+// 原平台充值用户转移: 人数饼 / 流水饼 (复用LINK1SUB)
+mk('cL1N',{type:'doughnut',data:{labels:['现存转移','流失转移'],datasets:[{data:LINK1SUB.users,backgroundColor:['#3b82f6','#f59e0b'],borderWidth:2,borderColor:'#fff',hoverOffset:4}]},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:6}},tooltip:{callbacks:{label:c=>' '+c.label+'：'+c.parsed+'人 · 占'+(c.dataIndex===0?'81.4':'18.6')+'%'}}},maintainAspectRatio:false}});
+mk('cL1A',{type:'doughnut',data:{labels:['现存转移','流失转移'],datasets:[{data:[371640,26166],backgroundColor:['#2563eb','#f59e0b'],borderWidth:2,borderColor:'#fff',hoverOffset:4}]},options:{cutout:'58%',plugins:{legend:{position:'bottom',labels:{font:{size:10},padding:6}},tooltip:{callbacks:{label:c=>' '+NUM(c.parsed)+' · 占'+(c.dataIndex===0?'93.4':'6.6')+'%'}}},maintainAspectRatio:false}});
+
+// 平台iOS衰减 vs 抖店承接 折线
+mk('cPlatDec',{type:'line',data:{labels:PLATTREND.cats,datasets:[
+{label:'平台充值 iOS (万元)',data:PLATTREND.amt.map(v=>+(v/10000).toFixed(1)),borderColor:'#dc2626',backgroundColor:'#dc2626',tension:.25,borderWidth:2.2,pointRadius:3},
+{label:'抖店 iOS (万元)',data:DATA.dd_ios.map(v=>+(v/10000).toFixed(1)),borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.15)',tension:.25,borderWidth:2.2,pointRadius:3,fill:true}]},options:{scales:{y:{title:{display:true,text:'万元'},...AX},x:{grid:{display:false}}},plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>' '+c.dataset.label.replace(' (万元)','')+'：'+c.parsed.y+'万'}}}}});
+
+// 首充来源 直播vs自营 环形 (人数 + 金额tooltip)
+mk('cSrc',{type:'doughnut',data:{labels:['直播首充','自营首充'],datasets:[{data:[148,41],backgroundColor:['#f59e0b','#2563eb'],borderWidth:2,borderColor:'#fff',hoverOffset:4}]},options:{cutout:'56%',plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:10}},tooltip:{callbacks:{label:c=>' '+c.label+'：'+c.parsed+'人 · 累充 '+(c.dataIndex===0?'¥92.3万 (77.4%)':'¥26.9万 (22.6%)')}}},maintainAspectRatio:false}});
+
+// 充值金额区间 (189人)
+mk('cAmt',{type:'bar',data:{labels:['<1千','1千-1万','1万-3万','3万+'],datasets:[{data:[98,67,17,7],backgroundColor:['#fde68a','#fbbf24','#f59e0b','#d97706'],borderRadius:5}]},options:{scales:{y:{beginAtZero:true,title:{display:true,text:'人数'},...AX},x:{grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' '+c.parsed.y+' 人'}}}}});
+
+// 月度流水全景(堆叠: 直充/平台/抖店)
+const tot_=DATA.months.map((m,i)=>+(DATA.direct[i]+DATA.plat[i]+DATA.dd[i])/10000);
+mk('cFlow',{type:'bar',data:{labels:DATA.months,datasets:[
+{label:'游戏内直充',data:DATA.direct.map(v=>+(v/10000).toFixed(1)),backgroundColor:'rgba(148,163,184,.85)',borderRadius:2,stack:'a'},
+{label:'平台收银台',data:DATA.plat.map(v=>+(v/10000).toFixed(1)),backgroundColor:'rgba(37,99,235,.85)',borderRadius:2,stack:'a'},
+{label:'抖店',data:DATA.dd.map(v=>+(v/10000).toFixed(1)),backgroundColor:'rgba(245,158,11,.85)',borderRadius:2,stack:'a'}]},options:{scales:{y:{stacked:true,title:{display:true,text:'万元'},...AX},x:{stacked:true,grid:{display:false}}},plugins:{legend:{position:'bottom'}}}});
+
+// iOS切支付净增 按首充来源拆分
+mk('cNetSrc',{type:'bar',data:{labels:SRCBREAK.cats,datasets:[{label:'iOS切支付净增(元)',data:SRCBREAK.net,backgroundColor:['#f59e0b','#7c5cf0'],borderRadius:6,barPercentage:.45}]},options:{scales:{y:{beginAtZero:true,title:{display:true,text:'净增(元)'},...AX},x:{grid:{display:false}}},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>' 净增 '+NUM(c.parsed.y)+'  ·  占'+(c.parsed.y/87000*100).toFixed(0)+'%'}}}}});
+</script>
+</body>
+</html>
