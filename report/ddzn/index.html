@@ -122,6 +122,15 @@ a{color:inherit;}
 b,strong{font-weight:700;}
 .kpi .vl,.num{font-variant-numeric:tabular-nums;}
 .up,.down,.up2,.down2{letter-spacing:-.2px;}
+/* ========== 0904 视觉降噪：统一提示卡（白底+语义左条），KPI 收敛主色 ========== */
+.hl,.hl-red,.hl-amber,.hl-blue,.hl-green{background:#fff;border:1px solid #e7eaf1;border-left-width:4px;border-left-style:solid;border-radius:10px;padding:10px 14px;line-height:1.72;color:#45505f;margin-top:10px;}
+.hl,.hl-red{border-left-color:var(--red)}
+.hl-amber{border-left-color:var(--amber)}
+.hl-blue{border-left-color:var(--blue)}
+.hl-green{border-left-color:var(--green)}
+.hl .miniT{color:inherit}
+.kpi .vl,.kpi.warn .vl,.kpi.vio .vl,.kpi.amb .vl{color:var(--blue)}
+.tbl-wrap::-webkit-scrollbar-thumb{background:#c9d2de}
 /* ---------- 平板 ---------- */
 @media(max-width:900px){
   .crow{grid-template-columns:repeat(2,1fr);}
