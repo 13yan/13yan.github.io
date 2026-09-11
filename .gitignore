@@ -1,3 +1,6 @@
 s/data.json
 work/manifest.json
 w/**/report-data.json
+
+# 抖店工作台完整框架基线备份（防多agent误覆盖，2026-09-11）
+s/index.html.baseline_2375
