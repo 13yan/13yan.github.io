@@ -910,41 +910,7 @@ function renderMultiDay(sessions) {
 
 function destroyChart(n){if(charts[n]){charts[n].destroy();delete charts[n];}}
 
-// ===== 反爬虫：数据加密传输 =====
-// 密钥与 encrypt_data.py 的 ENC_KEY 保持一致；data.enc = XOR + base64 混淆
-var ENC_KEY = '3ksDd2026@workbench#dscs';
-function xorDecrypt(b64, key) {
-  var kb = [];
-  for (var i = 0; i < key.length; i++) kb.push(key.charCodeAt(i));
-  var bin = atob(b64);
-  var out = new Uint8Array(bin.length);
-  for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i) ^ kb[i % kb.length];
-  return new TextDecoder('utf-8').decode(out);
-}
-// 浏览器环境检测：无头/自动化环境不渲染数据
-function isAutomatedEnv() {
-  try {
-    if (navigator.webdriver === true) return true;
-    if (window._phantom || window.callPhantom) return true;
-    if (window.domAutomation && window.domAutomationController) return true;
-    var ua = navigator.userAgent || '';
-    if (/HeadlessChrome|PhantomJS|Selenium/i.test(ua)) return true;
-    if (typeof window.addEventListener !== 'function' || typeof window.setTimeout !== 'function') return true;
-  } catch (e) { return true; }
-  return false;
-}
-// 加载加密数据
-function loadData() {
-  if (isAutomatedEnv()) {
-    document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#94a0b0;">🛡️ 数据保护中，请使用浏览器访问</div>';
-    return;
-  }
-  fetch('./data.enc').then(function(r){ return r.text(); }).then(function(b64){
-    var data = JSON.parse(xorDecrypt(b64, ENC_KEY));
-    render(data);
-  }).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
-}
-loadData();
+fetch('./data.json').then(function(r){return r.json();}).then(function(data){render(data);}).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
 </script>
 </body>
 </html>
