@@ -11,11 +11,18 @@
   --primary-light: #dbeafe;
   --primary-50: #eff6ff;
   --primary-100: #e0e7ff;
-  --bg: #f0f2f5;
+  --accent: #dc2626;
+  --accent-light: #fef2f2;
+  --accent-purple: #7c3aed;
+  --accent-green: #059669;
+  --accent-orange: #ea580c;
+  --warm: #d97706;
+  --warm-light: #fffbeb;
+  --bg: #f1f4f9;
   --card: #ffffff;
-  --text: #111827;
-  --text2: #4b5563;
-  --text3: #9ca3af;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
   --border: #e5e7eb;
   --border-light: #f3f4f6;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
@@ -28,29 +35,45 @@
   --radius-sm: 6px;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; -webkit-font-smoothing:antialiased; }
+body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neue',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; -webkit-font-smoothing:antialiased; font-size:14px; line-height:1.6; }
 
 /* ===== 侧边栏 ===== */
 .sidebar {
   width:200px; min-height:100vh; background:#fff; border-right:1px solid var(--border);
   padding:24px 0; display:flex; flex-direction:column; flex-shrink:0;
 }
-.sidebar .logo { padding:0 20px 20px; font-size:16px; font-weight:700; color:var(--primary); border-bottom:1px solid var(--border); margin-bottom:4px; letter-spacing:-0.3px; }
+.sidebar .logo {
+  padding:0 20px 20px; font-size:15px; font-weight:700; color:var(--text);
+  border-bottom:1px solid var(--border); margin-bottom:4px; letter-spacing:-0.3px;
+  display:flex; align-items:center; gap:10px;
+}
+.sidebar .logo .logo-icon {
+  width:30px; height:30px;
+  background:linear-gradient(135deg,var(--primary),#3b82f6);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:15px; flex-shrink:0;
+}
 .sidebar .logo .sub { font-size:10px; font-weight:400; color:var(--text3); margin-top:3px; letter-spacing:0; }
 .sidebar .nav-item {
   display:flex; align-items:center; gap:10px; padding:10px 20px; cursor:pointer;
   font-size:13px; color:var(--text2); border:none; background:none; width:100%; text-align:left; transition:all 0.12s; position:relative;
 }
-.sidebar .nav-item:hover { background:#f8f9fb; color:var(--text); }
-.sidebar .nav-item.active { background:var(--primary-50); color:var(--primary); font-weight:600; }
+.sidebar .nav-item:hover { background:#f8fafc; color:var(--text); }
+.sidebar .nav-item.active { background:#f8fafc; color:var(--text); font-weight:600; }
 .sidebar .nav-item.active::before { content:''; position:absolute; left:0; top:6px; bottom:6px; width:3px; background:var(--primary); border-radius:0 3px 3px 0; }
 .sidebar .nav-icon { font-size:16px; opacity:0.85; }
 .sidebar .nav-item.active .nav-icon { opacity:1; }
 .sidebar .footer-info { margin-top:auto; padding:16px 20px; font-size:10px; color:var(--text3); border-top:1px solid var(--border); }
 
+/* 侧边栏概览小卡片 */
+.sidebar-summary { padding:12px 16px; margin:8px 16px; background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; }
+.ss-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; font-size:12px; }
+.ss-lbl { color:var(--text3); }
+.ss-val { font-weight:700; color:var(--primary); font-size:13px; }
+
 /* ===== 主内容区 ===== */
 .main { flex:1; padding:28px 32px; min-width:0; }
-.header { margin-bottom:20px; }
+.header { margin-bottom:14px; }
 .header h1 { font-size:20px; font-weight:700; color:var(--text); letter-spacing:-0.3px; }
 .header .sub { font-size:12px; color:var(--text3); margin-top:3px; }
 .tab-content { display:none; }
@@ -64,6 +87,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   display:flex; align-items:center; justify-content:center; transition:all 0.2s;
 }
 .help-btn:hover { transform:scale(1.1); box-shadow:0 4px 20px rgba(30,64,175,0.4); }
+.help-btn:active { transform:scale(0.95); }
 .help-overlay {
   position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:200;
   display:none; align-items:center; justify-content:center; padding:20px;
@@ -91,17 +115,17 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   padding:1px 8px; border-radius:8px; font-weight:500; margin-left:4px;
 }
 @media (max-width:480px) { .help-panel { padding:20px 16px; } }
-.section-title { font-size:13px; font-weight:600; color:var(--text2); margin-bottom:14px; display:flex; align-items:center; gap:8px; letter-spacing:0.2px; }
+.section-title { font-size:13px; font-weight:600; color:var(--text2); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
 .section-title .tag { font-size:10px; background:var(--primary-50); color:var(--primary); padding:2px 10px; border-radius:10px; font-weight:500; }
 
 /* ===== 汇总卡片 ===== */
-.summary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
-.summary-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:14px; }
-.summary-card { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:12px; padding:18px 16px; box-shadow:var(--shadow-sm); transition:box-shadow 0.2s,transform 0.15s; }
+.summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:12px; }
+.summary-grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:10px; }
+.summary-card { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; padding:12px 14px; box-shadow:var(--shadow-sm); transition:box-shadow 0.2s,transform 0.15s; }
 .summary-card:hover { box-shadow:var(--shadow); transform:translateY(-1px); }
 .summary-card .lbl { font-size:11px; color:var(--text3); font-weight:500; }
-.summary-card .val { font-size:24px; font-weight:700; color:var(--primary); margin-top:2px; letter-spacing:-0.3px; }
-.summary-card .sub { font-size:10px; color:var(--text2); margin-top:3px; }
+.summary-card .val { font-size:22px; font-weight:700; color:var(--primary); margin-top:2px; letter-spacing:-0.3px; }
+.summary-card .sub { font-size:10px; color:var(--text2); margin-top:2px; }
 .empty-block { text-align:center; padding:40px; color:var(--text3); font-size:13px; background:#fff; border:1px dashed var(--border); border-radius:12px; }
 
 .analysis-box { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border:1px solid #b3c5ff; border-radius:10px; padding:16px 20px; margin-bottom:20px; font-size:13px; line-height:1.8; color:var(--text); }
@@ -109,7 +133,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 
 /* ===== 日期筛选 ===== */
 .date-picker-bar {
-  background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:20px;
+  background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:14px;
   box-shadow:var(--shadow-sm);
 }
 .date-picker-bar .presets { display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap; }
@@ -119,6 +143,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 }
 .date-picker-bar .presets button:hover { border-color:var(--primary); color:var(--primary); background:var(--primary-50); }
 .date-picker-bar .presets button.active { background:var(--primary); color:#fff; border-color:var(--primary); box-shadow:0 1px 3px rgba(30,64,175,0.2); }
+.date-picker-bar .presets button:active { transform:scale(0.97); }
 .date-picker-bar .custom-range { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .date-picker-bar .custom-range input[type=date] {
   border:1px solid var(--border); border-radius:6px; padding:5px 10px; font-size:12px; background:#fff; color:var(--text);
@@ -127,17 +152,35 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 
 /* ===== KPI ===== */
 .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
-.kpi-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px 14px; box-shadow:var(--shadow-sm); transition:box-shadow 0.2s; }
-.kpi-card:hover { box-shadow:var(--shadow); }
-.kpi-card .lbl { font-size:11px; color:var(--text3); margin-bottom:4px; font-weight:500; }
-.kpi-card .val { font-size:22px; font-weight:700; color:var(--primary); line-height:1.2; letter-spacing:-0.3px; }
-.kpi-card .sub { font-size:10px; color:var(--text2); margin-top:3px; }
+.kpi-card {
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:16px 14px; box-shadow:var(--shadow-sm); transition:all 0.2s;
+  position:relative; overflow:hidden;
+}
+.kpi-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+}
+.kpi-card:nth-child(1)::before { background:var(--primary); }
+.kpi-card:nth-child(2)::before { background:var(--accent-purple); }
+.kpi-card:nth-child(3)::before { background:var(--accent-green); }
+.kpi-card:nth-child(4)::before { background:var(--accent-orange); }
+.kpi-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-1px); }
+.kpi-card .lbl { font-size:11px; color:var(--text2); margin-bottom:4px; font-weight:600; }
+.kpi-card .val { font-size:24px; font-weight:700; color:var(--text); line-height:1.2; letter-spacing:-0.3px; }
+.kpi-card .sub { font-size:10px; color:var(--text3); margin-top:3px; }
 .kpi-card .val.up { color:var(--up); }
 .kpi-card .val.warn { color:var(--warn); }
 .kpi-card .val.down { color:var(--down); }
 .kpi-card.featured { background:linear-gradient(135deg,#eef2ff,#f0f9ff); border-color:#b3c5ff; position:relative; }
-.kpi-card.featured .val { font-size:26px; }
+.kpi-card.featured .val { font-size:26px; color:var(--primary); }
 .kpi-card.featured .lbl { font-size:12px; color:var(--primary); font-weight:600; }
+.kpi-card.accent { border-left:3px solid var(--accent); }
+.kpi-card.warm { border-left:3px solid var(--warm); }
+
+/* 场次状态标签 */
+.session-status { display:inline-block; font-size:9px; padding:2px 8px; border-radius:8px; font-weight:600; margin-left:8px; }
+.session-status.ok { background:#f0fdf4; color:#059669; border:1px solid #bbf7d0; }
+.session-status.none { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
 
 /* ===== 图表 ===== */
 .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
@@ -156,12 +199,24 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 .flow-step .lbl { font-size:10px; color:var(--text3); margin-top:3px; }
 .flow-arrow { font-size:16px; color:var(--primary); opacity:0.6; margin:0 2px; }
 .flow-rate { font-size:9px; color:var(--text2); background:#eef2ff; padding:1px 6px; border-radius:4px; margin-top:3px; }
+.flow-row { display:flex; align-items:center; gap:4px; padding:4px 0; overflow-x:auto; }
 
 /* ===== 明细 ===== */
 .data-table { width:100%; border-collapse:collapse; font-size:12px; }
-.data-table th { background:#f8f9fb; padding:8px 10px; text-align:center; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); font-size:11px; }
-.data-table td { padding:8px 10px; text-align:center; border-bottom:1px solid var(--border-light); }
+.data-table th { background:#f8fafc; padding:8px 10px; text-align:center; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); font-size:11px; }
+.data-table td { padding:8px 10px; text-align:center; border-bottom:1px solid var(--border-light); transition:background 0.15s; }
+.data-table tr:hover td { background:#fafbfc; }
 .data-table .section td { background:var(--primary-50); font-weight:700; color:var(--primary); text-align:left; padding:9px 12px; font-size:12px; }
+.comp-table { width:100%; border-collapse:collapse; font-size:12px; margin-bottom:12px; }
+.comp-table th { background:#f8fafc; padding:7px 10px; text-align:left; font-weight:600; color:var(--text2); border-bottom:2px solid var(--border); font-size:11px; }
+.comp-table td { padding:7px 10px; border-bottom:1px solid var(--border-light); transition:background 0.15s; }
+.comp-table tr:hover td { background:#fafbfc; }
+.comp-table td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.comp-table td.up { color:var(--up); font-weight:600; }
+.comp-table td.down { color:var(--down); font-weight:600; }
+.comp-table td.rank-1 { font-weight:700; color:#d97706; }
+.comp-table td.rank-2 { font-weight:600; color:#94a3b8; }
+.comp-table td.rank-3 { font-weight:600; color:#8b5cf6; }
 
 /* ===== 场次列表 ===== */
 .session-list { list-style:none; }
@@ -210,15 +265,48 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   .summary-grid { grid-template-columns:1fr; }
   .main { padding:12px; }
 }
+/* 维度选择按钮 */
+.dimension-bar { display:flex; gap:8px; margin:12px 0 16px; flex-wrap:wrap; }
+.dim-btn {
+  padding:6px 16px; border:1px solid var(--border); border-radius:20px; background:#fff;
+  font-size:12px; color:var(--text2); cursor:pointer; transition:all 0.15s; font-weight:500;
+}
+.dim-btn:hover { border-color:var(--primary); color:var(--primary); }
+.dim-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+/* 汇总按钮：未选中时蓝边浅蓝底，选中时实色蓝（提示为全局视图入口） */
+.dim-btn.dim-btn-primary {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: #eef2ff;
+  font-weight: 600;
+}
+.dim-btn.dim-btn-primary:hover {
+  background: #dbeafe;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.dim-btn.dim-btn-primary.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+}
 </style>
 </head>
 <body>
 
 <!-- ===== 侧边栏 ===== -->
 <div class="sidebar">
-  <div class="logo">📊 抖店数据工作台<div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div>
+  <div class="logo"><div class="logo-icon">📊</div><div><div>抖店工作台</div><div class="sub">数据更新：<span id="dataUpdateTime">-</span></div></div></div>
   <button class="nav-item active" data-tab="overview"><span class="nav-icon">📊</span> 全店汇总</button>
   <button class="nav-item" data-tab="report"><span class="nav-icon">📋</span> 基础数据报表</button>
+  <button class="nav-item" data-tab="recharge"><span class="nav-icon">📈</span> 抖店充值转移效果分析</button>
+  <button class="nav-item admin-only" data-tab="logs" style="display:none;"><span class="nav-icon">📋</span> 操作记录</button>
+  <div class="sidebar-summary" id="sidebarSummary">
+    <div class="ss-row"><span class="ss-lbl">💰 总销售</span><span class="ss-val" id="ssSales">-</span></div>
+    <div class="ss-row"><span class="ss-lbl">📦 总订单</span><span class="ss-val" id="ssOrders">-</span></div>
+    <div class="ss-row"><span class="ss-lbl">🎮 游戏</span><span class="ss-val" id="ssGames">-</span></div>
+  </div>
   <div class="footer-info">共 <span id="totalSessions">0</span> 场直播</div>
 </div>
 
@@ -228,6 +316,31 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
 <!-- Tab: 全店汇总 -->
 <div class="tab-content active" id="tabOverview">
   <div class="header"><h1>📊 全店汇总</h1><div class="sub">累计经营数据与趋势</div></div>
+  <div class="dimension-bar" id="ovDimensionBar">
+    <span style="display:flex;align-items:center;gap:6px;">
+      <span style="font-size:12px;color:var(--text2);font-weight:500;">🎮 游戏</span>
+      <select id="ovGameSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:#fff;cursor:pointer;min-width:120px;"></select>
+    </span>
+    <!-- 月/年度趋势（合并切换：汇总=全量数据；按月/按年=趋势范围） -->
+    <span id="ovTrendYearCtl" style="display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--text2);font-weight:500;margin-left:8px;">📅 月/年度趋势</span>
+      <span id="ovTrendModeBar">
+        <button class="dim-btn dim-btn-primary active" data-tmode="summary" style="font-size:11px;padding:3px 10px;">📊 汇总</button>
+        <button class="dim-btn" data-tmode="month" style="font-size:11px;padding:3px 10px;">按月</button>
+        <button class="dim-btn" data-tmode="year" style="font-size:11px;padding:3px 10px;">按年</button>
+      </span>
+      <span id="ovMonthRangeGroup" style="display:none;align-items:center;">
+        <select id="ovMonthFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+        <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
+        <select id="ovMonthToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      </span>
+      <span id="ovYearRangeGroup" style="display:none;align-items:center;">
+        <select id="ovTrendYearFromSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+        <span style="font-size:11px;color:var(--text3);margin:0 2px;">~</span>
+        <select id="ovTrendYearToSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      </span>
+    </span>
+  </div>
   <div class="summary-grid" id="ovSummaryGrid"></div>
   <div class="section-title" style="margin-top:20px;">💳 支付渠道占比情况 <span class="tag">金额构成</span></div>
   <div class="summary-grid-2" id="ovPayCards"></div>
@@ -237,12 +350,65 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   </div>
   <div class="section-title" style="margin-top:20px;">⚠️ 数据风险评估 <span class="tag">支付渠道风险</span></div>
   <div id="ovRiskSection" class="risk-section"></div>
+  <!-- 利润方案对比（三渠道卡片横排） -->
+  <div id="ovProfitCompareWrap" style="display:none;">
+    <div class="section-title" style="margin-top:20px;">📊 利润方案对比 <span class="tag">三种支付渠道利润</span></div>
+    <div style="margin-bottom:20px;">
+      <div id="ovProfitCompareCards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;"></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;" id="ovProfitCompareNote"></div>
+    </div>
+  </div>
+  <!-- 趋势图（跟随顶部「月/年度趋势」选择：汇总/按月/按年） -->
+  <div id="ovTrendWrap" style="display:none;">
+    <div class="section-title" id="ovTrendTitle">📈 月度趋势 <span class="tag">逐月变化</span></div>
+    <!-- 汇总视图：6 张小指标卡 + 累计增长曲线 + 平台构成饼图 -->
+    <div id="ovSummaryGroup" style="display:none;">
+      <div class="summary-grid" id="ovSummaryStats" style="margin-bottom:20px;"></div>
+      <div class="chart-card" style="margin-bottom:20px;">
+        <h3>📈 累计增长曲线 <span class="tag">从首场到末场</span></h3>
+        <div class="chart-wrap tall"><canvas id="ovCumulativeChart"></canvas></div>
+      </div>
+      <div class="chart-grid" style="margin-bottom:20px;">
+        <div class="chart-card"><h3>🥧 销售渠道构成（汇总）</h3><div class="chart-wrap"><canvas id="ovSummaryChannelChart"></canvas></div></div>
+        <div class="chart-card"><h3>🥧 支付渠道构成（汇总）</h3><div class="chart-wrap"><canvas id="ovSummaryPaymentChart"></canvas></div></div>
+      </div>
+    </div>
+    <div id="ovMonthTrendGroup">
+      <div class="chart-grid" style="margin-bottom:20px;">
+        <div class="chart-card"><h3>💰 月度销售额趋势</h3><div class="chart-wrap tall"><canvas id="ovTrendGMVChart"></canvas></div></div>
+        <div class="chart-card"><h3>📋 月度订单数趋势</h3><div class="chart-wrap tall"><canvas id="ovTrendOrdersChart"></canvas></div></div>
+      </div>
+    </div>
+    <div id="ovYearTrendGroup" style="display:none;">
+      <div class="chart-grid" style="margin-bottom:20px;">
+        <div class="chart-card"><h3>💰 年度销售额趋势</h3><div class="chart-wrap tall"><canvas id="ovYearGMVChart"></canvas></div></div>
+        <div class="chart-card"><h3>📋 年度订单数趋势</h3><div class="chart-wrap tall"><canvas id="ovYearOrdersChart"></canvas></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- 多期数据对比（仅单游戏：指定两个期间对比，月度/年度可切换） -->
+  <div id="ovMonthCompareWrap" style="display:none;">
+    <div class="section-title" style="margin-top:20px;">📊 多期数据对比 <span class="tag">双期对比</span>
+      <span style="float:right;" id="ovCompareModeBar">
+        <button class="dim-btn active" data-cmode="month" style="font-size:11px;padding:3px 10px;">📅 按月度</button>
+        <button class="dim-btn" data-cmode="year" style="font-size:11px;padding:3px 10px;">📅 按年度</button>
+      </span>
+    </div>
+    <div style="margin-bottom:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <span style="font-size:11px;color:var(--text3);">期间A</span>
+      <select id="ovCmpASelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+      <span style="font-size:11px;color:var(--text3);font-weight:600;">VS</span>
+      <select id="ovCmpBSelect" style="padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);"></select>
+    </div>
+    <div class="chart-card" style="margin-bottom:20px;">
+      <div class="table-wrap" id="ovCompareTableWrap"></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;" id="ovCompareNote"></div>
+    </div>
+  </div>
   <div class="section-title" style="margin-top:20px;">🎮 游戏对比 <span class="tag">累计销售额</span></div>
   <div id="ovGameCompareCharts" style="margin-bottom:20px;">
     <div class="chart-card"><h3>📊 各游戏累计销售额</h3><div class="chart-wrap tall"><canvas id="ovGameSalesChart"></canvas></div></div>
   </div>
-  <div class="section-title">📈 月趋势 <span class="tag">逐月变化</span></div>
-  <div class="chart-card" style="margin-bottom:20px;"><div class="chart-wrap tall"><canvas id="ovTrendChart"></canvas></div></div>
 </div>
 
 <!-- Tab: 数据报表（合并分日+分月） -->
@@ -260,7 +426,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <!-- 日期选择器 -->
   <div class="date-picker-bar">
     <div class="presets" id="datePresets">
-      <button data-range="today" class="active">最新</button>
+      <button data-range="today" class="active">单日最新</button>
       <button data-range="7d">近7日</button>
       <button data-range="30d">近30日</button>
       <button data-range="month">本月</button>
@@ -272,10 +438,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <span>至</span>
       <input type="date" id="endDate">
       <span class="range-info" id="rangeInfo">共 0 场 · 销售额 0 元</span>
+      <button onclick="exportCSV()" style="margin-left:auto;padding:5px 14px;border:1px solid var(--accent-orange);border-radius:6px;background:var(--accent-orange);color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;">📥 导出CSV</button>
     </div>
   </div>
 
   <!-- KPI -->
+  <div id="rptCoreFocus" style="background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:10px;padding:14px 18px;margin-bottom:18px;"></div>
   <div class="kpi-row" id="rptTrafficKpi"></div>
   <div class="kpi-row" id="rptInteractKpi"></div>
   <div class="kpi-row" id="rptSubKpi" style="grid-template-columns:repeat(2,1fr);"></div>
@@ -287,6 +455,12 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
   <div id="rptDetailView"></div>
   <div id="rptTrendView" style="display:none;"></div>
 
+  <!-- 销售渠道构成 -->
+  <div id="rptSalesChannels"></div>
+
+  <!-- 直播数据（归类到销售渠道下方） -->
+  <div id="rptLiveData" style="margin-top:20px;"></div>
+
   <!-- 数据分析说明 -->
   <div class="analysis-box" id="rptAnalysisNote">
     <strong>📋 数据分析说明</strong><br>
@@ -295,20 +469,59 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     • <strong>曝光→点击转化</strong> = 商品点击人数 ÷ 商品曝光人数，反映商品吸引力，健康线 &gt;20%<br>
     • <strong>点击→成交转化</strong> = 成交人数 ÷ 商品点击人数，反映购买决策效率，健康线 &gt;10%<br>
     • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常<br>
-    • <strong>支付渠道风险评估</strong>：3k-安卓占比 &lt;50% 为健康，&gt;50% 为中度风险（抖店利润收益存在风险），&gt;80% 为高度风险
+    • <strong>支付渠道风险评估</strong>（基于抖店 vs 正常渠道利润对比）：3k-安卓占比 &lt;=60% 为健康（抖店利润优于正常渠道），&gt;60%~80% 为中度风险（抖店利润已低于正常渠道），&gt;80% 为高度风险（抖店利润明显低于正常渠道）
   </div>
 </div>
+
+<!-- Tab: 竞店数据对比 -->
+<div class="tab-content" id="tabCompetitor">
+  <div class="header"><h1>🏟️ 竞店数据对比</h1><div class="sub">周期：7天 · 数据更新：<span id="compUpdateTime">-</span></div></div>
+  <div id="compContent"></div>
+</div>
+<!-- Tab: 抖店充值转移效果分析（仅主账号可见） -->
+<div class="tab-content" id="tabRecharge">
+  <div class="header"><h1>📈 抖店充值转移效果分析</h1><div class="sub">平台与抖店充值用户分析报告</div></div>
+  <iframe id="rechargeFrame" src="/report.html?embed=1" style="width:100%;height:calc(100vh - 150px);border:none;border-radius:8px;background:#fff;" title="抖店充值转移效果分析"></iframe>
+</div>
+
+<!-- Tab: 操作记录 -->
+<div class="tab-content" id="tabLogs">
+  <div class="header"><h1>📋 操作记录</h1><div class="sub">访客登录与导出操作日志</div></div>
+  <div style="padding:12px 0;">
+    <button onclick="clearLogs()" style="padding:5px 14px;border:1px solid #ef4444;border-radius:6px;background:#fff;color:#ef4444;font-size:12px;cursor:pointer;">🗑️ 清空记录</button>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>时间</th><th>类型</th><th>密钥</th><th>操作详情</th></tr></thead>
+      <tbody id="logTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+
 
 </div>
 
 <button class="help-btn" id="helpBtn" title="数据说明">📋</button>
+
+<!-- ===== 权限登录浮层 ===== -->
+<div id="accessOverlay" class="help-overlay" style="z-index:999;display:flex;">
+  <div class="help-panel" style="max-width:400px;text-align:center;">
+    <h2 style="border:none;font-size:20px;">🔐 抖店数据工作台</h2>
+    <p style="font-size:13px;color:var(--text2);margin:12px 0 20px;">请输入访问密钥</p>
+    <input id="accessKeyInput" type="password" placeholder="输入密钥" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;outline:none;text-align:center;">
+    <button id="accessKeyBtn" style="margin-top:12px;width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">确认</button>
+    <p id="accessError" style="color:var(--down);font-size:12px;margin-top:8px;display:none;">密钥错误，请重试</p>
+  </div>
+</div>
+
 <div class="help-overlay" id="helpOverlay">
   <div class="help-panel">
     <button class="close-btn" id="helpClose">&times;</button>
     <h2>📋 数据说明 <span class="tag">规则与逻辑</span></h2>
 
     <h3>一、数据来源</h3>
-    <p>所有数据由 <code>s/data.json</code> 驱动，通过用户上传的抖店后台 Excel 文件导入更新。</p>
+    <p>所有数据由 <code>s/data.json</code> 驱动（线上以加密文件 <code>s/data.enc</code> 传输，防止直接抓取），通过用户上传的抖店后台 Excel 文件导入更新。更新数据后需运行 <code>python3 encrypt_data.py</code> 重新加密再推送。</p>
 
     <h3>二、字段说明</h3>
     <table class="rule-table">
@@ -322,20 +535,26 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
-      <tr><td>顶部 3 卡片</td><td>所有游戏数据叠加：累计销售额 = 所有场次 sales 之和；预估结算金额 = 累计销售额 × 0.994（扣除抖店 0.6% 服务费）；支付订单数 = 所有场次 paymentOrders 之和</td></tr>
-      <tr><td>支付渠道占比</td><td>读取 data.json 中 paymentChannels 的累计值展示安卓/iOS 金额和占比饼图</td></tr>
-      <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;50% 为✅健康，&gt;50% 为🟡中度风险（抖店利润收益存在风险），&gt;80% 为🔴高度风险</td></tr>
-      <tr><td>月趋势</td><td>所有场次按月份分组，累计销售额和订单数</td></tr>
-      <tr><td>游戏对比</td><td>各游戏独立统计累计销售额，柱状图展示 + 柱顶标注数值</td></tr>
+      <tr><td>范围筛选</td><td>顶部游戏下拉（默认全部游戏）+ 两个范围控件：① 📅 月趋势范围（开始月份~结束月份，KPI/支付渠道/风险/利润对比/月度趋势 均跟随该范围）；② 📅 年趋势区间（开始年份~结束年份，控制年度趋势图显示哪些年）。多期对比（单游戏时）：按月用月范围、按年用年区间</td></tr>
+      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%直播服务费 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
+      <tr><td>利润方案对比表</td><td>对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异，数据跟随所选游戏+月趋势范围</td></tr>
+      <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
+      <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
+      <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
+      <tr><td>月/年度趋势</td><td>合并模块，右上角切换「按月 / 按年」：按月显示月度销售额/订单数柱状图（数据=月趋势范围），按年显示年度销售额/订单数柱状图（数据=年趋势区间）。趋势需 ≥2 个时间点才有意义：范围仅 1 个月/年时对应按钮自动置灰（悬停看原因），两种都不可用时空态提示</td></tr>
+      <tr><td>多期数据对比</td><td>仅选单游戏时展示（全部游戏隐藏），可按月度/按年度切换。8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），每项下带相邻期环比红↑绿↓</td></tr>
+      <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值。选具体游戏时整块隐藏（单游戏无对比意义）</td></tr>
+      <tr><td>支付渠道子卡</td><td>仅显示金额+结算字段；占比信息由下方饼图呈现，避免重复</td></tr>
     </table>
 
     <h3>四、基础数据报表 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>游戏筛选</td><td>顶部下拉选择游戏，只展示该游戏的场次数据</td></tr>
-      <tr><td>日期筛选</td><td>可选「最新」「近7日」「近30日」「本月」「自定义」，日期范围受实际数据日期限制</td></tr>
-      <tr><td>单日模式</td><td>选择单日时展示完整 KPI 卡片、支付渠道、流量漏斗、互动雷达、转化漏斗等</td></tr>
+      <tr><td>日期筛选</td><td>可选「单日最新」「近7日」「近30日」「本月」「自定义」，日期范围受实际数据日期限制</td></tr>
+      <tr><td>单日模式</td><td>选择单日时展示完整 KPI 卡片、支付渠道、流量漏斗、互动雷达、转化漏斗、直播数据等</td></tr>
       <tr><td>多日模式</td><td>选择多日范围时展示汇总 KPI、支付渠道构成、每日趋势图</td></tr>
+      <tr><td>核心数据关注</td><td>显示支付渠道金额占比 + 销售渠道流水占比（直播间 vs 店铺自营）</td></tr>
       <tr><td>数据风险评估</td><td>单日：进房率、评论率、点击率、支付渠道风险等多维度评估；多日：平均进房率、零成交场次、支付渠道风险</td></tr>
     </table>
 
@@ -347,7 +566,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>评论率</td><td>评论人数 ÷ 进房人数，健康线 &gt;3%</td></tr>
       <tr><td>曝光→点击转化率</td><td>商品点击人数 ÷ 商品曝光人数，健康线 &gt;20%</td></tr>
       <tr><td>点击→成交转化率</td><td>成交人数 ÷ 商品点击人数，健康线 &gt;10%</td></tr>
-      <tr><td>支付渠道风险</td><td>安卓占比 &lt;50% ✅健康 / &gt;50% 🟡中度 / &gt;80% 🔴高度</td></tr>
+      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。60% 临界点推导：抖店利润 = 总额×76.4%（扣 15%研发 + 8%直播服务费 + 0.6%服务费），正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发），两式相等时安卓占比 ≈59.5%，取整 60% 为临界线</td></tr>
     </table>
 
     <h3>六、新增游戏流程</h3>
@@ -358,14 +577,125 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     5. 基础数据报表下拉自动出现新游戏选项</p>
   </div>
 </div>
+
 <script>
 var charts = {}, currentData = null;
-var payData = { android: 1006, ios: 128, androidSettle: 1005.994, iosSettle: 127.994, androidUsers: 1, iosUsers: 1 };
+var allowedGames = null; // null = all games
 
-function fmt(n) { if (n===null||n===undefined) return '-'; return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+// 饼图百分比标签插件（全局复用，减少7次重复定义）
+var pieLabelPlugin = {
+  id: 'pieLabel',
+  afterDraw: function(c){
+    var m=c.getDatasetMeta(0), d=c.data.datasets[0], t=d.data.reduce(function(a,b){return a+b;},0);
+    if(!t) return;
+    m.data.forEach(function(e,i){
+      var p=((d.data[i]/t)*100).toFixed(d.data[i]/t<0.01?1:0)+'%', pos=e.tooltipPosition();
+      c.ctx.save(); c.ctx.fillStyle='#fff'; c.ctx.font='bold 13px sans-serif';
+      c.ctx.textAlign='center'; c.ctx.textBaseline='middle';
+      c.ctx.shadowColor='rgba(0,0,0,0.5)'; c.ctx.shadowBlur=3;
+      c.ctx.fillText(p,pos.x,pos.y); c.ctx.restore();
+    });
+  }
+};
+// 游戏颜色板（支持10个游戏）
+var gameColors = ['#1e3a8a','#d97706','#059669','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#16a34a','#e11d48'];
+
+// ===== 权限控制 =====
+var ACCESS_KEYS = {
+  'js123': ['巨兽战场'],
+  'sm456': ['我的使命'],
+  'admin999': null // 全部游戏
+};
+
+function checkAccess() {
+  var params = new URLSearchParams(window.location.search);
+  var key = params.get('key') || localStorage.getItem('ds_key');
+  if (key && ACCESS_KEYS[key] !== undefined) {
+    allowedGames = ACCESS_KEYS[key];
+    localStorage.setItem('ds_key', key);
+    document.getElementById('accessOverlay').style.display = 'none';
+    addLog('访客登录', '通过URL参数或本地存储验证');
+    return true;
+  }
+  document.getElementById('accessOverlay').style.display = 'flex';
+  return false;
+}
+
+document.getElementById('accessKeyBtn').addEventListener('click', function(){
+  var val = document.getElementById('accessKeyInput').value.trim();
+  if (ACCESS_KEYS[val] !== undefined) {
+    allowedGames = ACCESS_KEYS[val];
+    localStorage.setItem('ds_key', val);
+    document.getElementById('accessOverlay').style.display = 'none';
+    document.getElementById('accessError').style.display = 'none';
+    addLog('访客登录', '手动输入密钥登录');
+    loadData();
+  } else {
+    document.getElementById('accessError').style.display = 'block';
+  }
+});
+document.getElementById('accessKeyInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') document.getElementById('accessKeyBtn').click();
+});
+
+function fmt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return Number(n).toLocaleString('zh-CN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+
+// 获取单场总销售额（从 salesChannels 取直播+自营，最准确）
+function getTotalSales(s, scMap) {
+  if (!s || !scMap) return s?.product?.sales||0;
+  var sc = scMap[s.date+'_'+s.game];
+  if (!sc) return s.product?.sales||0;
+  return (sc.live?.sales||0) + (sc.self?.sales||0);
+}
+// 构建 date_game -> salesChannel 映射
+function buildSCMap(data) { var m={}; (data.salesChannels||[]).forEach(function(c){ m[c.date+'_'+c.game]=c; }); return m; }
+
+// ===== 操作记录 =====
+function addLog(type, detail) {
+  var key = localStorage.getItem('ds_key') || 'unknown';
+  var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
+  logs.unshift({time: new Date().toLocaleString('zh-CN'), type: type, key: key, detail: detail});
+  if (logs.length > 200) logs = logs.slice(0, 200);
+  localStorage.setItem('ds_logs', JSON.stringify(logs));
+}
+// iframe 内 report.html 排版适配：同域注入样式，让内容适配 iframe 宽度（避免 1200px 容器溢出挤到右侧）
+function fixRechargeFrame(frame) {
+  try {
+    var doc = frame.contentDocument;
+    if (!doc) return;
+    var st = doc.createElement('style');
+    st.textContent = '.container { max-width: 100% !important; padding: 0 4px; } body { padding: 10px 14px; }';
+    doc.head.appendChild(st);
+  } catch (e) { /* 跨域或加载失败时静默 */ }
+}
+// 绑定 iframe load（不能依赖 onload 属性：iframe 在 HTML 中先于 script，onload 可能在函数定义前触发）
+(function() {
+  var f = document.getElementById('rechargeFrame');
+  if (!f) return;
+  f.addEventListener('load', function() { fixRechargeFrame(f); });
+  // 兜底：页面加载完成后延迟注入（iframe 可能已加载完成，load 事件已过）
+  window.addEventListener('load', function() {
+    setTimeout(function() { fixRechargeFrame(f); }, 300);
+  });
+  // 再兜底：tab 切换时再次注入（display:none 的 iframe 加载时序不可靠）
+  var checkTimer = setInterval(function() {
+    if (f.contentDocument && f.contentDocument.body && !f.contentDocument.getElementById('recharge-fix-style')) {
+      fixRechargeFrame(f);
+    }
+  }, 1500);
+  setTimeout(function() { clearInterval(checkTimer); }, 20000); // 20s 后停止轮询
+})();
+
+function renderLogs() {
+  var logs = JSON.parse(localStorage.getItem('ds_logs') || '[]');
+  document.getElementById('logTableBody').innerHTML = logs.map(function(l){
+    return '<tr><td>'+l.time+'</td><td><span class=\"badge '+(l.type==='访客登录'?'badge-blue':'badge-orange')+'\">'+l.type+'</span></td><td>'+l.key+'</td><td>'+l.detail+'</td></tr>';
+  }).join('') || '<tr><td colspan="4" style="text-align:center;color:#94a0b0;padding:30px;">暂无操作记录</td></tr>';
+}
+function clearLogs() { if(confirm('确定清空所有操作记录？')){ localStorage.removeItem('ds_logs'); renderLogs(); } }
 
 // ===== 侧边栏切换 =====
 document.querySelectorAll('.nav-item').forEach(function(btn){
@@ -377,18 +707,55 @@ document.querySelectorAll('.nav-item').forEach(function(btn){
     document.getElementById(id).classList.add('active');
     if (btn.dataset.tab==='overview') renderOverview();
     else if (btn.dataset.tab==='report') renderReport();
+    else if (btn.dataset.tab==='recharge') { /* iframe 自动加载，无需额外渲染 */ }
+    else if (btn.dataset.tab==='logs') { if (allowedGames !== null) return; renderLogs(); }
+    else if (btn.dataset.tab==='competitor') renderCompetitor(currentData);
   });
 });
 
 // ===== 主渲染 =====
 function render(data) {
+  // 权限过滤：不修改原始数据，创建副本
+  if (allowedGames) {
+    data = {
+      updatedAt: data.updatedAt,
+      games: (data.games||[]).filter(function(g){return allowedGames.indexOf(g) !== -1;}),
+      sessions: (data.sessions||[]).filter(function(s){return allowedGames.indexOf(s.game) !== -1;}),
+      storeSummary: data.storeSummary,
+      monthlySummary: data.monthlySummary,
+      monthlyTrend: data.monthlyTrend,
+      competitor: data.competitor,
+      salesChannels: data.salesChannels
+    };
+  }
   currentData = data;
+  // 主账号才显示管理类导航（操作记录 / 抖店充值转移效果分析）
+  if (allowedGames === null) {
+    var adminBtns = document.querySelectorAll('.admin-only');
+    adminBtns.forEach(function(b){ b.style.display = ''; });
+  }
+  // 更新侧边栏概览
+  updateSidebarSummary(data);
   document.getElementById('dataUpdateTime').textContent = data.updatedAt||'-';
   document.getElementById('totalSessions').textContent = (data.sessions||[]).length;
-  renderOverview(); renderReport();
+  populateMonthRangeSelect(data.sessions || []);
+  populateYearRangeCtl(data.sessions || []);
+  populateGameSelect(data);
+  renderOverview(); renderReport(); renderCompetitor(data);
+  renderProfitCards();
 }
 
 // ===== 数据说明弹窗 =====
+// 侧边栏概览更新
+function updateSidebarSummary(data) {
+  var sessions = data.sessions || [];
+  var scMap = buildSCMap(data);
+  var totalSales = sessions.reduce(function(s, sx){return s+getTotalSales(sx, scMap);},0);
+  var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.paymentOrders||sx.product?.orders||0);},0);
+  document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
+  document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
+  document.getElementById('ssGames').textContent = (data.games||[]).length+' 款';
+}
 document.getElementById('helpBtn').addEventListener('click', function(){
   document.getElementById('helpOverlay').classList.add('open');
 });
@@ -400,19 +767,159 @@ document.getElementById('helpOverlay').addEventListener('click', function(e){
 });
 
 // ===== 全店汇总 =====
+var ovMonthFrom = '';       // 月趋势范围：开始月份
+var ovMonthTo = '';         // 月趋势范围：结束月份
+var ovGame = 'all';         // 游戏筛选
+var ovCompareMode = 'month'; // 多期对比：month=按月度 year=按年度
+var ovCmpA = '';             // 多期对比 期间A（月份 YYYY-MM 或年份 YYYY）
+var ovCmpB = '';             // 多期对比 期间B
+var ovTrendMode = 'summary'; // 月/年度趋势：summary=汇总全量  month=按月  year=按年
+var ovTrendYearFrom = '';   // 年趋势区间：开始年份
+var ovTrendYearTo = '';     // 年趋势区间：结束年份
+
+function getAvailableMonths(sessions) {
+  var months = {};
+  sessions.forEach(function(s){
+    var m = s.date ? s.date.substring(0,7) : '';
+    if (m) months[m] = true;
+  });
+  return Object.keys(months).sort();
+}
+
+function getAvailableYears(sessions) {
+  var years = {};
+  sessions.forEach(function(s){
+    var y = s.date ? s.date.substring(0,4) : '';
+    if (y && parseInt(y,10) >= 2026) years[y] = true;
+  });
+  return Object.keys(years).sort();
+}
+
+function populateGameSelect(data) {
+  var sel = document.getElementById('ovGameSelect');
+  if (!sel) return;
+  var games = data.games || [];
+  // 只显示实际有 sessions 数据的游戏，避免下拉出现但选后无数据的死选项
+  var sessions = data.sessions || [];
+  var gamesWithData = {};
+  sessions.forEach(function(s){ if (s.game) gamesWithData[s.game] = true; });
+  games = games.filter(function(g){ return gamesWithData[g]; });
+  sel.innerHTML = '';
+  var optAll = document.createElement('option');
+  optAll.value = 'all';
+  optAll.textContent = '全部游戏';
+  sel.appendChild(optAll);
+  games.forEach(function(g){
+    var opt = document.createElement('option');
+    opt.value = g;
+    opt.textContent = g;
+    sel.appendChild(opt);
+  });
+  sel.value = 'all';
+  ovGame = 'all';
+}
+
+// 填充「月趋势范围」起止月份，默认全量（最早月~最新月）
+function populateMonthRangeSelect(sessions) {
+  var selFrom = document.getElementById('ovMonthFromSelect');
+  var selTo = document.getElementById('ovMonthToSelect');
+  if (!selFrom || !selTo) return;
+  var months = getAvailableMonths(sessions);
+  if (months.length === 0) {
+    document.getElementById('ovTrendYearCtl').style.display = 'none';
+    return;
+  }
+  selFrom.innerHTML = '';
+  selTo.innerHTML = '';
+  months.forEach(function(m){
+    var mNum = parseInt(m.substring(5,7), 10);
+    var label = m.substring(0,4)+'年'+(isNaN(mNum)?m.substring(5,7):mNum)+'月';
+    var optF = document.createElement('option');
+    optF.value = m; optF.textContent = label;
+    selFrom.appendChild(optF);
+    var optT = document.createElement('option');
+    optT.value = m; optT.textContent = label;
+    selTo.appendChild(optT);
+  });
+  selFrom.value = months[0];  // 默认全量：最早月
+  selTo.value = months[months.length-1]; // 最新月
+  ovMonthFrom = months[0];
+  ovMonthTo = months[months.length-1];
+}
+
+// 填充「年趋势区间」起止年份，默认全量（最早年~最新年）
+function populateYearRangeCtl(sessions) {
+  var selFrom = document.getElementById('ovTrendYearFromSelect');
+  var selTo = document.getElementById('ovTrendYearToSelect');
+  if (!selFrom || !selTo) return;
+  var years = getAvailableYears(sessions);
+  if (years.length === 0) {
+    document.getElementById('ovTrendYearCtl').style.display = 'none';
+    return;
+  }
+  var opts = years.map(function(y){ return '<option value="'+y+'">'+y+'年</option>'; }).join('');
+  selFrom.innerHTML = opts;
+  selTo.innerHTML = opts;
+  selFrom.value = years[0];   // 默认全量：最早年
+  selTo.value = years[years.length-1]; // 最新年
+  ovTrendYearFrom = years[0];
+  ovTrendYearTo = years[years.length-1];
+}
+
+function monthRangeIsSingle() {
+  return ovMonthFrom && ovMonthTo && ovMonthFrom === ovMonthTo;
+}
+
+function yearRangeIsSingle() {
+  return ovTrendYearFrom && ovTrendYearTo && ovTrendYearFrom === ovTrendYearTo;
+}
+
+// 按游戏过滤
+function filterByGame(sessions, game) {
+  if (!game || game === 'all') return sessions;
+  return sessions.filter(function(s){ return s.game === game; });
+}
+
+// 按月趋势范围过滤
+function filterByMonthRange(sessions) {
+  var from = ovMonthFrom;
+  var to = ovMonthTo;
+  if (!from || !to) return sessions;
+  return sessions.filter(function(s){
+    if (!s.date) return false;
+    var m = s.date.substring(0,7);
+    return m >= from && m <= to;
+  });
+}
+
+// 按年趋势区间过滤
+function filterByYearRange(sessions) {
+  var fromY = ovTrendYearFrom;
+  var toY = ovTrendYearTo;
+  if (!fromY || !toY) return sessions;
+  return sessions.filter(function(s){
+    if (!s.date) return false;
+    var y = s.date.substring(0,4);
+    return y >= fromY && y <= toY;
+  });
+}
+
 function renderGameCharts(data) {
   destroyChart('ovGameSales');
   var games = data.games || [];
-  var all = data.sessions || [];
-  if (!games.length || !all.length) {
-    document.getElementById('ovGameCompareCharts').style.display = 'none';
+  var dimSessions = data.sessions || [];
+  var wrap = document.getElementById('ovGameCompareCharts');
+  // 选具体游戏时整块隐藏（单游戏无对比意义）
+  if (!games.length || !dimSessions.length || (ovGame && ovGame !== 'all')) {
+    if (wrap) wrap.style.display = 'none';
     return;
   }
-  document.getElementById('ovGameCompareCharts').style.display = 'block';
-  // 计算各游戏累计销售额
+  if (wrap) wrap.style.display = 'block';
+  // 计算各游戏累计销售额（按维度筛选）
+  var scMap = buildSCMap(data);
   var gData = games.map(function(g){
-    var ss = all.filter(function(s){return s.game===g;});
-    var gmv = ss.reduce(function(s, sx){return s + (sx.product?.sales||0);}, 0);
+    var ss = dimSessions.filter(function(s){return s.game===g;});
+    var gmv = ss.reduce(function(s, sx){return s + getTotalSales(sx, scMap);}, 0);
     return {name:g, gmv:gmv};
   });
   // 柱状图（带数据标注）
@@ -430,94 +937,590 @@ function renderGameCharts(data) {
   });
 }
 
+// 利润方案对比（三渠道卡片横排）
+// 数据范围：跟随当前筛选（sessions 已按游戏+月趋势范围过滤）
+function renderProfitCompare(sessions, scMap) {
+  var wrap = document.getElementById('ovProfitCompareWrap');
+  if (!wrap) return;
+  wrap.style.display = 'block';
+  var cards = document.getElementById('ovProfitCompareCards');
+  if (!cards) return;
+  var pDd=0, pPt=0, pNm=0, totalGMV=0;
+  sessions.forEach(function(sx){
+    var a=sx.payment?.android?.amount||0, i=sx.payment?.ios?.amount||0;
+    totalGMV += getTotalSales(sx, scMap);
+    pDd+=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    pPt+=(a+i)*0.85-(a+i)*0.01;
+    pNm+=a*0.85+i*0.75*0.85;
+  });
+  var rateDd = totalGMV > 0 ? (pDd/totalGMV*100) : 0;
+  var ratePt = totalGMV > 0 ? (pPt/totalGMV*100) : 0;
+  var rateNm = totalGMV > 0 ? (pNm/totalGMV*100) : 0;
+  // 抖店同比：以抖店为基准 = 抖店利润 - 该渠道利润；正=抖店更赚（红↑），负=抖店更亏（绿↓）
+  // 百分比基准 = 对比渠道利润（同比口径）
+  function diffTxt(dd, other) {
+    var d = dd - other;
+    if (Math.abs(d) < 0.01) return '<span style="color:var(--text3);">—</span>';
+    var pct = other !== 0 ? (d / Math.abs(other) * 100) : 0;
+    var up = d >= 0;
+    var color = up ? '#dc2626' : '#059669'; // 红↑绿↓（用户偏好）
+    return '<span style="color:'+color+';font-weight:600;">'+(up?'↑ +':'↓ -')+Math.abs(pct).toFixed(2)+'%</span>'
+      + '<span style="color:var(--text3);font-size:10px;font-weight:400;"> ('+(up?'+':'')+fmt(Math.abs(d))+' 元)</span>';
+  }
+  function card(icon, name, profitTxt, rateTxt, bottomHtml, style) {
+    return '<div style="'+(style||'background:#f8fafc;border:1px solid var(--border)')+';border-radius:10px;padding:14px 16px;box-shadow:var(--shadow-sm);">'
+      + '<div style="font-size:11px;color:var(--text3);font-weight:500;">'+icon+' '+name+'</div>'
+      + '<div style="font-size:22px;font-weight:700;color:var(--primary);margin-top:5px;letter-spacing:-0.3px;">'+profitTxt+'</div>'
+      + '<div style="font-size:11px;color:var(--text2);margin-top:2px;">利润率 '+rateTxt+'%</div>'
+      + '<div style="margin-top:9px;font-size:11px;line-height:1.5;">'+bottomHtml+'</div>'
+      + '</div>';
+  }
+  // 抖店卡：与其他卡片颜色统一（去掉绿色高亮底/边）
+  var ddCard = card('🟢', '抖店（当前方案）', fmt(pDd)+' 元', rateDd.toFixed(2),
+    '<span style="display:inline-block;background:#dcfce7;color:#059669;padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;">当前方案</span>');
+  // 平台支付卡 / 原iOS卡：主值利润 + 抖店同比徽章
+  var ptCard = card('🤝', '平台支付', fmt(pPt)+' 元', ratePt.toFixed(2),
+    '抖店同比 '+diffTxt(pDd, pPt));
+  var nmCard = card('🍎', '原 iOS 支付', fmt(pNm)+' 元', rateNm.toFixed(2),
+    '抖店同比 '+diffTxt(pDd, pNm));
+  cards.innerHTML = ddCard + ptCard + nmCard;
+  // 底部说明
+  var note = document.getElementById('ovProfitCompareNote');
+  if (note) {
+    var scopeTxt = (ovGame && ovGame !== 'all')
+      ? ovGame+' · '+ovMonthFrom+'~'+ovMonthTo
+      : '全店 · '+ovMonthFrom+'~'+ovMonthTo;
+    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6% − 8% − 15%；平台支付 = (安卓+iOS)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
+  }
+}
+
 function renderOverview() {
   var data=currentData; if(!data) return;
-  var sessions = data.sessions || [];
-  var s=data.storeSummary||{}, months=data.monthlySummary||[];
+  var allSessions = data.sessions || [];
+  // 先按游戏过滤 → gameSessions（用于按钮置灰判断两个粒度的点数）
+  var gameSessions = filterByGame(allSessions, ovGame);
+  // 数据源跟随当前粒度：汇总=全量；按月=月趋势范围；按年=年趋势区间
+  var sessions = (ovTrendMode === 'month') ? filterByMonthRange(gameSessions)
+                 : (ovTrendMode === 'year') ? filterByYearRange(gameSessions)
+                 : gameSessions;
+  // 更新顶部「汇总/按月/按年」按钮置灰 + 范围组显示 + 当前模式兜底切换
+  updateTrendModeBtns(gameSessions);
+  var s=data.storeSummary||{};
   var grid=document.getElementById('ovSummaryGrid');
+  // 更新副标题
+  var dimDesc = (ovGame && ovGame !== 'all') ? (ovGame+' · 经营数据与趋势') : '全店 · 经营数据与趋势';
+  if (ovTrendMode === 'summary') {
+    dimDesc += ' · 累计汇总';
+  } else if (ovTrendMode === 'month') {
+    if (monthRangeIsSingle()) dimDesc += ' · 单月 '+ovMonthFrom.replace('-','年')+'月';
+    else if (sessions.length > 0) dimDesc += ' · '+ovMonthFrom+'~'+ovMonthTo;
+  } else {
+    if (yearRangeIsSingle()) dimDesc += ' · '+ovTrendYearFrom+'年 单年';
+    else if (sessions.length > 0) dimDesc += ' · '+ovTrendYearFrom+'~'+ovTrendYearTo+'年';
+  }
+  document.querySelector('#tabOverview .sub').textContent = dimDesc;
+  // 总场次描述
+  var sessionsLabel = sessions.length + ' 场';
+  var subModeLabel = (ovGame && ovGame !== 'all') ? ovGame : '全店累计';
+  var ovSCMap = buildSCMap(data);
+  // 利润计算（默认 0，sessions 为空时也不会报错）
+  var pDd=0, pPt=0, pNm=0, totalPayAmt=0;
   if (s.totalGMV || s.totalOrders || sessions.length > 0) {
-    var autoGMV = sessions.reduce(function(sum,ss){return sum + (ss.product?.sales||0);}, 0);
+    var autoGMV = sessions.reduce(function(sum,ss){return sum + getTotalSales(ss, ovSCMap);}, 0);
     var autoOrders = sessions.reduce(function(sum,ss){return sum + (ss.product?.paymentOrders||ss.product?.orders||0);}, 0);
-    var totalGMV = s.totalGMV || autoGMV;
-    var totalOrders = s.totalOrders || autoOrders;
-    var settleTotal = Math.round(totalGMV * 0.994 * 100) / 100;
+    // 优先用按游戏+粒度筛选后的 sessions 累加值；无筛选场次时才回退到 storeSummary 累计值
+    var totalGMV = sessions.length > 0 ? autoGMV : (s.totalGMV || 0);
+    var totalOrders = sessions.length > 0 ? autoOrders : (s.totalOrders || 0);
     grid.innerHTML = '';
-    // 三张卡片：累计销售额、预估结算金额、累计订单笔数
-    [{l:'💰 累计销售额',v:fmt(totalGMV)+' 元',sb:(sessions.length+' 场累计')},
-     {l:'💳 预估结算金额',v:fmt(settleTotal)+' 元',sb:'扣除抖店0.6%服务费'},
-     {l:'📋 支付订单数',v:fmt(autoOrders)+' 单',sb:'全部场次累计'}].forEach(function(c){
+    // 利润累加
+    sessions.forEach(function(sx){
+      var a=sx.payment?.android?.amount||0,i=sx.payment?.ios?.amount||0;
+      totalPayAmt += a+i;
+      pDd+=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+      pPt+=(a+i)*0.85-(a+i)*0.01;
+      pNm+=a*0.85+i*0.75*0.85;
+    });
+    var profitRate = totalGMV > 0 ? (pDd / totalGMV * 100) : 0;
+    // 4 张核心 KPI：销售额 / 订单数 / 利润 / 利润率
+    [
+      {l:'💰 销售额', v:fmt(totalGMV)+' 元', sb:sessionsLabel+' · '+subModeLabel, cl:'#1e3a8a'},
+      {l:'📋 支付订单数', v:fmt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
+      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:'扣 0.6%服务费 + 8%直播服务费 + 15%分成', cl:'#059669'},
+      {l:'📊 利润率', v:profitRate.toFixed(2)+'%', sb:'利润 / 销售额（GMV口径）', cl:'#7c3aed'}
+    ].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
-      d.innerHTML='<div class="lbl">'+c.l+'</div><div class="val">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
+      d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
-    // 支付渠道占比情况
-    var pc = s.paymentChannels || {};
+    // 支付渠道占比情况（从筛选场次中计算）
+    var pcAmt = {android:0, ios:0}, pcUsr = {android:0, ios:0}, pcSettle = {android:0, ios:0};
+    sessions.forEach(function(sx){
+      var p = sx.payment || {};
+      pcAmt.android += p.android?.amount||0; pcAmt.ios += p.ios?.amount||0;
+      pcUsr.android += p.android?.users||0; pcUsr.ios += p.ios?.users||0;
+      pcSettle.android += p.android?.settle||0; pcSettle.ios += p.ios?.settle||0;
+    });
     var pcCards = document.getElementById('ovPayCards');
-    var payTotal = (pc.android?.amount||0) + (pc.ios?.amount||0);
+    var payTotal = pcAmt.android + pcAmt.ios;
     if (payTotal > 0) {
-      var androidPct = (pc.android.amount / payTotal * 100).toFixed(1);
-      var iosPct = (pc.ios.amount / payTotal * 100).toFixed(1);
-      var androidSettle = pc.android.settle !== undefined ? Math.round(pc.android.settle * 100) / 100 : Math.round(pc.android.amount * 0.994 * 100) / 100;
-      var iosSettle = pc.ios.settle !== undefined ? Math.round(pc.ios.settle * 100) / 100 : Math.round(pc.ios.amount * 0.994 * 100) / 100;
+      var androidPct = (pcAmt.android / payTotal * 100).toFixed(1);
+      var iosPct = (pcAmt.ios / payTotal * 100).toFixed(1);
+      var androidSettle = pcSettle.android || Math.round(pcAmt.android * 0.994 * 100) / 100;
+      var iosSettle = pcSettle.ios || Math.round(pcAmt.ios * 0.994 * 100) / 100;
       pcCards.innerHTML = [
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pc.android.amount)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元 · 占比 '+androidPct+'%</div></div>',
-        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pc.ios.amount)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元 · 占比 '+iosPct+'%</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.android)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元</div></div>',
+        '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.ios)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元</div></div>',
       ].join('');
       // 支付渠道饼图
       setTimeout(function(){
         destroyChart('ovPayAmount');destroyChart('ovPayUser');
         var pa=document.getElementById('ovPayAmountChart');
-        var payTotalAmt = pc.android.amount+pc.ios.amount;
-        var payLabelAmt = ['3k-安卓 ('+((pc.android.amount/payTotalAmt)*100).toFixed(1)+'%)','3k-iOS ('+((pc.ios.amount/payTotalAmt)*100).toFixed(1)+'%)'];
-        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pc.android.amount,pc.ios.amount],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        var payTotalAmt = pcAmt.android+pcAmt.ios;
+        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
         var pu=document.getElementById('ovPayUserChart');
-        var payTotalUsr = (pc.android.users||0)+(pc.ios.users||0);
-        var payLabelUsr = ['3k-安卓 ('+(((pc.android.users||0)/payTotalUsr)*100).toFixed(0)+'%)','3k-iOS ('+(((pc.ios.users||0)/payTotalUsr)*100).toFixed(0)+'%)'];
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pc.android.users||0,pc.ios.users||0],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/((pc.android.users||0)+(pc.ios.users||0)))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+        var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
       }, 50);
       // 数据风险评估（支付渠道）
       var riskEl = document.getElementById('ovRiskSection');
-      if (androidPct >= 80) {
-        riskEl.innerHTML = '<div class="risk-bar"><span class="risk-tag high">🔴 高度风险</span></div><ul class="risk-list"><li class="risk-item danger"><span>🔴</span><div><strong>安卓支付占比过高</strong><br>3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过80%警戒线，抖店利润收益存在<strong>高度风险</strong>。建议：优化支付渠道结构，提升iOS端支付占比，降低对安卓单一渠道的利润依赖。</div></li></ul>';
-      } else if (androidPct >= 50) {
-        riskEl.innerHTML = '<div class="risk-bar"><span class="risk-tag medium">🟡 中度风险</span></div><ul class="risk-list"><li class="risk-item warning"><span>🟡</span><div><strong>安卓支付占比偏高</strong><br>3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过50%关注线，抖店利润收益存在<strong>中度风险</strong>。建议：关注iOS端支付占比变化趋势，逐步引导用户使用iOS支付渠道以分散风险。</div></li></ul>';
+      if (androidPct > 80) {
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🔴</div><div style="font-size:13px;font-weight:600;color:#dc2626;margin-bottom:4px">安卓支付占比过高</div><div style="font-size:11px;color:#991b1b;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过80%警戒线。抖店相比正常渠道利润为负，收益存在<strong>高度风险</strong>。建议大幅提升iOS端支付占比。</div></div></div>';
+      } else if (androidPct > 60) {
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🟡</div><div style="font-size:13px;font-weight:600;color:#d97706;margin-bottom:4px">安卓支付占比偏高</div><div style="font-size:11px;color:#92400e;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在<strong>中度风险</strong>。建议逐步提升iOS端占比。</div></div></div>';
       } else {
-        riskEl.innerHTML = '<div class="risk-bar"><span class="risk-tag low">✅ 健康</span></div><ul class="risk-list"><li class="risk-item success"><span>✅</span><div><strong>支付渠道结构健康</strong><br>3k-安卓支付占比 <strong>'+androidPct+'%</strong>，低于50%健康线，支付渠道分布合理，利润收益风险较低。继续保持现有运营策略。</div></li></ul>';
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">✅</div><div style="font-size:13px;font-weight:600;color:#059669;margin-bottom:4px">支付渠道结构健康</div><div style="font-size:11px;color:#166534;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，低于60%健康线，抖店利润优于正常渠道，支付渠道结构合理。</div></div></div>';
       }
     } else {
       pcCards.innerHTML = '<div class="empty-block" style="padding:20px;">暂无支付渠道数据</div>';
     }
   } else { grid.innerHTML='<div class="empty-block">暂无汇总数据，等你提供后更新</div>'; }
-  // 游戏对比图表
+  // 游戏对比图表（renderGameCharts 内部已处理选具体游戏时隐藏）
   renderGameCharts(data);
-  // 月趋势图 - 自动从 sessions 按月汇总
-  destroyChart('ovTrend');
-  var sessions = data.sessions || [];
-  if (sessions.length > 0) {
-    // 自动按月份分组汇总
-    var monthMap = {};
-    sessions.forEach(function(sx){
-      var m = sx.date.substring(0,7);
-      if (!monthMap[m]) monthMap[m] = {label:m.substring(0,4)+'年'+parseInt(m.substring(5,7))+'月', totalGMV:0, totalOrders:0};
-      monthMap[m].totalGMV += sx.product?.sales||0;
-      monthMap[m].totalOrders += sx.product?.orders||0;
+  // 利润方案对比表（跟随当前筛选）
+  renderProfitCompare(sessions, ovSCMap);
+  // 多期数据对比（仅单游戏；双期对比）
+  renderMonthCompare(data);
+  // 趋势图（跟随顶部「按月/按年」选择）
+  renderTrend(sessions, ovSCMap);
+}
+
+// 更新顶部「汇总/按月/按年」按钮置灰 + 范围组显示；当前模式无数据时兜底切换
+function updateTrendModeBtns(gameSessions) {
+  var bar = document.getElementById('ovTrendModeBar');
+  if (!bar) return;
+  var mKeys = {}, yKeys = {};
+  filterByMonthRange(gameSessions).forEach(function(s){ var k = s.date ? s.date.substring(0,7) : ''; if (k) mKeys[k] = true; });
+  filterByYearRange(gameSessions).forEach(function(s){ var k = s.date ? s.date.substring(0,4) : ''; if (k) yKeys[k] = true; });
+  var mCnt = Object.keys(mKeys).length;
+  var yCnt = Object.keys(yKeys).length;
+  var mOk = mCnt >= 2, yOk = yCnt >= 2;
+  bar.querySelectorAll('.dim-btn').forEach(function(b){
+    var tm = b.dataset.tmode;
+    if (tm === 'summary') {
+      // 汇总按钮永远可点（只要有数据）
+      var has = gameSessions.length > 0;
+      b.disabled = !has;
+      b.title = has ? '' : '暂无数据';
+      b.style.opacity = has ? '' : '0.45';
+      b.style.cursor = has ? '' : 'not-allowed';
+      return;
+    }
+    var ok = (tm === 'month') ? mOk : yOk;
+    b.disabled = !ok;
+    b.title = ok ? '' : (tm === 'month'
+      ? '月趋势范围需跨多月（当前仅 ' + mCnt + ' 个月）'
+      : '年趋势区间需跨多年（当前仅 ' + yCnt + ' 年）');
+    b.style.opacity = ok ? '' : '0.45';
+    b.style.cursor = ok ? '' : 'not-allowed';
+  });
+  // 当前模式无数据 → 兜底切换到可用模式
+  if (ovTrendMode === 'month' && !mOk && yOk) ovTrendMode = 'year';
+  else if (ovTrendMode === 'year' && !yOk && mOk) ovTrendMode = 'month';
+  else if (ovTrendMode === 'summary' && gameSessions.length === 0) ovTrendMode = mOk ? 'month' : (yOk ? 'year' : 'summary');
+  // 范围组显示 + 按钮 active
+  var mGrp = document.getElementById('ovMonthRangeGroup');
+  var yGrp = document.getElementById('ovYearRangeGroup');
+  if (mGrp) mGrp.style.display = (ovTrendMode === 'month') ? 'inline-flex' : 'none';
+  if (yGrp) yGrp.style.display = (ovTrendMode === 'year') ? 'inline-flex' : 'none';
+  bar.querySelectorAll('.dim-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.tmode === ovTrendMode);
+  });
+}
+
+// ===== 趋势图（顶部「汇总/按月/按年」决定显示哪组） =====
+function renderTrend(sessions, scMap) {
+  var wrap = document.getElementById('ovTrendWrap');
+  if (!wrap) return;
+  var title = document.getElementById('ovTrendTitle');
+  var summaryGrp = document.getElementById('ovSummaryGroup');
+  var monthGrp = document.getElementById('ovMonthTrendGroup');
+  var yearGrp = document.getElementById('ovYearTrendGroup');
+  // 汇总：只需 1 场即可展示（≥2 个时间点不强制要求）
+  if (ovTrendMode === 'summary') {
+    if (sessions.length === 0) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+    if (title) title.innerHTML = '📊 累计汇总 <span class="tag">从首场到末场</span>';
+    if (summaryGrp) summaryGrp.style.display = '';
+    if (monthGrp) monthGrp.style.display = 'none';
+    if (yearGrp) yearGrp.style.display = 'none';
+    renderSummaryCharts(sessions, scMap);
+    return;
+  }
+  // 按月/按年：当前粒度数据点数（趋势需 ≥2 个时间点）
+  var keys = {};
+  sessions.forEach(function(s){
+    var k = s.date ? s.date.substring(0, (ovTrendMode === 'month') ? 7 : 4) : '';
+    if (k) keys[k] = true;
+  });
+  var cnt = Object.keys(keys).length;
+  if (cnt < 2 || sessions.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  if (summaryGrp) summaryGrp.style.display = 'none';
+  if (ovTrendMode === 'month') {
+    if (title) title.innerHTML = '📈 月度趋势 <span class="tag">逐月变化</span>';
+    if (monthGrp) monthGrp.style.display = '';
+    if (yearGrp) yearGrp.style.display = 'none';
+    renderMonthTrendCharts(sessions, scMap);
+  } else {
+    if (title) title.innerHTML = '📈 年度趋势 <span class="tag">逐年变化</span>';
+    if (monthGrp) monthGrp.style.display = 'none';
+    if (yearGrp) yearGrp.style.display = '';
+    renderYearTrendCharts(sessions, scMap);
+  }
+}
+
+function renderMonthTrendCharts(sessions, ovSCMap) {
+  destroyChart('ovTrendGMV');destroyChart('ovTrendOrders');
+  // 按月份分组
+  var monthMap = {};
+  sessions.forEach(function(sx){
+    var m = sx.date.substring(0,7);
+    if (!m) return;
+    if (!monthMap[m]) {
+      var mNum = parseInt(m.substring(5,7), 10);
+      monthMap[m] = {label:m.substring(0,4)+'年'+(isNaN(mNum)?m.substring(5,7):mNum)+'月', gmv:0, orders:0};
+    }
+    monthMap[m].gmv += getTotalSales(sx, ovSCMap);
+    monthMap[m].orders += sx.product?.paymentOrders||sx.product?.orders||0;
+  });
+  var months = Object.keys(monthMap).sort().map(function(k){return monthMap[k];});
+  var rev = months.slice().reverse();
+  // 销售额柱状图
+  var c1 = document.getElementById('ovTrendGMVChart');
+  if (c1) charts.ovTrendGMV = new Chart(c1.getContext('2d'), {
+    type:'bar',
+    data:{labels:rev.map(function(m){return m.label;}), datasets:[{label:'销售额', data:rev.map(function(m){return m.gmv;}), backgroundColor:'#1e3a8a', borderRadius:4, barPercentage:0.6}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
+  });
+  // 订单数柱状图
+  var c2 = document.getElementById('ovTrendOrdersChart');
+  if (c2) charts.ovTrendOrders = new Chart(c2.getContext('2d'), {
+    type:'bar',
+    data:{labels:rev.map(function(m){return m.label;}), datasets:[{label:'订单数', data:rev.map(function(m){return m.orders;}), backgroundColor:'#f59e0b', borderRadius:4, barPercentage:0.6}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 单';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
+  });
+}
+
+function renderYearTrendCharts(sessions, ovSCMap) {
+  destroyChart('ovYearGMV');destroyChart('ovYearOrders');
+  // 按年分组
+  var yearMap = {};
+  sessions.forEach(function(sx){
+    var y = sx.date.substring(0,4);
+    if (!y) return;
+    if (!yearMap[y]) yearMap[y] = {label:y+'年', gmv:0, orders:0};
+    yearMap[y].gmv += getTotalSales(sx, ovSCMap);
+    yearMap[y].orders += sx.product?.paymentOrders||sx.product?.orders||0;
+  });
+  var years = Object.keys(yearMap).sort().map(function(k){return yearMap[k];});
+  var rev = years.slice().reverse();
+  var c1 = document.getElementById('ovYearGMVChart');
+  if (c1) charts.ovYearGMV = new Chart(c1.getContext('2d'), {
+    type:'bar',
+    data:{labels:rev.map(function(y){return y.label;}), datasets:[{label:'销售额', data:rev.map(function(y){return y.gmv;}), backgroundColor:'#1e3a8a', borderRadius:4, barPercentage:0.6}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 元';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
+  });
+  var c2 = document.getElementById('ovYearOrdersChart');
+  if (c2) charts.ovYearOrders = new Chart(c2.getContext('2d'), {
+    type:'bar',
+    data:{labels:rev.map(function(y){return y.label;}), datasets:[{label:'订单数', data:rev.map(function(y){return y.orders;}), backgroundColor:'#f59e0b', borderRadius:4, barPercentage:0.6}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 单';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
+  });
+}
+
+// ===== 汇总视图（6 张小指标卡 + 累计增长曲线 + 平台构成饼图） =====
+function renderSummaryCharts(sessions, scMap) {
+  // 销毁旧图
+  destroyChart('ovCumulative');destroyChart('ovSummaryChannel');destroyChart('ovSummaryPayment');
+  if (sessions.length === 0) return;
+
+  // ---- 按日聚合（用于累计曲线和极值/均值） ----
+  var sorted = sessions.slice().sort(function(a,b){ return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); });
+  var byDate = {};
+  sorted.forEach(function(sx){
+    var d = sx.date;
+    if (!byDate[d]) byDate[d] = {date:d, gmv:0, orders:0, live:0, self:0, androidAmt:0, iosAmt:0};
+    var sc = scMap[sx.date+'_'+sx.game];
+    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
+    var selfS = sc ? (sc.self?.sales||0) : 0;
+    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
+    byDate[d].gmv += liveS + selfS;
+    byDate[d].live += liveS;
+    byDate[d].self += selfS;
+    byDate[d].orders += sx.product?.paymentOrders||sx.product?.orders||0;
+    byDate[d].androidAmt += a;
+    byDate[d].iosAmt += i;
+  });
+  var dateKeys = Object.keys(byDate).sort();
+  var firstDate = dateKeys[0], lastDate = dateKeys[dateKeys.length-1];
+  var activeDayCnt = dateKeys.length; // 有场次的日数
+  // 累计 GMV / 订单
+  var cumGMV = [], cumOrders = [];
+  var runningG = 0, runningO = 0;
+  dateKeys.forEach(function(d){
+    runningG += byDate[d].gmv;
+    runningO += byDate[d].orders;
+    cumGMV.push(runningG);
+    cumOrders.push(runningO);
+  });
+
+  // ---- 6 项汇总指标 ----
+  var totalGMV = runningG;
+  var totalOrders = runningO;
+  var totalSessions = sessions.length;
+  // 运营天数 = 首场→末场（按日历天数算，含中间无数据日）
+  var daySpan = 1;
+  try {
+    var d1 = new Date(firstDate), d2 = new Date(lastDate);
+    daySpan = Math.round((d2 - d1) / 86400000) + 1;
+  } catch(e) {}
+  // 日均 GMV = 累计 GMV / 有场次的日数（反映真实产出效率）
+  var avgDailyGMV = activeDayCnt > 0 ? totalGMV / activeDayCnt : 0;
+  // 最高单日 GMV
+  var maxDailyGMV = 0, maxDate = '';
+  dateKeys.forEach(function(d){ if (byDate[d].gmv > maxDailyGMV) { maxDailyGMV = byDate[d].gmv; maxDate = d; } });
+
+  // ---- 渲染 6 张指标卡 ----
+  var stats = document.getElementById('ovSummaryStats');
+  if (stats) {
+    stats.innerHTML =
+      '<div class="summary-card"><div class="lbl">💰 累计 GMV</div><div class="val">'+fmt(totalGMV)+' 元</div><div class="sub">'+totalSessions+' 场 · '+activeDayCnt+' 个有数据日</div></div>'+
+      '<div class="summary-card"><div class="lbl">📋 累计订单</div><div class="val">'+fmt(totalOrders)+' 单</div><div class="sub">场均 '+(totalSessions>0?(totalOrders/totalSessions).toFixed(1):'0')+' 单</div></div>'+
+      '<div class="summary-card"><div class="lbl">📅 运营天数</div><div class="val">'+daySpan+' 天</div><div class="sub">'+firstDate+' → '+lastDate+'</div></div>'+
+      '<div class="summary-card"><div class="lbl">📊 日均 GMV</div><div class="val">'+fmt(avgDailyGMV)+' 元</div><div class="sub">÷ '+activeDayCnt+' 个有数据日</div></div>'+
+      '<div class="summary-card"><div class="lbl">🚀 最高单日 GMV</div><div class="val">'+fmt(maxDailyGMV)+' 元</div><div class="sub">'+maxDate+'</div></div>'+
+      '<div class="summary-card"><div class="lbl">📅 月均 GMV</div><div class="val">'+fmt(totalGMV/Math.max(1,Math.ceil(daySpan/30)))+' 元</div><div class="sub">÷ '+Math.ceil(daySpan/30)+' 个月</div></div>';
+  }
+
+  // ---- 累计增长曲线（双轴：GMV 左轴，订单右轴） ----
+  var cumCanvas = document.getElementById('ovCumulativeChart');
+  if (cumCanvas) {
+    charts.ovCumulative = new Chart(cumCanvas.getContext('2d'), {
+      type:'line',
+      data:{
+        labels:dateKeys,
+        datasets:[
+          {label:'累计 GMV (元)', data:cumGMV, borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,0.12)', borderWidth:2, fill:true, tension:0.25, yAxisID:'y', pointRadius:2, pointHoverRadius:5},
+          {label:'累计订单 (单)', data:cumOrders, borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.05)', borderWidth:2, fill:false, tension:0.25, yAxisID:'y1', pointRadius:2, pointHoverRadius:5}
+        ]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'index', intersect:false},
+        plugins:{
+          legend:{position:'top', labels:{font:{size:11}, boxWidth:12}},
+          tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' '+(ctx.dataset.label.indexOf('订单')>-1?'单':'元');}}}
+        },
+        scales:{
+          y:{position:'left', beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}, title:{display:true, text:'累计 GMV (元)', font:{size:11}}},
+          y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}, title:{display:true, text:'累计订单 (单)', font:{size:11}}},
+          x:{ticks:{font:{size:10}, maxRotation:45, autoSkip:true, maxTicksLimit:12}}
+        }
+      }
     });
-    months = Object.keys(monthMap).sort().map(function(k){return monthMap[k];});
-    var ctx=document.getElementById('ovTrendChart').getContext('2d');
-    var rev=months.slice().reverse();
-    charts.ovTrend=new Chart(ctx,{
-      type:'bar',
-      data:{labels:rev.map(function(m){return m.label;}), datasets:[
-        {label:'销售额',data:rev.map(function(m){return m.totalGMV;}),backgroundColor:'#1e3a8a',borderRadius:4,yAxisID:'y',barPercentage:0.5},
-        {label:'订单数',data:rev.map(function(m){return m.totalOrders;}),backgroundColor:'#f59e0b',borderRadius:4,yAxisID:'y1',barPercentage:0.5}
-      ]},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-        plugins:{tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+(ctx.datasetIndex===0?fmt(ctx.parsed.y)+' 元':fmt(ctx.parsed.y)+' 单');}}}},
-        scales:{y:{beginAtZero:true,position:'left',ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}},
-          y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false}}}}});
+  }
+
+  // ---- 销售渠道构成饼图（直播 vs 自营） ----
+  var totLive = 0, totSelf = 0;
+  dateKeys.forEach(function(d){ totLive += byDate[d].live; totSelf += byDate[d].self; });
+  var chCanvas = document.getElementById('ovSummaryChannelChart');
+  if (chCanvas && (totLive + totSelf) > 0) {
+    charts.ovSummaryChannel = new Chart(chCanvas.getContext('2d'), {
+      type:'doughnut',
+      data:{labels:['直播间','店铺自营'], datasets:[{data:[totLive, totSelf], backgroundColor:['#1e3a8a','#f59e0b'], borderWidth:2, borderColor:'#fff'}]},
+      options:{responsive:true, maintainAspectRatio:false, cutout:'60%',
+        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed,total=v+(totLive+totSelf-v); var pct=((v/(totLive+totSelf))*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
+      }
+    });
+  }
+
+  // ---- 支付渠道构成饼图（安卓 vs iOS） ----
+  var totA = 0, totI = 0;
+  dateKeys.forEach(function(d){ totA += byDate[d].androidAmt; totI += byDate[d].iosAmt; });
+  var payCanvas = document.getElementById('ovSummaryPaymentChart');
+  if (payCanvas && (totA + totI) > 0) {
+    charts.ovSummaryPayment = new Chart(payCanvas.getContext('2d'), {
+      type:'doughnut',
+      data:{labels:['安卓','iOS'], datasets:[{data:[totA, totI], backgroundColor:['#2563eb','#f59e0b'], borderWidth:2, borderColor:'#fff'}]},
+      options:{responsive:true, maintainAspectRatio:false, cutout:'60%',
+        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed,total=v+(totA+totI-v); var pct=((v/(totA+totI))*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
+      }
+    });
+  }
+}
+
+// ===== 多期数据对比（双期对比：指定两个期间 A VS B） =====
+// 单期间 8 指标聚合
+function periodAgg(sessions, period, isYearMode, scMap) {
+  var g = {label:period, gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
+  sessions.forEach(function(sx){
+    var k = isYearMode ? sx.date.substring(0,4) : sx.date.substring(0,7);
+    if (k !== period) return;
+    var sc = scMap[sx.date+'_'+sx.game];
+    var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
+    var selfS = sc ? (sc.self?.sales||0) : 0;
+    var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
+    g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
+    g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
+    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
+    g.androidAmt += a; g.iosAmt += i;
+    g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    g.cnt++;
+  });
+  return g;
+}
+
+// 填充期间A/B下拉（跟随模式：月度=月份选项，年度=年份选项）
+// 保留用户上次选择（若在新粒度下仍存在）
+function populateCompareSelects(sessions, mode) {
+  var selA = document.getElementById('ovCmpASelect');
+  var selB = document.getElementById('ovCmpBSelect');
+  if (!selA || !selB) return;
+  var opts;
+  if (mode === 'year') {
+    opts = getAvailableYears(sessions).map(function(y){ return {v:y, label:y+'年'}; });
+  } else {
+    opts = getAvailableMonths(sessions).map(function(m){
+      var mo = parseInt(m.substring(5,7), 10);
+      return {v:m, label:m.substring(0,4)+'年'+(isNaN(mo)?m.substring(5,7):mo)+'月'};
+    });
+  }
+  if (opts.length < 2) return;
+  var keepA = (ovCmpA && opts.some(function(o){ return o.v === ovCmpA; })) ? ovCmpA : opts[opts.length-2].v;
+  var keepB = (ovCmpB && opts.some(function(o){ return o.v === ovCmpB; })) ? ovCmpB : opts[opts.length-1].v;
+  selA.innerHTML = '';
+  selB.innerHTML = '';
+  opts.forEach(function(o){
+    var optA = document.createElement('option'); optA.value = o.v; optA.textContent = o.label; selA.appendChild(optA);
+    var optB = document.createElement('option'); optB.value = o.v; optB.textContent = o.label; selB.appendChild(optB);
+  });
+  selA.value = keepA;
+  selB.value = keepB;
+  ovCmpA = keepA;
+  ovCmpB = keepB;
+}
+
+function renderMonthCompare(data) {
+  var wrap = document.getElementById('ovMonthCompareWrap');
+  if (!wrap) return;
+  // 仅单游戏显示
+  if (!ovGame || ovGame === 'all') { wrap.style.display = 'none'; return; }
+  // 该游戏全量数据（期间下拉可跨范围自由选）
+  var cmpBase = filterByGame(data.sessions || [], ovGame);
+  var months = getAvailableMonths(cmpBase);
+  var years = getAvailableYears(cmpBase);
+  var monthOk = months.length >= 2;
+  var yearOk = years.length >= 2;
+  // 切换按钮置灰（数据不足时禁用，防止模块消失 bug）
+  var modeBar = document.getElementById('ovCompareModeBar');
+  if (modeBar) {
+    modeBar.querySelectorAll('.dim-btn').forEach(function(b){
+      var ok = (b.dataset.cmode === 'month') ? monthOk : yearOk;
+      b.disabled = !ok;
+      b.title = ok ? '' : (b.dataset.cmode === 'month'
+        ? '可用月份不足 2 个（当前 ' + months.length + ' 个）'
+        : '可用年份不足 2 年（当前 ' + years.length + ' 年）');
+      b.style.opacity = ok ? '' : '0.45';
+      b.style.cursor = ok ? '' : 'not-allowed';
+    });
+  }
+  // 当前模式不可用 → 兜底切到可用模式
+  if (ovCompareMode === 'month' && !monthOk && yearOk) ovCompareMode = 'year';
+  else if (ovCompareMode === 'year' && !yearOk && monthOk) ovCompareMode = 'month';
+  // 两种都不可用 → 隐藏模块（无对比意义）
+  if (!monthOk && !yearOk) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  // 按钮 active 同步
+  if (modeBar) {
+    modeBar.querySelectorAll('.dim-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.cmode === ovCompareMode);
+    });
+  }
+  var isYearMode = (ovCompareMode === 'year');
+  // 填充期间下拉
+  populateCompareSelects(cmpBase, ovCompareMode);
+  // 聚合两个期间
+  var scMap = buildSCMap(data);
+  var aggA = periodAgg(cmpBase, ovCmpA, isYearMode, scMap);
+  var aggB = periodAgg(cmpBase, ovCmpB, isYearMode, scMap);
+  // 期间展示名
+  function periodLabel(p) {
+    if (isYearMode) return p + '年';
+    var mo = parseInt(p.substring(5,7), 10);
+    return p.substring(0,4) + '年' + (isNaN(mo) ? p.substring(5,7) : mo) + '月';
+  }
+  var labelA = periodLabel(ovCmpA || '');
+  var labelB = periodLabel(ovCmpB || '');
+  var metricDefs = [
+    {k:'gmv',  t:'总GMV(元)',      money:true},
+    {k:'live', t:'直播GMV(元)',    money:true},
+    {k:'self', t:'自营GMV(元)',    money:true},
+    {k:'orders', t:'支付订单数',   money:false},
+    {k:'payUsers', t:'支付用户数', money:false},
+    {k:'androidShare', t:'安卓支付占比', pct:true},
+    {k:'profit', t:'抖店利润(元)', money:true},
+    {k:'avgGMV', t:'场均GMV(元)',  money:true}
+  ];
+  function metricVal(g, md) {
+    if (md.k === 'androidShare') return (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
+    if (md.k === 'avgGMV') return g.cnt > 0 ? (g.gmv / g.cnt) : 0;
+    return g[md.k];
+  }
+  function metricTxt(v, md) {
+    if (md.pct) return v.toFixed(1) + '%';
+    return fmt(v);
+  }
+  // 表格：内容居中，指标+环比合并一行
+  var header = '<tr><th style="text-align:center;min-width:110px;">指标</th><th style="text-align:center;">'+labelA+'</th><th style="text-align:center;">'+labelB+'</th><th style="text-align:center;">环比</th></tr>';
+  var body = '';
+  metricDefs.forEach(function(md){
+    var vA = metricVal(aggA, md);
+    var vB = metricVal(aggB, md);
+    var diff = vA !== 0 ? ((vB - vA) / Math.abs(vA) * 100) : (vB > 0 ? 100 : 0);
+    var up = diff >= 0;
+    body += '<tr><td style="text-align:center;">'+md.t+'</td>'
+      + '<td style="text-align:center;">'+metricTxt(vA, md)+'</td>'
+      + '<td style="text-align:center;">'+metricTxt(vB, md)+'</td>'
+      + '<td style="text-align:center;color:'+(up?'#dc2626':'#059669')+';font-weight:600;">'+(up?'↑':'↓')+Math.abs(diff).toFixed(1)+'%</td></tr>';
+  });
+  var wrapEl = document.getElementById('ovCompareTableWrap');
+  if (wrapEl) wrapEl.innerHTML = '<table class="data-table" style="width:100%;">'+header+body+'</table>';
+  // 注释：场次数 + 口径
+  var note = document.getElementById('ovCompareNote');
+  if (note) {
+    note.textContent = '场次数：'+labelA+' '+aggA.cnt+'场 / '+labelB+' '+aggB.cnt+'场。'+(isYearMode?'按年度对比各年汇总；':'按月对比，场次不同时以场均GMV为公平口径；')+'环比 = ('+labelB+' − '+labelA+') / '+labelA+'，红↑绿↓。';
   }
 }
 
 function assessRisk(sessions, isSingle) {
+  if (!sessions) return {items:[{level:'success', icon:'✅', title:'暂无数据', desc:'当前选择无直播数据'}], high:0, medium:0, low:0};
   var items = [], high=0, medium=0, low=0;
   var s = isSingle ? sessions : null;
   var t = s ? s.traffic||{} : {};
@@ -525,8 +1528,13 @@ function assessRisk(sessions, isSingle) {
   var p = s ? s.product||{} : {};
 
   if (isSingle && s) {
-    // 单日风险评估
-    if (t.entryRate !== undefined && t.entryRate < 0.03) {
+    // 判断是否为非直播数据（流量数据全为0）
+    var noLive = (!t.exposure && !t.entry && !t.avgOnline);
+    if (noLive) {
+      items.push({level:'info', icon:'📋', title:'今日无直播安排', desc:'该日无直播场次，数据为其他渠道产生的订单'});
+    } else {
+      // 单日风险评估（直播相关）
+      if (t.entryRate !== undefined && t.entryRate < 0.03) {
       items.push({level:'danger', icon:'🔴', title:'进房率过低', desc:'进房率仅 '+pct(t.entryRate)+'，低于健康线3%，建议优化直播封面图和标题'});
       high++;
     } else if (t.entryRate !== undefined && t.entryRate < 0.05) {
@@ -552,8 +1560,7 @@ function assessRisk(sessions, isSingle) {
       high++;
     }
 
-    if (p.orders === 0) {
-      items.push({level:'danger', icon:'🔴', title:'本场无成交', desc:'直播未产生成交订单，需紧急复盘：选品、话术、流量精准度'});
+    if ((p.paymentOrders||p.orders) === 0) {
       high++;
     }
 
@@ -566,6 +1573,7 @@ function assessRisk(sessions, isSingle) {
     if (items.length === 0) {
       items.push({level:'success', icon:'✅', title:'数据健康', desc:'本场直播各项指标均在健康范围内，继续维持'});
     }
+    }
 
     // 支付渠道风险评估（从当前场次取数据）
     var sPay = s.payment || {};
@@ -573,36 +1581,37 @@ function assessRisk(sessions, isSingle) {
     var payChk = sAndAmt + sIosAmt;
     if (payChk > 0) {
       var androidPctS = sAndAmt / payChk * 100;
-    if (androidPctS >= 80) {
-      items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过80%警戒线，抖店利润收益存在高度风险'});
+    if (androidPctS > 80) {
+      items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过80%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
       high++;
-    } else if (androidPctS >= 50) {
-      items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过50%关注线，抖店利润收益存在中度风险'});
+    } else if (androidPctS > 60) {
+      items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
       medium++;
     } else {
-      items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，低于50%，支付渠道结构合理'});
+      items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，低于60%健康线，抖店利润优于正常渠道'});
     }
     }
   } else {
     // 多日风险评估
     var totalGMV=0, totalOrd=0, totalExp=0, totalEnt=0;
+    var riskSCMap = buildSCMap(currentData);
     sessions.forEach(function(sx){
-      totalGMV+=sx.product?.sales||0; totalOrd+=sx.product?.orders||0;
+      totalGMV+=getTotalSales(sx, riskSCMap); totalOrd+=sx.product?.paymentOrders||sx.product?.orders||0;
       totalExp+=sx.traffic?.exposure||0; totalEnt+=sx.traffic?.entry||0;
     });
-    var avgEntryRate = totalExp>0 ? totalEnt/totalExp : 0;
-    var overallCVR = totalExp>0 ? totalOrd/totalExp : 0;
+    var avgEntryRate = totalExp>0 ? totalEnt/totalExp : -1;
+    var overallCVR = totalExp>0 ? totalOrd/totalExp : -1;
 
-    if (avgEntryRate < 0.03) {
+    if (totalExp > 0 && avgEntryRate < 0.03) {
       items.push({level:'danger', icon:'🔴', title:'整体进房率过低', desc:'周期内平均进房率 '+pct(avgEntryRate)+'，流量获取效率不足'});
       high++;
     }
-    if (overallCVR < 0.005) {
+    if (totalExp > 0 && overallCVR < 0.005) {
       items.push({level:'danger', icon:'🔴', title:'整体转化率过低', desc:'周期内曝光→成交转化率仅 '+pct(overallCVR)+'，需关注选品和流量质量'});
       high++;
     }
     if (sessions.length > 1) {
-      var gmvs = sessions.map(function(sx){return sx.product?.sales||0;});
+      var gmvs = sessions.map(function(sx){return getTotalSales(sx, riskSCMap);});
       var maxG = Math.max.apply(null,gmvs), minG = Math.min.apply(null,gmvs);
       if (maxG > 0 && minG === 0) {
         items.push({level:'warning', icon:'🟡', title:'存在零成交场次', desc:'周期内有场次0成交，建议对比分析其与成交场次的差异'});
@@ -619,14 +1628,14 @@ function assessRisk(sessions, isSingle) {
     var payTotalChk = totalAndroid + totalIOS;
     if (payTotalChk > 0) {
       var androidPctMulti = totalAndroid / payTotalChk * 100;
-      if (androidPctMulti >= 80) {
-        items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过80%警戒线，抖店利润收益存在高度风险'});
+      if (androidPctMulti > 80) {
+        items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过80%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
         high++;
-      } else if (androidPctMulti >= 50) {
-        items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过50%关注线，抖店利润收益存在中度风险'});
+      } else if (androidPctMulti > 60) {
+        items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
         medium++;
       } else {
-        items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，低于50%，支付渠道结构合理'});
+        items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，低于60%健康线，抖店利润优于正常渠道'});
       }
     }
     if (items.length === 0) {
@@ -635,6 +1644,12 @@ function assessRisk(sessions, isSingle) {
   }
   return {items:items, high:high, medium:medium, low:low};
 }
+// 渲染利润卡片
+function renderProfitCards() {
+  var allSessions = currentData?.sessions || [];
+}
+function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
 function renderReport() {
   var data=currentData; if(!data) return;
   var allSessions=data.sessions||[]; if(allSessions.length===0) return;
@@ -643,12 +1658,12 @@ function renderReport() {
   // 渲染游戏下拉
   var sel=document.getElementById('rptGameSelect');
   var currentGame = sel.value || (games.length>0?games[0]:'');
-  sel.innerHTML = games.map(function(g){return '<option value="'+g+'">'+g+'</option>';}).join('');
+  sel.innerHTML = games.map(function(g){return '<option value="'+escapeHtml(g)+'">'+escapeHtml(g)+'</option>';}).join('');
   sel.value = currentGame;
 
   // 按游戏筛选
   var sessions = currentGame ? allSessions.filter(function(s){return s.game===currentGame;}) : allSessions;
-  if(sessions.length===0){document.getElementById('rangeInfo').textContent='该游戏暂无数据';return;}
+  var hasData = sessions.length > 0;
 
   // 游戏切换重新渲染
   sel.onchange = function(){ renderReport(); };
@@ -656,41 +1671,53 @@ function renderReport() {
   // 设置快捷按钮
   var firstDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date<b.date?a:b;}).date : today();
   var lastDate = sessions.length > 0 ? sessions.reduce(function(a,b){return a.date>b.date?a:b;}).date : today();
+  if (sessions.length === 0) {
+    // 无数据时仍显示日期控件，用默认日期
+    firstDate = today();
+    lastDate = today();
+  }
   document.getElementById('startDate').setAttribute('min', firstDate);
   document.getElementById('startDate').setAttribute('max', lastDate);
   document.getElementById('endDate').setAttribute('min', firstDate);
   document.getElementById('endDate').setAttribute('max', lastDate);
-  document.querySelectorAll('#datePresets button').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+  // 日期预设按钮 — 使用事件委托，避免重复绑定
+  var presetContainer = document.getElementById('datePresets');
+  if (!presetContainer._listener) {
+    presetContainer._listener = true;
+    presetContainer.addEventListener('click', function(e){
+      var btn = e.target.closest('button');
+      if (!btn || !btn.dataset.range) return;
+      presetContainer.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
       btn.classList.add('active');
       var range=btn.dataset.range, start, end=lastDate;
       if(range==='today') start=lastDate;
       else if(range==='7d') { var d=new Date(lastDate); d.setDate(d.getDate()-6); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
       else if(range==='30d') { var d=new Date(lastDate); d.setDate(d.getDate()-29); start=d.toISOString().substring(0,10); if(start<firstDate) start=firstDate; }
       else if(range==='month') { start=lastDate.substring(0,7)+'-01'; if(start<firstDate) start=firstDate; }
-      else return; // custom
+      else return;
       document.getElementById('startDate').value=start;
       document.getElementById('endDate').value=end;
       applyRange(start,end,sessions);
     });
-  });
+  }
+  // 自定义日期 — 一次性初始化
+  if (!window._dateListenersInited) {
+    window._dateListenersInited = true;
+    document.getElementById('startDate').addEventListener('change',function(){
+      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+      var endEl = document.getElementById('endDate');
+      if (this.value > endEl.value) endEl.value = this.value;
+      applyRange(this.value, endEl.value, currentData?currentData.sessions:[]);
+    });
+    document.getElementById('endDate').addEventListener('change',function(){
+      document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
+      var startEl = document.getElementById('startDate');
+      if (this.value < startEl.value) startEl.value = this.value;
+      applyRange(startEl.value, this.value, currentData?currentData.sessions:[]);
+    });
+  }
 
-  // 自定义日期变化
-  document.getElementById('startDate').addEventListener('change',function(){
-    document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    var endEl = document.getElementById('endDate');
-    if (this.value > endEl.value) endEl.value = this.value;
-    applyRange(this.value, endEl.value, sessions);
-  });
-  document.getElementById('endDate').addEventListener('change',function(){
-    document.querySelectorAll('#datePresets button').forEach(function(b){b.classList.remove('active');});
-    var startEl = document.getElementById('startDate');
-    if (this.value < startEl.value) startEl.value = this.value;
-    applyRange(startEl.value, this.value, sessions);
-  });
-
-  // 默认最新（以实际数据最后日期为准）
+  // 默认单日最新（以实际数据最后日期为准）
   var e = lastDate;
   document.getElementById('startDate').value = e;
   document.getElementById('endDate').value = e;
@@ -700,16 +1727,17 @@ function renderReport() {
 function applyRange(start, end, sessions) {
   if(!start||!end) return;
   var filtered = sessions.filter(function(s){return s.date>=start && s.date<=end;});
+  window._exportData = {start: start, end: end, sessions: filtered};
   var isSingle = (start===end) || (filtered.length===1);
-  document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(filtered.reduce(function(s,ss){return s+(ss.product?.sales||0);},0))+' 元';
+  var scMap2 = buildSCMap(currentData);
+  var totalSales = filtered.reduce(function(s,ss){return s + getTotalSales(ss, scMap2);}, 0);
+  document.getElementById('rangeInfo').textContent = '共 '+filtered.length+' 场 · 销售额 '+fmt(totalSales)+' 元' + (filtered.length===0?' · 该游戏暂无数据':'');
 
-  if(isSingle && filtered.length>0) {
-    // 单日模式
+  if(isSingle) {
     document.getElementById('rptDetailView').style.display='block';
     document.getElementById('rptTrendView').style.display='none';
-    renderSingleDay(filtered[0]);
+    renderSingleDay(filtered.length>0 ? filtered[0] : null);
   } else {
-    // 多日模式
     document.getElementById('rptDetailView').style.display='none';
     document.getElementById('rptTrendView').style.display='block';
     renderMultiDay(filtered);
@@ -717,29 +1745,46 @@ function applyRange(start, end, sessions) {
 }
 
 function renderSingleDay(s) {
-  var t=s.traffic||{}, it=s.interaction||{}, p=s.product||{};
-  // 第一行：4个重点卡片
+  var t=s?(s.traffic||{}):{}, it=s?(s.interaction||{}):{}, p=s?(s.product||{}):{};
+  var sc = s ? (currentData.salesChannels||[]).find(function(c){return c.date===s.date && c.game===s.game;}) : null;
+  var selfSales = sc ? (sc.self&&sc.self.sales)||0 : 0;
+  var totalSales = (p.sales||0) + selfSales;
+  // 第一行：5个核心卡片（合并利润+销售额+订单）
+  var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0;
+  var dd=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006, pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
+  var vsPlat=dd-pt, vsNorm=dd-nm;
+  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card featured"><div class="lbl">💰 销售额</div><div class="val up" style="font-size:28px;">'+fmt(p.sales)+'</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">💳 预估结算金额</div><div class="val up" style="font-size:28px;">'+fmt(Math.round(p.sales*0.994*100)/100)+'</div><div class="sub">扣除抖店0.6%服务费金额</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">📋 支付订单数</div><div class="val" style="font-size:28px;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="sub">当日累计支付订单笔数</div></div>',
-    '<div class="kpi-card featured"><div class="lbl">✅ 成交人数</div><div class="val warn" style="font-size:28px;">'+fmt(p.orders)+'</div><div class="sub">点击→成交 '+(p.clickOrderRate?pct(p.clickOrderRate):'-')+'</div></div>',
+    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalSales)+'</div><div class="sub">'+(selfSales>0?'直播 '+fmt(p.sales||0)+' + 自营 '+fmt(selfSales):'本场累计')+'</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(a+i||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
+    '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
+    '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
   ].join('');
-  // 第二行：流量+互动 4个
-  document.getElementById('rptInteractKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
-  ].join('');
-  // 第三行：2列（点赞、停留）
-  document.getElementById('rptSubKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes)+'</div></div>',
+  // 直播数据（移动到销售渠道下方）
+  var noLive = (!t.exposure && !t.entry && !t.avgOnline);
+  var liveHtml = [
+    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>' + (noLive?'<div style="font-size:12px;color:var(--text3);padding:8px 0 12px;">今日无直播排期</div>':''),
+  ];
+  if (!noLive) {
+    liveHtml = liveHtml.concat([
+    // 流量
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans||0)+'</div></div>',
+    '</div>',
+    // 互动+停留
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes||0)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
-  ].join('');
+    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
+    '</div>',
+    ]); }
 
   // 支付渠道构成可视化（从当前场次取数据）
-  var paS = s.payment || {};
+  var paS = s?s.payment||{}:{};
   var paAndroid = paS.android || {}, paIos = paS.ios || {};
   var paAmt = paAndroid.amount||0, paIosAmt = paIos.amount||0;
   var paStl = paAndroid.settle||0, paIosStl = paIos.settle||0;
@@ -767,8 +1812,10 @@ function renderSingleDay(s) {
     '<div class="chart-grid" style="margin-top:0;">',
     '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountChart"></canvas></div></div>',
     '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserChart"></canvas></div></div>',
-    '</div>',
-
+    '</div></div>',
+  ].join('');
+  // 漏斗/互动/转化图表 + 转化链路 → 移到直播数据
+  var chartHtml = [
     '<div class="chart-grid">',
     '<div class="chart-card"><h3>📈 流量漏斗 <span class="tag">曝光→进房→在线</span></h3><div class="chart-wrap"><canvas id="rptTrafficChart"></canvas></div></div>',
     '<div class="chart-card"><h3>💬 互动指标 <span class="tag">雷达图</span></h3><div class="chart-wrap"><canvas id="rptInteractChart"></canvas></div></div>',
@@ -780,9 +1827,13 @@ function renderSingleDay(s) {
     '<div class="flow-step"><div class="num">'+fmt(t.avgOnline)+'</div><div class="lbl">平均在线</div></div><div class="flow-arrow">→</div>',
     '<div class="flow-step"><div class="num">'+fmt(p.exposure)+'</div><div class="lbl">商品曝光</div></div><div class="flow-arrow">→</div>',
     '<div class="flow-step"><div class="num">'+fmt(p.clicks)+'</div><div class="lbl">点击</div>'+(p.exposureClickRate?'<div class="flow-rate">'+pct(p.exposureClickRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
+    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
     '</div></div>',
   ].join('');
+  // 写入直播数据到下方模块（含漏斗+转化图表）
+  document.getElementById('rptLiveData').innerHTML = liveHtml.join('') + (noLive?'':chartHtml);
+  document.getElementById('rptInteractKpi').innerHTML = '';
+  document.getElementById('rptSubKpi').innerHTML = '';
 
   // 数据风险评估
   var risk = assessRisk(s, true);
@@ -793,7 +1844,17 @@ function renderSingleDay(s) {
   risk.items.forEach(function(r){ rh += '<li class="risk-item '+r.level+'"><span>'+r.icon+'</span><div><strong>'+r.title+'</strong><br>'+r.desc+'</div></li>'; });
   rh += '</ul>';
   document.getElementById('rptRiskSection').innerHTML = '<div class="section-title">⚠️ 数据风险评估 <span class="tag">单日</span></div>' + rh;
+  // 无数据时清空图表并提前返回
+  if (!s) {
+    document.getElementById('rptDetailView').innerHTML = '';
+    document.getElementById('rptSubKpi').innerHTML = '';
+    destroyChart('rptPayAmount');destroyChart('rptPayUser');destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
+    renderCoreFocus([], currentData);
+    renderSalesChannels([], currentData);
+    return;
+  }
 
+  // 图表渲染
   setTimeout(function(){
     destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
     destroyChart('rptPayAmount');destroyChart('rptPayUser');
@@ -802,39 +1863,124 @@ function renderSingleDay(s) {
     var c2=document.getElementById('rptInteractChart');
     if(c2) charts.rptInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'本场',data:[it.comments,(it.likes||0)/60,it.newFans,parseFloat(it.avgStay)||0,(t.entryRate||0)*100],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     var c3=document.getElementById('rptFunnelChart');
-    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.paymentOrders||p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.paymentOrders||p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
     // 支付渠道饼图
     var pa=document.getElementById('rptPayAmountChart');
     if(pa && paTotal>0){
-      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paAmt,paIosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paAmt,paIosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
     var pu=document.getElementById('rptPayUserChart');
     var paUsrTotal = paUsr+paIosUsr;
     if(pu && paUsrTotal>0){
-      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
   }, 50);
+  // 核心关注 + 销售渠道
+  renderCoreFocus(s?[s]:[], currentData);
+  renderSalesChannels(s?[s]:[], currentData);
 }
 
 function renderMultiDay(sessions) {
-  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0;
+  var totalGMV=0, totalOrders=0, totalExp=0, totalEntry=0, cnt=sessions.length, totalBuyers=0;
+  var mdSCMap = buildSCMap(currentData);
   sessions.forEach(function(s){
-    totalGMV+=s.product?.sales||0; totalOrders+=s.product?.orders||0;
+    totalGMV+=getTotalSales(s, mdSCMap); totalOrders+=s.product?.paymentOrders||s.product?.orders||0;
     totalExp+=s.traffic?.exposure||0; totalEntry+=s.traffic?.entry||0;
+    totalBuyers+=s.product?.orders||0;
   });
-  // KPI
+  // KPI（顶部：销售额+利润+订单，合并置顶）
+  var totalA=0, totalI=0;
+  sessions.forEach(function(s){totalA+=s.payment?.android?.amount||0; totalI+=s.payment?.ios?.amount||0;});
+  var tdd=totalA*0.85+totalI*0.85-(totalA+totalI)*0.08-(totalA+totalI)*0.006, tpt=(totalA+totalI)*0.85-(totalA+totalI)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
+  var tvp=tdd-tpt, tvn=tdd-tnm;
+  document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">💰 总销售额</div><div class="val up">'+fmt(totalGMV)+' 元</div><div class="sub">'+sessions.length+' 场</div></div>',
-    '<div class="kpi-card"><div class="lbl">📦 总订单</div><div class="val">'+fmt(totalOrders)+' 单</div></div>',
-    '<div class="kpi-card"><div class="lbl">👀 总曝光</div><div class="val">'+fmt(totalExp)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 总进房</div><div class="val">'+fmt(totalEntry)+'</div></div>',
+    '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalGMV)+'</div><div class="sub">'+cnt+' 场</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(totalA+totalI||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
+    '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(tvp<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(tvp<0?'#dc2626':'#059669')+'">'+(tvp<0?'':'+')+(tvp/(tpt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvp))+' 元</div></div>',
+    '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(tvn>=0?'#059669':'#dc2626')+'">'+(tvn>=0?'+':'')+(tvn/(tnm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvn))+' 元</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
   ].join('');
-  document.getElementById('rptInteractKpi').innerHTML = [
-    '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(Math.round(totalGMV/sessions.length))+' 元</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(Math.round(totalExp/sessions.length))+'</div></div>',
+  // 直播数据（下方模块+图表）
+  // 计算汇总数据用于图表
+  var totalAvgOnline = 0, totalMaxOnline = 0, totalComments = 0, totalLikes = 0, totalNewFans = 0, totalAvgStay = 0;
+  var totalPExp = 0, totalPClicks = 0, totalPOrders = 0;
+  sessions.forEach(function(s){
+    var t = s.traffic || {}, it = s.interaction || {}, p = s.product || {};
+    totalAvgOnline += t.avgOnline || 0;
+    totalMaxOnline = Math.max(totalMaxOnline, t.maxOnline || 0);
+    totalComments += it.comments || 0;
+    totalLikes += it.likes || 0;
+    totalNewFans += it.newFans || 0;
+    totalAvgStay += parseFloat(it.avgStay) || 0;
+    totalPExp += p.exposure || 0;
+    totalPClicks += p.clicks || 0;
+    totalPOrders += p.paymentOrders || p.orders || 0;
+  });
+  var avgOnlineVal = cnt > 0 ? Math.round(totalAvgOnline / cnt) : 0;
+  var avgStayVal = cnt > 0 ? (totalAvgStay / cnt).toFixed(2) : '0';
+  var entryRateVal = totalExp > 0 ? (totalEntry / totalExp) : 0;
+  var expClickRate = totalPExp > 0 ? (totalPClicks / totalPExp) : 0;
+  var clickOrderRate = totalPClicks > 0 ? (totalPOrders / totalPClicks) : 0;
+
+  var liveHtml = [
+    '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
+    '<div class="kpi-card"><div class="lbl">👀 总曝光人数</div><div class="val">'+fmt(totalExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 总进房人数</div><div class="val">'+fmt(totalEntry)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(cnt>0?Math.round(totalGMV/cnt):0)+' 元</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(cnt>0?Math.round(totalExp/cnt):0)+'</div></div>',
+    '</div>',
+    '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(totalOrders/sessions.length).toFixed(1)+' 单</div></div>',
+    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(1):'0.0')+' 单</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmt(totalPExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmt(totalPClicks)+'</div></div>',
+    '</div>',
+    // 图表区域：流量漏斗 + 互动雷达 + 商品转化漏斗 + 转化链路
+    '<div class="chart-grid" style="margin-top:16px;">',
+      '<div class="chart-card"><h3>📊 流量漏斗 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulTrafficChart"></canvas></div></div>',
+      '<div class="chart-card"><h3>🎯 互动指标 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulInteractChart"></canvas></div></div>',
+    '</div>',
+    '<div class="chart-grid" style="margin-top:0;">',
+      '<div class="chart-card"><h3>🛒 商品转化漏斗 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulFunnelChart"></canvas></div></div>',
+      '<div class="chart-card"><h3>🔄 转化链路 <span class="tag">周期汇总</span></h3><div class="chart-wrap"><canvas id="mulFlowChart"></canvas></div></div>',
+    '</div>',
   ].join('');
+  document.getElementById('rptLiveData').innerHTML = liveHtml;
+  document.getElementById('rptInteractKpi').innerHTML = '';
+  document.getElementById('rptSubKpi').innerHTML = '';
+
+  // 渲染多日图表
+  setTimeout(function(){
+    destroyChart('mulTraffic');destroyChart('mulInteract');destroyChart('mulFunnel');destroyChart('mulFlow');
+    // 流量漏斗（柱状图）
+    var c1=document.getElementById('mulTrafficChart');
+    if(c1) charts.mulTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[totalExp,totalEntry,avgOnlineVal,totalMaxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.y+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
+    // 互动雷达图
+    var c2=document.getElementById('mulInteractChart');
+    if(c2) charts.mulInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'周期汇总',data:[totalComments,Math.round(totalLikes/60),totalNewFans,parseFloat(avgStayVal)||0,Math.round(entryRateVal*100)],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
+    // 商品转化漏斗
+    var c3=document.getElementById('mulFunnelChart');
+    if(c3) charts.mulFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[totalPExp,totalPClicks,totalPOrders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var d=[totalPExp,totalPClicks,totalPOrders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(d[i]/d[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    // 转化链路（与单日一致的流式布局）
+    var c4=document.getElementById('mulFlowChart');
+    if(c4){
+      var flowSteps = [
+        {num:fmt(totalExp), lbl:'总曝光', rate:''},
+        {num:fmt(totalEntry), lbl:'进房', rate:entryRateVal>0?pct(entryRateVal):''},
+        {num:fmt(avgOnlineVal), lbl:'平均在线', rate:''},
+        {num:fmt(totalPExp), lbl:'商品曝光', rate:''},
+        {num:fmt(totalPClicks), lbl:'点击', rate:expClickRate>0?pct(expClickRate):''},
+        {num:fmt(totalPOrders), lbl:'成交', rate:clickOrderRate>0?pct(clickOrderRate):'', last:true}
+      ];
+      c4.parentElement.style.height = 'auto';
+      c4.parentElement.innerHTML = '<div class="flow-row">'+flowSteps.map(function(f,i){
+        var step = '<div class="flow-step'+(f.last?' last':'')+'"><div class="num" style="'+(f.lbl==='成交'?'color:#ef4444;':'')+'font-size:22px;font-weight:700;">'+f.num+'</div><div class="lbl">'+f.lbl+'</div>'+(f.rate?'<div class="flow-rate">'+f.rate+'</div>':'')+'</div>';
+        return step + (i<flowSteps.length-1?'<div class="flow-arrow">→</div>':'');
+      }).join('')+'</div>';
+    }
+  }, 80);
 
   // 多日支付渠道构成（从筛选时段计算）
   var payTotal = 0, androidAmt = 0, androidUsr = 0, iosAmt = 0, iosUsr = 0;
@@ -889,8 +2035,8 @@ function renderMultiDay(sessions) {
     if(c) charts.rptTrend=new Chart(c.getContext('2d'),{
       type:'bar',
       data:{labels:sorted.map(function(s){return s.date.substring(5);}), datasets:[
-        {label:'销售额',data:sorted.map(function(s){return s.product?.sales||0;}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.5,order:2},
-        {label:'趋势',data:sorted.map(function(s){return s.product?.sales||0;}),type:'line',borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',borderWidth:2,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.3,order:1}
+        {label:'销售额',data:sorted.map(function(s){return getTotalSales(s, mdSCMap);}),backgroundColor:'#1e3a8a',borderRadius:4,barPercentage:0.5,order:2},
+        {label:'趋势',data:sorted.map(function(s){return getTotalSales(s, mdSCMap);}),type:'line',borderColor:'#ef4444',backgroundColor:'rgba(239,68,68,0.1)',borderWidth:2,pointBackgroundColor:'#ef4444',pointRadius:4,pointHoverRadius:6,fill:true,tension:0.3,order:1}
       ]},
       options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' 元'}}}},
@@ -899,13 +2045,126 @@ function renderMultiDay(sessions) {
     // 多日支付渠道饼图
     if (payTotal > 0) {
       var pa=document.getElementById('rptPayAmountMultiChart');
-      var payLabelMultiAmt = ['3k-安卓 ('+((androidAmt/(androidAmt+iosAmt))*100).toFixed(1)+'%)','3k-iOS ('+((iosAmt/(androidAmt+iosAmt))*100).toFixed(1)+'%)'];
-      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(1)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
       var pu=document.getElementById('rptPayUserMultiChart');
       var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)'];
-      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)';}}}}},plugins:[{id:'sl',afterDraw:function(c){var m=c.getDatasetMeta(0),d=c.data.datasets[0],t=d.data.reduce(function(a,b){return a+b;},0);m.data.forEach(function(e,i){var p=((d.data[i]/t)*100).toFixed(0)+'%',pos=e.tooltipPosition();c.ctx.save();c.ctx.fillStyle='#fff';c.ctx.font='bold 13px sans-serif';c.ctx.textAlign='center';c.ctx.textBaseline='middle';c.ctx.shadowColor='rgba(0,0,0,0.5)';c.ctx.shadowBlur=3;c.ctx.fillText(p,pos.x,pos.y);c.ctx.restore();})}}]});
+      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
   }, 200);
+  // 核心关注 + 销售渠道
+  renderCoreFocus(sessions, currentData);
+  renderSalesChannels(sessions, currentData);
+}
+
+// ===== 销售渠道构成 =====
+function renderCoreFocus(sessions, data) {
+  var el = document.getElementById('rptCoreFocus');
+  if (!sessions || !sessions.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);">📊 核心数据关注</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">暂无数据</div>'; return; }
+  // 支付渠道
+  var aAmt=0, iAmt=0;
+  sessions.forEach(function(s){var p=s.payment||{}; aAmt+=(p.android?.amount||0); iAmt+=(p.ios?.amount||0);});
+  var payTotal = aAmt + iAmt;
+  // 销售渠道
+  var gameSel = document.getElementById('rptGameSelect');
+  var curGame = gameSel ? gameSel.value : '';
+  var sc = (data.salesChannels||[]).filter(function(c){return (!curGame || c.game===curGame) && sessions.some(function(sx){return sx.date===c.date;});});
+  var liveS=0, selfS=0;
+  sc.forEach(function(c){liveS+=c.live.sales||0; selfS+=c.self.sales||0;});
+  var scTotal = liveS + selfS;
+  el.innerHTML = [
+    '<div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:8px;">📊 核心数据关注</div>',
+    '<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;">',
+      '<div><span style="color:var(--text3);">💳 支付渠道流水占比：</span>',
+        '<span style="font-weight:600;">3k-安卓</span> '+(payTotal>0?'<strong style="color:var(--primary);">'+(aAmt/payTotal*100).toFixed(1)+'%</strong>':'0%')+' | ',
+        '<span style="font-weight:600;">3k-iOS</span> '+(payTotal>0?'<strong style="color:var(--primary);">'+(iAmt/payTotal*100).toFixed(1)+'%</strong>':'0%'),
+      '</div>',
+      '<div><span style="color:var(--text3);">💼 销售渠道流水占比情况：</span>',
+        '<span style="font-weight:600;">直播间</span> '+(scTotal>0?'<strong style="color:var(--primary);">'+(liveS/scTotal*100).toFixed(1)+'%</strong>':'0%')+' | ',
+        '<span style="font-weight:600;">店铺自营（非直播）</span> '+(scTotal>0?'<strong style="color:var(--primary);">'+(selfS/scTotal*100).toFixed(1)+'%</strong>':'0%'),
+      '</div>',
+    '</div>',
+  ].join('');
+}
+
+// ===== 销售渠道构成 =====
+function renderSalesChannels(sessions, data) {
+  var gameSel = document.getElementById('rptGameSelect');
+  var curGame = gameSel ? gameSel.value : '';
+  var sc = (data.salesChannels||[]).filter(function(c){return (!curGame || c.game===curGame) && sessions.some(function(s){return s.date===c.date;});});
+  var el = document.getElementById('rptSalesChannels');
+  if (!sc.length) { el.innerHTML = ''; return; }
+  var liveS=0, liveO=0, selfS=0, selfO=0;
+  sc.forEach(function(c){liveS+=c.live.sales||0; liveO+=c.live.orders||0; selfS+=c.self.sales||0; selfO+=c.self.orders||0;});
+  var total = liveS + selfS;
+  el.innerHTML = [
+    '<div class="section-title" style="margin-top:20px;">💼 销售渠道构成 <span class="tag">直播间 vs 自营</span></div>',
+    '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">',
+      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
+        '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">📺 直播间</div>',
+        '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(liveS)+' 元</div>',
+        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(liveO)+' 笔 | 占比 '+((total>0?(liveS/total*100):0)).toFixed(1)+'%</div>',
+      '</div>',
+      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
+        '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🏪 店铺自营（非直播）</div>',
+        '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(selfS)+' 元</div>',
+        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(selfO)+' 笔 | 占比 '+((total>0?(selfS/total*100):0)).toFixed(1)+'%</div>',
+      '</div>',
+    '</div>',
+    '<div class="chart-grid" style="margin-top:0;">',
+    '<div class="chart-card"><h3>🥧 销售额占比 <span class="tag">直播间 vs 自营</span></h3><div class="chart-wrap"><canvas id="scSalesChart"></canvas></div></div>',
+    '</div>',
+  ].join('');
+  // 饼图：销售额占比
+  destroyChart('scSalesChart');
+  setTimeout(function(){
+    var totalS = liveS + selfS;
+    var pieLabels = ['直播间 ('+(totalS>0?(liveS/totalS*100).toFixed(1):'0.0')+'%)','店铺自营（非直播） ('+(totalS>0?(selfS/totalS*100).toFixed(1):'0.0')+'%)'];
+    var c1=document.getElementById('scSalesChart');
+    if(c1 && totalS>0) charts.scSalesChart=new Chart(c1.getContext('2d'),{type:'pie',data:{labels:pieLabels,datasets:[{data:[liveS,selfS],backgroundColor:['#1e3a8a','#d97706']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/totalS)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
+  }, 50);
+}
+
+// ===== 竞店数据对比 =====
+function renderCompetitor(data) {
+  var cp = data.competitor;
+  if (!cp) { document.getElementById('tabCompetitor').style.display = 'none'; return; }
+  document.getElementById('tabCompetitor').style.display = '';
+  document.getElementById('compUpdateTime').textContent = cp.updatedAt || '-';
+  var stores = cp.stores || [];
+  var sColor = ['var(--primary)', '#d97706', '#059669'];
+  var html = [];
+  html.push('<div class="section-title" style="margin-top:0;">📊 核心指标对比 <span class="tag">7天周期</span></div>');
+  html.push('<table class="comp-table"><tr><th>指标</th>');
+  stores.forEach(function(s,i){ html.push('<th style="color:'+sColor[i]+';">'+s+'</th>'); });
+  html.push('</tr>');
+  (cp.summary||[]).forEach(function(row, ri){
+    if (ri === 0) return;
+    html.push('<tr><td style="font-weight:600;">'+row[0]+'</td>');
+    for (var i=1; i<=stores.length; i++) {
+      var cls = '';
+      if (ri === 4) {
+        var v = parseFloat(row[i]);
+        var ourV = parseFloat(row[1]);
+        cls = (i===1) ? '' : (v > ourV ? ' up' : ' down');
+      }
+      html.push('<td class="num'+cls+'">'+row[i]+'</td>');
+    }
+    html.push('</tr>');
+  });
+  html.push('</table>');
+  function chanTable(title, data) {
+    if (!data || data.length < 2) return '';
+    var h = '<div class="section-title" style="margin-top:20px;">'+title+'</div><div style="overflow-x:auto;"><table class="comp-table"><tr><th>流量来源</th>';
+    stores.forEach(function(s,i){ h += '<th style="color:'+sColor[i]+';">'+s+'</th>'; });
+    h += '</tr>';
+    data.forEach(function(row, ri){ if(ri===0) return; h += '<tr><td>'+row[0]+'</td>'; for(var i=1;i<=stores.length;i++) h += '<td class="num">'+row[i]+'</td>'; h += '</tr>'; });
+    h += '</table></div>';
+    return h;
+  }
+  html.push(chanTable('👆 商品点击人数 <span class="tag">分渠道</span>', cp.trafficClicks));
+  html.push(chanTable('💰 用户支付金额 <span class="tag">分渠道</span>', cp.trafficPay));
+  html.push(chanTable('📈 点击成交转化率 <span class="tag">分渠道</span>', cp.trafficCvr));
+  document.getElementById('compContent').innerHTML = html.join('');
 }
 
 function destroyChart(n){if(charts[n]){charts[n].destroy();delete charts[n];}}
@@ -929,6 +2188,7 @@ function isAutomatedEnv() {
     if (window.domAutomation && window.domAutomationController) return true;
     var ua = navigator.userAgent || '';
     if (/HeadlessChrome|PhantomJS|Selenium/i.test(ua)) return true;
+    // 无交互能力判定：缺少事件/定时器等浏览器基础能力
     if (typeof window.addEventListener !== 'function' || typeof window.setTimeout !== 'function') return true;
   } catch (e) { return true; }
   return false;
@@ -940,11 +2200,175 @@ function loadData() {
     return;
   }
   fetch('./data.enc').then(function(r){ return r.text(); }).then(function(b64){
-    var data = JSON.parse(xorDecrypt(b64, ENC_KEY));
-    render(data);
+    var jsonStr = xorDecrypt(b64, ENC_KEY);
+    var data = JSON.parse(jsonStr);
+    if (checkAccess()) render(data);
+    else { currentData = data; }
   }).catch(function(){document.body.innerHTML='<div style="text-align:center;padding:60px;color:#94a0b0;">⚠️ 数据加载失败</div>';});
 }
 loadData();
+
+// 月趋势范围起止切换（累计汇总常显控件）
+document.getElementById('ovMonthFromSelect').addEventListener('change', function(){
+  ovMonthFrom = this.value;
+  // 开始 > 结束 → 自动把结束同步到开始
+  if (ovMonthTo && ovMonthFrom > ovMonthTo) {
+    ovMonthTo = ovMonthFrom;
+    document.getElementById('ovMonthToSelect').value = ovMonthTo;
+  }
+  renderOverview();
+});
+document.getElementById('ovMonthToSelect').addEventListener('change', function(){
+  ovMonthTo = this.value;
+  // 结束 < 开始 → 自动把开始同步到结束
+  if (ovMonthFrom && ovMonthTo < ovMonthFrom) {
+    ovMonthFrom = ovMonthTo;
+    document.getElementById('ovMonthFromSelect').value = ovMonthFrom;
+  }
+  renderOverview();
+});
+
+// 年趋势区间起止切换（累计汇总常显控件）
+document.getElementById('ovTrendYearFromSelect').addEventListener('change', function(){
+  ovTrendYearFrom = this.value;
+  if (ovTrendYearTo && ovTrendYearFrom > ovTrendYearTo) {
+    ovTrendYearTo = ovTrendYearFrom;
+    document.getElementById('ovTrendYearToSelect').value = ovTrendYearTo;
+  }
+  renderOverview();
+});
+document.getElementById('ovTrendYearToSelect').addEventListener('change', function(){
+  ovTrendYearTo = this.value;
+  if (ovTrendYearFrom && ovTrendYearTo < ovTrendYearFrom) {
+    ovTrendYearFrom = ovTrendYearTo;
+    document.getElementById('ovTrendYearFromSelect').value = ovTrendYearFrom;
+  }
+  renderOverview();
+});
+
+// 游戏选择切换
+document.getElementById('ovGameSelect').addEventListener('change', function(){
+  ovGame = this.value;
+  renderOverview();
+});
+
+// 多期对比 按月度/按年度 切换
+document.getElementById('ovCompareModeBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.dim-btn');
+  if (!btn || btn.classList.contains('active') || btn.disabled) return;
+  this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  ovCompareMode = btn.getAttribute('data-cmode');
+  renderOverview();
+});
+
+// 多期对比 期间A/B 切换
+document.getElementById('ovCmpASelect').addEventListener('change', function(){
+  ovCmpA = this.value;
+  renderOverview();
+});
+document.getElementById('ovCmpBSelect').addEventListener('change', function(){
+  ovCmpB = this.value;
+  renderOverview();
+});
+
+// 月/年度趋势 按月/按年 切换
+document.getElementById('ovTrendModeBar').addEventListener('click', function(e){
+  var btn = e.target.closest('.dim-btn');
+  if (!btn || btn.classList.contains('active') || btn.disabled) return;
+  this.querySelectorAll('.dim-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  ovTrendMode = btn.getAttribute('data-tmode');
+  renderOverview();
+});
+
+// ===== 导出CSV =====
+function exportCSV() {
+  var ed = window._exportData;
+  if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
+  addLog('导出记录', '导出CSV '+(ed.start||'')+'~'+(ed.end||'')+' 共'+ed.sessions.length+'场');
+  var rows = [];
+  // Header（20列：无成交人数——用户原始CSV无此列，data.json 无 orders 字段）
+  // 字段定义：销售额(元) = 直播间销售额(元) + 店铺自营(元) = 安卓支付(元) + iOS支付(元)（数据自洽时三式相等）
+  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  // Build date->salesChannel lookup
+  var scMap = {};
+  (currentData.salesChannels||[]).forEach(function(c){ scMap[c.date] = c; });
+  var expSCMap = buildSCMap(currentData);
+  // Data rows
+  ed.sessions.forEach(function(s){
+    var t = s.traffic||{}, it = s.interaction||{}, p = s.product||{}, pay = s.payment||{};
+    var sc = scMap[s.date] || {};
+    // 销售额(元) = 直播间销售额 + 店铺自营（= 安卓支付 + iOS支付，数据自洽时相等；以销售渠道口径为准）
+    var totalSales = ((sc.live&&sc.live.sales)||0) + ((sc.self&&sc.self.sales)||0);
+    rows.push([
+      s.date, s.game||'',
+      t.exposure||0, t.entry||0, t.avgOnline||0, t.maxOnline||0,
+      it.comments||0, it.likes||0, it.newFans||0, it.avgStay||'',
+      totalSales,
+      (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
+      p.paymentOrders||0, p.exposure||0, p.clicks||0,
+      pay.android?.amount||0, pay.ios?.amount||0,
+      pay.android?.users||0, pay.ios?.users||0
+    ].join(','));
+  });
+  // Summary row（构造数组避免逗号错位）
+  var totalS = ed.sessions.reduce(function(a,b){return a+getTotalSales(b, expSCMap);},0);
+  var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.paymentOrders||0);},0);
+  var sumCols = ['合计'];
+  for (var ci = 1; ci < 20; ci++) { sumCols.push(ci === 10 ? totalS : (ci === 13 ? totalO : '')); }
+  rows.push(sumCols.join(','));
+  // Create blob and download
+  var bom = '\uFEFF';
+  var csv = bom + rows.join('\n');
+  var blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  var link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = '抖店数据_'+ed.start+'~'+ed.end+'.csv';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(link.href);
+}
+
+// ===== 利润计算（通用）=====
+function calcProfit(sessions) {
+  var totalDd=0, totalPt=0, totalNm=0, totalGmv=0;
+  sessions.forEach(function(s){
+    var a = s.payment?.android?.amount || 0;
+    var i = s.payment?.ios?.amount || 0;
+    totalGmv += a + i;
+    totalDd += (a+i)*0.85 - (a+i)*0.08 - (a+i)*0.006;
+    totalPt += (a+i)*0.85 - (a+i)*0.01;
+    totalNm += a*0.85 + i*0.75*0.85;
+  });
+  return {dd:totalDd, pt:totalPt, nm:totalNm, gmv:totalGmv};
+}
+
+function renderProfitRow(containerId, sessions) {
+  var p = calcProfit(sessions);
+  var vsP = p.dd - p.pt;
+  var vsN = p.dd - p.nm;
+  containerId.innerHTML =
+    '<div style="display:flex;gap:10px;flex-wrap:wrap">'+
+    '<div class="summary-card" style="flex:1;min-width:180px;border-color:#86efac">'+
+      '<div class="lbl" style="color:#059669;font-weight:500">抖店支付 · 发行方利润</div>'+
+      '<div class="val" style="color:#059669;font-size:22px">¥' + p.dd.toFixed(2) + '</div>'+
+      '<div class="sub"><span style="font-weight:600;color:#059669">'+(p.dd/(p.gmv||1)*100).toFixed(2)+'%</span> 利润率(扣0.6%+8%+15%)</div>'+
+    '</div>'+
+    '<div class="summary-card" style="flex:1;min-width:160px;border-color:#fecaca">'+
+      '<div class="lbl" style="color:'+(vsP<0?"#dc2626":"#059669")+'">同比平台支付利润</div>'+
+      '<div class="val" style="color:'+(vsP<0?"#dc2626":"#059669")+';font-size:22px">'+(vsP<0?"":"+")+(vsP/(p.pt||1)*100).toFixed(2)+'%</div>'+
+      '<div class="sub" style="color:'+(vsP<0?"#dc2626":"#059669")+'">'+(vsP<0?"":"+")+vsP.toFixed(2)+' 元 · 平台利润 '+p.pt.toFixed(2)+'</div>'+
+    '</div>'+
+    '<div class="summary-card" style="flex:1;min-width:160px;border-color:#b3c5ff">'+
+      '<div class="lbl" style="color:#2563eb">同比原IOS支付渠道利润</div>'+
+      '<div class="val" style="color:'+(vsN>=0?"#059669":"#dc2626")+';font-size:22px">'+(vsN>=0?"+":"")+(vsN/(p.nm||1)*100).toFixed(2)+'%</div>'+
+      '<div class="sub" style="color:'+(vsN>=0?"#059669":"#dc2626")+'">'+(vsN>=0?"+":"")+vsN.toFixed(2)+' 元 · 正常利润 '+p.nm.toFixed(2)+'</div>'+
+    '</div>'+
+    '</div>';
+}
 </script>
 </body>
 </html>
+ 
