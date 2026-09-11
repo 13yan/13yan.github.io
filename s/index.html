@@ -539,6 +539,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%直播服务费 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
       <tr><td>利润方案对比表</td><td>对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异，数据跟随所选游戏+月趋势范围</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
+      <tr><td>渠道充值人数</td><td>安卓/iOS 用户数按场次逐笔累加，<strong>汇总值为非去重人数</strong>——同一用户在多场次或多渠道重复充值时会被多次计入，故汇总人数会高于实际去重用户数</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
       <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
       <tr><td>月/年度趋势</td><td>合并模块，右上角切换「按月 / 按年」：按月显示月度销售额/订单数柱状图（数据=月趋势范围），按年显示年度销售额/订单数柱状图（数据=年趋势区间）。趋势需 ≥2 个时间点才有意义：范围仅 1 个月/年时对应按钮自动置灰（悬停看原因），两种都不可用时空态提示</td></tr>
@@ -597,6 +598,17 @@ var pieLabelPlugin = {
     });
   }
 };
+// 支付渠道「充值人数占比」图例附注：人数按渠道逐笔累加，跨渠道/跨场次同一用户会重复计入
+var PAYUSER_LEGEND_NOTE = '汇总数据为非去重人数';
+var payUserLegend = {position:'bottom',labels:{font:{size:11},generateLabels:function(chart){
+  var d=chart.data,ds=d.datasets[0];
+  return d.labels.map(function(l,i){
+    return {text:l+' '+ds.data[i]+' 人 — '+PAYUSER_LEGEND_NOTE,
+            fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],
+            lineWidth:0,hidden:false,index:i};
+  });
+}}};
+
 // 游戏颜色板（支持10个游戏）
 var gameColors = ['#1e3a8a','#d97706','#059669','#dc2626','#7c3aed','#0891b2','#db2777','#ca8a04','#16a34a','#e11d48'];
 
@@ -1078,7 +1090,7 @@ function renderOverview() {
         if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
         var pu=document.getElementById('ovPayUserChart');
         var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
       }, 50);
       // 数据风险评估（支付渠道）
       var riskEl = document.getElementById('ovRiskSection');
@@ -1872,7 +1884,7 @@ function renderSingleDay(s) {
     var pu=document.getElementById('rptPayUserChart');
     var paUsrTotal = paUsr+paIosUsr;
     if(pu && paUsrTotal>0){
-      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
+      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 50);
   // 核心关注 + 销售渠道
@@ -2048,7 +2060,7 @@ function renderMultiDay(sessions) {
       if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
       var pu=document.getElementById('rptPayUserMultiChart');
       var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)'];
-      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)';}}}}},plugins:[pieLabelPlugin]});
+      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 200);
   // 核心关注 + 销售渠道
