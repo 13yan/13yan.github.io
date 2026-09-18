@@ -6689,7 +6689,22 @@ function drawChannelChart(data) {
 
 
 
-function sanitizeHtml(s) { if (!s) return ''; return String(s).replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi,'').replace(/<(\/?)(strong|b|em|span|br)(\s[^>]*)?>/g,'<$1$2>').replace(/<[^>]+>/g,function(m){return escHTML(m);}); }
+// 白名单标签放行（strong/b/em/span/br），其余一律转义为文本。
+// ⚠ 原实现第一步把白名单标签“归一化”、第二步又用 /<[^>]+>/g 把所有标签转义，
+//   第二步会把刚放行的白名单一起转义掉 → 结论框里出现裸 <strong> 文本乱码。
+//   2026-09-18 修正：改用占位符保护白名单标签，转义后再还原。
+function sanitizeHtml(s) {
+  if (!s) return '';
+  var keep = [];
+  var out = String(s)
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+    .replace(/<(\/?)(strong|b|em|span|br)(?:\s[^>]*)?>/gi, function (m, slash, tag) {
+      keep.push('<' + slash + tag.toLowerCase() + '>');
+      return '\u0001' + (keep.length - 1) + '\u0001';
+    })
+    .replace(/<[^>]+>/g, function (m) { return escHTML(m); });
+  return out.replace(/\u0001(\d+)\u0001/g, function (m, i) { return keep[i]; });
+}
 
 
 
