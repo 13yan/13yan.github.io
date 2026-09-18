@@ -5003,7 +5003,9 @@ function renderGameAnalysis(games) {
   el.parentElement.style.display='';
   el.innerHTML = games.map(function(g) {
     var chartRows = (g.charts || []).map(function(c) {
-      return '<tr><td style="text-align:center">' + c.chart + '</td><td style="text-align:center"><strong>#' + c.rank + '</strong></td><td style="text-align:center">' + c.change + '</td></tr>';
+      var rk = String(c.rank == null ? '-' : c.rank);
+      var rkHtml = /^\d+$/.test(rk) ? '<strong>#' + rk + '</strong>' : rk;
+      return '<tr><td style="text-align:center">' + c.chart + '</td><td style="text-align:center">' + rkHtml + '</td><td style="text-align:center">' + c.change + '</td></tr>';
     }).join('');
     var detailRows = (g.details || []).map(function(d) {
       return '<p style="margin:6px 0;font-size:13px;line-height:1.8"><strong>' + d.label + '：</strong>' + d.content + '</p>';
