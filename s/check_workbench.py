@@ -33,7 +33,7 @@ REQUIRED = [
     ('侧边栏 logo 图标块', 'logo-icon', 2),
     ('侧边栏概览小卡片', 'sidebar-summary', 2),
     ('data.enc 解密器', 'xorDecrypt', 2),
-    ('加密数据加载', "fetch('./data.enc')", 1),
+    ('加密数据加载', "fetch('./data.enc", 1),
     ('全店汇总 tab', '全店汇总', 4),
     ('基础数据报表 tab', '基础数据报表', 2),
     ('抖店充值转移效果分析 tab', '抖店充值转移效果分析', 3),

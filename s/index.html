@@ -2211,7 +2211,9 @@ function loadData() {
     document.body.innerHTML = '<div style="text-align:center;padding:60px;color:#94a0b0;">🛡️ 数据保护中，请使用浏览器访问</div>';
     return;
   }
-  fetch('./data.enc').then(function(r){ return r.text(); }).then(function(b64){
+  // 加时间戳破缓存：GitHub Pages 对 data.enc 返回 Cache-Control max-age=600，
+  // 否则更新数据后浏览器最长 10 分钟仍读旧缓存（曾导致"数据没更新/导出缺日期"的误判）
+  fetch('./data.enc?v=' + Date.now()).then(function(r){ return r.text(); }).then(function(b64){
     var jsonStr = xorDecrypt(b64, ENC_KEY);
     var data = JSON.parse(jsonStr);
     if (checkAccess()) render(data);
