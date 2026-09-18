@@ -3728,7 +3728,7 @@ function buildPageHTML(d, key) {
           '<div class="subsection-title">微信小游戏 Top20</div>',
 
 
-          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">周变化</th></tr></thead><tbody id="wxTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="wxTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
 
 
         '</div>',
@@ -3740,7 +3740,7 @@ function buildPageHTML(d, key) {
           '<div class="subsection-title">抖音小游戏 Top20</div>',
 
 
-          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">周变化</th></tr></thead><tbody id="dyTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="dyTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
 
 
         '</div>',
@@ -4346,13 +4346,10 @@ function renderTable(id, data, plat) {
       changeHtml = 'NEW'; changeClass = 'new';
 
 
-    } else if (change.indexOf('↑') >= 0 || /^\d+$/.test(change)) {
+    } else if (change.indexOf('↑') >= 0) {
 
 
-      var n = change.replace('↑', '');
-
-
-      changeHtml = '↑' + n; changeClass = 'up';
+      changeHtml = '↑' + change.replace('↑', ''); changeClass = 'up';
 
 
     } else if (change.indexOf('↓') >= 0) {
@@ -4361,7 +4358,10 @@ function renderTable(id, data, plat) {
       changeHtml = change; changeClass = 'down';
 
 
-    } else {
+    } else if (/^\d+$/.test(change)) {
+
+
+      // 裸数字 = 数据源未含方向 → 灰显原值，不加箭头、不着红绿（严禁把「未知」当「上升」）
 
 
       changeHtml = change; changeClass = 'stable';
@@ -4387,7 +4387,7 @@ function renderTable(id, data, plat) {
       '<td data-label="品类"><span class="tag-cat">' + escHTML(cat) + '</span></td>' +
 
 
-      '<td data-label="周变化" class="' + changeClass + '">' + escHTML(changeHtml) + '</td>' +
+      '<td data-label="变化" class="' + changeClass + '">' + escHTML(changeHtml) + '</td>' +
 
 
     '</tr>';
@@ -4459,7 +4459,7 @@ function openTop100Modal(plat) {
   } else {
 
 
-    bodyEl.innerHTML = '<table><thead><tr><th>#</th><th>游戏</th><th>品类</th><th>公司</th><th>周变化</th></tr></thead><tbody>' +
+    bodyEl.innerHTML = '<table><thead><tr><th>#</th><th>游戏</th><th>品类</th><th>公司</th><th>变化</th></tr></thead><tbody>' +
 
 
       list.map(function(g) {
@@ -4489,7 +4489,7 @@ function openTop100Modal(plat) {
           chDisplay = 'NEW'; chCls = 'new';
 
 
-        } else if (ch.indexOf('↑') >= 0 || /^\d+$/.test(ch)) {
+        } else if (ch.indexOf('↑') >= 0) {
 
 
           chDisplay = '↑' + ch.replace('↑', ''); chCls = 'up';
@@ -4499,6 +4499,15 @@ function openTop100Modal(plat) {
 
 
           chDisplay = ch; chCls = 'down';
+
+
+        } else if (/^\d+$/.test(ch)) {
+
+
+          // 裸数字 = 方向未知 → 灰显原值（不假定上升）
+
+
+          chDisplay = ch; chCls = 'stable';
 
 
         }
