@@ -107,6 +107,9 @@
   --red: #e53e3e;
 
 
+  --green: #16a34a;
+
+
   --red-soft: #fef2f2;
 
 
@@ -1420,7 +1423,7 @@ button { font-family: inherit; cursor: pointer; }
 .up { color: var(--red); font-weight: 600; }
 
 
-.down { color: var(--primary); font-weight: 600; }
+.down { color: var(--green); font-weight: 600; }
 
 
 .stable { color: var(--text-tertiary); }
@@ -3725,7 +3728,7 @@ function buildPageHTML(d, key) {
           '<div class="subsection-title">微信小游戏 Top20</div>',
 
 
-          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="wxTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">周变化</th></tr></thead><tbody id="wxTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
 
 
         '</div>',
@@ -3737,7 +3740,7 @@ function buildPageHTML(d, key) {
           '<div class="subsection-title">抖音小游戏 Top20</div>',
 
 
-          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">变化</th></tr></thead><tbody id="dyTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
+          '<div class="table-wrap top20-scroll"><table><thead><tr><th style="width:46px">#</th><th>游戏</th><th>厂商</th><th>品类</th><th style="width:80px">周变化</th></tr></thead><tbody id="dyTop20Body"></tbody></table><div class="scroll-hint">▼ 向下滚动查看更多</div></div>',
 
 
         '</div>',
@@ -4384,7 +4387,7 @@ function renderTable(id, data, plat) {
       '<td data-label="品类"><span class="tag-cat">' + escHTML(cat) + '</span></td>' +
 
 
-      '<td data-label="变化" class="' + changeClass + '">' + escHTML(changeHtml) + '</td>' +
+      '<td data-label="周变化" class="' + changeClass + '">' + escHTML(changeHtml) + '</td>' +
 
 
     '</tr>';
@@ -4456,7 +4459,7 @@ function openTop100Modal(plat) {
   } else {
 
 
-    bodyEl.innerHTML = '<table><thead><tr><th>#</th><th>游戏</th><th>品类</th><th>公司</th><th>变化</th></tr></thead><tbody>' +
+    bodyEl.innerHTML = '<table><thead><tr><th>#</th><th>游戏</th><th>品类</th><th>公司</th><th>周变化</th></tr></thead><tbody>' +
 
 
       list.map(function(g) {
