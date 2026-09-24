@@ -536,7 +536,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>范围筛选</td><td>顶部游戏下拉（默认全部游戏）+ 两个范围控件：① 📅 月趋势范围（开始月份~结束月份，KPI/支付渠道/风险/利润对比/月度趋势 均跟随该范围）；② 📅 年趋势区间（开始年份~结束年份，控制年度趋势图显示哪些年）。多期对比（单游戏时）：按月用月范围、按年用年区间</td></tr>
-      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% - 0.6%服务费 - 8%直播服务费 - 15%分成；④ 利润率 = 抖店利润 / 销售额</td></tr>
+      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成（<strong>2026/7/2~9/3 直播期另扣 8%直播服务费，合计系数 76.4%；2026/9/4 起无直播、免扣 8%，合计系数 84.4%</strong>）；④ 利润率 = 抖店利润 / 销售额</td></tr>
       <tr><td>利润方案对比表</td><td>对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异，数据跟随所选游戏+月趋势范围</td></tr>
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>渠道充值人数</td><td>安卓/iOS 用户数按场次逐笔累加，<strong>汇总值为非去重人数</strong>——同一用户在多场次或多渠道重复充值时会被多次计入，故汇总人数会高于实际去重用户数</td></tr>
@@ -567,7 +567,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>评论率</td><td>评论人数 ÷ 进房人数，健康线 &gt;3%</td></tr>
       <tr><td>曝光→点击转化率</td><td>商品点击人数 ÷ 商品曝光人数，健康线 &gt;20%</td></tr>
       <tr><td>点击→成交转化率</td><td>成交人数 ÷ 商品点击人数，健康线 &gt;10%</td></tr>
-      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。60% 临界点推导：抖店利润 = 总额×76.4%（扣 15%研发 + 8%直播服务费 + 0.6%服务费），正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发），两式相等时安卓占比 ≈59.5%，取整 60% 为临界线</td></tr>
+      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。60% 临界点推导：抖店利润 = 总额×76.4%（扣 15%研发 + 8%直播服务费 + 0.6%服务费），正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发），两式相等时安卓占比 ≈59.5%，取整 60% 为临界线。<strong>注：2026/9/4 起店铺无直播、免扣 8% 直播服务费，抖店利润系数由 76.4% 升至 84.4%，理论上临界点相应上移（≈69.9%）；本页风险分级阈值暂沿用既有 60%/80% 业务线，未随口径变更同步调整。</strong></td></tr>
     </table>
 
     <h3>六、新增游戏流程</h3>
@@ -949,6 +949,37 @@ function renderGameCharts(data) {
   });
 }
 
+// ===== 抖店利润口径（双段）=====
+// 【规则变更记录 2026-09-04】原口径（2026-07-02 ~ 2026-09-03，直播期）：
+//   抖店利润 = (安卓+iOS)×85% − 8%直播服务费 − 0.6%支付服务费 − 15%研发分成 ⇒ 合计系数 0.764
+// 【变更后】2026-09-04 起店铺不再直播（无直播排期），对应流水不再产生直播分成：
+//   抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成 ⇒ 合计系数 0.844（免扣 8%直播服务费）
+// 判断依据：按场次日期的「天」切分，日期 > 2026-09-03 即适用免扣口径（与当日是否排播无关，按日归属）
+// 计算基数：当日支付流水（安卓+iOS 金额）；平台支付 / 原iOS 两个对比渠道口径不受本次变更影响
+var DD_LIVE_END = '2026-09-03';   // 直播分成截止日（含当日）
+function ddRate(dateStr) { return (dateStr && dateStr > DD_LIVE_END) ? 0.844 : 0.764; }
+// 单场抖店利润（按该场日期自动选择口径）
+function ddProfitOf(sx) {
+  var a = sx?.payment?.android?.amount || 0;
+  var i = sx?.payment?.ios?.amount || 0;
+  return (a + i) * ddRate(sx?.date);
+}
+// 抖店利润副标题文案（按所选场次实际命中的口径生成，避免出现与数据不符的固定说明）
+function ddDeductionTxt(sessions, compact) {
+  var hasLive = false, hasNoLive = false;
+  (sessions || []).forEach(function(sx) {
+    if (ddRate(sx?.date) === 0.844) hasNoLive = true; else hasLive = true;
+  });
+  if (compact) {
+    if (hasLive && hasNoLive) return '扣0.6%+15%，7/2~9/3另扣8%';
+    if (hasNoLive) return '扣0.6%+15%（9/4起免8%）';
+    return '扣0.6%+8%+15%';
+  }
+  if (hasLive && hasNoLive) return '扣 0.6%服务费 + 15%分成；7/2~9/3 区间另扣 8%直播服务费';
+  if (hasNoLive) return '扣 0.6%服务费 + 15%分成（2026/9/4 起免 8%直播服务费）';
+  return '扣 0.6%服务费 + 8%直播服务费 + 15%分成';
+}
+
 // 利润方案对比（三渠道卡片横排）
 // 数据范围：跟随当前筛选（sessions 已按游戏+月趋势范围过滤）
 function renderProfitCompare(sessions, scMap) {
@@ -961,7 +992,7 @@ function renderProfitCompare(sessions, scMap) {
   sessions.forEach(function(sx){
     var a=sx.payment?.android?.amount||0, i=sx.payment?.ios?.amount||0;
     totalGMV += getTotalSales(sx, scMap);
-    pDd+=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    pDd+=ddProfitOf(sx); // 双段口径：7/2~9/3 系数 0.764，9/4 起 0.844（免 8% 直播服务费）
     pPt+=(a+i)*0.85-(a+i)*0.01;
     pNm+=a*0.85+i*0.75*0.85;
   });
@@ -1002,7 +1033,7 @@ function renderProfitCompare(sessions, scMap) {
     var scopeTxt = (ovGame && ovGame !== 'all')
       ? ovGame+' · '+ovMonthFrom+'~'+ovMonthTo
       : '全店 · '+ovMonthFrom+'~'+ovMonthTo;
-    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6% − 8% − 15%；平台支付 = (安卓+iOS)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
+    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成，其中 2026/7/2~9/3（直播期）另扣 8%直播服务费（系数 76.4%），2026/9/4 起不再直播、免扣 8%（系数 84.4%）；平台支付 = (安卓+iOS)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
   }
 }
 
@@ -1048,7 +1079,7 @@ function renderOverview() {
     sessions.forEach(function(sx){
       var a=sx.payment?.android?.amount||0,i=sx.payment?.ios?.amount||0;
       totalPayAmt += a+i;
-      pDd+=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+      pDd+=ddProfitOf(sx); // 双段口径：7/2~9/3 系数 0.764，9/4 起 0.844（免 8% 直播服务费）
       pPt+=(a+i)*0.85-(a+i)*0.01;
       pNm+=a*0.85+i*0.75*0.85;
     });
@@ -1057,7 +1088,7 @@ function renderOverview() {
     [
       {l:'💰 销售额', v:fmt(totalGMV)+' 元', sb:sessionsLabel+' · '+subModeLabel, cl:'#1e3a8a'},
       {l:'📋 支付订单数', v:fmt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
-      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:'扣 0.6%服务费 + 8%直播服务费 + 15%分成', cl:'#059669'},
+      {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:ddDeductionTxt(sessions), cl:'#059669'},
       {l:'📊 利润率', v:profitRate.toFixed(2)+'%', sb:'利润 / 销售额（GMV口径）', cl:'#7c3aed'}
     ].forEach(function(c){
       var d=document.createElement('div');d.className='summary-card';
@@ -1403,7 +1434,7 @@ function periodAgg(sessions, period, isYearMode, scMap) {
     g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
     g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
     g.androidAmt += a; g.iosAmt += i;
-    g.profit += (a+i)*0.85-(a+i)*0.08-(a+i)*0.006;
+    g.profit += (a+i) * ddRate(sx.date); // 双段口径：9/3 前 0.764，9/4 起 0.844（免 8% 直播服务费）
     g.cnt++;
   });
   return g;
@@ -1763,7 +1794,8 @@ function renderSingleDay(s) {
   var totalSales = (p.sales||0) + selfSales;
   // 第一行：5个核心卡片（合并利润+销售额+订单）
   var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0;
-  var dd=(a+i)*0.85-(a+i)*0.08-(a+i)*0.006, pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
+  // 抖店利润按日期双段口径（9/3 前含 8% 直播服务费，9/4 起免扣）；平台支付 / 原iOS 口径不变
+  var dd=(a+i)*ddRate(s?s.date:''), pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
   var vsPlat=dd-pt, vsNorm=dd-nm;
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
@@ -1901,9 +1933,13 @@ function renderMultiDay(sessions) {
     totalBuyers+=s.product?.orders||0;
   });
   // KPI（顶部：销售额+利润+订单，合并置顶）
-  var totalA=0, totalI=0;
-  sessions.forEach(function(s){totalA+=s.payment?.android?.amount||0; totalI+=s.payment?.ios?.amount||0;});
-  var tdd=totalA*0.85+totalI*0.85-(totalA+totalI)*0.08-(totalA+totalI)*0.006, tpt=(totalA+totalI)*0.85-(totalA+totalI)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
+  var totalA=0, totalI=0, tdd=0;
+  // 抖店利润逐场按日期双段口径累加（9/3 前 0.764，9/4 起 0.844），不可用区间总额统一乘系数
+  sessions.forEach(function(s){
+    var a=s.payment?.android?.amount||0, i=s.payment?.ios?.amount||0;
+    totalA+=a; totalI+=i; tdd+=(a+i)*ddRate(s.date);
+  });
+  var tpt=(totalA+totalI)*0.85-(totalA+totalI)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
   var tvp=tdd-tpt, tvn=tdd-tnm;
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
@@ -2352,7 +2388,7 @@ function calcProfit(sessions) {
     var a = s.payment?.android?.amount || 0;
     var i = s.payment?.ios?.amount || 0;
     totalGmv += a + i;
-    totalDd += (a+i)*0.85 - (a+i)*0.08 - (a+i)*0.006;
+    totalDd += (a+i) * ddRate(s.date); // 双段口径：9/3 前 0.764，9/4 起 0.844（免 8% 直播服务费）
     totalPt += (a+i)*0.85 - (a+i)*0.01;
     totalNm += a*0.85 + i*0.75*0.85;
   });
@@ -2368,7 +2404,7 @@ function renderProfitRow(containerId, sessions) {
     '<div class="summary-card" style="flex:1;min-width:180px;border-color:#86efac">'+
       '<div class="lbl" style="color:#059669;font-weight:500">抖店支付 · 发行方利润</div>'+
       '<div class="val" style="color:#059669;font-size:22px">¥' + p.dd.toFixed(2) + '</div>'+
-      '<div class="sub"><span style="font-weight:600;color:#059669">'+(p.dd/(p.gmv||1)*100).toFixed(2)+'%</span> 利润率(扣0.6%+8%+15%)</div>'+
+      '<div class="sub"><span style="font-weight:600;color:#059669">'+(p.dd/(p.gmv||1)*100).toFixed(2)+'%</span> 利润率('+ddDeductionTxt(sessions, true)+')</div>'+
     '</div>'+
     '<div class="summary-card" style="flex:1;min-width:160px;border-color:#fecaca">'+
       '<div class="lbl" style="color:'+(vsP<0?"#dc2626":"#059669")+'">同比平台支付利润</div>'+
