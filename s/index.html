@@ -469,7 +469,10 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     • <strong>曝光→点击转化</strong> = 商品点击人数 ÷ 商品曝光人数，反映商品吸引力，健康线 &gt;20%<br>
     • <strong>点击→成交转化</strong> = 成交人数 ÷ 商品点击人数，反映购买决策效率，健康线 &gt;10%<br>
     • <strong>风险评级说明</strong>：🔴 高风险 = 指标严重偏离健康线，需立即优化；🟡 中风险 = 指标低于优良线，建议改进；✅ 健康 = 各项指标正常<br>
-    • <strong>支付渠道风险评估</strong>（基于抖店 vs 正常渠道利润对比）：3k-安卓占比 &lt;=60% 为健康（抖店利润优于正常渠道），&gt;60%~80% 为中度风险（抖店利润已低于正常渠道），&gt;80% 为高度风险（抖店利润明显低于正常渠道）
+    • <strong>支付渠道风险评估</strong>（基于抖店 vs 正常渠道利润对比，阈值按日期分两套）：<br>
+    &nbsp;&nbsp;① <strong>2026/9/3 及之前</strong>（含 8% 直播服务费，抖店系数 76.4%）：安卓占比 &lt;=60% 健康、&gt;60%~80% 中度风险、&gt;80% 高度风险<br>
+    &nbsp;&nbsp;② <strong>2026/9/4 起</strong>（免 8% 直播服务费，抖店系数 84.4%）：安卓占比 &lt;=97% 健康、&gt;97%~99% 中度风险、&gt;99% 高度风险<br>
+    &nbsp;&nbsp;<span style="color:var(--text3)">（免扣后抖店利润明显优于正常渠道，临界点由 59.5% 右移至 97.2%，故风险线整体上移）</span>
   </div>
 </div>
 
@@ -541,7 +544,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
       <tr><td>渠道充值人数</td><td>安卓/iOS 用户数按场次逐笔累加，<strong>汇总值为非去重人数</strong>——同一用户在多场次或多渠道重复充值时会被多次计入，故汇总人数会高于实际去重用户数</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
-      <tr><td>数据风险评估</td><td>3k-安卓支付占比 &lt;=60% 为✅健康（抖店利润优于正常渠道），&gt;60%~80% 为🟡中度风险（抖店利润低于正常渠道），&gt;80% 为🔴高度风险（抖店利润明显低于正常渠道）</td></tr>
+      <tr><td>数据风险评估</td><td>3k-安卓支付占比分级，<strong>阈值按数据日期分两套</strong>：① 2026/9/3 及之前（抖店系数 76.4%）&lt;=60% ✅健康 / &gt;60%~80% 🟡中度 / &gt;80% 🔴高度；② 2026/9/4 起（免 8% 直播服务费，抖店系数 84.4%）&lt;=97% ✅健康 / &gt;97%~99% 🟡中度 / &gt;99% 🔴高度。判定依据仍为「抖店利润 vs 正常渠道利润」，仅临界点上移（推导见「五、指标计算规则」）</td></tr>
       <tr><td>月/年度趋势</td><td>合并模块，右上角切换「按月 / 按年」：按月显示月度销售额/订单数柱状图（数据=月趋势范围），按年显示年度销售额/订单数柱状图（数据=年趋势区间）。趋势需 ≥2 个时间点才有意义：范围仅 1 个月/年时对应按钮自动置灰（悬停看原因），两种都不可用时空态提示</td></tr>
       <tr><td>多期数据对比</td><td>仅选单游戏时展示（全部游戏隐藏），可按月度/按年度切换。8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），每项下带相邻期环比红↑绿↓</td></tr>
       <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值。选具体游戏时整块隐藏（单游戏无对比意义）</td></tr>
@@ -567,7 +570,11 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>评论率</td><td>评论人数 ÷ 进房人数，健康线 &gt;3%</td></tr>
       <tr><td>曝光→点击转化率</td><td>商品点击人数 ÷ 商品曝光人数，健康线 &gt;20%</td></tr>
       <tr><td>点击→成交转化率</td><td>成交人数 ÷ 商品点击人数，健康线 &gt;10%</td></tr>
-      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。60% 临界点推导：抖店利润 = 总额×76.4%（扣 15%研发 + 8%直播服务费 + 0.6%服务费），正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发），两式相等时安卓占比 ≈59.5%，取整 60% 为临界线。<strong>注：2026/9/4 起店铺无直播、免扣 8% 直播服务费，抖店利润系数由 76.4% 升至 84.4%，理论上临界点相应上移（≈69.9%）；本页风险分级阈值暂沿用既有 60%/80% 业务线，未随口径变更同步调整。</strong></td></tr>
+      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。<br>
+      <strong>临界点推导</strong>：令「抖店利润 = 正常渠道利润」，抖店利润 = 流水×抖店系数，正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发）；解得临界安卓占比 X =（抖店系数 − 0.6375）÷ 0.2125。健康线 = X 取整；高度线沿用原 60%/80% 的取值口径 =（X + 100）÷ 2 取整。<br>
+      ① <strong>2026/7/2~9/3</strong>（抖店系数 0.764 = 85% − 8%直播服务费 − 0.6%服务费 − 15%研发分成）：X = 59.53% → 健康线 <strong>60%</strong>、高度线 (59.53+100)/2 = 79.76 → <strong>80%</strong>。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。<br>
+      ② <strong>2026/9/4 起</strong>（无直播，免扣 8% 直播服务费，抖店系数 0.844 = 85% − 0.6%服务费 − 15%研发分成）：X = 97.18% → 健康线 <strong>97%</strong>、高度线 (97.18+100)/2 = 98.59 → <strong>99%</strong>。分级：&lt;=97% ✅健康；&gt;97%~99% 🟡中度风险；&gt;99% 🔴高度风险。<br>
+      <strong>适用范围</strong>：单日模式按「当日」取用所属阈值；多日/全店汇总模式按「区间最新日期」所属阈值判定；2026/9/3 及之前的历史判定结果不变。</td></tr>
     </table>
 
     <h3>六、新增游戏流程</h3>
@@ -980,6 +987,25 @@ function ddDeductionTxt(sessions, compact) {
   return '扣 0.6%服务费 + 8%直播服务费 + 15%分成';
 }
 
+// ===== 支付渠道风险分级阈值（两套，按「场次日期」归属）=====
+// 推导公式（与页面「指标计算规则」表一致）：
+//   临界点安卓占比 X 由「抖店利润 = 正常渠道利润」求得：
+//     X = (抖店系数 − 0.75×0.85) / (0.85 − 0.75×0.85) = (抖店系数 − 0.6375) / 0.2125
+//   健康线 = 临界点取整；高度线 = (临界点 + 100) / 2 取整（沿用原 60%/80% 的取值口径）
+// ① ≤2026-09-03（直播期，抖店系数 0.764）：临界点 59.53% → 健康线 60%；高度线 (59.53+100)/2=79.76 → 80%
+// ② ≥2026-09-04（免扣期，抖店系数 0.844）：临界点 97.18% → 健康线 97%；高度线 (97.18+100)/2=98.59 → 99%
+// 【规则变更记录 2026-09-04】9/4 起免扣 8% 直播服务费，抖店利润系数抬升，风险临界点随之右移，
+//   故 9/4 及之后的日期改用第二套阈值；9/3 及之前沿用第一套，历史判定结果不变。
+var RISK_TH_OLD = {ok:60, high:80};   // ≤2026-09-03
+var RISK_TH_NEW = {ok:97, high:99};   // ≥2026-09-04
+function riskThresholds(dateStr) { return (dateStr && dateStr > DD_LIVE_END) ? RISK_TH_NEW : RISK_TH_OLD; }
+// 多日/区间：取区间内最新日期所属的口径（区间跨 9/3 时按新口径判定）
+function riskThresholdsOf(sessions) {
+  var maxD = '';
+  (sessions || []).forEach(function(sx) { if (sx && sx.date > maxD) maxD = sx.date; });
+  return riskThresholds(maxD);
+}
+
 // 利润方案对比（三渠道卡片横排）
 // 数据范围：跟随当前筛选（sessions 已按游戏+月趋势范围过滤）
 function renderProfitCompare(sessions, scMap) {
@@ -1123,14 +1149,15 @@ function renderOverview() {
         var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
         if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
       }, 50);
-      // 数据风险评估（支付渠道）
+      // 数据风险评估（支付渠道）；阈值按所选区间口径取：≤9/3 → 60/80，≥9/4 → 97/99（见 riskThresholds）
       var riskEl = document.getElementById('ovRiskSection');
-      if (androidPct > 80) {
-        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🔴</div><div style="font-size:13px;font-weight:600;color:#dc2626;margin-bottom:4px">安卓支付占比过高</div><div style="font-size:11px;color:#991b1b;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过80%警戒线。抖店相比正常渠道利润为负，收益存在<strong>高度风险</strong>。建议大幅提升iOS端支付占比。</div></div></div>';
-      } else if (androidPct > 60) {
-        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🟡</div><div style="font-size:13px;font-weight:600;color:#d97706;margin-bottom:4px">安卓支付占比偏高</div><div style="font-size:11px;color:#92400e;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在<strong>中度风险</strong>。建议逐步提升iOS端占比。</div></div></div>';
+      var ovTh = riskThresholdsOf(sessions);
+      if (androidPct > ovTh.high) {
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🔴</div><div style="font-size:13px;font-weight:600;color:#dc2626;margin-bottom:4px">安卓支付占比过高</div><div style="font-size:11px;color:#991b1b;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过'+ovTh.high+'%警戒线。抖店相比正常渠道利润为负，收益存在<strong>高度风险</strong>。建议大幅提升iOS端支付占比。</div></div></div>';
+      } else if (androidPct > ovTh.ok) {
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">🟡</div><div style="font-size:13px;font-weight:600;color:#d97706;margin-bottom:4px">安卓支付占比偏高</div><div style="font-size:11px;color:#92400e;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，超过'+ovTh.ok+'%临界线，抖店同比正常渠道利润已为负数，收益存在<strong>中度风险</strong>。建议逐步提升iOS端占比。</div></div></div>';
       } else {
-        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">✅</div><div style="font-size:13px;font-weight:600;color:#059669;margin-bottom:4px">支付渠道结构健康</div><div style="font-size:11px;color:#166534;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，低于60%健康线，抖店利润优于正常渠道，支付渠道结构合理。</div></div></div>';
+        riskEl.innerHTML = '<div style="display:flex;gap:10px"><div style="flex:1;padding:14px;background:#f0fdf4;border:1px solid #86efac;border-radius:10px"><div style="font-size:18px;margin-bottom:4px">✅</div><div style="font-size:13px;font-weight:600;color:#059669;margin-bottom:4px">支付渠道结构健康</div><div style="font-size:11px;color:#166534;line-height:1.6">3k-安卓支付占比 <strong>'+androidPct+'%</strong>，低于'+ovTh.ok+'%健康线，抖店利润优于正常渠道，支付渠道结构合理。</div></div></div>';
       }
     } else {
       pcCards.innerHTML = '<div class="empty-block" style="padding:20px;">暂无支付渠道数据</div>';
@@ -1624,14 +1651,15 @@ function assessRisk(sessions, isSingle) {
     var payChk = sAndAmt + sIosAmt;
     if (payChk > 0) {
       var androidPctS = sAndAmt / payChk * 100;
-    if (androidPctS > 80) {
-      items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过80%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
+      var thS = riskThresholds(s.date);   // 单日按当日口径：≤9/3 → 60/80，≥9/4 → 97/99
+    if (androidPctS > thS.high) {
+      items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过'+thS.high+'%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
       high++;
-    } else if (androidPctS > 60) {
-      items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
+    } else if (androidPctS > thS.ok) {
+      items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，超过'+thS.ok+'%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
       medium++;
     } else {
-      items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，低于60%健康线，抖店利润优于正常渠道'});
+      items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'安卓渠道占比 '+androidPctS.toFixed(1)+'%，低于'+thS.ok+'%健康线，抖店利润优于正常渠道'});
     }
     }
   } else {
@@ -1671,14 +1699,15 @@ function assessRisk(sessions, isSingle) {
     var payTotalChk = totalAndroid + totalIOS;
     if (payTotalChk > 0) {
       var androidPctMulti = totalAndroid / payTotalChk * 100;
-      if (androidPctMulti > 80) {
-        items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过80%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
+      var thM = riskThresholdsOf(sessions);   // 多日按区间口径（取区间最新日期所属口径）
+      if (androidPctMulti > thM.high) {
+        items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过'+thM.high+'%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'});
         high++;
-      } else if (androidPctMulti > 60) {
-        items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过60%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
+      } else if (androidPctMulti > thM.ok) {
+        items.push({level:'warning', icon:'🟡', title:'安卓支付占比偏高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，超过'+thM.ok+'%临界线，抖店同比正常渠道利润已为负数，收益存在中度风险'});
         medium++;
       } else {
-        items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，低于60%健康线，抖店利润优于正常渠道'});
+        items.push({level:'success', icon:'✅', title:'支付渠道健康', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(1)+'%，低于'+thM.ok+'%健康线，抖店利润优于正常渠道'});
       }
     }
     if (items.length === 0) {
