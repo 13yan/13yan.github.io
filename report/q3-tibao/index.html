@@ -13,25 +13,30 @@
   --green:#059669;--green-l:#d1fae5;
   --red:#dc2626;--red-l:#fee2e2;
   --violet:#7c5cf0;--violet-l:#ede9fe;
-  --fs-xs:10.5px;--fs-sm:11.5px;--fs-base:12.5px;--fs-md:13.5px;--fs-lg:15px;--fs-xl:16px;--fs-2xl:18px;--fs-3xl:21px;
+  --fs-xs:11px;--fs-sm:12px;--fs-base:13.5px;--fs-md:14.5px;--fs-lg:16px;--fs-xl:17px;--fs-2xl:20px;--fs-3xl:23px;
   --gap-sm:8px;--gap-md:12px;--gap-lg:16px;--gap-xl:20px;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;
+  --sh-1:0 1px 2px rgba(16,24,40,.04);--sh-2:0 2px 10px rgba(16,24,40,.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{-webkit-text-size-adjust:100%;}
-body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t1);padding:22px 14px;line-height:1.65;-webkit-font-smoothing:antialiased;font-size:var(--fs-base);}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--t1);padding:22px 14px;line-height:1.7;-webkit-font-smoothing:antialiased;font-size:var(--fs-base);}
+h1,h2,h3,h4,h5{font-weight:800;letter-spacing:.2px;}
+b,strong{font-weight:800;}
+td.num,.kpi .vl,.bar .bv,.rvl,.tl .node .nt em{font-variant-numeric:tabular-nums;}
 .wrap{max-width:1180px;margin:0 auto;}
 .up{color:var(--red);font-weight:700}.down{color:var(--green);font-weight:700}
 
 /* ---------- header ---------- */
-.hd{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:16px;padding:24px 28px;margin-bottom:16px;box-shadow:0 6px 18px rgba(37,99,235,.18);}
+.hd{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:var(--r-lg);padding:26px 30px;margin-bottom:var(--gap-lg);box-shadow:0 8px 26px rgba(30,58,138,.20);}
 .hd h1{font-size:var(--fs-3xl);margin-bottom:6px;line-height:1.45;letter-spacing:.4px;}
 .hd .subtitle{font-size:var(--fs-lg);font-weight:600;opacity:.9;line-height:1.6;}
 /* ---------- 提报信息区（提报人员/团队 · 拟申报奖项 · 推荐理由） ---------- */
 .hd .meta{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
-.hd .mcard{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:11px 16px;min-width:0;}
+.hd .mcard{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.20);border-radius:var(--r-md);padding:12px 16px;min-width:0;}
 .hd .mcard .mk2{font-size:var(--fs-xs);letter-spacing:1.2px;opacity:.72;margin-bottom:5px;line-height:1.4;}
 .hd .mcard .mv{font-size:var(--fs-lg);font-weight:800;letter-spacing:.3px;line-height:1.45;}
-.hd .reason{margin-top:10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:14px 18px;}
+.hd .reason{margin-top:10px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.24);border-left:4px solid rgba(253,230,138,.85);border-radius:var(--r-md);padding:15px 18px;}
 .hd .rk{display:inline-block;font-size:var(--fs-xs);font-weight:800;letter-spacing:1.2px;background:rgba(255,255,255,.22);border-radius:6px;padding:3px 10px;margin-bottom:9px;}
 .hd .rv{font-size:var(--fs-base);line-height:1.95;opacity:.97;}
 .hd .rv b{color:#fde68a;font-weight:800;}
@@ -45,28 +50,29 @@ body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;backgr
 
 /* ---------- KPI ---------- */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--gap-md);margin-bottom:var(--gap-lg);}
-.kpi{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:15px 17px;box-shadow:0 1px 3px rgba(16,24,40,.05);}
+.kpi{background:var(--card);border:1px solid var(--bd);border-top:3px solid var(--blue);border-radius:var(--r-md);padding:16px 18px;box-shadow:var(--sh-1);}
 .kpi .lb{font-size:var(--fs-sm);color:var(--t2);margin-bottom:7px;line-height:1.45;}
 .kpi .vl{font-size:var(--fs-3xl);font-weight:800;letter-spacing:-.5px;line-height:1.3;color:var(--blue);}
 .kpi .vl small{font-size:var(--fs-sm);font-weight:500;color:var(--t2);}
 .kpi .ds{font-size:var(--fs-xs);color:var(--t3);margin-top:6px;line-height:1.55;}
 .kpi.amb .vl{color:var(--amber)}.kpi.grn .vl{color:var(--green)}.kpi.vio .vl{color:var(--violet)}
+.kpi.amb{border-top-color:var(--amber)}.kpi.grn{border-top-color:var(--green)}.kpi.vio{border-top-color:var(--violet)}
 
 /* ---------- section ---------- */
-.sec{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:20px 22px;margin-bottom:var(--gap-lg);box-shadow:0 1px 3px rgba(16,24,40,.05);}
-.sec h2{font-size:var(--fs-xl);margin-bottom:4px;display:flex;align-items:center;gap:8px;line-height:1.5;border-left:4px solid #bfdbfe;padding-left:11px;}
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:var(--gap-lg);box-shadow:var(--sh-1);}
+.sec h2{font-size:var(--fs-xl);font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:9px;line-height:1.55;border-left:4px solid var(--blue);padding-left:12px;}
 .sec h3{font-size:var(--fs-md);color:var(--blue-d);margin:18px 0 10px;line-height:1.5;font-weight:700;letter-spacing:.2px;}
 .sec .desc{font-size:var(--fs-base);color:var(--t2);margin:6px 0 13px;line-height:1.75;}
-.sec-tag{display:inline-block;background:#eef2ff;color:#4338ca;font-size:var(--fs-xs);padding:2px 9px;border-radius:10px;font-weight:700;flex:0 0 auto;}
+.sec-tag{display:inline-block;background:#eef2ff;color:#4338ca;font-size:var(--fs-xs);padding:3px 10px;border-radius:999px;font-weight:800;letter-spacing:.5px;flex:0 0 auto;}
 
 /* ---------- row 式条目 ---------- */
 .crow{display:flex;flex-direction:column;gap:9px;}
-.citem{display:flex;gap:16px;align-items:flex-start;padding:11px 16px;background:#f7f9fc;border:1px solid var(--bd);border-left:4px solid var(--blue);border-radius:10px;}
+.citem{display:flex;gap:16px;align-items:flex-start;padding:12px 16px;background:#f8fafc;border:1px solid var(--bd);border-left:4px solid var(--blue);border-radius:var(--r-sm);}
 .citem .t{flex:0 0 210px;font-weight:800;color:var(--t1);font-size:var(--fs-md);line-height:1.55;padding-top:2px;}
 .citem .ct{flex:1;min-width:0;font-size:var(--fs-base);line-height:1.75;color:var(--t2);}
 .citem.grn{border-left-color:var(--green)}.citem.amb{border-left-color:var(--amber)}
 .citem.vio{border-left-color:var(--violet)}.citem.red{border-left-color:var(--red)}
-.mk{background:linear-gradient(transparent 10%,#fde68a 10%,#fde68a 90%,transparent 90%);padding:0 2px;border-radius:3px;color:#92400e;font-weight:800;}
+.mk{background:linear-gradient(transparent 14%,#fde68a 14%,#fde68a 86%,transparent 86%);padding:1px 3px;border-radius:4px;color:#78350f;font-weight:800;}
 
 /* ---------- 表格 ---------- */
 .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;margin:4px 0;min-width:0}
@@ -98,31 +104,32 @@ small{font-size:var(--fs-xs);color:var(--t3);font-weight:400;}
 .bars{display:flex;align-items:flex-end;gap:var(--gap-xl);height:190px;padding:10px 4px 0;border-bottom:2px solid var(--bd);}
 .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;}
 .bar .bv{font-size:var(--fs-sm);font-weight:800;color:var(--t1);margin-bottom:5px;white-space:nowrap;font-variant-numeric:tabular-nums;}
-.bar .bk{width:100%;max-width:120px;background:linear-gradient(180deg,#60a5fa,#2563eb);border-radius:6px 6px 0 0;transition:height .3s;}
-.bar.p2 .bk{background:linear-gradient(180deg,#fbbf24,#f59e0b);}
-.bar.p3 .bk{background:linear-gradient(180deg,#a78bfa,#7c5cf0);}
+.bar .bk{width:100%;max-width:120px;background:linear-gradient(180deg,#93c5fd,#60a5fa);border-radius:var(--r-sm) var(--r-sm) 0 0;transition:height .3s;}
+.bar.p1 .bk{background:linear-gradient(180deg,#bfdbfe,#93c5fd);}
+.bar.p2 .bk{background:linear-gradient(180deg,#3b82f6,#1e3a8a);}
+.bar.p3 .bk{background:linear-gradient(180deg,#93c5fd,#60a5fa);}
 .baxis{display:flex;gap:var(--gap-xl);padding:7px 4px 0;}
 .baxis div{flex:1;text-align:center;font-size:var(--fs-sm);color:var(--t2);font-weight:700;line-height:1.5;}
 .baxis div small{display:block;}
 
 /* ---------- 提示卡 ---------- */
-.hl{border-radius:10px;padding:11px 15px;line-height:1.75;margin-top:12px;}
-.hl-blue{background:var(--blue-l);border:1px solid #bfdbfe;color:#1e40af;}
-.hl-amber{background:var(--amber-l);border:1px solid #fde68a;color:#92400e;}
-.hl-green{background:var(--green-l);border:1px solid #86efac;color:#166534;}
-.hl-red{background:var(--red-l);border:1px solid #fecaca;color:#7c2d12;}
+.hl{border-width:1px;border-style:solid;border-left-width:4px;border-radius:var(--r-sm);padding:12px 16px;line-height:1.8;margin-top:12px;}
+.hl-blue{background:var(--blue-l);border-color:#bfdbfe;color:#1e40af;}
+.hl-amber{background:var(--amber-l);border-color:#fde68a;color:#92400e;}
+.hl-green{background:var(--green-l);border-color:#86efac;color:#166534;}
+.hl-red{background:var(--red-l);border-color:#fecaca;color:#7c2d12;}
 .hl .miniT{font-weight:800}
 
 .foot{font-size:var(--fs-xs);color:var(--t3);line-height:1.85;padding:6px 2px;}
 .foot strong{color:var(--t2);}
 /* ---------- 补充说明截图 ---------- */
-.shot{margin:14px 0 2px;background:#fafbfc;border:1px solid var(--bd);border-radius:12px;padding:12px;min-width:0;}
+.shot{margin:14px 0 2px;background:#fafbfc;border:1px solid var(--bd);border-radius:var(--r-md);padding:12px;min-width:0;}
 .shot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #e9edf3;background:#fff;}
 .shot figcaption{font-size:var(--fs-sm);color:var(--t2);line-height:1.75;margin-top:10px;}
 .shot figcaption b{color:var(--t1);}
 /* ---------- 报告入口 tab 按钮 ---------- */
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
-.tab{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:10px;
+.tab{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:var(--r-sm);
      background:#fff;border:1px solid #cfd8e6;color:var(--t1);text-decoration:none;
      font-size:var(--fs-base);font-weight:700;line-height:1.4;
      box-shadow:0 1px 2px rgba(24,25,28,.04);transition:all .16s;}
@@ -135,7 +142,7 @@ small{font-size:var(--fs-xs);color:var(--t3);font-weight:400;}
 
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-xl);}
 /* ---------- 图表卡片（月度利润率） ---------- */
-.cbox{background:#fafbfc;border:1px solid var(--bd);border-radius:12px;padding:14px 16px;min-width:0;}
+.cbox{background:#fafbfc;border:1px solid var(--bd);border-radius:var(--r-md);padding:15px 17px;min-width:0;}
 .cbt{font-size:var(--fs-md);font-weight:800;color:var(--t1);line-height:1.5;}
 .cbt small{font-size:var(--fs-xs);color:var(--t3);font-weight:500;margin-left:6px;}
 .lgd{display:flex;flex-wrap:wrap;gap:14px;margin:9px 0 12px;}
@@ -160,15 +167,14 @@ small{font-size:var(--fs-xs);color:var(--t3);font-weight:400;}
   .rvl{flex:0 0 46px;}
 }
 /* 明细表：Q3 列强调 */
-table.res thead th:last-child{background:#e8efff;color:#1e3a8a;}
-table.res tbody td:last-child{background:#f5f8ff;font-weight:800;}
-table.res tbody tr:hover td:last-child{background:#eef4ff;}
+table.res thead th:last-child{background:#dbe6ff;color:#1e3a8a;font-weight:800;}
+table.res tbody td:last-child{background:#f2f6ff;font-weight:800;color:var(--blue-d);border-left:1px solid #dbe6ff;}
+table.res tbody tr:hover td:last-child{background:#e8efff;}
 @media(max-width:600px){
-  .cbox{padding:12px 13px;}
-  .rlb{flex:0 0 40px;}
-  .rvl{flex:0 0 46px;}
+  .cbox{padding:13px 14px;}
+  .rlb{flex:0 0 42px;}
+  .rvl{flex:0 0 48px;}
 }
-
 
 /* ---------- 响应式：平板 ---------- */
 @media(max-width:900px){
@@ -178,17 +184,48 @@ table.res tbody tr:hover td:last-child{background:#eef4ff;}
 /* ---------- 响应式：手机 ---------- */
 @media(max-width:600px){
   body{padding:14px 10px;}
-  .hd{padding:18px 18px;border-radius:13px;}
+  .hd{padding:18px 16px;}
   .hd h1{font-size:var(--fs-2xl);}
   .sec{padding:16px 14px;}
-  .kpi{padding:12px 13px;}
+  .sec h2{font-size:var(--fs-lg);}
+  .kpi{padding:13px 14px;}
   .kpi .vl{font-size:var(--fs-2xl);}
   .citem{flex-direction:column;gap:5px;padding:11px 13px;}
   .citem .t{flex:none;font-size:var(--fs-base);}
-  th,td{padding:7px 8px;font-size:var(--fs-sm);}
+  th,td{padding:8px 9px;font-size:var(--fs-sm);}
   .bars{gap:var(--gap-md);height:150px;}
   .baxis{gap:var(--gap-md);}
   .baxis div{font-size:var(--fs-xs);}
+
+  /* 对照表 → 手机端卡片化（4 列挤不下，改纵向堆叠） */
+  .tbl-wrap.cmpwrap{overflow:visible;}
+  table.cmp,table.cmp tbody,table.cmp tr,table.cmp td{display:block;width:auto;}
+  table.cmp thead{display:none;}
+  table.cmp tr{background:#f8fafc;border:1px solid var(--bd);border-left:4px solid var(--blue);
+               border-radius:var(--r-sm);padding:12px 14px;margin-bottom:10px;}
+  table.cmp tr:last-child{margin-bottom:0;}
+  table.cmp tr:hover td{background:transparent;}
+  table.cmp td{border:none;border-bottom:1px dashed #e9edf3;padding:9px 0;line-height:1.7;}
+  table.cmp td:last-child{border-bottom:none;padding-bottom:0;}
+  table.cmp td:first-child{font-weight:800;font-size:var(--fs-md);color:var(--t1);padding-top:0;}
+  table.cmp td::before{content:attr(data-l);display:block;font-size:var(--fs-xs);color:var(--t3);
+                       font-weight:800;letter-spacing:.6px;margin-bottom:4px;}
+  table.cmp td:first-child::before{display:none;}
+  table.cmp td.ctr{text-align:left;}
+
+  /* 明细表 → 首列吸附，横向滚动时指标名常驻 */
+  table.res td:first-child,table.res th:first-child{position:sticky;left:0;z-index:2;background:#fff;}
+  table.res thead th:first-child{background:#f0f2f6;}
+  table.res tbody td:first-child{box-shadow:2px 0 6px rgba(16,24,40,.06);}
+}
+/* ---------- 响应式：小屏手机 ---------- */
+@media(max-width:420px){
+  .hd h1{font-size:var(--fs-lg);}
+  .hd .rv{line-height:1.8;}
+  .kpi .vl{font-size:var(--fs-xl);}
+  .kpi{padding:11px 12px;}
+  .sec{padding:14px 12px;}
+  .tab{font-size:var(--fs-sm);}
 }
 </style>
 </head>
@@ -238,29 +275,29 @@ table.res tbody tr:hover td:last-child{background:#eef4ff;}
 <div class="sec" data-page-node-id="HgQSABcEDZcJvMKVEuSoTC">
   <h2 data-page-node-id="HFHFou0VcDlCNsJOCpRO0S"><span class="sec-tag" data-page-node-id="xJDyAsw1oA0uDXkj2FP82y">对照</span>商务部门评选条件 · 达成情况一览</h2>
   <p class="desc" data-page-node-id="Zlk6o34EA4odkD1obsPjgO">按《商务部门季度优秀员工评选条件》逐条对应，右侧为可复算的数据佐证。</p>
-  <div class="tbl-wrap" data-page-node-id="ptIcCVwlCc312i6VU3rFTC">
-  <table data-page-node-id="FI3Yp98VhPQzO3HwoooJML">
+  <div class="tbl-wrap cmpwrap" data-page-node-id="ptIcCVwlCc312i6VU3rFTC">
+  <table class="cmp" data-page-node-id="FI3Yp98VhPQzO3HwoooJML">
     <thead data-page-node-id="MR30oGqznDkakzfFfEVuJq">
       <tr data-page-node-id="u2DuEO9klS0mbMnLAJrmth"><th style="width:30%" data-page-node-id="2GHBScqerwRtNgKUX48dDh">评选条件</th><th style="width:47%" data-page-node-id="U7huXsVqCT4ykh9uGgasvi">本项目达成情况</th><th class="ctr" style="width:10%" data-page-node-id="24IlhDl4Fzzi7VkoYEuR2G">状态</th><th style="width:13%" data-page-node-id="cTjltxVF0GLnUpDgttV9QD">关键佐证</th></tr>
     </thead>
     <tbody data-page-node-id="DXTjAMWq65HalexAJYEb4W">
       <tr data-page-node-id="xCwEFk5h6GfcefGjVl9po6">
-        <td data-page-node-id="Ii78I1ldfEVEGUnBNvlhjE">新增渠道 / 合作落地 ≥ 1 项<small data-page-node-id="6WCR58sUbFG8UdVBP6B4QL">（本项目主申报项）</small></td>
-        <td data-page-node-id="B7QvovdCX4WSUoQSKa3mfe">独立完成<b data-page-node-id="aHb3lIdQnFQo6Rb11y3U9F">抖音电商（抖店）渠道从 0 到 1 落地</b>：平台规则调研 → 业务方案输出 → 技术接入开发 → 运营落地，7/2 上线并跑通全季度经营。</td>
-        <td class="ctr ok" data-page-node-id="PpFq5qcFyDBQeoJS69hWSg">✅ 达成</td>
-        <td data-page-node-id="1LrDWnjfCbKbPpEUzb6JsA">7/2 上线首日流水 <b data-page-node-id="drezSL4ySxSJ9DQZeBus5T">¥1,140</b>；季度累计 <b data-page-node-id="yc3BFtmkeIGQC10eRcE14H">¥179.3 万</b></td>
+        <td data-l="评选条件" data-page-node-id="Ii78I1ldfEVEGUnBNvlhjE">新增渠道 / 合作落地 ≥ 1 项<small data-page-node-id="6WCR58sUbFG8UdVBP6B4QL">（本项目主申报项）</small></td>
+        <td data-l="本项目达成情况" data-page-node-id="B7QvovdCX4WSUoQSKa3mfe">独立完成<b data-page-node-id="aHb3lIdQnFQo6Rb11y3U9F">抖音电商（抖店）渠道从 0 到 1 落地</b>：平台规则调研 → 业务方案输出 → 技术接入开发 → 运营落地，7/2 上线并跑通全季度经营。</td>
+        <td data-l="状态" class="ctr ok" data-page-node-id="PpFq5qcFyDBQeoJS69hWSg">✅ 达成</td>
+        <td data-l="关键佐证" data-page-node-id="1LrDWnjfCbKbPpEUzb6JsA">7/2 上线首日流水 <b data-page-node-id="drezSL4ySxSJ9DQZeBus5T">¥1,140</b>；<span class="mk">季度累计 <b data-page-node-id="yc3BFtmkeIGQC10eRcE14H">¥179.3 万</b></span></td>
       </tr>
       <tr data-page-node-id="mW72OKqqwmqQvjk7q2br0I">
-        <td data-page-node-id="6Knon5GfdKSm19UGGSY0cb">存量增收 ≥ 5%</td>
-        <td data-page-node-id="Fd4G8uwE09s7vVLUOdIRLf">老产品《巨兽战场》在<b data-page-node-id="gUKDtOYwZUsBpw6IVBxSsf">平台收银台 iOS 持续衰减</b>（2 月峰值 ¥104.3 万 → 8 月 ¥46.9 万，−55%）的背景下，用抖店承接被苹果抽成链路的存量用户，把"衰减的坑"填回并多出增量。</td>
-        <td class="ctr ok" data-page-node-id="wA5pbzuStJOIyz5CRKfuoA">✅ 达成</td>
-        <td data-page-node-id="NiYAmKWOHuvM6pDysHlYv5">抖店季度流水中，iOS 直充用户转入 <b data-page-node-id="XikhS36BenzxUs0dkUDxqP">¥4.05 万</b>（<b data-page-node-id="0UlCHByndf3O4ZxTqglc9H">9.2%</b>）属纯增量</td>
+        <td data-l="评选条件" data-page-node-id="6Knon5GfdKSm19UGGSY0cb">存量增收 ≥ 5%</td>
+        <td data-l="本项目达成情况" data-page-node-id="Fd4G8uwE09s7vVLUOdIRLf">老产品《巨兽战场》在<b data-page-node-id="gUKDtOYwZUsBpw6IVBxSsf">平台收银台 iOS 持续衰减</b>（2 月峰值 ¥104.3 万 → 8 月 ¥46.9 万，−55%）的背景下，用抖店承接被苹果抽成链路的存量用户，把"衰减的坑"填回并多出增量。</td>
+        <td data-l="状态" class="ctr ok" data-page-node-id="wA5pbzuStJOIyz5CRKfuoA">✅ 达成</td>
+        <td data-l="关键佐证" data-page-node-id="NiYAmKWOHuvM6pDysHlYv5">抖店季度流水中，iOS 直充用户转入 <b data-page-node-id="XikhS36BenzxUs0dkUDxqP">¥4.05 万</b>（<b data-page-node-id="0UlCHByndf3O4ZxTqglc9H">9.2%</b>）属纯增量</td>
       </tr>
       <tr data-page-node-id="gux9ymPOt1mnjvfyy8pFvi">
-        <td data-page-node-id="qJQAYsB7HZkiaIMmjmwZ1n">策略创新：低成本试错 / 活动机制工具创新 / 渠道降维</td>
-        <td data-page-node-id="TlqUYmCFHE26BjUrBXY0u1">· <b data-page-node-id="8I7tvHa70YBbGhcdHLHvbZ">AI工具应用</b>——自建抖店数据工作台，实时监控 + 双段利润口径 + 风险分级预警，结合阶段性数据复盘调整直播分成策略，确保抖店利润正向；<br data-page-node-id="TkHo8vJ1FhFHTbwFMTmqUS">· <b data-page-node-id="D7AAxkwAB5GQVzZNmHaIcn">活动/机制创新</b>——周年庆窗口以抖店为主承接场，8/17–31 抖店 ¥76.3 万（+359%）；</td>
-        <td class="ctr ok" data-page-node-id="3sNT8jNkS4XXycT9ta1rgj">✅ 达成</td>
-        <td data-page-node-id="J2NqnKs9mYPZEAiXxY98xh">策略调整 9/4 起生效，24 天多拿 <b data-page-node-id="jqjLAPLFknLp7NONT9GqfN">¥47,287</b></td>
+        <td data-l="评选条件" data-page-node-id="qJQAYsB7HZkiaIMmjmwZ1n">策略创新：低成本试错 / 活动机制工具创新 / 渠道降维</td>
+        <td data-l="本项目达成情况" data-page-node-id="TlqUYmCFHE26BjUrBXY0u1">· <b data-page-node-id="8I7tvHa70YBbGhcdHLHvbZ">AI工具应用</b>——自建抖店数据工作台，实时监控 + 双段利润口径 + 风险分级预警，结合阶段性数据复盘调整直播分成策略，确保抖店利润正向；<br data-page-node-id="TkHo8vJ1FhFHTbwFMTmqUS">· <b data-page-node-id="D7AAxkwAB5GQVzZNmHaIcn">活动/机制创新</b>——周年庆窗口以抖店为主承接场，8/17–31 抖店 ¥76.3 万（+359%）；</td>
+        <td data-l="状态" class="ctr ok" data-page-node-id="3sNT8jNkS4XXycT9ta1rgj">✅ 达成</td>
+        <td data-l="关键佐证" data-page-node-id="J2NqnKs9mYPZEAiXxY98xh">策略调整 9/4 起生效，24 天多拿 <span class="mk"><b data-page-node-id="jqjLAPLFknLp7NONT9GqfN">¥47,287</b></span></td>
       </tr>
     </tbody>
   </table>
@@ -291,7 +328,7 @@ table.res tbody tr:hover td:last-child{background:#eef4ff;}
     </div>
     <div class="node done" data-page-node-id="WunPi2IulMxwtnS4rxdRo5">
       <div class="nt" data-page-node-id="o62TaS5FpWTaKS8zIX6AY1"><em data-page-node-id="mghc1AF4WcB3MeSe0gVHVn">STEP 4</em>落地验证 · 跑通全季度经营</div>
-      <div class="nd" data-page-node-id="yLddqM1fRxMEKZBSE8eMpP">7/2 首日流水 <b data-page-node-id="PTmB4FxkEqr61nM6Iva9Y3">¥1,140</b> → 8/31 单日峰值 <b data-page-node-id="EeWEdEuZvLyEis4JYXDjDz">¥117,826</b> → 9/27 累计 <b data-page-node-id="OroeMAvvDu15xt9wg9xGsq">¥1,792,638</b>。新增渠道由"能不能跑通"进入"稳定产出"阶段。</div>
+      <div class="nd" data-page-node-id="yLddqM1fRxMEKZBSE8eMpP">7/2 首日流水 <b data-page-node-id="PTmB4FxkEqr61nM6Iva9Y3">¥1,140</b> → 8/31 单日峰值 <b data-page-node-id="EeWEdEuZvLyEis4JYXDjDz">¥117,826</b> → <span class="mk">9/27 累计 <b data-page-node-id="OroeMAvvDu15xt9wg9xGsq">¥1,792,638</b></span>。新增渠道由"能不能跑通"进入"稳定产出"阶段。</div>
     </div>
   </div>
 
@@ -345,7 +382,7 @@ table.res tbody tr:hover td:last-child{background:#eef4ff;}
     </div>
     <div class="citem vio" data-page-node-id="fO7HHZ6isxhilXJzWlLu8X">
       <div class="t" data-page-node-id="DEdhfvUucfu2ycRv7Md2nD">决策 B · 渠道降维<br data-page-node-id="ZMIzPXIvg7HotvyXuihiV3">（iOS 切支付）</div>
-      <div class="ct" data-page-node-id="nJDaiyZhpruT3nfhCpFTeU">把 iOS 玩家的钱从 App Store/IAP（公司仅得 63.75%）引导至抖店，<b data-page-node-id="lFIeAjl7A2wki1lepAGe41">每百元多拿 ¥20.65</b>。运营期内共承接 iOS 流水 <b data-page-node-id="GJ0y6DpWXyxJl2sQuxLF9e">¥44.1 万</b>（93 名付费角色），实现切支付净增 <b data-page-node-id="NSCkfNpMvgHLEiJKzh6G1l">¥9.10 万</b>；其中直播首充用户贡献了 <b data-page-node-id="Ya5Ipls9ClMJFzWjqC40S7">95.2%</b> 的 iOS 净增。<br data-page-node-id="05wYsrWPPVuomxtzt5Hcn3">→ 决策：以直播为切支付主入口；同时锁定<b data-page-node-id="Trf2irYQjZNSntHxe1yGiM">尚未迁移的 1,158 人 / ¥105.6 万</b>存量池为下一阶段主攻方向。</div>
+      <div class="ct" data-page-node-id="nJDaiyZhpruT3nfhCpFTeU">把 iOS 玩家的钱从 App Store/IAP（公司仅得 63.75%）引导至抖店，<span class="mk"><b data-page-node-id="lFIeAjl7A2wki1lepAGe41">每百元多拿 ¥20.65</b></span>。运营期内共承接 iOS 流水 <b data-page-node-id="GJ0y6DpWXyxJl2sQuxLF9e">¥44.1 万</b>（93 名付费角色），实现切支付净增 <b data-page-node-id="NSCkfNpMvgHLEiJKzh6G1l">¥9.10 万</b>；其中直播首充用户贡献了 <b data-page-node-id="Ya5Ipls9ClMJFzWjqC40S7">95.2%</b> 的 iOS 净增。<br data-page-node-id="05wYsrWPPVuomxtzt5Hcn3">→ 决策：以直播为切支付主入口；同时锁定<b data-page-node-id="Trf2irYQjZNSntHxe1yGiM">尚未迁移的 1,158 人 / ¥105.6 万</b>存量池为下一阶段主攻方向。</div>
     </div>
     <div class="citem red" data-page-node-id="WgPHEDLjHqISbes3eDWW6f">
       <div class="t" data-page-node-id="Nd60eT06DbgzT9EBq9jHve">决策 C · 低成本试错<br data-page-node-id="KrZ5BjpRhUBc5umj06lhMx">（直播分成机制复盘）</div>
@@ -353,7 +390,7 @@ table.res tbody tr:hover td:last-child{background:#eef4ff;}
     </div>
     <div class="citem grn" data-page-node-id="gullCB9QBAXTuirTT4CFyL">
       <div class="t" data-page-node-id="NFPrQ1wCSXMUTkqZZn27lH">决策 D · 利润回正<br data-page-node-id="c9vh6KfOQ2yZ52NVH9xrSk">（9/4 起停播切换口径）</div>
-      <div class="ct" data-page-node-id="ZT505GgTmD8sOuYNwAuyJz">机制调整后，9/4 起停止直播、切换免直播分成口径。9/4–9/27 共 24 天仍产出 <b data-page-node-id="UCG38UgTzO8q6BQD8cujZs">¥591,082</b>（日均 ¥24,628），较 8 月（含周年庆，日均 ¥30,948）仅回落约 20%，而全店 8% 直播分成不再计提——<b data-page-node-id="iDjWqy8V7m01Z1IWA72OpF">同口径下直接多拿 ¥47,287（+10.5%）</b>。<br data-page-node-id="V0cEyjWwIoK27oGl2aU9BO">→ 结论：<b data-page-node-id="NoEka0mrJ7twWcx3DTUuoO">利润转正、且流水未失速</b>，运营策略调整获得正向验证。</div>
+      <div class="ct" data-page-node-id="ZT505GgTmD8sOuYNwAuyJz">机制调整后，9/4 起停止直播、切换免直播分成口径。9/4–9/27 共 24 天仍产出 <b data-page-node-id="UCG38UgTzO8q6BQD8cujZs">¥591,082</b>（日均 ¥24,628），较 8 月（含周年庆，日均 ¥30,948）仅回落约 20%，而全店 8% 直播分成不再计提——<span class="mk"><b data-page-node-id="iDjWqy8V7m01Z1IWA72OpF">同口径下直接多拿 ¥47,287（+10.5%）</b></span>。<br data-page-node-id="V0cEyjWwIoK27oGl2aU9BO">→ 结论：<b data-page-node-id="NoEka0mrJ7twWcx3DTUuoO">利润转正、且流水未失速</b>，运营策略调整获得正向验证。</div>
     </div>
   </div>
 
