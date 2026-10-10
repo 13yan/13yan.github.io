@@ -550,7 +550,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>月/年度趋势</td><td>合并模块，右上角切换「按月 / 按年」：按月显示月度销售额/订单数柱状图（数据=月趋势范围），按年显示年度销售额/订单数柱状图（数据=年趋势区间）。趋势需 ≥2 个时间点才有意义：范围仅 1 个月/年时对应按钮自动置灰（悬停看原因），两种都不可用时空态提示</td></tr>
       <tr><td>多期数据对比</td><td>仅选单游戏时展示（全部游戏隐藏），可按月度/按年度切换。8 项指标（总GMV/直播GMV/自营GMV/支付订单数/支付用户数/安卓支付占比/抖店利润/场均GMV），每项下带相邻期环比红↑绿↓</td></tr>
       <tr><td>游戏对比</td><td>各游戏独立统计筛选维度内的累计销售额，柱状图展示 + 柱顶标注数值。选具体游戏时整块隐藏（单游戏无对比意义）</td></tr>
-      <tr><td>数值精度</td><td><strong>页面所有金额、占比、百分比、人数、订单数等数值统一保留 2 位小数</strong>（金额走 <code>fmt()</code> = 千分位 + 2 位小数；占比/转化率走 <code>toFixed(2)</code>；饼图扇区中心标签与 tooltip 亦为 2 位小数；坐标轴刻度同样保留 2 位，≥1000 时以 <code>k</code> 缩写）。「平均数」类指标（场均销售额/场均订单/场均曝光/平均在线）<strong>不再预先取整</strong>，由 2 位小数呈现真实均值。</td></tr>
+      <tr><td>数值精度</td><td><strong>金额（流水）与占比保留 2 位小数，计数类不保留小数</strong>：金额走 <code>fmt()</code>（千分位 + 2 位小数）；占比/转化率/环比走 <code>toFixed(2)</code>；饼图扇区中心标签与 tooltip 中的金额/占比同为 2 位小数；<strong>计数类走 <code>fmtInt()</code>（千分位整数）</strong>，含人数、订单数、笔数、曝光/点击/评论/点赞/粉丝/在线。<strong>坐标轴刻度</strong>：金额轴保留 2 位（≥1000 以 <code>k</code> 缩写），计数轴取 1 位小数/整数。<strong>场均类</strong>：场均销售额（金额）2 位小数、场均订单 1 位小数、场均曝光与平均在线取整。</td></tr>
       <tr><td>支付渠道子卡</td><td>仅显示金额+结算字段；占比信息由下方饼图呈现，避免重复</td></tr>
     </table>
 
@@ -615,7 +615,7 @@ var PAYUSER_LEGEND_NOTE = '汇总数据为非去重人数';
 var payUserLegend = {position:'bottom',labels:{font:{size:11},generateLabels:function(chart){
   var d=chart.data,ds=d.datasets[0];
   return d.labels.map(function(l,i){
-    return {text:l+' '+fmt(ds.data[i])+' 人 — '+PAYUSER_LEGEND_NOTE,
+    return {text:l+' '+fmtInt(ds.data[i])+' 人 — '+PAYUSER_LEGEND_NOTE,
             fillStyle:ds.backgroundColor[i],strokeStyle:ds.backgroundColor[i],
             lineWidth:0,hidden:false,index:i};
   });
@@ -663,6 +663,8 @@ document.getElementById('accessKeyInput').addEventListener('keydown', function(e
 });
 
 function fmt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return Number(n).toLocaleString('zh-CN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+// fmtInt：计数类专用（人数/订单/笔数/曝光…），千分位整数、不保留小数
+function fmtInt(n) { if (n===null||n===undefined||Number.isNaN(Number(n))) return '-'; return Number(n).toLocaleString('zh-CN', {maximumFractionDigits:0}); }
 function pct(r) { return (r*100).toFixed(2)+'%'; }
 function today() { var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function daysAgo(n) { var d=new Date(); d.setDate(d.getDate()-n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -778,7 +780,7 @@ function updateSidebarSummary(data) {
   var totalSales = sessions.reduce(function(s, sx){return s+getTotalSales(sx, scMap);},0);
   var totalOrders = sessions.reduce(function(s, sx){return s+(sx.product?.paymentOrders||sx.product?.orders||0);},0);
   document.getElementById('ssSales').textContent = fmt(totalSales)+' 元';
-  document.getElementById('ssOrders').textContent = fmt(totalOrders)+' 单';
+  document.getElementById('ssOrders').textContent = fmtInt(totalOrders)+' 单';
   document.getElementById('ssGames').textContent = (data.games||[]).length+' 款';
 }
 document.getElementById('helpBtn').addEventListener('click', function(){
@@ -1190,7 +1192,7 @@ function renderOverview() {
     // 4 张核心 KPI：销售额 / 订单数 / 利润 / 利润率
     [
       {l:'💰 销售额', v:fmt(totalGMV)+' 元', sb:sessionsLabel+' · '+subModeLabel, cl:'#1e3a8a'},
-      {l:'📋 支付订单数', v:fmt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
+      {l:'📋 支付订单数', v:fmtInt(totalOrders)+' 单', sb:sessionsLabel, cl:'#d97706'},
       {l:'📈 抖店利润', v:fmt(pDd)+' 元', sb:ddDeductionTxt(sessions), cl:'#059669'},
       {l:'📊 利润率', v:profitRate.toFixed(2)+'%', sb:'利润 / 销售额（GMV口径）', cl:'#7c3aed'}
     ].forEach(function(c){
@@ -1233,7 +1235,7 @@ function renderOverview() {
         var pu=document.getElementById('ovPayUserChart');
         var lblU=['3k-安卓','3k-iOS'], datU=[pcUsr.android,pcUsr.ios];
         if (pcUsr.douxiao>0){ lblU.push('抖小'); datU.push(pcUsr.douxiao); }
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:lblU,datasets:[{data:datU,backgroundColor:col}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios+pcUsr.douxiao))*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:lblU,datasets:[{data:datU,backgroundColor:col}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmtInt(ctx.parsed)+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios+pcUsr.douxiao))*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
       }, 50);
       // 数据风险评估（支付渠道）；阈值按所选区间口径取：≤9/3 → 60/80，9/4~10/9 → 97/99，≥10/10 → 随当月流水浮动（见 riskThresholds）
       var riskEl = document.getElementById('ovRiskSection');
@@ -1375,8 +1377,8 @@ function renderMonthTrendCharts(sessions, ovSCMap) {
     type:'bar',
     data:{labels:rev.map(function(m){return m.label;}), datasets:[{label:'订单数', data:rev.map(function(m){return m.orders;}), backgroundColor:'#f59e0b', borderRadius:4, barPercentage:0.6}]},
     options:{responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 单';}}}},
-      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2);}}}}}
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.y)+' 单';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
   });
 }
 
@@ -1406,8 +1408,8 @@ function renderYearTrendCharts(sessions, ovSCMap) {
     type:'bar',
     data:{labels:rev.map(function(y){return y.label;}), datasets:[{label:'订单数', data:rev.map(function(y){return y.orders;}), backgroundColor:'#f59e0b', borderRadius:4, barPercentage:0.6}]},
     options:{responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 单';}}}},
-      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2);}}}}}
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.y)+' 单';}}}},
+      scales:{y:{beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}}}}
   });
 }
 
@@ -1469,7 +1471,7 @@ function renderSummaryCharts(sessions, scMap) {
   if (stats) {
     stats.innerHTML =
       '<div class="summary-card"><div class="lbl">💰 累计 GMV</div><div class="val">'+fmt(totalGMV)+' 元</div><div class="sub">'+totalSessions+' 场 · '+activeDayCnt+' 个有数据日</div></div>'+
-      '<div class="summary-card"><div class="lbl">📋 累计订单</div><div class="val">'+fmt(totalOrders)+' 单</div><div class="sub">场均 '+(totalSessions>0?(totalOrders/totalSessions).toFixed(2):'0.00')+' 单</div></div>'+
+      '<div class="summary-card"><div class="lbl">📋 累计订单</div><div class="val">'+fmtInt(totalOrders)+' 单</div><div class="sub">场均 '+(totalSessions>0?(totalOrders/totalSessions).toFixed(1):'0.0')+' 单</div></div>'+
       '<div class="summary-card"><div class="lbl">📅 运营天数</div><div class="val">'+daySpan+' 天</div><div class="sub">'+firstDate+' → '+lastDate+'</div></div>'+
       '<div class="summary-card"><div class="lbl">📊 日均 GMV</div><div class="val">'+fmt(avgDailyGMV)+' 元</div><div class="sub">÷ '+activeDayCnt+' 个有数据日</div></div>'+
       '<div class="summary-card"><div class="lbl">🚀 最高单日 GMV</div><div class="val">'+fmt(maxDailyGMV)+' 元</div><div class="sub">'+maxDate+'</div></div>'+
@@ -1493,11 +1495,11 @@ function renderSummaryCharts(sessions, scMap) {
         interaction:{mode:'index', intersect:false},
         plugins:{
           legend:{position:'top', labels:{font:{size:11}, boxWidth:12}},
-          tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' '+(ctx.dataset.label.indexOf('订单')>-1?'单':'元');}}}
+          tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+(ctx.dataset.label.indexOf('订单')>-1?fmtInt(ctx.parsed.y):fmt(ctx.parsed.y))+' '+(ctx.dataset.label.indexOf('订单')>-1?'单':'元');}}}
         },
         scales:{
           y:{position:'left', beginAtZero:true, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2);}}, title:{display:true, text:'累计 GMV (元)', font:{size:11}}},
-          y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2);}}, title:{display:true, text:'累计订单 (单)', font:{size:11}}},
+          y1:{position:'right', beginAtZero:true, grid:{display:false}, ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v;}}, title:{display:true, text:'累计订单 (单)', font:{size:11}}},
           x:{ticks:{font:{size:10}, maxRotation:45, autoSkip:true, maxTicksLimit:12}}
         }
       }
@@ -1655,7 +1657,8 @@ function renderMonthCompare(data) {
   }
   function metricTxt(v, md) {
     if (md.pct) return v.toFixed(2) + '%';
-    return fmt(v);
+    if (md.money) return fmt(v);
+    return fmtInt(v);
   }
   // 表格：内容居中，指标+环比合并一行
   var header = '<tr><th style="text-align:center;min-width:110px;">指标</th><th style="text-align:center;">'+labelA+'</th><th style="text-align:center;">'+labelB+'</th><th style="text-align:center;">环比</th></tr>';
@@ -1924,7 +1927,7 @@ function renderSingleDay(s) {
     '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(a+i+dx||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
-    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmtInt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
   ].join('');
   // 直播数据（移动到销售渠道下方）
   var noLive = (!t.exposure && !t.entry && !t.avgOnline);
@@ -1935,16 +1938,16 @@ function renderSingleDay(s) {
     liveHtml = liveHtml.concat([
     // 流量
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
-    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmt(t.exposure||0)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmt(it.newFans||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👀 直播间曝光人数</div><div class="val">'+fmtInt(t.exposure||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 进房人数</div><div class="val">'+fmtInt(t.entry||0)+'</div><div class="sub">进房率 '+(t.entryRate?pct(t.entryRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👥 直播号新增粉丝</div><div class="val">'+fmtInt(it.newFans||0)+'</div></div>',
     '</div>',
     // 互动+停留
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
-    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmt(it.likes||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📝 评论人数</div><div class="val">'+fmtInt(it.comments||0)+'</div><div class="sub">评论率 '+(it.commentRate?pct(it.commentRate):'-')+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">❤️ 点赞次数</div><div class="val">'+fmtInt(it.likes||0)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">⏱️ 直播间人均停留</div><div class="val">'+(it.avgStay||'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmt(t.maxOnline||0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 最高在线</div><div class="val">'+fmtInt(t.maxOnline||0)+'</div></div>',
     '</div>',
     ]); }
 
@@ -1959,7 +1962,7 @@ function renderSingleDay(s) {
     '<div style="flex:1;min-width:180px;background:#fdf2f8;border:1px solid #fbcfe8;border-radius:8px;padding:14px;">',
     '<div style="font-size:12px;color:#be185d;margin-bottom:6px;">🎮 抖小 <span style="font-weight:400;">(渠道分成)</span></div>',
     '<div style="font-size:20px;font-weight:700;color:#be185d;">'+fmt(paDxAmt)+' 元</div>',
-    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paDxStl)+' 元 | 用户 '+paDxUsr+' 人</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paDxStl)+' 元 | 用户 '+fmtInt(paDxUsr)+' 人</div>',
     '</div>',
   ].join('') : '';
   document.getElementById('rptDetailView').innerHTML = [
@@ -1968,12 +1971,12 @@ function renderSingleDay(s) {
     '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
     '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🤖 3k-安卓</div>',
     '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(paAmt)+' 元</div>',
-    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paStl)+' 元 | 用户 '+fmt(paUsr)+' 人</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paStl)+' 元 | 用户 '+fmtInt(paUsr)+' 人</div>',
     '</div>',
     '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
     '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🍎 3k-iOS</div>',
     '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(paIosAmt)+' 元</div>',
-    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paIosStl)+' 元 | 用户 '+paIosUsr+' 人</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paIosStl)+' 元 | 用户 '+fmtInt(paIosUsr)+' 人</div>',
     '</div>',
     paDxCard,
     '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;">',
@@ -1995,12 +1998,12 @@ function renderSingleDay(s) {
     '<div class="chart-card full"><h3>🛒 商品转化漏斗 <span class="tag">曝光→点击→成交</span></h3><div class="chart-wrap tall"><canvas id="rptFunnelChart"></canvas></div></div>',
     '</div>',
     '<div class="chart-card" style="margin-bottom:16px;"><h3>🔄 转化链路</h3><div class="conversion-flow">',
-    '<div class="flow-step"><div class="num">'+fmt(t.exposure)+'</div><div class="lbl">总曝光</div></div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num">'+fmt(t.entry)+'</div><div class="lbl">进房</div>'+(t.entryRate?'<div class="flow-rate">'+pct(t.entryRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num">'+fmt(t.avgOnline)+'</div><div class="lbl">平均在线</div></div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num">'+fmt(p.exposure)+'</div><div class="lbl">商品曝光</div></div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num">'+fmt(p.clicks)+'</div><div class="lbl">点击</div>'+(p.exposureClickRate?'<div class="flow-rate">'+pct(p.exposureClickRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
-    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmt(p.paymentOrders||p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
+    '<div class="flow-step"><div class="num">'+fmtInt(t.exposure)+'</div><div class="lbl">总曝光</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmtInt(t.entry)+'</div><div class="lbl">进房</div>'+(t.entryRate?'<div class="flow-rate">'+pct(t.entryRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmtInt(t.avgOnline)+'</div><div class="lbl">平均在线</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmtInt(p.exposure)+'</div><div class="lbl">商品曝光</div></div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num">'+fmtInt(p.clicks)+'</div><div class="lbl">点击</div>'+(p.exposureClickRate?'<div class="flow-rate">'+pct(p.exposureClickRate)+'</div>':'')+'</div><div class="flow-arrow">→</div>',
+    '<div class="flow-step"><div class="num" style="color:#ef4444;">'+fmtInt(p.paymentOrders||p.orders)+'</div><div class="lbl">成交</div>'+(p.clickOrderRate?'<div class="flow-rate">'+pct(p.clickOrderRate)+'</div>':'')+'</div>',
     '</div></div>',
   ].join('');
   // 写入直播数据到下方模块（含漏斗+转化图表）
@@ -2032,11 +2035,11 @@ function renderSingleDay(s) {
     destroyChart('rptTraffic');destroyChart('rptInteract');destroyChart('rptFunnel');
     destroyChart('rptPayAmount');destroyChart('rptPayUser');
     var c1=document.getElementById('rptTrafficChart');
-    if(c1) charts.rptTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[t.exposure,t.entry,t.avgOnline,t.maxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2)}}}}}});
+    if(c1) charts.rptTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[t.exposure,t.entry,t.avgOnline,t.maxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.y)+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
     var c2=document.getElementById('rptInteractChart');
     if(c2) charts.rptInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'本场',data:[it.comments,(it.likes||0)/60,it.newFans,parseFloat(it.avgStay)||0,(t.entryRate||0)*100],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     var c3=document.getElementById('rptFunnelChart');
-    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.paymentOrders||p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.x)+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.paymentOrders||p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.paymentOrders||p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.x)+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.paymentOrders||p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
     // 支付渠道饼图（抖小有数据时才纳入图例）
     var paLabels=['3k-安卓','3k-iOS'], paDat=[paAmt,paIosAmt], paCol=['#1e3a8a','#f59e0b'];
     if (paDxAmt>0){ paLabels.push('抖小'); paDat.push(paDxAmt); paCol.push('#ec4899'); }
@@ -2049,7 +2052,7 @@ function renderSingleDay(s) {
     var paUsrLabels=['3k-安卓','3k-iOS'], paUsrDat=[paUsr,paIosUsr];
     if (paDxUsr>0){ paUsrLabels.push('抖小'); paUsrDat.push(paDxUsr); }
     if(pu && paUsrTotal>0){
-      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:paUsrLabels,datasets:[{data:paUsrDat,backgroundColor:paCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:paUsrLabels,datasets:[{data:paUsrDat,backgroundColor:paCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmtInt(ctx.parsed)+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 50);
   // 核心关注 + 销售渠道
@@ -2081,7 +2084,7 @@ function renderMultiDay(sessions) {
     '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(totalA+totalI+totalDx||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(tvp<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(tvp<0?'#dc2626':'#059669')+'">'+(tvp<0?'':'+')+(tvp/(tpt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvp))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(tvn>=0?'#059669':'#dc2626')+'">'+(tvn>=0?'+':'')+(tvn/(tnm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvn))+' 元</div></div>',
-    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
+    '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmtInt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
   ].join('');
   // 直播数据（下方模块+图表）
   // 计算汇总数据用于图表
@@ -2099,7 +2102,7 @@ function renderMultiDay(sessions) {
     totalPClicks += p.clicks || 0;
     totalPOrders += p.paymentOrders || p.orders || 0;
   });
-  var avgOnlineVal = cnt > 0 ? (totalAvgOnline / cnt) : 0;
+  var avgOnlineVal = cnt > 0 ? Math.round(totalAvgOnline / cnt) : 0;
   var avgStayVal = cnt > 0 ? (totalAvgStay / cnt).toFixed(2) : '0';
   var entryRateVal = totalExp > 0 ? (totalEntry / totalExp) : 0;
   var expClickRate = totalPExp > 0 ? (totalPClicks / totalPExp) : 0;
@@ -2108,16 +2111,16 @@ function renderMultiDay(sessions) {
   var liveHtml = [
     '<div class="section-title" style="margin-top:20px;">📺 直播数据 <span class="tag">流量·互动</span></div>',
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
-    '<div class="kpi-card"><div class="lbl">👀 总曝光人数</div><div class="val">'+fmt(totalExp)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">🚪 总进房人数</div><div class="val">'+fmt(totalEntry)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">👀 总曝光人数</div><div class="val">'+fmtInt(totalExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">🚪 总进房人数</div><div class="val">'+fmtInt(totalEntry)+'</div></div>',
     '<div class="kpi-card"><div class="lbl">📈 场均销售额</div><div class="val">'+fmt(cnt>0?totalGMV/cnt:0)+' 元</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmt(cnt>0?totalExp/cnt:0)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 场均曝光</div><div class="val">'+fmtInt(cnt>0?totalExp/cnt:0)+'</div></div>',
     '</div>',
     '<div class="kpi-row" style="grid-template-columns:repeat(4,1fr);">',
     '<div class="kpi-card"><div class="lbl">📉 平均进房率</div><div class="val">'+(totalExp>0?pct(totalEntry/totalExp):'-')+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(2):'0.00')+' 单</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmt(totalPExp)+'</div></div>',
-    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmt(totalPClicks)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📋 场均订单</div><div class="val">'+(cnt>0?(totalOrders/cnt).toFixed(1):'0.0')+' 单</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总曝光（商品）</div><div class="val">'+fmtInt(totalPExp)+'</div></div>',
+    '<div class="kpi-card"><div class="lbl">📊 总点击（商品）</div><div class="val">'+fmtInt(totalPClicks)+'</div></div>',
     '</div>',
     // 图表区域：流量漏斗 + 互动雷达 + 商品转化漏斗 + 转化链路
     '<div class="chart-grid" style="margin-top:16px;">',
@@ -2138,23 +2141,23 @@ function renderMultiDay(sessions) {
     destroyChart('mulTraffic');destroyChart('mulInteract');destroyChart('mulFunnel');destroyChart('mulFlow');
     // 流量漏斗（柱状图）
     var c1=document.getElementById('mulTrafficChart');
-    if(c1) charts.mulTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[totalExp,totalEntry,avgOnlineVal,totalMaxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.y)+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(2)+'k':v.toFixed(2)}}}}}});
+    if(c1) charts.mulTraffic=new Chart(c1.getContext('2d'),{type:'bar',data:{labels:['曝光人数','进房人数','平均在线','最高在线'],datasets:[{label:'人数',data:[totalExp,totalEntry,avgOnlineVal,totalMaxOnline],backgroundColor:['#1e3a8a','#2563eb','#f59e0b','#10b981'],borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.y)+' 人'}}}},scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}});
     // 互动雷达图
     var c2=document.getElementById('mulInteractChart');
     if(c2) charts.mulInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'周期汇总',data:[totalComments,Math.round(totalLikes/60),totalNewFans,parseFloat(avgStayVal)||0,Math.round(entryRateVal*100)],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     // 商品转化漏斗
     var c3=document.getElementById('mulFunnelChart');
-    if(c3) charts.mulFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[totalPExp,totalPClicks,totalPOrders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmt(ctx.parsed.x)+' 人'},afterLabel:function(ctx){var d=[totalPExp,totalPClicks,totalPOrders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(d[i]/d[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
+    if(c3) charts.mulFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[totalPExp,totalPClicks,totalPOrders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return fmtInt(ctx.parsed.x)+' 人'},afterLabel:function(ctx){var d=[totalPExp,totalPClicks,totalPOrders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(d[i]/d[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
     // 转化链路（与单日一致的流式布局）
     var c4=document.getElementById('mulFlowChart');
     if(c4){
       var flowSteps = [
-        {num:fmt(totalExp), lbl:'总曝光', rate:''},
-        {num:fmt(totalEntry), lbl:'进房', rate:entryRateVal>0?pct(entryRateVal):''},
-        {num:fmt(avgOnlineVal), lbl:'平均在线', rate:''},
-        {num:fmt(totalPExp), lbl:'商品曝光', rate:''},
-        {num:fmt(totalPClicks), lbl:'点击', rate:expClickRate>0?pct(expClickRate):''},
-        {num:fmt(totalPOrders), lbl:'成交', rate:clickOrderRate>0?pct(clickOrderRate):'', last:true}
+        {num:fmtInt(totalExp), lbl:'总曝光', rate:''},
+        {num:fmtInt(totalEntry), lbl:'进房', rate:entryRateVal>0?pct(entryRateVal):''},
+        {num:fmtInt(avgOnlineVal), lbl:'平均在线', rate:''},
+        {num:fmtInt(totalPExp), lbl:'商品曝光', rate:''},
+        {num:fmtInt(totalPClicks), lbl:'点击', rate:expClickRate>0?pct(expClickRate):''},
+        {num:fmtInt(totalPOrders), lbl:'成交', rate:clickOrderRate>0?pct(clickOrderRate):'', last:true}
       ];
       c4.parentElement.style.height = 'auto';
       c4.parentElement.innerHTML = '<div class="flow-row">'+flowSteps.map(function(f,i){
@@ -2185,9 +2188,9 @@ function renderMultiDay(sessions) {
     payHtml = [
       '<div class="chart-card full" style="margin-bottom:16px;"><h3>💳 支付渠道构成 <span class="tag">渠道金额数据</span></h3>',
       '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;">',
-      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🤖 3k-安卓</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(androidAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle)+' 元 | 用户 '+fmt(androidUsr)+' 人 | 占比 '+androidPct+'%</div></div>',
-      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🍎 3k-iOS</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(iosAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(iosSettle)+' 元 | 用户 '+fmt(iosUsr)+' 人 | 占比 '+iosPct+'%</div></div>',
-      dxAmt > 0 ? '<div style="flex:1;min-width:180px;background:#fdf2f8;border:1px solid #fbcfe8;border-radius:8px;padding:14px;"><div style="font-size:12px;color:#be185d;margin-bottom:6px;">🎮 抖小 <span style="font-weight:400;">(渠道分成)</span></div><div style="font-size:20px;font-weight:700;color:#be185d;">'+fmt(dxAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(dxSettle)+' 元 | 用户 '+fmt(dxUsr)+' 人 | 占比 '+dxPct+'%</div></div>' : '',
+      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🤖 3k-安卓</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(androidAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle)+' 元 | 用户 '+fmtInt(androidUsr)+' 人 | 占比 '+androidPct+'%</div></div>',
+      '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🍎 3k-iOS</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(iosAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(iosSettle)+' 元 | 用户 '+fmtInt(iosUsr)+' 人 | 占比 '+iosPct+'%</div></div>',
+      dxAmt > 0 ? '<div style="flex:1;min-width:180px;background:#fdf2f8;border:1px solid #fbcfe8;border-radius:8px;padding:14px;"><div style="font-size:12px;color:#be185d;margin-bottom:6px;">🎮 抖小 <span style="font-weight:400;">(渠道分成)</span></div><div style="font-size:20px;font-weight:700;color:#be185d;">'+fmt(dxAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(dxSettle)+' 元 | 用户 '+fmtInt(dxUsr)+' 人 | 占比 '+dxPct+'%</div></div>' : '',
       '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:6px;">📊 汇总</div><div style="font-size:22px;font-weight:700;color:var(--primary);">'+fmt(payTotal)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle+iosSettle+dxSettle)+' 元 | 通道费 '+(payTotal-(androidSettle+iosSettle+dxSettle)).toFixed(2)+' 元</div></div>',
       '</div></div>',
     ].join('');
@@ -2236,7 +2239,7 @@ function renderMultiDay(sessions) {
       if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:mLabel,datasets:[{data:mDat,backgroundColor:mCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(2)+'%)';}}}}},plugins:[pieLabelPlugin]});
       var pu=document.getElementById('rptPayUserMultiChart');
       var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr+dxUsr))*100).toFixed(2)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr+dxUsr))*100).toFixed(2)+'%)'];
-      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:mLabel,datasets:[{data:mUsrDat,backgroundColor:mCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 人 ('+((ctx.parsed/(androidUsr+iosUsr+dxUsr))*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:mLabel,datasets:[{data:mUsrDat,backgroundColor:mCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmtInt(ctx.parsed)+' 人 ('+((ctx.parsed/(androidUsr+iosUsr+dxUsr))*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 200);
   // 核心关注 + 销售渠道
@@ -2290,12 +2293,12 @@ function renderSalesChannels(sessions, data) {
       '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
         '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">📺 直播间</div>',
         '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(liveS)+' 元</div>',
-        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(liveO)+' 笔 | 占比 '+((total>0?(liveS/total*100):0)).toFixed(2)+'%</div>',
+        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmtInt(liveO)+' 笔 | 占比 '+((total>0?(liveS/total*100):0)).toFixed(2)+'%</div>',
       '</div>',
       '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;">',
         '<div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🏪 店铺自营（非直播）</div>',
         '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(selfS)+' 元</div>',
-        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmt(selfO)+' 笔 | 占比 '+((total>0?(selfS/total*100):0)).toFixed(2)+'%</div>',
+        '<div style="font-size:11px;color:var(--text2);margin-top:4px;">订单 '+fmtInt(selfO)+' 笔 | 占比 '+((total>0?(selfS/total*100):0)).toFixed(2)+'%</div>',
       '</div>',
     '</div>',
     '<div class="chart-grid" style="margin-top:0;">',
