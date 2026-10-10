@@ -473,7 +473,8 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
     &nbsp;&nbsp;① <strong>2026/9/3 及之前</strong>（含 8% 直播服务费，抖店系数 76.4%）：安卓占比 &lt;=60% 健康、&gt;60%~80% 中度风险、&gt;80% 高度风险<br>
     &nbsp;&nbsp;② <strong>2026/9/4 ~ 10/9</strong>（免 8% 直播服务费，抖店系数 84.4%）：安卓占比 &lt;=97% 健康、&gt;97%~99% 中度风险、&gt;99% 高度风险<br>
     &nbsp;&nbsp;③ <strong>2026/10/10 起</strong>（直播恢复，改扣固定月费 25,000 元/月，等效系数 = 84.4% − 25,000÷当月流水）：<strong>临界线随当月流水浮动</strong>——月流水 60 万 → 78% 健康 / 89% 高度；70 万 → 80% / 90%；100 万 → 85% / 93%<br>
-    &nbsp;&nbsp;<span style="color:var(--text3)">（9/4 免扣后临界点右移至 97.2%；10/10 起固定月费摊薄系数，临界点回落并随流水浮动——月流水越低安全区越窄。安卓占比 ≥97.2% 时抖店恒劣，与流水无关）</span>
+    &nbsp;&nbsp;<span style="color:var(--text3)">（9/4 免扣后临界点右移至 97.2%；10/10 起固定月费摊薄系数，临界点回落并随流水浮动——月流水越低安全区越窄。安卓占比 ≥97.2% 时抖店恒劣，与流水无关）</span><br>
+    &nbsp;&nbsp;<span style="color:var(--text3)">⚠ 安卓支付占比分母 = 安卓 + iOS + 抖小（抖小同属抖店支付流水）。抖小为<strong>渠道分成</strong>通道——需向渠道分 40% 流水，渠道系数 = 85% − 40% − 0.6% = <strong>44.4%</strong>，仅 2026/9/21、10/7、10/8、10/9 有数据，之前无该渠道。</span>
   </div>
 </div>
 
@@ -533,17 +534,17 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td><code>sales</code></td><td>商品销售额（元），即抖店后台「商品购买数据」</td></tr>
       <tr><td><code>paymentOrders</code></td><td>支付订单数（笔），注意区分 <code>orders</code>（成交人数）</td></tr>
       <tr><td><code>orders</code></td><td>成交人数（人），不同于 paymentOrders</td></tr>
-      <tr><td><code>payment</code></td><td>每场直播的支付渠道明细（安卓/iOS 金额、结算、用户数）</td></tr>
+      <tr><td><code>payment</code></td><td>每场直播的支付渠道明细（安卓/iOS/抖小 金额、结算、用户数）；<code>douxiao</code> 为后加渠道，仅 2026/9/21、10/7、10/8、10/9 存在</td></tr>
     </table>
 
     <h3>三、全店汇总 数据逻辑</h3>
     <table class="rule-table">
       <tr><th>模块</th><th>逻辑</th></tr>
       <tr><td>范围筛选</td><td>顶部游戏下拉（默认全部游戏）+ 两个范围控件：① 📅 月趋势范围（开始月份~结束月份，KPI/支付渠道/风险/利润对比/月度趋势 均跟随该范围）；② 📅 年趋势区间（开始年份~结束年份，控制年度趋势图显示哪些年）。多期对比（单游戏时）：按月用月范围、按年用年区间</td></tr>
-      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成（<strong>2026/7/2~9/3 直播期另扣 8%直播服务费，合计系数 76.4%；2026/9/4~10/9 无直播、免扣 8%，合计系数 84.4%；2026/10/10 起直播恢复、改扣固定月费 25,000 元/月，等效系数 = 84.4% − 25,000÷当月流水（逐月浮动）</strong>）；④ 利润率 = 抖店利润 / 销售额</td></tr>
+      <tr><td>顶部 4 卡片</td><td>按所选游戏+月趋势范围叠加：① 销售额 = 筛选场次 sales 之和；② 支付订单数 = paymentOrders 之和；③ 抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成（<strong>2026/7/2~9/3 直播期另扣 8%直播服务费，合计系数 76.4%；2026/9/4~10/9 无直播、免扣 8%，合计系数 84.4%；2026/10/10 起直播恢复、改扣固定月费 25,000 元/月，等效系数 = 84.4% − 25,000÷当月流水（逐月浮动）</strong>）<strong>，其中「抖小」渠道需另向渠道分 40% 流水</strong>（系数 = 85% − 40% − 0.6% = 44.4%）；④ 利润率 = 抖店利润 / 销售额</td></tr>
       <tr><td>利润方案对比表</td><td>对比 3 种支付渠道方案（抖店当前 / 平台支付 / 原 iOS）的利润、利润率、及 vs 抖店的差异，数据跟随所选游戏+月趋势范围</td></tr>
-      <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS 金额、结算金额、用户数及占比饼图</td></tr>
-      <tr><td>渠道充值人数</td><td>安卓/iOS 用户数按场次逐笔累加，<strong>汇总值为非去重人数</strong>——同一用户在多场次或多渠道重复充值时会被多次计入，故汇总人数会高于实际去重用户数</td></tr>
+      <tr><td>支付渠道占比</td><td>按所选维度从各场次 payment 字段逐笔累加计算安卓/iOS/抖小 金额、结算金额、用户数及占比饼图（<strong>抖小有数据时才出现在卡片与图例中</strong>，避免长期 0 值干扰）</td></tr>
+      <tr><td>渠道充值人数</td><td>安卓/iOS/抖小 用户数按场次逐笔累加，<strong>汇总值为非去重人数</strong>——同一用户在多场次或多渠道重复充值时会被多次计入，故汇总人数会高于实际去重用户数</td></tr>
       <tr><td>销售渠道流水占比</td><td>按所选维度从 salesChannels 计算直播间 vs 店铺自营的流水金额及占比</td></tr>
       <tr><td>数据风险评估</td><td>3k-安卓支付占比分级，<strong>阈值按数据日期分三套</strong>：① 2026/9/3 及之前（抖店系数 76.4%）&lt;=60% ✅健康 / &gt;60%~80% 🟡中度 / &gt;80% 🔴高度；② 2026/9/4~10/9（免 8% 直播服务费，抖店系数 84.4%）&lt;=97% ✅健康 / &gt;97%~99% 🟡中度 / &gt;99% 🔴高度；③ <strong>2026/10/10 起（直播恢复、固定月费 25,000 元/月，等效系数 = 84.4% − 25,000÷当月流水）阈值随当月流水浮动</strong>——月流水 60 万 → 78%/89%，70 万 → 80%/90%，100 万 → 85%/93%。判定依据仍为「抖店利润 vs 正常渠道利润」（推导见「五、指标计算规则」）</td></tr>
       <tr><td>月/年度趋势</td><td>合并模块，右上角切换「按月 / 按年」：按月显示月度销售额/订单数柱状图（数据=月趋势范围），按年显示年度销售额/订单数柱状图（数据=年趋势区间）。趋势需 ≥2 个时间点才有意义：范围仅 1 个月/年时对应按钮自动置灰（悬停看原因），两种都不可用时空态提示</td></tr>
@@ -571,7 +572,8 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       <tr><td>评论率</td><td>评论人数 ÷ 进房人数，健康线 &gt;3%</td></tr>
       <tr><td>曝光→点击转化率</td><td>商品点击人数 ÷ 商品曝光人数，健康线 &gt;20%</td></tr>
       <tr><td>点击→成交转化率</td><td>成交人数 ÷ 商品点击人数，健康线 &gt;10%</td></tr>
-      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额）× 100%（多日模式先逐场累加安卓/iOS金额再算占比，非各场占比平均）。<br>
+      <tr><td>支付渠道风险</td><td>安卓支付占比 = 安卓支付金额 ÷（安卓支付金额 + iOS支付金额 + 抖小支付金额）× 100%（<strong>抖小同属抖店支付流水，计入分母</strong>；多日模式先逐场累加各渠道金额再算占比，非各场占比平均）。<br>
+      <strong>抖小渠道系数</strong>：抖小用户仍通过抖店充值，但需向渠道分 40% 流水，研发分成仍 15% ⇒ 系数 = 85% − 40% − 0.6% = <strong>44.4%</strong>（≤9/3 直播期另扣 8% ⇒ 36.4%，当前无该区间数据）。下列临界线公式按「流水全部走安卓/iOS」推导；抖小累计仅 854 元（占比 &lt;0.1%），且其存在只会使判定略偏保守，对阈值无实质影响。<br>
       <strong>临界点推导</strong>：令「抖店利润 = 正常渠道利润」，抖店利润 = 流水×抖店系数，正常渠道利润 = 安卓×85% + iOS×63.75%（iOS 扣 25% 苹果税后再扣 15% 研发）；解得临界安卓占比 X =（抖店系数 − 0.6375）÷ 0.2125。健康线 = X 取整；高度线沿用原 60%/80% 的取值口径 =（X + 100）÷ 2 取整。<br>
       ① <strong>2026/7/2~9/3</strong>（抖店系数 0.764 = 85% − 8%直播服务费 − 0.6%服务费 − 15%研发分成）：X = 59.53% → 健康线 <strong>60%</strong>、高度线 (59.53+100)/2 = 79.76 → <strong>80%</strong>。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。<br>
       ② <strong>2026/9/4 ~ 10/9</strong>（无直播，免扣 8% 直播服务费，抖店系数 0.844 = 85% − 0.6%服务费 − 15%研发分成）：X = 97.18% → 健康线 <strong>97%</strong>、高度线 (97.18+100)/2 = 98.59 → <strong>99%</strong>。分级：&lt;=97% ✅健康；&gt;97%~99% 🟡中度风险；&gt;99% 🔴高度风险。<br>
@@ -989,7 +991,7 @@ function ddFeeMonthCount(ym) {
 function ddMonthPayOf(ym) {
   if (_ddMonthPay[ym] !== undefined) return _ddMonthPay[ym];
   var arr = (currentData && currentData.sessions) || [], s = 0;
-  for (var i = 0; i < arr.length; i++) { if (arr[i].date && arr[i].date.substring(0,7) === ym) s += (arr[i].payment?.android?.amount || 0) + (arr[i].payment?.ios?.amount || 0); }
+  for (var i = 0; i < arr.length; i++) { if (arr[i].date && arr[i].date.substring(0,7) === ym) s += ddPayTotalOf(arr[i]); }
   _ddMonthPay[ym] = s; return s;
 }
 // 单场应分摊的固定月费（非月费段 → 0）
@@ -1000,11 +1002,23 @@ function ddMonthFeeOf(dateStr) {
 }
 // 抖店利润系数（仅渠道系数，不含月费）：≤9/3 → 0.764（含 8% 直播服务费）；≥9/4 → 0.844
 function ddRate(dateStr) { return (dateStr && dateStr > DD_LIVE_END) ? 0.844 : 0.764; }
+// ===== 抖小（抖音小游戏）支付渠道 —— 渠道分成模式（2026-10-09 用户定口径）=====
+//   抖小用户仍通过抖店充值，但需向渠道分 40% 流水；研发分成仍按 15%，另扣 0.6% 支付服务费：
+//   抖小利润 = 抖小流水 × (85% − 40%渠道分成 − 0.6%支付服务费) ⇒ 系数 0.444（免扣段）
+//   （≤9/3 直播期若产生抖小流水，另扣 8% 直播服务费 ⇒ 0.364，当前无该区间数据）
+function dxRate(dateStr) { return (dateStr && dateStr > DD_LIVE_END) ? 0.444 : 0.364; }
+// 单场支付总流水（抖店口径）= 安卓 + iOS + 抖小
+function ddPayTotalOf(sx) {
+  var p = sx?.payment || {};
+  return (p.android?.amount || 0) + (p.ios?.amount || 0) + (p.douxiao?.amount || 0);
+}
 // 单场抖店利润（按该场日期自动选择口径，月费段再扣该场分摊的 25,000÷当月场次数）
+//   安卓/iOS 走渠道系数 ddRate；抖小走渠道分成系数 dxRate（40% 渠道分成）
 function ddProfitOf(sx) {
   var a = sx?.payment?.android?.amount || 0;
   var i = sx?.payment?.ios?.amount || 0;
-  return (a + i) * ddRate(sx?.date) - ddMonthFeeOf(sx?.date);
+  var dx = sx?.payment?.douxiao?.amount || 0;
+  return (a + i) * ddRate(sx?.date) + dx * dxRate(sx?.date) - ddMonthFeeOf(sx?.date);
 }
 // 抖店利润副标题文案（按所选场次实际命中的口径生成，避免出现与数据不符的固定说明）
 // 三段：① 7/2~9/3 含 8%直播服务费（0.764）② 9/4~10/9 免直播费（0.844）③ ≥10/10 月费段（0.844 − 25,000÷当月流水）
@@ -1078,11 +1092,11 @@ function renderProfitCompare(sessions, scMap) {
   if (!cards) return;
   var pDd=0, pPt=0, pNm=0, totalGMV=0;
   sessions.forEach(function(sx){
-    var a=sx.payment?.android?.amount||0, i=sx.payment?.ios?.amount||0;
+    var a=sx.payment?.android?.amount||0, i=sx.payment?.ios?.amount||0, dx=sx.payment?.douxiao?.amount||0;
     totalGMV += getTotalSales(sx, scMap);
-    pDd+=ddProfitOf(sx); // 三段口径：7/2~9/3 为 0.764，9/4~10/9 免扣 0.844，2026/10/10 起再扣 25,000元/月分摊
-    pPt+=(a+i)*0.85-(a+i)*0.01;
-    pNm+=a*0.85+i*0.75*0.85;
+    pDd+=ddProfitOf(sx); // 三段口径：7/2~9/3 为 0.764，9/4~10/9 免扣 0.844，2026/10/10 起再扣 25,000元/月分摊；抖小按 0.444
+    pPt+=(a+i+dx)*0.85-(a+i+dx)*0.01;   // 平台支付对比：抖小流水一并计入（用户同样通过抖店充值）
+    pNm+=a*0.85+i*0.75*0.85;            // 原 iOS 对比口径不含抖小（属抖店专属渠道）
   });
   var rateDd = totalGMV > 0 ? (pDd/totalGMV*100) : 0;
   var ratePt = totalGMV > 0 ? (pPt/totalGMV*100) : 0;
@@ -1121,7 +1135,7 @@ function renderProfitCompare(sessions, scMap) {
     var scopeTxt = (ovGame && ovGame !== 'all')
       ? ovGame+' · '+ovMonthFrom+'~'+ovMonthTo
       : '全店 · '+ovMonthFrom+'~'+ovMonthTo;
-    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成，其中 2026/7/2~9/3（直播期）另扣 8%直播服务费（系数 76.4%）；2026/9/4~10/9 不再直播、免扣 8%（系数 84.4%）；<strong>2026/10/10 起直播恢复、改扣固定月费 25,000 元/月</strong>（等效系数 = 84.4% − 25,000÷当月流水，随流水浮动）；平台支付 = (安卓+iOS)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
+    note.innerHTML = '数据范围：'+scopeTxt+'　|　抖店利润 = (安卓+iOS)×85% − 0.6%支付服务费 − 15%研发分成，其中 2026/7/2~9/3（直播期）另扣 8%直播服务费（系数 76.4%）；2026/9/4~10/9 不再直播、免扣 8%（系数 84.4%）；<strong>2026/10/10 起直播恢复、改扣固定月费 25,000 元/月</strong>（等效系数 = 84.4% − 25,000÷当月流水，随流水浮动）；<strong>抖小渠道另按渠道分成 40% 计</strong>（系数 = 85% − 40% − 0.6% = 44.4%，仅 9/21、10/7、10/8、10/9 有数据）；平台支付 = (安卓+iOS+抖小)×85% − 1%；原 iOS = 安卓×85% + iOS×75%×85%（不含抖小）　|　抖店同比 = 抖店利润 − 该渠道利润（%基准=该渠道），↑红=抖店更赚，↓绿=抖店更亏';
   }
 }
 
@@ -1165,10 +1179,10 @@ function renderOverview() {
     grid.innerHTML = '';
     // 利润累加
     sessions.forEach(function(sx){
-      var a=sx.payment?.android?.amount||0,i=sx.payment?.ios?.amount||0;
-      totalPayAmt += a+i;
-      pDd+=ddProfitOf(sx); // 三段口径：7/2~9/3 为 0.764，9/4~10/9 免扣 0.844，2026/10/10 起再扣 25,000元/月分摊
-      pPt+=(a+i)*0.85-(a+i)*0.01;
+      var a=sx.payment?.android?.amount||0,i=sx.payment?.ios?.amount||0,dx=sx.payment?.douxiao?.amount||0;
+      totalPayAmt += a+i+dx;
+      pDd+=ddProfitOf(sx); // 三段口径：7/2~9/3 为 0.764，9/4~10/9 免扣 0.844，2026/10/10 起再扣 25,000元/月分摊；抖小按 0.444
+      pPt+=(a+i+dx)*0.85-(a+i+dx)*0.01;
       pNm+=a*0.85+i*0.75*0.85;
     });
     var profitRate = totalGMV > 0 ? (pDd / totalGMV * 100) : 0;
@@ -1183,33 +1197,42 @@ function renderOverview() {
       d.innerHTML='<div class="lbl" style="color:'+c.cl+'">'+c.l+'</div><div class="val" style="color:'+c.cl+'">'+c.v+'</div>'+(c.sb?'<div class="sub">'+c.sb+'</div>':'');
       grid.appendChild(d);});
     // 支付渠道占比情况（从筛选场次中计算）
-    var pcAmt = {android:0, ios:0}, pcUsr = {android:0, ios:0}, pcSettle = {android:0, ios:0};
+    // 支付渠道：3k-安卓 / 3k-iOS / 抖小（抖小为渠道分成通道，仅个别日期有数据）
+    var pcAmt = {android:0, ios:0, douxiao:0}, pcUsr = {android:0, ios:0, douxiao:0}, pcSettle = {android:0, ios:0, douxiao:0};
     sessions.forEach(function(sx){
       var p = sx.payment || {};
-      pcAmt.android += p.android?.amount||0; pcAmt.ios += p.ios?.amount||0;
-      pcUsr.android += p.android?.users||0; pcUsr.ios += p.ios?.users||0;
-      pcSettle.android += p.android?.settle||0; pcSettle.ios += p.ios?.settle||0;
+      ['android','ios','douxiao'].forEach(function(k){
+        pcAmt[k] += p[k]?.amount||0; pcUsr[k] += p[k]?.users||0; pcSettle[k] += p[k]?.settle||0;
+      });
     });
     var pcCards = document.getElementById('ovPayCards');
-    var payTotal = pcAmt.android + pcAmt.ios;
+    var payTotal = pcAmt.android + pcAmt.ios + pcAmt.douxiao;
     if (payTotal > 0) {
       var androidPct = (pcAmt.android / payTotal * 100).toFixed(1);
       var iosPct = (pcAmt.ios / payTotal * 100).toFixed(1);
       var androidSettle = pcSettle.android || Math.round(pcAmt.android * 0.994 * 100) / 100;
       var iosSettle = pcSettle.ios || Math.round(pcAmt.ios * 0.994 * 100) / 100;
-      pcCards.innerHTML = [
+      var dxSettle = pcSettle.douxiao || Math.round(pcAmt.douxiao * 0.994 * 100) / 100;
+      var pcCardHtml = [
         '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🤖 3k-安卓</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.android)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(androidSettle)+' 元</div></div>',
         '<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🍎 3k-iOS</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.ios)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(iosSettle)+' 元</div></div>',
-      ].join('');
-      // 支付渠道饼图
+      ];
+      if (pcAmt.douxiao > 0) {
+        pcCardHtml.push('<div style="background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px 16px;"><div style="font-size:11px;color:var(--text3);margin-bottom:4px;">🎮 抖小</div><div style="font-size:18px;font-weight:700;color:var(--primary);">'+fmt(pcAmt.douxiao)+' 元</div><div style="font-size:10px;color:var(--text2);margin-top:2px;">结算 '+fmt(dxSettle)+' 元（渠道分成）</div></div>');
+      }
+      pcCards.innerHTML = pcCardHtml.join('');
+      // 支付渠道饼图（抖小有数据时才纳入图例）
       setTimeout(function(){
         destroyChart('ovPayAmount');destroyChart('ovPayUser');
         var pa=document.getElementById('ovPayAmountChart');
-        var payTotalAmt = pcAmt.android+pcAmt.ios;
-        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcAmt.android,pcAmt.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
+        var payTotalAmt = payTotal;
+        var lbl=['3k-安卓','3k-iOS'], dat=[pcAmt.android,pcAmt.ios], col=['#1e3a8a','#f59e0b'];
+        if (pcAmt.douxiao>0){ lbl.push('抖小'); dat.push(pcAmt.douxiao); col.push('#ec4899'); }
+        if(pa) charts.ovPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:lbl,datasets:[{data:dat,backgroundColor:col}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
         var pu=document.getElementById('ovPayUserChart');
-        var payTotalUsr = (pcUsr.android)+(pcUsr.ios);
-        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[pcUsr.android,pcUsr.ios],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+        var lblU=['3k-安卓','3k-iOS'], datU=[pcUsr.android,pcUsr.ios];
+        if (pcUsr.douxiao>0){ lblU.push('抖小'); datU.push(pcUsr.douxiao); }
+        if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:lblU,datasets:[{data:datU,backgroundColor:col}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios+pcUsr.douxiao))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
       }, 50);
       // 数据风险评估（支付渠道）；阈值按所选区间口径取：≤9/3 → 60/80，9/4~10/9 → 97/99，≥10/10 → 随当月流水浮动（见 riskThresholds）
       var riskEl = document.getElementById('ovRiskSection');
@@ -1398,7 +1421,7 @@ function renderSummaryCharts(sessions, scMap) {
   var byDate = {};
   sorted.forEach(function(sx){
     var d = sx.date;
-    if (!byDate[d]) byDate[d] = {date:d, gmv:0, orders:0, live:0, self:0, androidAmt:0, iosAmt:0};
+    if (!byDate[d]) byDate[d] = {date:d, gmv:0, orders:0, live:0, self:0, androidAmt:0, iosAmt:0, dxAmt:0};
     var sc = scMap[sx.date+'_'+sx.game];
     var liveS = sc ? (sc.live?.sales||0) : (sx.product?.sales||0);
     var selfS = sc ? (sc.self?.sales||0) : 0;
@@ -1409,6 +1432,7 @@ function renderSummaryCharts(sessions, scMap) {
     byDate[d].orders += sx.product?.paymentOrders||sx.product?.orders||0;
     byDate[d].androidAmt += a;
     byDate[d].iosAmt += i;
+    byDate[d].dxAmt += sx.payment?.douxiao?.amount||0;
   });
   var dateKeys = Object.keys(byDate).sort();
   var firstDate = dateKeys[0], lastDate = dateKeys[dateKeys.length-1];
@@ -1493,16 +1517,19 @@ function renderSummaryCharts(sessions, scMap) {
     });
   }
 
-  // ---- 支付渠道构成饼图（安卓 vs iOS） ----
-  var totA = 0, totI = 0;
-  dateKeys.forEach(function(d){ totA += byDate[d].androidAmt; totI += byDate[d].iosAmt; });
+  // ---- 支付渠道构成饼图（安卓 vs iOS vs 抖小；抖小有数据时才纳入图例） ----
+  var totA = 0, totI = 0, totDx = 0;
+  dateKeys.forEach(function(d){ totA += byDate[d].androidAmt; totI += byDate[d].iosAmt; totDx += byDate[d].dxAmt; });
   var payCanvas = document.getElementById('ovSummaryPaymentChart');
-  if (payCanvas && (totA + totI) > 0) {
+  var ovPayTotal = totA + totI + totDx;
+  if (payCanvas && ovPayTotal > 0) {
+    var ovLbl=['安卓','iOS'], ovDat=[totA, totI], ovCol=['#2563eb','#f59e0b'];
+    if (totDx > 0) { ovLbl.push('抖小'); ovDat.push(totDx); ovCol.push('#ec4899'); }
     charts.ovSummaryPayment = new Chart(payCanvas.getContext('2d'), {
       type:'doughnut',
-      data:{labels:['安卓','iOS'], datasets:[{data:[totA, totI], backgroundColor:['#2563eb','#f59e0b'], borderWidth:2, borderColor:'#fff'}]},
+      data:{labels:ovLbl, datasets:[{data:ovDat, backgroundColor:ovCol, borderWidth:2, borderColor:'#fff'}]},
       options:{responsive:true, maintainAspectRatio:false, cutout:'60%',
-        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed,total=v+(totA+totI-v); var pct=((v/(totA+totI))*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
+        plugins:{legend:{position:'bottom', labels:{font:{size:11}}}, tooltip:{callbacks:{label:function(ctx){var v=ctx.parsed; var pct=((v/ovPayTotal)*100).toFixed(1);return ctx.label+': '+fmt(v)+' 元 ('+pct+'%)';}}}}
       }
     });
   }
@@ -1511,7 +1538,7 @@ function renderSummaryCharts(sessions, scMap) {
 // ===== 多期数据对比（双期对比：指定两个期间 A VS B） =====
 // 单期间 8 指标聚合
 function periodAgg(sessions, period, isYearMode, scMap) {
-  var g = {label:period, gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, profit:0, cnt:0};
+  var g = {label:period, gmv:0, live:0, self:0, orders:0, payUsers:0, androidAmt:0, iosAmt:0, dxAmt:0, profit:0, cnt:0};
   sessions.forEach(function(sx){
     var k = isYearMode ? sx.date.substring(0,4) : sx.date.substring(0,7);
     if (k !== period) return;
@@ -1521,8 +1548,8 @@ function periodAgg(sessions, period, isYearMode, scMap) {
     var a = sx.payment?.android?.amount||0, i = sx.payment?.ios?.amount||0;
     g.gmv += liveS + selfS; g.live += liveS; g.self += selfS;
     g.orders += sx.product?.paymentOrders||sx.product?.orders||0;
-    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0);
-    g.androidAmt += a; g.iosAmt += i;
+    g.payUsers += (sx.payment?.android?.users||0) + (sx.payment?.ios?.users||0) + (sx.payment?.douxiao?.users||0);
+    g.androidAmt += a; g.iosAmt += i; g.dxAmt += sx.payment?.douxiao?.amount||0;
     g.profit += ddProfitOf(sx); // 三段口径（含 2026/10/10 起月费分摊）——必须走 ddProfitOf，勿直接乘系数
     g.cnt++;
   });
@@ -1621,7 +1648,7 @@ function renderMonthCompare(data) {
     {k:'avgGMV', t:'场均GMV(元)',  money:true}
   ];
   function metricVal(g, md) {
-    if (md.k === 'androidShare') return (g.androidAmt + g.iosAmt) > 0 ? (g.androidAmt/(g.androidAmt+g.iosAmt)*100) : 0;
+    if (md.k === 'androidShare') { var _t = g.androidAmt + g.iosAmt + (g.dxAmt||0); return _t > 0 ? (g.androidAmt/_t*100) : 0; }
     if (md.k === 'avgGMV') return g.cnt > 0 ? (g.gmv / g.cnt) : 0;
     return g[md.k];
   }
@@ -1709,8 +1736,8 @@ function assessRisk(sessions, isSingle) {
 
     // 支付渠道风险评估（从当前场次取数据）
     var sPay = s.payment || {};
-    var sAndAmt = sPay.android?.amount||0, sIosAmt = sPay.ios?.amount||0;
-    var payChk = sAndAmt + sIosAmt;
+    var sAndAmt = sPay.android?.amount||0, sIosAmt = sPay.ios?.amount||0, sDxAmt = sPay.douxiao?.amount||0;
+    var payChk = sAndAmt + sIosAmt + sDxAmt;
     if (payChk > 0) {
       var androidPctS = sAndAmt / payChk * 100;
       var thS = riskThresholds(s.date);   // 单日按当日口径：≤9/3 → 60/80，9/4~10/9 → 97/99，≥10/10 → 随当月流水浮动
@@ -1752,13 +1779,14 @@ function assessRisk(sessions, isSingle) {
       }
     }
     // 多日支付渠道风险评估
-    var totalAndroid=0, totalIOS=0;
+    var totalAndroid=0, totalIOS=0, totalDx=0;
     sessions.forEach(function(sx){
       var p = sx.payment || {};
       totalAndroid += p.android?.amount||0;
       totalIOS += p.ios?.amount||0;
+      totalDx += p.douxiao?.amount||0;
     });
-    var payTotalChk = totalAndroid + totalIOS;
+    var payTotalChk = totalAndroid + totalIOS + totalDx;
     if (payTotalChk > 0) {
       var androidPctMulti = totalAndroid / payTotalChk * 100;
       var thM = riskThresholdsOf(sessions);   // 多日按区间口径（取区间最新日期所属口径；≥10/10 随当月流水浮动）
@@ -1884,14 +1912,15 @@ function renderSingleDay(s) {
   var selfSales = sc ? (sc.self&&sc.self.sales)||0 : 0;
   var totalSales = (p.sales||0) + selfSales;
   // 第一行：5个核心卡片（合并利润+销售额+订单）
-  var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0;
-  // 抖店利润按日期三段口径（9/3 前含 8% 直播服务费；9/4~10/9 免扣；10/10 起扣月费分摊）；平台支付 / 原iOS 口径不变
-  var dd=ddProfitOf(s), pt=(a+i)*0.85-(a+i)*0.01, nm=a*0.85+i*0.75*0.85;
+  var a=s?s.payment?.android?.amount||0:0, i=s?s.payment?.ios?.amount||0:0, dx=s?s.payment?.douxiao?.amount||0:0;
+  // 抖店利润按日期三段口径（9/3 前含 8% 直播服务费；9/4~10/9 免扣；10/10 起扣月费分摊）；抖小走渠道分成系数 0.444
+  // 平台支付对比口径 = (安卓+iOS+抖小)×85% − 1%（抖小用户同样通过抖店充值，若改走平台支付则一并计入）；原 iOS 口径不变
+  var dd=ddProfitOf(s), pt=(a+i+dx)*0.85-(a+i+dx)*0.01, nm=a*0.85+i*0.75*0.85;
   var vsPlat=dd-pt, vsNorm=dd-nm;
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalSales)+'</div><div class="sub">'+(selfSales>0?'直播 '+fmt(p.sales||0)+' + 自营 '+fmt(selfSales):'本场累计')+'</div></div>',
-    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(a+i||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(dd)+'</div><div class="sub"><b>'+(dd/(a+i+dx||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(vsPlat<0?'#dc2626':'#059669')+'">'+(vsPlat<0?'':'+')+(vsPlat/(pt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsPlat))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(vsNorm>=0?'#059669':'#dc2626')+'">'+(vsNorm>=0?'+':'')+(vsNorm/(nm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(vsNorm))+' 元</div></div>',
     '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(p.paymentOrders||p.orders||0)+'</div><div class="sub">本场累计</div></div>',
@@ -1918,13 +1947,20 @@ function renderSingleDay(s) {
     '</div>',
     ]); }
 
-  // 支付渠道构成可视化（从当前场次取数据）
+  // 支付渠道构成可视化（从当前场次取数据；抖小为渠道分成通道，仅个别日期有数据）
   var paS = s?s.payment||{}:{};
-  var paAndroid = paS.android || {}, paIos = paS.ios || {};
-  var paAmt = paAndroid.amount||0, paIosAmt = paIos.amount||0;
-  var paStl = paAndroid.settle||0, paIosStl = paIos.settle||0;
-  var paUsr = paAndroid.users||0, paIosUsr = paIos.users||0;
-  var paTotal = paAmt + paIosAmt;
+  var paAndroid = paS.android || {}, paIos = paS.ios || {}, paDx = paS.douxiao || {};
+  var paAmt = paAndroid.amount||0, paIosAmt = paIos.amount||0, paDxAmt = paDx.amount||0;
+  var paStl = paAndroid.settle||0, paIosStl = paIos.settle||0, paDxStl = paDx.settle||0;
+  var paUsr = paAndroid.users||0, paIosUsr = paIos.users||0, paDxUsr = paDx.users||0;
+  var paTotal = paAmt + paIosAmt + paDxAmt;
+  var paDxCard = paDxAmt > 0 ? [
+    '<div style="flex:1;min-width:180px;background:#fdf2f8;border:1px solid #fbcfe8;border-radius:8px;padding:14px;">',
+    '<div style="font-size:12px;color:#be185d;margin-bottom:6px;">🎮 抖小 <span style="font-weight:400;">(渠道分成)</span></div>',
+    '<div style="font-size:20px;font-weight:700;color:#be185d;">'+fmt(paDxAmt)+' 元</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paDxStl)+' 元 | 用户 '+paDxUsr+' 人</div>',
+    '</div>',
+  ].join('') : '';
   document.getElementById('rptDetailView').innerHTML = [
     '<div class="chart-card full" style="margin-bottom:16px;"><h3>💳 支付渠道构成 <span class="tag">扣除0.6%通道费</span></h3>',
     '<div style="display:flex;gap:16px;flex-wrap:wrap;">',
@@ -1938,15 +1974,16 @@ function renderSingleDay(s) {
     '<div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(paIosAmt)+' 元</div>',
     '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paIosStl)+' 元 | 用户 '+paIosUsr+' 人</div>',
     '</div>',
+    paDxCard,
     '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;">',
     '<div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:6px;">📊 汇总</div>',
     '<div style="font-size:22px;font-weight:700;color:var(--primary);">'+fmt(paTotal)+' 元</div>',
-    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paStl+paIosStl)+' 元 | 通道费 '+(paTotal-(paStl+paIosStl)).toFixed(3)+' 元</div>',
+    '<div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(paStl+paIosStl+paDxStl)+' 元 | 通道费 '+(paTotal-(paStl+paIosStl+paDxStl)).toFixed(3)+' 元</div>',
     '</div>',
     '</div></div>',
     '<div class="chart-grid" style="margin-top:0;">',
-    '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountChart"></canvas></div></div>',
-    '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS vs 抖小</span></h3><div class="chart-wrap"><canvas id="rptPayAmountChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS vs 抖小</span></h3><div class="chart-wrap"><canvas id="rptPayUserChart"></canvas></div></div>',
     '</div></div>',
   ].join('');
   // 漏斗/互动/转化图表 + 转化链路 → 移到直播数据
@@ -1999,15 +2036,19 @@ function renderSingleDay(s) {
     if(c2) charts.rptInteract=new Chart(c2.getContext('2d'),{type:'radar',data:{labels:['评论人数','点赞次数(÷60)','新增粉丝','人均停留(min)','进房率(×100)'],datasets:[{label:'本场',data:[it.comments,(it.likes||0)/60,it.newFans,parseFloat(it.avgStay)||0,(t.entryRate||0)*100],backgroundColor:'rgba(30,58,138,0.12)',borderColor:'#1e3a8a',borderWidth:2,pointBackgroundColor:'#1e3a8a',pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,ticks:{backdropColor:'transparent',font:{size:9}},pointLabels:{font:{size:10}}}}}});
     var c3=document.getElementById('rptFunnelChart');
     if(c3) charts.rptFunnel=new Chart(c3.getContext('2d'),{type:'bar',data:{labels:['商品曝光人数','商品点击人数','成交人数'],datasets:[{label:'人数',data:[p.exposure,p.clicks,p.paymentOrders||p.orders],backgroundColor:['#3b82f6','#f59e0b','#ef4444'],borderRadius:4,barPercentage:0.5}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.parsed.x+' 人'},afterLabel:function(ctx){var v=[p.exposure,p.clicks,p.paymentOrders||p.orders],i=ctx.dataIndex;if(i>0)return '← 转化率 '+(v[i]/v[i-1]*100).toFixed(2)+'%';return '';}}}},scales:{x:{beginAtZero:true}}}});
-    // 支付渠道饼图
+    // 支付渠道饼图（抖小有数据时才纳入图例）
+    var paLabels=['3k-安卓','3k-iOS'], paDat=[paAmt,paIosAmt], paCol=['#1e3a8a','#f59e0b'];
+    if (paDxAmt>0){ paLabels.push('抖小'); paDat.push(paDxAmt); paCol.push('#ec4899'); }
     var pa=document.getElementById('rptPayAmountChart');
     if(pa && paTotal>0){
-      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paAmt,paIosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
+      charts.rptPayAmount=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:paLabels,datasets:[{data:paDat,backgroundColor:paCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/paTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
     }
     var pu=document.getElementById('rptPayUserChart');
-    var paUsrTotal = paUsr+paIosUsr;
+    var paUsrTotal = paUsr+paIosUsr+paDxUsr;
+    var paUsrLabels=['3k-安卓','3k-iOS'], paUsrDat=[paUsr,paIosUsr];
+    if (paDxUsr>0){ paUsrLabels.push('抖小'); paUsrDat.push(paDxUsr); }
     if(pu && paUsrTotal>0){
-      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[paUsr,paIosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+      charts.rptPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:paUsrLabels,datasets:[{data:paUsrDat,backgroundColor:paCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/paUsrTotal)*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 50);
   // 核心关注 + 销售渠道
@@ -2024,18 +2065,19 @@ function renderMultiDay(sessions) {
     totalBuyers+=s.product?.orders||0;
   });
   // KPI（顶部：销售额+利润+订单，合并置顶）
-  var totalA=0, totalI=0, tdd=0;
+  var totalA=0, totalI=0, totalDx=0, tdd=0;
   // 抖店利润逐场按日期三段口径累加（9/3 前 0.764；9/4~10/9 免扣 0.844；10/10 起 0.844 再扣月费分摊），不可用区间总额统一乘系数
+  // 抖小走渠道分成系数 0.444，逐场累加；平台支付对比口径 = (安卓+iOS+抖小)×85% − 1%
   sessions.forEach(function(s){
     var a=s.payment?.android?.amount||0, i=s.payment?.ios?.amount||0;
-    totalA+=a; totalI+=i; tdd+=ddProfitOf(s);
+    totalA+=a; totalI+=i; totalDx+=s.payment?.douxiao?.amount||0; tdd+=ddProfitOf(s);
   });
-  var tpt=(totalA+totalI)*0.85-(totalA+totalI)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
+  var tpt=(totalA+totalI+totalDx)*0.85-(totalA+totalI+totalDx)*0.01, tnm=totalA*0.85+totalI*0.75*0.85;
   var tvp=tdd-tpt, tvn=tdd-tnm;
   document.getElementById('rptTrafficKpi').style.gridTemplateColumns = 'repeat(5,1fr)';
   document.getElementById('rptTrafficKpi').innerHTML = [
     '<div class="summary-card"><div class="lbl">💰 总销售额</div><div class="val">'+fmt(totalGMV)+'</div><div class="sub">'+cnt+' 场</div></div>',
-    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(totalA+totalI||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
+    '<div class="summary-card" style="border-color:#86efac"><div class="lbl" style="color:#059669">📈 抖店利润</div><div class="val" style="color:#059669">¥'+fmt(tdd)+'</div><div class="sub"><b>'+(tdd/(totalA+totalI+totalDx||1)*100).toFixed(2)+'%</b> 利润率(利润/支付流水)</div></div>',
     '<div class="summary-card" style="border-color:#fecaca"><div class="lbl" style="color:'+(tvp<0?'#dc2626':'#059669')+'">↔ 同比平台支付利润</div><div class="val" style="color:'+(tvp<0?'#dc2626':'#059669')+'">'+(tvp<0?'':'+')+(tvp/(tpt||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvp))+' 元</div></div>',
     '<div class="summary-card" style="border-color:#b3c5ff"><div class="lbl" style="color:#2563eb">↔ 同比原IOS支付渠道利润</div><div class="val" style="color:'+(tvn>=0?'#059669':'#dc2626')+'">'+(tvn>=0?'+':'')+(tvn/(tnm||1)*100).toFixed(2)+'%</div><div class="sub">'+fmt(Math.abs(tvn))+' 元</div></div>',
     '<div class="summary-card"><div class="lbl">📋 支付订单数</div><div class="val" style="color:#d97706">'+fmt(totalOrders)+'</div><div class="sub">'+cnt+' 场</div></div>',
@@ -2121,27 +2163,31 @@ function renderMultiDay(sessions) {
     }
   }, 80);
 
-  // 多日支付渠道构成（从筛选时段计算）
-  var payTotal = 0, androidAmt = 0, androidUsr = 0, iosAmt = 0, iosUsr = 0;
-  var androidStl = 0, iosStl = 0;
+  // 多日支付渠道构成（从筛选时段计算；抖小为渠道分成通道，仅个别日期有数据）
+  var payTotal = 0, androidAmt = 0, androidUsr = 0, iosAmt = 0, iosUsr = 0, dxAmt = 0, dxUsr = 0;
+  var androidStl = 0, iosStl = 0, dxStl = 0;
   sessions.forEach(function(sx){
     var p = sx.payment || {};
     if (p.android) { androidAmt += p.android.amount||0; androidUsr += p.android.users||0; androidStl += p.android.settle||0; }
     if (p.ios) { iosAmt += p.ios.amount||0; iosUsr += p.ios.users||0; iosStl += p.ios.settle||0; }
+    if (p.douxiao) { dxAmt += p.douxiao.amount||0; dxUsr += p.douxiao.users||0; dxStl += p.douxiao.settle||0; }
   });
-  payTotal = androidAmt + iosAmt;
+  payTotal = androidAmt + iosAmt + dxAmt;
   var payHtml = '';
   if (payTotal > 0) {
     var androidPct = (androidAmt / payTotal * 100).toFixed(1);
     var iosPct = (iosAmt / payTotal * 100).toFixed(1);
+    var dxPct = (dxAmt / payTotal * 100).toFixed(1);
     var androidSettle = Math.round(androidStl * 100) / 100;
     var iosSettle = Math.round(iosStl * 100) / 100;
+    var dxSettle = Math.round(dxStl * 100) / 100;
     payHtml = [
       '<div class="chart-card full" style="margin-bottom:16px;"><h3>💳 支付渠道构成 <span class="tag">渠道金额数据</span></h3>',
       '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;">',
       '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🤖 3k-安卓</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(androidAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle)+' 元 | 用户 '+androidUsr+' 人 | 占比 '+androidPct+'%</div></div>',
       '<div style="flex:1;min-width:180px;background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--text3);margin-bottom:6px;">🍎 3k-iOS</div><div style="font-size:20px;font-weight:700;color:var(--primary);">'+fmt(iosAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(iosSettle)+' 元 | 用户 '+iosUsr+' 人 | 占比 '+iosPct+'%</div></div>',
-      '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:6px;">📊 汇总</div><div style="font-size:22px;font-weight:700;color:var(--primary);">'+fmt(payTotal)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle+iosSettle)+' 元 | 通道费 '+(payTotal-(androidSettle+iosSettle)).toFixed(3)+' 元</div></div>',
+      dxAmt > 0 ? '<div style="flex:1;min-width:180px;background:#fdf2f8;border:1px solid #fbcfe8;border-radius:8px;padding:14px;"><div style="font-size:12px;color:#be185d;margin-bottom:6px;">🎮 抖小 <span style="font-weight:400;">(渠道分成)</span></div><div style="font-size:20px;font-weight:700;color:#be185d;">'+fmt(dxAmt)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(dxSettle)+' 元 | 用户 '+dxUsr+' 人 | 占比 '+dxPct+'%</div></div>' : '',
+      '<div style="flex:1;min-width:180px;background:linear-gradient(135deg,#eef2ff,#f0f9ff);border:1px solid #b3c5ff;border-radius:8px;padding:14px;"><div style="font-size:12px;color:var(--primary);font-weight:600;margin-bottom:6px;">📊 汇总</div><div style="font-size:22px;font-weight:700;color:var(--primary);">'+fmt(payTotal)+' 元</div><div style="font-size:11px;color:var(--text2);margin-top:4px;">结算 '+fmt(androidSettle+iosSettle+dxSettle)+' 元 | 通道费 '+(payTotal-(androidSettle+iosSettle+dxSettle)).toFixed(3)+' 元</div></div>',
       '</div></div>',
     ].join('');
   }
@@ -2161,8 +2207,8 @@ function renderMultiDay(sessions) {
   document.getElementById('rptTrendView').innerHTML = [
     payHtml,
     '<div class="chart-grid" style="margin-top:0;">',
-    '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayAmountMultiChart"></canvas></div></div>',
-    '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS</span></h3><div class="chart-wrap"><canvas id="rptPayUserMultiChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>📊 渠道充值金额占比 <span class="tag">安卓 vs iOS vs 抖小</span></h3><div class="chart-wrap"><canvas id="rptPayAmountMultiChart"></canvas></div></div>',
+    '<div class="chart-card"><h3>👥 渠道充值人数占比 <span class="tag">安卓 vs iOS vs 抖小</span></h3><div class="chart-wrap"><canvas id="rptPayUserMultiChart"></canvas></div></div>',
     '</div>',
     '<div class="chart-card full" style="margin-bottom:16px;"><h3>📈 每日销售额趋势 <span class="tag">柱状+折线</span></h3><div class="chart-wrap tall"><canvas id="rptTrendChart"></canvas></div></div>',
   ].join('');
@@ -2181,13 +2227,15 @@ function renderMultiDay(sessions) {
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ctx.dataset.label+': '+fmt(ctx.parsed.y)+' 元'}}}},
         scales:{y:{beginAtZero:true,ticks:{callback:function(v){return v>=1000?(v/1000).toFixed(1)+'k':v}}}}}
     });
-    // 多日支付渠道饼图
+    // 多日支付渠道饼图（抖小有数据时才纳入图例）
     if (payTotal > 0) {
+      var mLabel=['3k-安卓','3k-iOS'], mDat=[androidAmt,iosAmt], mCol=['#1e3a8a','#f59e0b'], mUsrDat=[androidUsr,iosUsr];
+      if (dxAmt>0){ mLabel.push('抖小'); mDat.push(dxAmt); mCol.push('#ec4899'); mUsrDat.push(dxUsr); }
       var pa=document.getElementById('rptPayAmountMultiChart');
-      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidAmt,iosAmt],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
+      if(pa) charts.rptPayAmountMulti=new Chart(pa.getContext('2d'),{type:'pie',data:{labels:mLabel,datasets:[{data:mDat,backgroundColor:mCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11}}},tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmt(ctx.parsed)+' 元 ('+((ctx.parsed/payTotal)*100).toFixed(1)+'%)';}}}}},plugins:[pieLabelPlugin]});
       var pu=document.getElementById('rptPayUserMultiChart');
-      var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr))*100).toFixed(0)+'%)'];
-      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:['3k-安卓','3k-iOS'],datasets:[{data:[androidUsr,iosUsr],backgroundColor:['#1e3a8a','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
+      var payLabelMultiUsr = ['3k-安卓 ('+((androidUsr/(androidUsr+iosUsr+dxUsr))*100).toFixed(0)+'%)','3k-iOS ('+((iosUsr/(androidUsr+iosUsr+dxUsr))*100).toFixed(0)+'%)'];
+      if(pu) charts.rptPayUserMulti=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:mLabel,datasets:[{data:mUsrDat,backgroundColor:mCol}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+ctx.parsed+' 人 ('+((ctx.parsed/(androidUsr+iosUsr+dxUsr))*100).toFixed(0)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
     }
   }, 200);
   // 核心关注 + 销售渠道
@@ -2199,10 +2247,10 @@ function renderMultiDay(sessions) {
 function renderCoreFocus(sessions, data) {
   var el = document.getElementById('rptCoreFocus');
   if (!sessions || !sessions.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text2);">📊 核心数据关注</div><div style="font-size:12px;color:var(--text3);margin-top:4px;">暂无数据</div>'; return; }
-  // 支付渠道
-  var aAmt=0, iAmt=0;
-  sessions.forEach(function(s){var p=s.payment||{}; aAmt+=(p.android?.amount||0); iAmt+=(p.ios?.amount||0);});
-  var payTotal = aAmt + iAmt;
+  // 支付渠道（抖小为渠道分成通道，仅个别日期有数据）
+  var aAmt=0, iAmt=0, dxAmt=0;
+  sessions.forEach(function(s){var p=s.payment||{}; aAmt+=(p.android?.amount||0); iAmt+=(p.ios?.amount||0); dxAmt+=(p.douxiao?.amount||0);});
+  var payTotal = aAmt + iAmt + dxAmt;
   // 销售渠道
   var gameSel = document.getElementById('rptGameSelect');
   var curGame = gameSel ? gameSel.value : '';
@@ -2215,7 +2263,7 @@ function renderCoreFocus(sessions, data) {
     '<div style="display:flex;gap:20px;flex-wrap:wrap;font-size:13px;">',
       '<div><span style="color:var(--text3);">💳 支付渠道流水占比：</span>',
         '<span style="font-weight:600;">3k-安卓</span> '+(payTotal>0?'<strong style="color:var(--primary);">'+(aAmt/payTotal*100).toFixed(1)+'%</strong>':'0%')+' | ',
-        '<span style="font-weight:600;">3k-iOS</span> '+(payTotal>0?'<strong style="color:var(--primary);">'+(iAmt/payTotal*100).toFixed(1)+'%</strong>':'0%'),
+        '<span style="font-weight:600;">3k-iOS</span> '+(payTotal>0?'<strong style="color:var(--primary);">'+(iAmt/payTotal*100).toFixed(1)+'%</strong>':'0%')+(dxAmt>0?' | <span style="font-weight:600;">抖小</span> <strong style="color:#be185d;">'+(dxAmt/payTotal*100).toFixed(1)+'%</strong>':''),
       '</div>',
       '<div><span style="color:var(--text3);">💼 销售渠道流水占比情况：</span>',
         '<span style="font-weight:600;">直播间</span> '+(scTotal>0?'<strong style="color:var(--primary);">'+(liveS/scTotal*100).toFixed(1)+'%</strong>':'0%')+' | ',
@@ -2429,9 +2477,9 @@ function exportCSV() {
   if (!ed || !ed.sessions || !ed.sessions.length) { alert('暂无数据可导出'); return; }
   addLog('导出记录', '导出CSV '+(ed.start||'')+'~'+(ed.end||'')+' 共'+ed.sessions.length+'场');
   var rows = [];
-  // Header（20列：无成交人数——用户原始CSV无此列，data.json 无 orders 字段）
-  // 字段定义：销售额(元) = 直播间销售额(元) + 店铺自营(元) = 安卓支付(元) + iOS支付(元)（数据自洽时三式相等）
-  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),安卓支付(元),iOS支付(元),安卓用户,iOS用户');
+  // Header（22列：无成交人数——用户原始CSV无此列，data.json 无 orders 字段；末两列为后加的「抖小」渠道，仅个别日期有值）
+  // 字段定义：销售额(元) = 直播间销售额(元) + 店铺自营(元) = 安卓支付(元) + iOS支付(元) + 抖小支付(元)（数据自洽时三式相等）
+  rows.push('日期,游戏,曝光人数,进房人数,平均在线,最高在线,评论数,点赞数,新增粉丝,停留时长(min),销售额(元),直播间销售额(元),店铺自营(元),支付订单数,曝光(商品),点击(商品),安卓支付(元),iOS支付(元),安卓用户,iOS用户,抖小支付(元),抖小用户');
   // Build date->salesChannel lookup
   var scMap = {};
   (currentData.salesChannels||[]).forEach(function(c){ scMap[c.date] = c; });
@@ -2450,14 +2498,15 @@ function exportCSV() {
       (sc.live&&sc.live.sales)||0, (sc.self&&sc.self.sales)||0,
       p.paymentOrders||0, p.exposure||0, p.clicks||0,
       pay.android?.amount||0, pay.ios?.amount||0,
-      pay.android?.users||0, pay.ios?.users||0
+      pay.android?.users||0, pay.ios?.users||0,
+      pay.douxiao?.amount||0, pay.douxiao?.users||0
     ].join(','));
   });
   // Summary row（构造数组避免逗号错位）
   var totalS = ed.sessions.reduce(function(a,b){return a+getTotalSales(b, expSCMap);},0);
   var totalO = ed.sessions.reduce(function(a,b){return a+(b.product?.paymentOrders||0);},0);
   var sumCols = ['合计'];
-  for (var ci = 1; ci < 20; ci++) { sumCols.push(ci === 10 ? totalS : (ci === 13 ? totalO : '')); }
+  for (var ci = 1; ci < 22; ci++) { sumCols.push(ci === 10 ? totalS : (ci === 13 ? totalO : '')); }
   rows.push(sumCols.join(','));
   // Create blob and download
   var bom = '\uFEFF';
@@ -2478,9 +2527,10 @@ function calcProfit(sessions) {
   sessions.forEach(function(s){
     var a = s.payment?.android?.amount || 0;
     var i = s.payment?.ios?.amount || 0;
-    totalGmv += a + i;
-    totalDd += ddProfitOf(s); // 三段口径：9/3 前 0.764；9/4~10/9 免扣 0.844；10/10 起 0.844 再扣月费分摊
-    totalPt += (a+i)*0.85 - (a+i)*0.01;
+    var dx = s.payment?.douxiao?.amount || 0;
+    totalGmv += a + i + dx;
+    totalDd += ddProfitOf(s); // 三段口径：9/3 前 0.764；9/4~10/9 免扣 0.844；10/10 起 0.844 再扣月费分摊；抖小按 0.444
+    totalPt += (a+i+dx)*0.85 - (a+i+dx)*0.01;
     totalNm += a*0.85 + i*0.75*0.85;
   });
   return {dd:totalDd, pt:totalPt, nm:totalNm, gmv:totalGmv};
