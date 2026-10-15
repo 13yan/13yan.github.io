@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="JPuR2cejbQhXkZfterWjk2">
+<head data-page-node-id="3lC650HnBxv7PgE8dbqyNg">
+<meta charset="UTF-8" data-page-node-id="gWUaWbbQ1PMd4Io6aosqmd">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="frjRZZEs3GiuHr5DT3AR8j">
+<title>《永远的蔚蓝星球》×《剑来》动画联动 — 双端榜单变化与联动效果分析</title>
+<style>
+:root{
+  /* 中性色 */
+  --bg:#f5f7fa; --card:#ffffff; --line:#e6e9ef; --line-strong:#cfd5de;
+  --ink:#0f172a; --ink-2:#475569; --ink-3:#8b95a5;
+  /* 主色 */
+  --blue:#2563eb; --blue-bg:#eff4ff; --blue-line:#c7d7fb;
+  --amber:#f59e0b; --amber-bg:#fff8e9; --amber-line:#fbe0ac;
+  /* 语义色：红涨绿跌 */
+  --up:#dc2626; --up-bg:#fef2f2;
+  --down:#16a34a; --down-bg:#f0fdf4;
+  --gray-bg:#f1f3f6;
+  /* 版面 */
+  --radius:16px;
+  --shadow:0 1px 2px rgba(15,23,42,.05),0 1px 3px rgba(15,23,42,.03);
+  /* 字号阶梯（rem，禁 inline font-size） */
+  --s1:.75rem;      /* 12 标签/角标 */
+  --s2:.875rem;     /* 14 辅助文字/表格 */
+  --s3:1rem;        /* 16 正文 */
+  --s3b:1.0625rem;  /* 17 h4 */
+  --s4:1.1875rem;   /* 19 h3 */
+  --s5:clamp(1.4375rem,1.25rem + .8vw,1.75rem);  /* 23–28 h2 */
+  --s6:clamp(1.875rem,1.45rem + 1.9vw,2.5rem);   /* 30–40 h1 */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  font-size:var(--s3);line-height:1.8;letter-spacing:.01em;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility}
+::selection{background:#dbe6ff;color:#12306e}
+.wrap{max-width:1140px;margin:0 auto;padding:3rem 1.5rem 4.5rem}
+
+/* 页眉 */
+header{border-bottom:2px solid var(--ink);padding-bottom:1.5rem;margin-bottom:2.75rem}
+.eyebrow{font-size:var(--s1);letter-spacing:.16em;color:var(--blue);font-weight:600;margin:0 0 .625rem}
+h1{font-size:var(--s6);line-height:1.25;font-weight:700;letter-spacing:-.02em;margin:0 0 .875rem;text-wrap:balance}
+h1 .vs{color:var(--ink-3);font-weight:400;padding:0 .3125rem}
+.meta{font-size:var(--s2);color:var(--ink-2);margin:0;line-height:1.9}
+.meta span{white-space:nowrap}
+.meta span+span::before{content:" · ";color:var(--line-strong)}
+
+/* 标题层级 */
+h2{font-size:var(--s5);font-weight:700;line-height:1.35;letter-spacing:-.01em;
+   margin:3.25rem 0 1.25rem;padding:.1875rem 0 .1875rem .875rem;
+   border-left:4px solid var(--blue);scroll-margin-top:1rem;text-wrap:balance}
+h3{font-size:var(--s4);font-weight:600;line-height:1.5;margin:2.125rem 0 .875rem;text-wrap:balance}
+h4{font-size:var(--s3b);font-weight:600;line-height:1.55;margin:1.5rem 0 .625rem}
+p{margin:.75rem 0;text-wrap:pretty}
+strong{font-weight:600}
+a{color:var(--blue);text-underline-offset:2px}
+.sub{font-size:var(--s2);color:var(--ink-3);margin:.3125rem 0 0}
+.hl{color:var(--ink);font-weight:600}
+
+/* 容器 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.375rem 1.5rem;margin:1.125rem 0;box-shadow:var(--shadow)}
+.lead{background:var(--card);border:1px solid var(--blue-line);border-left:4px solid var(--blue);
+  border-radius:var(--radius);padding:1.375rem 1.5rem;margin:0 0 1.75rem;box-shadow:var(--shadow)}
+.lead p{margin:0;font-size:var(--s3);line-height:1.8}
+.lead p+p{margin-top:.625rem;color:var(--ink-2)}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.875rem;margin:1.5rem 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.125rem 1.125rem 1rem;box-shadow:var(--shadow)}
+.kpi .k{font-size:var(--s1);color:var(--ink-3);letter-spacing:.06em;margin:0 0 .5rem;font-weight:500}
+.kpi .v{font-size:clamp(1.5rem,1.2rem + .9vw,1.75rem);font-weight:700;line-height:1.15;margin:0;
+  letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.kpi .v.up{color:var(--up)}
+.kpi .v.dim{color:var(--ink-2)}
+.kpi .s{font-size:var(--s2);color:var(--ink-2);margin:.5rem 0 0;line-height:1.6}
+
+/* 表格 */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:1.125rem 0;
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;min-width:44rem}
+th,td{padding:.875rem 1rem;text-align:left;border-bottom:1px solid var(--line);
+  font-size:var(--s2);line-height:1.65;vertical-align:top}
+th{background:#f7f9fc;font-weight:600;color:var(--ink-2);white-space:nowrap;letter-spacing:.02em}
+tbody tr:hover:not(.hi){background:#f5f8ff}
+tbody tr.hi{background:#fffdf4}
+tbody tr:last-child td{border-bottom:none}
+td.n,th.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody td:first-child:not(.n){font-weight:600;color:var(--ink)}
+.tag{display:inline-block;padding:.125rem .5rem;border-radius:999px;
+  font-size:var(--s1);font-weight:600;line-height:1.5;white-space:nowrap}
+.t-up{background:var(--up-bg);color:var(--up)}
+.t-down{background:var(--down-bg);color:var(--down)}
+.t-flat{background:var(--gray-bg);color:var(--ink-2)}
+.t-amber{background:var(--amber-bg);color:#b45309}
+.t-blue{background:var(--blue-bg);color:var(--blue)}
+
+/* 列表 */
+ul,ol{margin:.875rem 0;padding-left:1.5rem}
+li{margin:.5rem 0}
+li::marker{color:var(--ink-3);font-weight:600}
+
+/* 提示框 */
+.callout{border-radius:var(--radius);padding:1.125rem 1.375rem;margin:1.125rem 0;
+  font-size:var(--s2);line-height:1.78;border:1px solid transparent}
+.callout p{margin:0}
+.callout p+p{margin-top:.5rem}
+.co-warn{background:var(--amber-bg);border-color:var(--amber-line);border-left:4px solid var(--amber);color:#7a4a05}
+.co-info{background:var(--blue-bg);border-color:var(--blue-line);border-left:4px solid var(--blue);color:#1e3a8a}
+.co-ok{background:var(--down-bg);border-color:#bbf7d0;border-left:4px solid var(--down);color:#14532d}
+
+/* 条形对比 */
+.bars{margin:1.125rem 0}
+.bar{display:grid;grid-template-columns:10.5rem 1fr 4.5rem;align-items:center;gap:.875rem;
+  margin:.625rem 0;font-size:var(--s2)}
+.bar .lb{color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .tr{display:block;height:1.5rem;background:#edf0f5;border-radius:999px;overflow:hidden}
+.bar .fl{display:block;height:100%;border-radius:999px}
+.bar .vl{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
+.bar .fl.b-down{background:#9ca3af}
+.f-100{width:100%}
+
+/* 卡片组 */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.125rem}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.125rem}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:1.25rem 1.375rem;box-shadow:var(--shadow)}
+.ch h4{margin:0 0 .625rem;font-size:var(--s3b);font-weight:600;line-height:1.5}
+.ch p{margin:0;font-size:var(--s2);color:var(--ink-2);line-height:1.75}
+.ch .hl{color:var(--ink);font-weight:600}
+.ch .rk{font-size:var(--s2);color:var(--ink-2);margin:.625rem 0 0;font-variant-numeric:tabular-nums}
+
+/* 横向对照 */
+.cmp{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  margin:1.125rem 0;overflow:hidden;box-shadow:var(--shadow)}
+.cmp-r{display:grid;grid-template-columns:6.5rem minmax(0,1fr) 11rem;gap:1.375rem;
+  align-items:baseline;padding:1.0625rem 1.375rem;border-bottom:1px solid var(--line)}
+.cmp-r:last-child{border-bottom:none}
+.cmp-r.hi{background:#f7f9fc}
+.cmp-n{font-size:var(--s3);font-weight:600}
+.cmp-d{font-size:var(--s2);color:var(--ink-2);line-height:1.75}
+.cmp-d strong{color:var(--ink)}
+.cmp-k{font-size:var(--s2);color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+footer{margin-top:3rem;padding-top:1.25rem;border-top:1px solid var(--line);
+  font-size:var(--s2);color:var(--ink-3);line-height:1.8}
+footer p{margin:.4375rem 0}
+footer strong{color:var(--ink-2)}
+
+/* 响应式 */
+@media(max-width:1024px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .three{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:900px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .three{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .wrap{padding:2rem 1rem 3rem}
+  header{margin-bottom:2rem;padding-bottom:1.25rem}
+  .kpis{grid-template-columns:1fr;gap:.75rem}
+  .two,.three{grid-template-columns:1fr}
+  .bar{grid-template-columns:6.5rem 1fr 3.5rem;gap:.5rem}
+  .cmp-r{grid-template-columns:1fr;gap:.375rem;padding:.9375rem 1.125rem}
+  th,td{padding:.625rem .6875rem}
+  table{min-width:34rem}
+  .card,.lead,.ch{padding:1.125rem}
+  h2{margin-top:2.5rem}
+}
+
+/* 打印 */
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .tw{overflow:visible;box-shadow:none}
+  table{min-width:0}
+  .card,.lead,.ch,.tw,.callout,.cmp,.kpi{box-shadow:none}
+  h2,h3{page-break-after:avoid}
+  tr,li,.callout{page-break-inside:avoid}
+}
+</style>
+</head>
+<body data-page-node-id="VTwIRvbgEBRh8RT8EOcHqr">
+<div class="wrap" data-page-node-id="0oNSDVYDQhSsNAIVUI0QD9">
+
+<header data-page-node-id="yvswRJE2JwTr3hjJbnyyF7">
+  <p class="eyebrow" data-page-node-id="huW5nW7rVPjscJgk5pZx7V">游戏 IP 联动效果复盘 · 双端榜单专项</p>
+  <h1 data-page-node-id="jb51PqaJnGPz7OU94RF8n4">《永远的蔚蓝星球》<span class="vs" data-page-node-id="vBIMLZtvnMcxbSMKwIv4Zg">×</span>《剑来》动画</h1>
+  <p class="meta" data-page-node-id="jqzy5bkWlM0OjlgghadEZB">
+    <span data-page-node-id="AQzEOqzm5AsUjp7TpJzPon">联动上线 2026-10-01</span>
+    <span data-page-node-id="lkrQhJ5ory3R7ltVBZmwsN">一期窗口 10/01–10/14</span>
+    <span data-page-node-id="UlUJDmeHdv4HQdu6onMONU">报告日期 2026-10-14</span>
+    <span data-page-node-id="uYmLmZB6AFwcfBWDlhSbFf">内部买量数据 2026-10-15 补充</span>
+    <span data-page-node-id="TbRankRev20261015">榜单数据 2026-10-15 按引力引擎逐日复核</span>
+    <span data-page-node-id="IQuG9mG6Dt0J72DykAIiaD">覆盖 微信小游戏 · 抖音小游戏 · iOS App</span>
+  </p>
+</header>
+
+<h2 data-page-node-id="qxztcnBZQYCCC1ctviDJ8E">一、结论</h2>
+
+<div class="lead" data-page-node-id="QatvjuCvaIwrcLpq51eKfV">
+  <p><strong>核心判断：《永远的蔚蓝星球》×《剑来》动画第一期联动（10/1–10/14）微信小游戏畅销榜明显提升、抖音小游戏端未同步起量，但增量由买量投入与游戏内活动驱动。在市场热度与买量效率维度看，效益较小。</strong>微信小游戏畅销榜 10/1 以「新进榜」重进前 20（第 18 名），10/2 单日跳升 11 位至第 7 名，10/9 首次进入前三（第 3 名），10/10–10/12 稳在 4–5 名，收官日（10/14）回落至第 12 名、10/15 回到第 9 名；抖音小游戏畅销榜全期在 12–20 名区间波动，最好水平为 10/9 的第 12 名，未进入前 10。</p>
+  <p>同期抖音指数「永远的蔚蓝星球／剑来／陈平安」搜索与综合指数环比均为负增长（−24.8%～−33.5%），站外自然关注度未随位次上行。买量侧同步扩张：抖小日耗由常态约 20 万元升至国庆峰值约 35 万元（+75%），字节-微小日耗由 10 万元升至 16 万元（+60%），激活成本由 32 元降至 15 元（−53%），但付费成本持平（662→699 元）、ROI7 由 7.98% 降至 6.95%（−1.03pp）——规模放大，效率未同步改善。</p>
+  <p>纵向对照更能说明量级：同产品上一波周杰伦代言＋一周年嘉年华（6 月）微信端曾登顶第 1 并霸榜 8–9 天，本期剑来联动峰值只到第 3、抖音端始终未进前 10——<strong>动画 IP 联动的峰值强度约为明星代言波的一半，站外破圈能力的差距更大（详见第六节）</strong>。</p>
+</div>
+
+<div class="kpis" data-page-node-id="kSI97OmzdDAOlvptXFDoLC">
+  <div class="kpi" data-page-node-id="onjEZmNQp4oFXtax34VYBy">
+    <p class="k" data-page-node-id="hedoN3Uxr1pw8GvdHmnp7n">微信小游戏畅销榜</p>
+    <p class="v up" data-page-node-id="klUKZFeSlB7a6zqEmge7tv">#3</p>
+    <p class="s" data-page-node-id="r3NzWdhskDczw5gqNhOrcP">10/9 首次进前三；10/10–10/12 稳在 4–5，收官回落至第 12</p>
+  </div>
+  <div class="kpi" data-page-node-id="bf8vECJL3BoO8H3duDjC1z">
+    <p class="k" data-page-node-id="sC3a4A2UhC9TH4sleSlrXd">抖音小游戏畅销榜</p>
+    <p class="v dim" data-page-node-id="3RAWb2txhMHzSPSYK0lDkl">#12</p>
+    <p class="s" data-page-node-id="AGToK8UWrOO9qILvmrkJDR">全期在 12–20 名波动，未进前 10；9 月月榜未进 TOP10</p>
+  </div>
+  <div class="kpi" data-page-node-id="xX8tDtBFmN3rNiRABRn7nq">
+    <p class="k" data-page-node-id="oa5coQiSk1VXJE5GPl7jM5">iOS 游戏类畅销榜</p>
+    <p class="v dim" data-page-node-id="VIAGtSt0PwisNMRU6pJtFy">≈#30</p>
+    <p class="s">子类「冒险」第 2–3 名；App 端未被带动</p>
+  </div>
+  <div class="kpi" data-page-node-id="X6nQpmNT0ei43vcHgQ1bws">
+    <p class="k" data-page-node-id="2lywpgAIXqfYTe7xILdF9M">抖音搜索指数</p>
+    <p class="v" style="color:var(--down)" data-page-node-id="AnXeEgPYzKXa1Scf80BrPV">−26.5%</p>
+    <p class="s" data-page-node-id="O0OVm05hGhJQJuB75LFpwW">近 30 天环比（9/12–10/12）</p>
+  </div>
+  <div class="kpi" data-page-node-id="OE8fygF4eMhijwQMuySNNj">
+    <p class="k" data-page-node-id="AosSoL0bjeSCRE3k6uBKZy">字节-微小付费成本</p>
+    <p class="v dim" data-page-node-id="oHLKpNsB2kGjTGFWRSCiLo">662 → 699</p>
+    <p class="s">消耗 +60%、激活成本 32→15 元（−53%），付费成本基本持平</p>
+  </div>
+</div>
+
+<h3 data-page-node-id="s1BQnuplOG9sPr8DTGUZjn">三条核心判断</h3>
+<div class="three" data-page-node-id="IMF6xm1KyET46sck6pbINw">
+  <div class="ch" data-page-node-id="7F7MnGYvmlk2wPRQAptrUh">
+    <h4>① 转化端｜微信端规模增量确凿，抖音端未起量</h4>
+    <p>微信小游戏 10/1 重进前 20 后连续上行，10/9 升至第 3 位；<span class="hl">抖音小游戏全期停留在 12–20 名，未进入前 10</span>。微信端位次变动与买量放量、游戏内六重活动的时序完全重合，增量来源可归因，非品类红利或竞品退位所致；抖音端未形成同等量级的位次提升。</p>
+    <p class="rk">微信 10/1 #18 → 10/9 #3 → 10/12 #5；抖音 10/9 #12（全期最好水平）</p>
+  </div>
+  <div class="ch" data-page-node-id="0k3VqcSQU4MS6OtNStleFq">
+    <h4>② 买量端｜规模扩张成立，效率未同步改善</h4>
+    <p>字节-微小日耗 +60%、激活成本 32→15 元（−53%），但<span class="hl">付费成本持平（662→699 元）、ROI7 由 7.98% 降至 6.95%</span>，推算「激活→付费」转化率由约 4.83% 降至约 2.15%。增量用户的付费深度弱于原有用户结构。</p>
+    <p class="rk">规模：消耗 +60%、激活成本 −53%；效率：付费成本持平、ROI7 −1.03pp</p>
+  </div>
+  <div class="ch" data-page-node-id="ZVBcCJUz3r0zFuoHWqePfg">
+    <h4>③ 声量端｜自然声量缺位，破圈未达成</h4>
+    <p>抖音指数三词搜索与综合指数环比全负（−24.8%～−33.5%），同比亦全负（−2.1%～−57.1%），<span class="hl">站外关注度处于下行通道且未被联动扭转</span>；传播效果仅覆盖投放素材与游戏内场景，未形成站外话题。</p>
+    <p class="rk">投放可换取榜单位次，未换取自然关注度</p>
+  </div>
+</div>
+
+<h2 data-page-node-id="bNV3z2OgMPPvhFYzy0gD6Z">二、买量数据（内部口径，10-15 补充）</h2>
+<p data-page-node-id="VIYZMCJ4EvDClQfRHiuxvi">以下为项目组内部买量口径数据，公开渠道拿不到：消耗、激活成本、付费成本、ROI0／ROI7 的分母是买量消耗，与留存率（次留／三留／七留）不是同一口径，不可互比。</p>
+
+<h3 data-page-node-id="CJJevdIXeS1CtqJDEUUOGX">2.1 抖小游戏端：消耗水位与回收曲线</h3>
+<p data-page-node-id="uPDhFHBk9Y4Yn7vLcZ89ML">联动素材于<strong data-page-node-id="1M6RxKhL8NZnBM0En4GhER">国庆节前</strong>放出铺量，10/1 联动版本上线接量。回收率 = 累计回收流水 ÷ 累计买量消耗。</p>
+
+<div class="tw" data-page-node-id="iu9TkTfAR2JUVUKoz2719X">
+<table data-page-node-id="hpZ4bXvmkOWAnATvWyjYD9">
+  <thead data-page-node-id="u3fvpTr3ZKrmbQiBMW7hPe"><tr data-page-node-id="Q2pi6gXK7qUAAmdcWnB5ed"><th data-page-node-id="oLqcbRT9slCNeAEd72GywN">指标</th><th class="n" data-page-node-id="ab5oQiQzrjZLTQfhTh6ioe">数值</th><th data-page-node-id="FOy0qtARSNREc5M5JfzJ0K">说明</th></tr></thead>
+  <tbody data-page-node-id="XUr0G1B4bD4ugmK08vVYNO">
+    <tr data-page-node-id="T055uyOaSkmpVKE0TdSSjG"><td data-page-node-id="PVITeMDQ3HruGpgmxq3nRy">素材上线时点</td><td class="n" data-page-node-id="dzmaZnxLDCXGWZXHQtqfQo">国庆节前</td><td data-page-node-id="HwnztDklz8NnWEux56OsG6">联动素材先行铺量，版本上线当日接量</td></tr>
+    <tr data-page-node-id="dkPAdtuYvKoValMLR8uSI1"><td data-page-node-id="HF6sGp9NpvvLZmpDbp4BLn">首日回收率</td><td class="n" data-page-node-id="T4FbkvpQMv21sDLJPRYlfr">约 1.3%</td><td data-page-node-id="NtuOxLlu8SdtKPzd3K335j">与常规素材基本持平——联动没有首日溢价，但也没有拖累</td></tr>
+    <tr class="hi" data-page-node-id="EE0c7AuSRiAbRljMM3B2Ao"><td data-page-node-id="u56jkI4VOpC4NF8ml4X9DE">三日回收率</td><td class="n" data-page-node-id="rGA6p0qHlALFLIEiClRJFD">4%–4.5%</td><td data-page-node-id="HE1hmNHUEfLH3UPnakm8oF">前三日爬坡约 3.2 倍，签到、首充窗口开始兑现</td></tr>
+    <tr class="hi" data-page-node-id="TFhdhN31UmvK5TD5KkxigX"><td data-page-node-id="2aOUbIXs77YRICn8kHRUrg">七日回收率</td><td class="n" data-page-node-id="oQZwByCEwr2eh3VzKwon8T">6%–9%</td><td data-page-node-id="f46N5DNcPxPhSGP9PzHJlU">回收重心明显后置，成败取决于 30 日后长尾</td></tr>
+    <tr data-page-node-id="QXySfb8fjGFjloy1iIPdtB"><td data-page-node-id="vHSrjiHEpEXMI3igEw9fNN">日常消耗水位</td><td class="n" data-page-node-id="cA3FfaKO4DptTJGBQcj3RM">约 20 万元/天</td><td data-page-node-id="elzFCpSc15ah6fI1cE4QuJ">常规素材日常量级</td></tr>
+    <tr class="hi" data-page-node-id="tvXIZYHshzcquZa5iwxkjR"><td data-page-node-id="GVrbLHoRIha9SZaUP2p4DC">国庆消耗峰值</td><td class="n" data-page-node-id="LD1ajz1TtVxPDgw2sBEufv">约 35 万元/天</td><td data-page-node-id="PkcK5KrLbfF2AMP1xrwpgO">较日常 <strong style="color:var(--up)" data-page-node-id="XA7mrnEMWW94vfFzHQtNo5">+75%</strong>，联动素材＋国庆档双重推高</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h4 data-page-node-id="bcsmp1afPyX8ia7svhgBH5">回收曲线：前弱后强的典型小游戏结构</h4>
+<div class="bars" data-page-node-id="6xdPlNjQRZy5a9R0P8M4TJ">
+  <div class="bar" data-page-node-id="9ywNnEb9LxaUD8K0hvdvTT"><span class="lb" data-page-node-id="Ucp79SLwjLxDhXb7AFHajm">首日回收</span><span class="tr" data-page-node-id="F5P3f6HmkjQvU6wD9Xlg0L"><span class="fl" style="width:14%;background:#9ca3af" data-page-node-id="znhEe6CNltqJvYvCADzcSi"></span></span><span class="vl" data-page-node-id="GYdsnfQcIziUzpyRWAHpsH">1.3%</span></div>
+  <div class="bar" data-page-node-id="uL0HtdoMx2Vg2GOmnvvqBi"><span class="lb" data-page-node-id="QSJ4fwALcYv2SPrN7quAFm">三日回收</span><span class="tr" data-page-node-id="GSbkSdCAiOh8bPA5UciB6L"><span class="fl" style="width:47%;background:#9ca3af" data-page-node-id="NC0bRAerMpwnUczZF3kxAv"></span></span><span class="vl" data-page-node-id="6vh60phbGhGrZ09tFVtF9k">4.5%</span></div>
+  <div class="bar" data-page-node-id="lOgu36GHVbG9pGDyGaGvqv"><span class="lb" data-page-node-id="WXQf8fT7FPNKhsLKUWjux7">七日回收（区间中值）</span><span class="tr" data-page-node-id="xnNDn4smAUmYr6nJg9s2Bi"><span class="fl f-100" style="background:#9ca3af" data-page-node-id="58asiOcFHhI5Wqx68EgzL7"></span></span><span class="vl" data-page-node-id="ZByCzPBuWDxBmvyi8CsKDl">7.5%</span></div>
+</div>
+<div class="bars" data-page-node-id="ajbsUHDII8mRx3a8eh8naD">
+  <div class="bar" data-page-node-id="LzQlaYVFfApSv0WwW2fo6D"><span class="lb" data-page-node-id="hyaFn2AAOoPsN09vPNagPS">日常消耗</span><span class="tr" data-page-node-id="7u8n0LQijDBDL8W07BZlmu"><span class="fl" style="width:57%;background:#9ca3af" data-page-node-id="9cBIS26G1GfgwZw1sgZWpL"></span></span><span class="vl" data-page-node-id="BPiWLiV7Bnjb6EyzhZPQqB">20 万/天</span></div>
+  <div class="bar" data-page-node-id="aAd56TgvfBUcYuEIHmYJlj"><span class="lb" data-page-node-id="GmO5vmBLKYrASMbA1tyg1Q">国庆峰值消耗</span><span class="tr" data-page-node-id="cqDBCIib8HKKzAtOQkxyEi"><span class="fl f-100" style="background:var(--up)" data-page-node-id="Ethb0UoT54Ro3Dn2pwrLNK"></span></span><span class="vl" data-page-node-id="M6m7YOzKdTs4u1TokH9Owa">35 万/天</span></div>
+</div>
+
+<p><strong>数据判读：</strong></p>
+<ol data-page-node-id="0vVFti1FyTrSxyldHGVOMZ">
+  <li><strong>回收曲线前弱后强，符合小游戏长线回收特征。</strong>首日约 1.3% → 三日约 4.2% → 七日 6%–9%：前三日爬坡约 3 倍、其后增速放缓，回收重心落在七日之后。素材成败须以 30 日／60 日长尾判定，不宜以七日回收率定性。</li>
+  <li><strong>联动素材的作用机制是「放量能力」，而非「成本优化」。</strong>日耗由常态约 20 万元升至国庆峰值约 35 万元（+75%），七日回收仍维持在 6% 以上区间，放量部分的质量未出现明显下滑；素材提供的是可消耗的量（通过率、点击率），而非更低的获客成本。</li>
+  <li><strong>与声量端互相印证：</strong>抖音指数三词环比全负（−24.8%～−33.5%），同期日耗 +75%——抖小端的位次上行主要由买量驱动，自然声量未同步上行。</li>
+  <li data-page-node-id="jZJLNkYaitSsDMmLOzbCAr"><strong data-page-node-id="V2qg3vAlowjHvQ6A5tRM9U">粗算：</strong>国庆周按 35 万/天计约 245 万消耗，按七日回收 6%–9% 对应约 15–22 万回收，首周现金缺口大，回本依赖 30 日后长尾与联动期活动的持续付费。</li>
+</ol>
+
+<h3 data-page-node-id="erdNaWaAMJpLtm9uQ10qbp">2.2 字节-微小（微信小游戏）：联动前后效率对照</h3>
+<p data-page-node-id="jUeBMEteRUoXkxBSxZ45RZ">同渠道、同产品，联动前后两段同等周期对照：</p>
+
+<div class="tw" data-page-node-id="mrg5wvGl5rM8lmhKur3cve">
+<table data-page-node-id="NTO2e3WlVp3SBl1WLDRCPf">
+  <thead data-page-node-id="Lt41pqHTOlkzUCTsE5ZHou"><tr data-page-node-id="ULn0MF7KP1DrYobI6iJKJe"><th data-page-node-id="EaCEURxgfpduLQojk2mC2g">指标</th><th class="n" data-page-node-id="T9ig5QoomRPp0Zw9GGsBKn">联动前</th><th class="n" data-page-node-id="nVEWENHWqx9kszPW9XxlzW">联动后</th><th class="n" data-page-node-id="QJzaNhwrVjv4DuOvsDgPOF">变化</th></tr></thead>
+  <tbody data-page-node-id="l9guAfv3dZRnJaDfEzLKcj">
+    <tr class="hi" data-page-node-id="K230fFlcCyWUYcgahXFyZH"><td data-page-node-id="RmEjTp4Lo29lurjIkEAOUn">日均总消耗</td><td class="n" data-page-node-id="AJPxgWQW6mONi0bHXMp9Eu">10 万元</td><td class="n" data-page-node-id="VzPNGK4GnWTnLZ8AtFEB93">16 万元</td><td class="n" style="color:var(--up)" data-page-node-id="C6mDL3WJkqaJLgTpkAXRiF">+60%</td></tr>
+    <tr data-page-node-id="HVJOnQdFYmjA0Nuc19ImbO"><td data-page-node-id="kj2gtnUkr4CoT9dlS2S6KR">激活成本</td><td class="n" data-page-node-id="i8StGAY6sV3Oh9ZLhILXlQ">32 元</td><td class="n" data-page-node-id="LW34p4ydV0IGfolIyW5UE1">15 元</td><td class="n" style="color:var(--down)" data-page-node-id="SBYF5PVTbWuGRcprwc9L90">−53%</td></tr>
+    <tr data-page-node-id="4lRnSFmCFmPSecgoho7yoT"><td data-page-node-id="gXBNoZkLVtNM4HdhTEdnPD">付费成本</td><td class="n" data-page-node-id="zSxFJxpcCXS4VapkprV5Xl">662 元</td><td class="n" data-page-node-id="WZ74LaIAoTzb0i6DHk7sjC">699 元</td><td class="n" style="color:var(--up)" data-page-node-id="AsrbsDLajpDiAoKqRWa2X4">+5.6%</td></tr>
+    <tr data-page-node-id="uAL2NTQWERTm6gbsZNEypZ"><td data-page-node-id="qkE7QXqR0kIWR5fubqAHmq">ROI0（首日回收）</td><td class="n" data-page-node-id="k7MpJcgH8W2yJgv4LxPFmG">1.12%</td><td class="n" data-page-node-id="KAcTFPDDLEokQnIpxTWVWS">1.29%</td><td class="n" style="color:var(--up)" data-page-node-id="mfIjLz0AMKk3cH4wlQHLqq">+0.17pp</td></tr>
+    <tr class="hi" data-page-node-id="2XbS179Bx41d2pXCOx90Eh"><td data-page-node-id="lMzctLzQkA5i77Kji8DfyS">ROI7（七日回收）</td><td class="n" data-page-node-id="mp2OJFDhU5hKcAHChnfeQ7">7.98%</td><td class="n" data-page-node-id="hcOFlwtcoKHwFUMn8oM0bf">6.95%</td><td class="n" style="color:var(--down)" data-page-node-id="JAMVxTHtKs3B5UXOZkdigf">−1.03pp</td></tr>
+    <tr data-page-node-id="rL0YpRLrbdEoEbtnDBPbgB"><td data-page-node-id="SH2f2a80btRZqRfok9tPoT">广告转化率</td><td class="n" data-page-node-id="lu0fBH1rkeeYf3yyEAHosr">0.96%</td><td class="n" data-page-node-id="6EcLl1z68kGMvjOBO1jrW1">0.49%</td><td class="n" style="color:var(--down)" data-page-node-id="vKO7NvFzmQCDxEA93Bx0N9">−0.47pp</td></tr>
+    <tr data-page-node-id="wezQmWtcJWZPyd4WukBTHA"><td data-page-node-id="qY2aN1yPyUGAW7bhBacBMq">日激活量（推算）</td><td class="n" data-page-node-id="ns28TgJSgy4Gg4zJ5E67Tz">约 3,125</td><td class="n" data-page-node-id="XQfHTAiRgxorcQNUwi4TTt">约 10,667</td><td class="n" style="color:var(--up)" data-page-node-id="ToFSplU0AmKMDVtCwn7ag2">+241%</td></tr>
+    <tr data-page-node-id="UCHDFlenhdA9VytI09Fjvg"><td data-page-node-id="aB49Z7u4JGCX8h9lEsoQTh">日付费用户（推算）</td><td class="n" data-page-node-id="5UF1yWJUtf1nEzY5HxWzza">约 151</td><td class="n" data-page-node-id="8kJMMkE7ZUWDdYXABdLxD3">约 229</td><td class="n" style="color:var(--up)" data-page-node-id="NyHsu4nyc8phu49catcVQj">+52%</td></tr>
+    <tr class="hi" data-page-node-id="DpBUvE80o9JzO1T13XhBCq"><td data-page-node-id="njtizwRoMFAidrudZfP0L7">激活→付费率（推算）</td><td class="n" data-page-node-id="srqTdBSyCNH3BkrmoFrfbF">约 4.83%</td><td class="n" data-page-node-id="fty8faUlXqNpPc6CGqciPa">约 2.15%</td><td class="n" style="color:var(--down)" data-page-node-id="QB6WXgm5p3lMGYeOT1d85w">−2.68pp</td></tr>
+  </tbody>
+</table>
+</div>
+<p class="sub" data-page-node-id="aUWaYeOocW7J10j73XRVo6">推算口径：日激活量 = 消耗 ÷ 激活成本；日付费用户 = 消耗 ÷ 付费成本；激活→付费率 = 激活成本 ÷ 付费成本。颜色仅表示数值升降方向，不代表好坏。</p>
+
+<div class="callout co-warn" data-page-node-id="vyIO3t0VwondztIWMXiNOd">
+  <p><strong>小结：本轮联动实现了单位获客成本的显著下降，但未转化为付费端效率改善。</strong>激活量放大 3.4 倍、激活成本降低 53%，规模扩张成立；但付费成本 662→699 元基本持平、ROI7 下降 1.03pp——增量流量结构偏泛，属「规模扩张型」而非「效率改善型」增长。</p>
+</div>
+
+<p><strong>三点判读：</strong></p>
+<ol data-page-node-id="Lba0kXWEDaKhaEMaaY22Dn">
+  <li><strong>规模维度：放量成立。</strong>日耗 +60%、激活量 +241%、激活成本 −53%，联动素材在字节渠道的消耗能力被显著打开。</li>
+  <li><strong>效率维度：未同步改善。</strong>推算「激活→付费」转化率由约 4.83% 降至约 2.15%，付费成本因此持平。增量用户结构与塔防核心付费用户存在偏离，更接近 IP 关注带来的泛用户。</li>
+  <li><strong>回收结构：首日改善、七日回落。</strong>ROI0 上升（1.12% → 1.29%）表明联动内容的即时付费刺激有效（限定道具、首充礼包）；ROI7 下降（7.98% → 6.95%）表明 D2–D7 持续付费存在断档，用户呈<strong>活动驱动型特征</strong>，付费持续性高度依赖活动续接。</li>
+</ol>
+
+<p data-page-node-id="44YCcCMoqjchvU3beYj4O0"><strong data-page-node-id="v09HU4QkKHNtGzJ0yUf3nf">与抖小端互证：</strong>字节-微小联动后 ROI0 1.29% ／ ROI7 6.95%，与抖小端首日约 1.3% ／ 七日 6%–9% 基本重合。两端回收水位高度一致，说明问题不在渠道，而在产品侧的付费深度与联动来的用户结构。</p>
+
+<div class="callout co-info" data-page-node-id="kjAezWOb4KGRSAvBWl57EJ">
+  <p data-page-node-id="lMoIPSHISvndAtzc5MqycK"><strong data-page-node-id="0rabKDJX1tlZmBTdauPxbI">口径提醒：</strong>回收率的分母是买量消耗，与留存率（次留／三留／七留）不是同一口径，不可互比；公开渠道（点点数据、DataEye 等）只有收入预估、没有成本分母，无法从外部反推回收率——本节是公开报告拿不到的数据层。</p>
+</div>
+
+<h2 data-page-node-id="R9RyyOBDVAwpgSgeSxiRZM">三、榜单变化明细（微信 · 抖音 · iOS）</h2>
+
+<h3 data-page-node-id="FbUMDIvgGLIPuaz69GEbum">3.1 微信小游戏畅销榜 · 逐日位次</h3>
+<div class="tw" data-page-node-id="rKllY6Mlvti3K8DnI1wOt0">
+<table data-page-node-id="wtLPh3lXiRZfx0rNV2JnxS">
+  <thead data-page-node-id="1rHehYY3d17O5oO9Z2NhXd">
+    <tr data-page-node-id="ZGbhI8cikqhc6CuIxjIpDx"><th class="n" data-page-node-id="EC9YGYrr98NJjUqt0WzCjT">日期</th><th class="n" data-page-node-id="vsCxsVnpPsIKtVJyYpV4oj">蔚蓝位次</th><th data-page-node-id="OsJqbEdCCkKBEWu8JEqi9s">日环比</th><th data-page-node-id="7OPRAyBiKAvdPXeOCOBWPk">备注</th></tr>
+  </thead>
+  <tbody data-page-node-id="7eMhYRVFwLGr2fpdcfDgIj">
+    <tr data-page-node-id="dwip98TimyhMFN4ynT1JOo"><td class="n" data-page-node-id="nFJFuW4HrH1PwRA6eQXKLO">9/9</td><td class="n" data-page-node-id="dfa6S50ygJghig72RF9heA">第 4 名</td><td data-page-node-id="33sLkb9pFIBqjA66sLWKZw"><span class="tag t-flat" data-page-node-id="3FPewzMLnc9e0LtQFJAEpd">基准</span></td><td data-page-node-id="LL1lDGyCYh8zYkEd5n7uJN">联前基准，假期前已在头部</td></tr>
+    <tr data-page-node-id="fmtc5TjWtZXTdW4bnwLZci"><td class="n" data-page-node-id="JEnrjsSEjQ53DdlT1fCYjH">9/30</td><td class="n" data-page-node-id="JkQGUMJx32d8QFCpY7HSr1">前 20 外</td><td data-page-node-id="guXGqcHPNBsSrtEbbQffju">—</td><td data-page-node-id="Eywc1Df248jB8hVSuGcHSa">国庆档前回落，10/1 以「新进榜」重进前 20</td></tr>
+    <tr class="hi" data-page-node-id="NlaMSuTBhVsdvC4D4bDgSd"><td class="n" data-page-node-id="431P6ElOFEOCByNdpDbDww">10/1</td><td class="n" data-page-node-id="YDtm18kAfyAw6gFBFYTsJu">第 18 名</td><td data-page-node-id="KRrMWS8MX1QkLfTsCQOCt9"><span class="tag t-up" data-page-node-id="1X0GKhtqaFPVnBGw0HuPqI">新进</span></td><td data-page-node-id="hXSGiHfpgL6ncACK0NOG6i"><strong data-page-node-id="7aNriVFFvCxRGH3PAFKSNK">联动上线日，重进前 20</strong></td></tr>
+    <tr class="hi" data-page-node-id="bfogaI19s6iVFWsqDzEUW5"><td class="n" data-page-node-id="PwO53ekdWwSHHpetanfcEY">10/2</td><td class="n" data-page-node-id="rzQiLqQKA3WMJGnBW6qt7W">第 7 名</td><td data-page-node-id="pcYQnxYzQiR9fKDWg4wbE7"><span class="tag t-up" data-page-node-id="2Bz8hewqZ0MnCRgpN2ttHz">▲11</span></td><td data-page-node-id="zKkGcSwFPL5uHGMAzRxA3P">单日大幅跳升，假期高位起点</td></tr>
+    <tr data-page-node-id="PzMlsMcyUOIh40NYFZcMLC"><td class="n" data-page-node-id="RrvaZWkEBwZ7CgoCG4KT9v">10/4</td><td class="n" data-page-node-id="U6xtiVHIddeORkuXGLwiXq">第 10 名</td><td data-page-node-id="zIXSOEEfIbeFGZrEjUQqdz">—</td><td data-page-node-id="Ho7RzXTGdyCPzo2x9iDXRP">假期中段（10/3 无榜单数据）</td></tr>
+    <tr data-page-node-id="gFZAXRhNh4zQWGBXUnt1Be"><td class="n" data-page-node-id="9P8F0zWELtOUBUyjiq8jlM">10/5</td><td class="n" data-page-node-id="rXajZI6tZiqM8HWhtuKkny">第 11 名</td><td data-page-node-id="fhMxrHtfec3UlG11PdMS2U"><span class="tag t-down" data-page-node-id="kHejzfWM7dG7PFsBdBK7eF">▼1</span></td><td data-page-node-id="FAzKe7kBAQe8qmk4gzNlDa">高位小幅震荡</td></tr>
+    <tr data-page-node-id="EBMxMn08S9xtM6VuyrCrwe"><td class="n" data-page-node-id="XNXEoDtISRvZV6FhLEMe9X">10/7</td><td class="n" data-page-node-id="7PIej6eejmBUG9xPVrIXS2">第 14 名</td><td data-page-node-id="2LaQNqzJOpamB41g87isVi">—</td><td data-page-node-id="SrSOZDIbixCCbuJN4mEttP">假期尾声（10/6 无榜单数据）</td></tr>
+    <tr data-page-node-id="GKSABGGP2JFkmjPDfKSTrd"><td class="n" data-page-node-id="DNmyMFztHYxk3db8KrrARO">10/8</td><td class="n" data-page-node-id="DHIB3AsCdefRmStTp6M1Hc">第 15 名</td><td data-page-node-id="xUyA2kMXPdpyPpYnEkPy2d"><span class="tag t-down" data-page-node-id="YbhtyNZUeMqYbJBzCa9Sr5">▼1</span></td><td data-page-node-id="PUM1EBuV7sPSitvZa1qRmV">国庆档中段竞争最激烈区间</td></tr>
+    <tr class="hi" data-page-node-id="5RNp0AyqEevAh2hJ6CJEGR"><td class="n" data-page-node-id="komRwj4bNGIsDDbVDokFAm">10/9</td><td class="n" data-page-node-id="u4ue2JkPlFFnReYsMDr6FM">第 3 名</td><td data-page-node-id="NKUUwFj59FouiRF5E82fPj"><span class="tag t-up" data-page-node-id="xv11qBWSZfn31m3aEOHUtB">▲12</span></td><td data-page-node-id="uEHX7lcsktL78jKkKBsKgd"><strong data-page-node-id="6uzJ1RHLqO37RNFmMSv7Wr">首次进入前三，全期最高位</strong></td></tr>
+    <tr data-page-node-id="EhUydn4ghovLB4tPmbXRnn"><td class="n" data-page-node-id="Mq2heBcuaoOhq5MAKfiKmd">10/10</td><td class="n" data-page-node-id="xeLnf7y0654NI0ttn9H7jR">第 4 名</td><td data-page-node-id="Czn4a3LdsG1FyMFkr3DkC3"><span class="tag t-down" data-page-node-id="e6CpQyGk5iB2yCsOjtA5J3">▼1</span></td><td data-page-node-id="EH1HuZ8BMDJ5HE3EwHkOPu">退出前三，仍在前四</td></tr>
+    <tr data-page-node-id="N9KsAqMajBVm3AiPr11TdU"><td class="n" data-page-node-id="dKU3D7RnQOl8Y26rin3KWI">10/11</td><td class="n" data-page-node-id="BPCKcKZzEIEcX5yVHfOkf1">第 4 名</td><td data-page-node-id="iHH0jbpZh8eb0KxHFK1EfQ"><span class="tag t-flat" data-page-node-id="RunU4rOuEvtkhG1b1bSmQV">持平</span></td><td data-page-node-id="GWQTUjOGdKDHeXsHJPl1VB">守住前四</td></tr>
+    <tr data-page-node-id="TbRk1012Ab1"><td class="n" data-page-node-id="TbRd1012Cd2">10/12</td><td class="n" data-page-node-id="TbRv1012Ef3">第 5 名</td><td data-page-node-id="TbRc1012Gh4"><span class="tag t-down" data-page-node-id="TbRt1012Ij5">▼1</span></td><td data-page-node-id="TbRx1012Kl6">小幅回落，仍在前五</td></tr>
+    <tr data-page-node-id="TbRk1013Ab1"><td class="n" data-page-node-id="TbRd1013Cd2">10/13</td><td class="n" data-page-node-id="TbRv1013Ef3">第 6 名</td><td data-page-node-id="TbRc1013Gh4"><span class="tag t-down" data-page-node-id="TbRt1013Ij5">▼1</span></td><td data-page-node-id="TbRx1013Kl6">逐步回落，仍在前十</td></tr>
+    <tr class="hi" data-page-node-id="TbRk1014Ab1"><td class="n" data-page-node-id="TbRd1014Cd2">10/14</td><td class="n" data-page-node-id="TbRv1014Ef3">第 12 名</td><td data-page-node-id="TbRc1014Gh4"><span class="tag t-down" data-page-node-id="TbRt1014Ij5">▼6</span></td><td data-page-node-id="TbRx1014Kl6"><strong data-page-node-id="TbRb1014Mn7">联动收官日，回落至前 10 外</strong></td></tr>
+    <tr class="hi" data-page-node-id="TbRk1015Ab1"><td class="n" data-page-node-id="TbRd1015Cd2">10/15</td><td class="n" data-page-node-id="TbRv1015Ef3">第 9 名</td><td data-page-node-id="TbRc1015Gh4"><span class="tag t-up" data-page-node-id="TbRt1015Ij5">▲3</span></td><td data-page-node-id="TbRx1015Kl6">收官次日回到前 10</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="callout co-info" data-page-node-id="TVImoKNBEpvSGQZn5IGAYQ">
+  <p data-page-node-id="6jgF6MgMz7EekNU9PIKgC0"><strong data-page-node-id="aIZI5EMozx5FAlI9RsiTbY">三条关键读法：</strong>① 联动上线日（10/1）蔚蓝以「新进榜」重进前 20，次日即跳到第 7 名，联动拉动真实存在；② 10/2–10/8 在 7–15 名区间反复震荡，并非一路上行，10/8 一度跌至第 15 名；③ 10/9 首次进入前三，10/10–10/12 稳在 4–5 名，但 10/13 之后逐步回落、收官日（10/14）跌至第 12 名——涨幅集中在假期与活动高峰，尚未形成稳定的头部站位。</p>
+</div>
+
+<h3 data-page-node-id="EAUx2Sm0KHN5nI2ve8A7JB">3.2 微信小游戏畅销榜 · 头部快照对比</h3>
+<div class="tw" data-page-node-id="IZnrtKhA4WAzoESrDVNxG2">
+<table data-page-node-id="p0JNHqFMtiePgBiaHdyges">
+  <thead data-page-node-id="af8ZBJHa8cZpSVMdsHJdtS">
+    <tr data-page-node-id="eJ2sUFVJ1iTuEvKrZpHc96"><th class="n" data-page-node-id="4eje8TEClfdoHr1DtmhnBO">位次</th><th data-page-node-id="sZGPWZgGIrDdQWWUQh7xWn">9/9（联前）</th><th data-page-node-id="41vfCJBFUcMZsv8It0ud5l">10/9（首次进前三）</th><th data-page-node-id="vL2TAlAlSYjZAxzEFgneq4">10/15（收官次日）</th></tr>
+  </thead>
+  <tbody data-page-node-id="4HLl6kw72z65zBuesHz8Rq">
+    <tr data-page-node-id="WU6gDslucuRURwoSMsEWEN"><td class="n" data-page-node-id="yJWtEoyPAoqsn12RrUvncK">1</td><td data-page-node-id="ZLjf2uVNU7qA07gQT21kMx">三国:冰河时代</td><td data-page-node-id="tYfBLyNLL9XUjrH3yEn4c0">向僵尸开炮</td><td data-page-node-id="WnZMT0jebheBo344otOFtl">向僵尸开炮</td></tr>
+    <tr data-page-node-id="KQBNqCDxGcGnFBmLLdfpkr"><td class="n" data-page-node-id="OaYFDoIQw8m9c2JdJLXher">2</td><td data-page-node-id="MY7MD0CSKD82vlppBOOmkV">向僵尸开炮</td><td data-page-node-id="dhpLoc2JmIolL4BEGefxlh">三国:冰河时代</td><td data-page-node-id="9UOHeVibicqUVVFUZPtefA">三国:冰河时代</td></tr>
+    <tr class="hi" data-page-node-id="8snKlyXJGOhBJOXq9Hs8Ne"><td class="n" data-page-node-id="t7XXOVE04U4H5lOLC0H2Fm">3</td><td data-page-node-id="i5zFFsOI53KbTUDkCH2Hdx">跃动小子</td><td data-page-node-id="xsWolGQyGbWzEiTQdA82us"><strong data-page-node-id="TbR32nd1012">永远的蔚蓝星球</strong></td><td data-page-node-id="q4dAnJAWWKJl9tnNymSVhb">浪漫餐厅</td></tr>
+    <tr data-page-node-id="rGLSu6y1ReDq9AbNMOyLyc"><td class="n" data-page-node-id="BJ91IV3qYoXHRq6ed68bDN">4</td><td data-page-node-id="cMamy0WsE0tL2AeOOs4kyc"><strong data-page-node-id="Ci5x51AxdLJHFXUbwRLI3Z">永远的蔚蓝星球</strong></td><td data-page-node-id="hsQVTIeOyOB6q8burFvcC5">灵画师</td><td data-page-node-id="B2F8MG3KstYC78qoy6YO8w">疯狂水世界</td></tr>
+    <tr data-page-node-id="T3WYajYh3qtp8AROIY3mEw"><td class="n" data-page-node-id="RTLCRe5o5lPA4ZYZrsLsNS">5</td><td data-page-node-id="CJcjDDu2T6axiNqufteF0c">向末日开炮</td><td data-page-node-id="6dnHArRmKRbz234YFCQMyS">疯狂水世界</td><td data-page-node-id="ZKxw8kXags67yThplKCxji">无尽冬日</td></tr>
+    <tr data-page-node-id="4lvDg5TINaKZFwHTcmse8i"><td class="n" data-page-node-id="UjFZorNpPdufWYMZEltY28">6</td><td data-page-node-id="eCrVbKWTvQqionDkfPW6Uw">疯狂水世界</td><td data-page-node-id="PESCCPIowV3jFuKFFYK0R4">梦幻消除战</td><td data-page-node-id="I4cvxufJGTv5F969YRV9Av">梦幻消除战</td></tr>
+    <tr data-page-node-id="t5gbmXmJmt93xUbdLfEwJN"><td class="n" data-page-node-id="J0xKIDdajh57Wxp7nnCKq2">7</td><td data-page-node-id="eC5Yf5vYi2oFsvA0DGwDz6">永夜起源</td><td data-page-node-id="v0C6CfAbeLCSxQ4EggYI2Z">向往的生活</td><td data-page-node-id="b9ZcvF15KJJDdPTDyaE9j4">向末日开炮</td></tr>
+    <tr data-page-node-id="7TK7St6U6DKM5ADBkT8D2v"><td class="n" data-page-node-id="vUIFNXBgn6wKTCkPNlRzQ8">8</td><td data-page-node-id="wnL67eOxcPaLRCXfzMooaK">无尽冬日</td><td data-page-node-id="jxVXqnKZFHSlKelMRvval5">无尽冬日</td><td data-page-node-id="EX9tRlLamrt8gHd2MqD7Fh">向往的生活</td></tr>
+    <tr data-page-node-id="jMCZBf15OEC7CFp2AkZGbl"><td class="n" data-page-node-id="MPuLnvqHVBuIcM0auFXrpP">9</td><td data-page-node-id="GxCCOKA3wCiJaP35LwUdqE">浪漫餐厅</td><td data-page-node-id="G4zujzDizIFb8obleQ24zZ">浪漫餐厅</td><td data-page-node-id="QBm9xhfvp6mJs1jIAaEpd6"><strong data-page-node-id="TbR92nd1015">永远的蔚蓝星球</strong></td></tr>
+    <tr data-page-node-id="GSWPzA1L8AjhHdiuxEIlqn"><td class="n" data-page-node-id="zhZJGnh1Y4eE6OY8BQDE55">10</td><td data-page-node-id="i6VRoKQPaRBKj2tSs3wPgZ">向往的生活</td><td data-page-node-id="SNcUBNgxhSe9ZkNBxRtaiu">向末日开炮</td><td data-page-node-id="890me4QAkzxPhKPbNO2ooz">灵画师</td></tr>
+  </tbody>
+</table>
+</div>
+<p data-page-node-id="fJ9tuggoIynPaCTpKk97Le"><strong data-page-node-id="v0UhmJRv4OSfCjMtDJmpxB">关键读法：</strong>微信小游戏头部长期由《向僵尸开炮》《三国:冰河时代》《无尽冬日》《疯狂水世界》把守。蔚蓝 9/9 已在第 4 位，10/9 升至第 3 位、正面挤下《跃动小子》《向末日开炮》等前排产品；但 10/15 又回到第 9 位。<strong data-page-node-id="84Qdno61ExFZewEOkZOW6Q">它确实是靠自身付费冲量挤进前三，但停留时间有限，尚未形成稳定的头部站位——这是本报告最需要提示的一点。</strong></p>
+
+<h3 data-page-node-id="OaTpCACRzqHA4vSMYl0AuQ">3.3 抖音小游戏畅销榜 · 位次变化</h3>
+<p class="sub" data-page-node-id="TbDySub1015x">数据取自引力引擎抖音小游戏畅销榜日榜／月榜，逐日实测。</p>
+<div class="tw" data-page-node-id="cPB2VMGpu9DNqBXF7PhcBb">
+<table data-page-node-id="ZDhjTHlG4dX4nePdNNOm85">
+  <thead data-page-node-id="SZVj9DFXYtn9GwYnr2VtlR">
+    <tr data-page-node-id="hEQnVEnRSp7AfLMqfmkYs3"><th data-page-node-id="wYVn0OLrLdUsItxuZMsDmC">时点</th><th class="n" data-page-node-id="jlpTBF3vN50hwCll7Xp4gE">蔚蓝位次</th><th data-page-node-id="ZQtb4I30uQD4zCcNyuxAIV">说明</th></tr>
+  </thead>
+  <tbody data-page-node-id="hJEuxq2ZAH9p81jDqUgJR1">
+    <tr data-page-node-id="3gK8rwx9bcH9c1NRd2gBYI"><td data-page-node-id="x4KwXd1D0yEuIDPvm2drlW">2026 年 5 月月榜</td><td class="n" data-page-node-id="8O1LC40zxiT7OTsag585tk">第 20 名</td><td data-page-node-id="5r3XAXltzCQFGWhlL0PArL">当期（重）新入榜产品中排名最高者</td></tr>
+    <tr data-page-node-id="c4sPjIvl1NxbBRiVM1AWqJ"><td data-page-node-id="lBRUi2T0Ru4eSY0Tjl1dU1">2026 年 9 月月榜</td><td class="n" data-page-node-id="kg4vnryZgzxVTjN8MDLvyD">未进 TOP10</td><td data-page-node-id="HeQ5oPibhKVSmm1YUC2p2t">TOP3 为《疯狂水世界》《灵画师》《造化仙府》；三七《镇邪人》▲13 进前十</td></tr>
+    <tr class="hi" data-page-node-id="1GM5XLzvhwb63DDi9sSo2e"><td data-page-node-id="1ejqEsUtuZRpCvVB7n1dWW">2026/10/09 日榜</td><td class="n" data-page-node-id="DHh9ce984JG1er1dasaQAn">第 12 名</td><td data-page-node-id="dDSgwGBXreRaVm2TkbllWt"><strong data-page-node-id="TbDyBest1012">联动全期最高位</strong>，仍未进前 10</td></tr>
+    <tr data-page-node-id="TbDy1010Row"><td data-page-node-id="TbDy1010C1">2026/10/10 日榜</td><td class="n" data-page-node-id="TbDy1010C2">第 19 名</td><td data-page-node-id="TbDy1010C3">回落至前 20 边缘</td></tr>
+    <tr data-page-node-id="TbDy1011Row"><td data-page-node-id="TbDy1011C1">2026/10/11 日榜</td><td class="n" data-page-node-id="TbDy1011C2">第 20 名</td><td data-page-node-id="TbDy1011C3">前 20 末位</td></tr>
+    <tr data-page-node-id="TbDy1012Row"><td data-page-node-id="TbDy1012C1">2026/10/12 日榜</td><td class="n" data-page-node-id="TbDy1012C2">第 15 名</td><td data-page-node-id="TbDy1012C3">略有回升，仍在前 10 外</td></tr>
+    <tr data-page-node-id="TbDy1013Row"><td data-page-node-id="TbDy1013C1">2026/10/13 日榜</td><td class="n" data-page-node-id="TbDy1013C2">前 20 外</td><td data-page-node-id="TbDy1013C3">跌出前 20</td></tr>
+    <tr class="hi" data-page-node-id="TbDy1014Row"><td data-page-node-id="TbDy1014C1">2026/10/14 日榜</td><td class="n" data-page-node-id="TbDy1014C2">前 20 外</td><td data-page-node-id="TbDy1014C3"><strong data-page-node-id="TbDy1014C4">联动收官日仍未回到榜内</strong></td></tr>
+    <tr data-page-node-id="TbDy1015Row"><td data-page-node-id="TbDy1015C1">2026/10/15 日榜</td><td class="n" data-page-node-id="TbDy1015C2">第 15 名</td><td data-page-node-id="TbDy1015C3">收官次日回到前 20 中段</td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout co-warn" data-page-node-id="TbDyCallout1">
+  <p data-page-node-id="TbDyCallout2"><strong data-page-node-id="TbDyCallout3">关键读法：</strong>抖音端全期在 12–20 名区间波动，最好水平为 10/9 的第 12 名，<strong data-page-node-id="TbDyCallout4">始终未能进入前 10</strong>；10/13–10/14 收官段甚至跌破前 20。与微信端「进前三」形成鲜明反差——同一产品、同一联动，在抖音生态并未同步起量。</p>
+</div>
+
+<h4 data-page-node-id="s40dqL8Oc8pf6kGEE2OM75">抖音小游戏畅销榜 TOP10（10/12 同日快照，引力引擎）</h4>
+<div class="tw" data-page-node-id="PKtmvZ3wNLAb7mrTKQVHJs">
+<table data-page-node-id="He4epEf9SEUeyMkRKEimRm">
+  <thead data-page-node-id="1ztJdFDM658B3zdSTF3ngP"><tr data-page-node-id="L10wuU97wVDkDfyCArfC6K"><th class="n" data-page-node-id="IYkDcybNGAvOKeTUYcYOla">位次</th><th data-page-node-id="3VvmqWFEPtQrtePuNQ37Oo">游戏</th><th class="n" data-page-node-id="Ew4pncAWDHBGEpI2DM3AkQ">位次</th><th data-page-node-id="uplG6FZONlc9ns7et2EWvo">游戏</th></tr></thead>
+  <tbody data-page-node-id="lIKCATt4OTnafylbQP3lLu">
+    <tr data-page-node-id="2XAo48ZG3t1uyFeXnJEf40"><td class="n" data-page-node-id="7tvuVF8NkWCY4pzrfkhYoW">1</td><td data-page-node-id="RgVCVpOQijp09OyTsh4leW">疯狂水世界</td><td class="n" data-page-node-id="LnCkfpISSf4yH3QT7SocaF">6</td><td data-page-node-id="GRE7EgafKsM82SnkBecrKz">镇邪人</td></tr>
+    <tr data-page-node-id="7rFrtrLaE2v9fCwIiiI4GY"><td class="n" data-page-node-id="NnZ6vDlOPCB59OHF6pIyGJ">2</td><td data-page-node-id="Qp1upyhfowazyJ0AxGGcO4">灵画师</td><td class="n" data-page-node-id="b2bzeTJMMx6aVCODSyJwLu">7</td><td data-page-node-id="nmnAni4FKkZ0zRb10pAMpm">造化仙府</td></tr>
+    <tr data-page-node-id="iWja5kuWfeHBlIFO9GKRxs"><td class="n" data-page-node-id="COFMvOzQzWjNtBqBwsuLTA">3</td><td data-page-node-id="wbd8JBdYaxefK4fc3Ii5SN">向僵尸开炮</td><td class="n" data-page-node-id="Cm7E2xVEMehBHREpWilL7G">8</td><td data-page-node-id="DPq54vISQNSMH6lx89o0Pd">向往的生活</td></tr>
+    <tr data-page-node-id="nIjrOL7e92cvwQ1ZXbKGWX"><td class="n" data-page-node-id="d1ve1r6JcIVAM1oRDTT04M">4</td><td data-page-node-id="20xNLFaAHpfBrnR2FjG9ik">狱国争霸</td><td class="n" data-page-node-id="04x0V3W1Tc7scJajk4ggGq">9</td><td data-page-node-id="ZDAz61QsOXckCKcZCE5xnC">时尚百货城</td></tr>
+    <tr data-page-node-id="fPixAKLBEFv3owHTEOXrmo"><td class="n" data-page-node-id="cmq19pD6JkBCBY18Tj9zIK">5</td><td data-page-node-id="lSMRKuw37J8DRa2CSve7g2">浪漫餐厅</td><td class="n" data-page-node-id="TpQEWKrkMmGJGQxm8i8ouW">10</td><td data-page-node-id="RNWon15Z32A4FLhEODGhrC">肥鹅美食街</td></tr>
+  </tbody>
+</table>
+</div>
+<p data-page-node-id="TbDyTop10Note"><strong data-page-node-id="TbDyTop10Note2">关键读法：</strong>当日蔚蓝位列第 15 名，<strong data-page-node-id="TbDyTop10Note3">未进入 TOP10</strong>。抖音小游戏畅销头部由《疯狂水世界》《灵画师》《向僵尸开炮》等塔防／策略新品把守，竞争密度与微信端并不相同——这解释了同一联动在两端水位差异的来源。</p>
+
+<div class="cmp" data-page-node-id="CmPDualEnd0A1b2C3d4E5">
+  <div class="cmp-r" data-page-node-id="CmPRowWeixin0F6g7H8i9">
+    <span class="cmp-n" data-page-node-id="CmPNameWx0J1k2L3m4N">微信端性格</span>
+    <span class="cmp-d" data-page-node-id="CmPDescWx0P5q6R7s8T">SLG／模拟经营／修仙放置主场，靠熟人关系链进入，比留存与长线付费。</span>
+    <span class="cmp-k" data-page-node-id="CmPKeyWx0U9v0W1x2Y">蔚蓝路径：腰部 → 前三</span>
+  </div>
+  <div class="cmp-r" data-page-node-id="CmPRowDouyin0Z3a4B5c6">
+    <span class="cmp-n" data-page-node-id="CmPNameDy0D7e8F9g0H">抖音端性格</span>
+    <span class="cmp-d" data-page-node-id="CmPDescDy0I1j2K3l4M">塔防／策略／微恐／女性向都有空间，靠短视频前三秒抓人，波动更大。</span>
+    <span class="cmp-k" data-page-node-id="CmPKeyDy0N5o6P7q8R">蔚蓝路径：12–20 名波动，未进前 10</span>
+  </div>
+  <div class="cmp-r hi" data-page-node-id="CmPRowDiff0S9t0U1v2W">
+    <span class="cmp-n" data-page-node-id="CmPNameDf0X3y4Z5a6B">双端差异</span>
+    <span class="cmp-d" data-page-node-id="CmPDescDf0C7d8E9f0G">蔚蓝在微信能进前三，在抖音始终未进前 10——<strong data-page-node-id="CmPHl0H1i2J3k4L5">同一产品、两种命运</strong>，说明增量主要来自微信的社交与长留存场景。</span>
+    <span class="cmp-k" data-page-node-id="CmPKeyDf0M6n7O8p9Q">双端最好位差约 9 名</span>
+  </div>
+</div>
+
+<h3 data-page-node-id="7JnBOAi5wNsSPcIVa1PMfz">3.4 月度口径的历史锚点（含年份标注）</h3>
+<div class="tw" data-page-node-id="VQBWtKcXeBGtsBR0zBzJqN">
+<table data-page-node-id="RyZPixOsK4TcqAxDOyUWro">
+  <thead data-page-node-id="cbZgcbbscRAV1E6cAEt1fU"><tr data-page-node-id="m9tu5z8PJ3CC8UWihuN7O6"><th data-page-node-id="qe1zuAIwH1rugVGNdYi5gn">时间</th><th data-page-node-id="McdH3VRwuUCPtfaqoKRsqs">平台</th><th class="n" data-page-node-id="rU3xU5tg3XlboCBFpRv5GV">蔚蓝位次</th></tr></thead>
+  <tbody data-page-node-id="OSGzwfbHkwjJixamYR2NFc">
+    <tr data-page-node-id="pNvgaaBMJKJZeWmDsh7T14"><td data-page-node-id="GVSAUVffwQfYUbX1bpBk9m">2025 年 10 月</td><td data-page-node-id="8HlDUivTaFGpT9qVhHWrse">微信小游戏畅销月榜</td><td class="n" data-page-node-id="gkUepdFCHriyhl0lyNDpJX">第 5 名</td></tr>
+    <tr data-page-node-id="AUfm475HHm4z7BhBizQx2I"><td data-page-node-id="BMPbbkN01C4jvZAqYY9DTJ">2026 年 5 月</td><td data-page-node-id="oOIkytNLBCDfdsBcz7GmdQ">抖音小游戏畅销月榜</td><td class="n" data-page-node-id="9SwGlFPR6qBIP2otu25FgG">第 20 名</td></tr>
+    <tr data-page-node-id="43hfx43D33ddTTy6MbiYLv"><td data-page-node-id="SmkSE8EHhp0eVKHP0QPTCh">2026 年 9 月</td><td data-page-node-id="rZqWtouIO7q8ErUlcjO4Yq">微信小游戏畅销月榜</td><td class="n" data-page-node-id="uhm2NvfFpKR8B5w3GNPUMR">第 9 名</td></tr>
+    <tr data-page-node-id="NOREEq2JSgEuQC8W5pTU2C"><td data-page-node-id="5T51u6MCnmH464VKGIeSDB">2026 年 9 月</td><td data-page-node-id="JA57KFeuqQDo5oyrhsyCMy">抖音小游戏畅销月榜</td><td class="n" data-page-node-id="EJEIPLIYOuF5dBCcJAKp7q">未进 TOP10</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 data-page-node-id="b8IQNDTnL4c5hN3Ln12Gt5">3.5 iOS App 端：联动几乎没有带动手游端</h3>
+<div class="tw" data-page-node-id="EaTyURkFjd8UKsXTEjVGzt">
+<table data-page-node-id="jITG66aEcllFzMzBszsEHn">
+  <thead data-page-node-id="76UhycnyOUm4SUw8LetHol"><tr data-page-node-id="RLggGVx1YBLgYF2gtrcVyt"><th data-page-node-id="QHIIyhGtr3Dd3kyZjqQoAH">指标</th><th class="n" data-page-node-id="N1MP9tHU4bT4LQgYbZlXUe">数值</th><th data-page-node-id="o56PtsdcsoDJbCmCrk1zog">说明</th></tr></thead>
+  <tbody data-page-node-id="9BkdpACGU8ZLYgLA2M1Sye">
+    <tr data-page-node-id="GypuA41xXbSorbbQ2BcFLe"><td data-page-node-id="XN2CJtpQxJsHqEcpfJPux0">App Store 中国 · 游戏类畅销榜</td><td class="n" data-page-node-id="lQNZmc4IvaRQJL2WwX3FQU">约第 29–30 名</td><td data-page-node-id="b2SimJsJOMd7IxCOHqWYlB">与 9 月「稳定在 20–40 名区间」基本持平</td></tr>
+    <tr data-page-node-id="Jbt067biPW16Qj0chwHDH1"><td data-page-node-id="tswIEUpRKTYFVNxFow9g7j">App Store 中国 · 冒险子类畅销榜</td><td class="n" data-page-node-id="bv3XNfvCbEiHSw9jPzdggB">第 2–3 名</td><td data-page-node-id="t7TbI9C4nE2iHwV5rZRZpu">分类内强势，但分类体量有限</td></tr>
+    <tr data-page-node-id="Dk8ABVUb4cluzWGbghqyaP"><td data-page-node-id="w3UTz3HCaHG2pVMN2h3AB5">iOS 总游戏畅销榜 TOP30（10/9）</td><td class="n" data-page-node-id="5H0PBdkaSZfRihHd6NwGyk">未进入</td><td data-page-node-id="FG2HgMRK2llicai6zzH833">该榜当日名单中无蔚蓝</td></tr>
+    <tr data-page-node-id="1eGyzz5zEuxKfeiGVpqlSI"><td data-page-node-id="m9FnCgkyLAf02MJ0RhFVSd">Sensor Tower 9 月预估</td><td class="n" data-page-node-id="MEEt4t5ZQM8Y4Mu9Nk8ZEp">下载约 5 万次 / 收入约 300 万美元</td><td data-page-node-id="8Q55YEP5ABJmBL1Pw05kI9">iOS 端月流水量级参考</td></tr>
+  </tbody>
+</table>
+</div>
+<p data-page-node-id="2YnzPJyAYaZF6IMLIvdvnj"><strong data-page-node-id="kuG4sTMfWvhnESHR2E1e5j">结论：本次联动的增量集中在小游戏端，App 端几乎没有被带动。</strong>微信小游戏免费即点即玩、活动入口显眼、签到激励直达；App 端需下载安装，联动新用户转化路径长得多。</p>
+
+<h2 data-page-node-id="FNjAUjtgSiERRHZ5VdsRDj">四、联动内容概述：不是联动皮肤，是一整套配装体系</h2>
+
+<p data-page-node-id="d5iC9pWATVW0bW4zppf6Hy">《永远的蔚蓝星球》由广州诗悦网络研发、广州颂悦与海南创悦发行，2025 年 5 月上线 App 端、7 月上线微信小游戏，2026 年 4 月末官宣周杰伦代言。本次与《剑来》动画的联动于 <strong data-page-node-id="7kNx9WciD6HI0FQqmZvUTT">2026 年 10 月 1 日</strong>上线，定位国庆版本主推活动「英雄集结·剑指蔚蓝」。</p>
+
+<div class="tw" data-page-node-id="HFUCG3eDtRLQpkgm2eH12f">
+<table data-page-node-id="SD2KBGLoun16fzjnEGqw3P">
+  <thead data-page-node-id="UOObm8BnvUfceRrw4c8Jkx">
+    <tr data-page-node-id="a9BHOyYGMTxWY6Bb8ozkvy"><th data-page-node-id="t38ZMalllaIeqh3vwHBq7p">维度</th><th data-page-node-id="y3cAesynV0PHBGBKklr1tl">内容</th></tr>
+  </thead>
+  <tbody data-page-node-id="UJMSDlHYPs3e7L3qOVT8D3">
+    <tr data-page-node-id="FIF7YWn9MVX46FeWOWHZb3"><td data-page-node-id="nOQl2GSESJACX3hqU1oPlx">联动 IP</td><td data-page-node-id="YuC5gHBeXQJQNnYG3d1yGE">《剑来》动画（腾讯视频，云图动漫制作）</td></tr>
+    <tr data-page-node-id="51VeAyDViY4UCzz6UqZcsC"><td data-page-node-id="GJqTem6B8XlEZBpU1eliqs">核心付费点</td><td data-page-node-id="dUSgrY6aymWupv16SK4uge">国王幻形「陈平安」、绝世武器「初一飞剑」、传说武器「青槐剑」、城墙皮肤「剑气·长城」、传说藏品「侠客葫芦」——构成 5 件套</td></tr>
+    <tr data-page-node-id="DPjHCe6hbNbSwVti2iJGkY"><td data-page-node-id="Yy6WIhnv6umZ3c8PwMHv6a">玩法活动</td><td data-page-node-id="GXYdehsmiq1rELEZfdiXUc">岁岁平安（签到）、骊珠寻珍（抽奖）、骊珠画卷（收集）、剑守长城（Boss 关卡）、槐荫祈缘（分享抽奖）、集结老友（拉回流），共 6 重</td></tr>
+    <tr data-page-node-id="JkaEX7frlBsMyeuraDjHlX"><td data-page-node-id="VgPjGzFZuntSIJL2lgh2vR">免费力度</td><td data-page-node-id="LgmuYq2V77J5mLmOuARLNT">活跃即送陈平安幻形 + 初一飞剑；签到送传说武器与藏品；拉回流抽联动幻形</td></tr>
+    <tr data-page-node-id="5Bi6RrtyLCQBZEv9y2VkIQ"><td data-page-node-id="pQeF6bmBg4nM9yw3YnTZOU">实物奖池</td><td data-page-node-id="UHHQxB2F3e6hhPpi48T2VE">华为 Mate XT2、足金金钞、666 元现金红包、《剑来》动画周边</td></tr>
+    <tr data-page-node-id="BhZoR3YDDxeb1TxEb2E2AQ"><td data-page-node-id="gBd34ZOppuXuXj0GZRrxrA">开放规则</td><td data-page-node-id="dPTPDv3BPQH5q2Fxn0g59H">9/10 及之前开服的区服：10/1–10/14 开启；9/11–9/30 开服：开服第 22 天开启；10/1 后开服：开服首日开启</td></tr>
+    <tr data-page-node-id="ATLM4CaVKtml1QEZoodZgF"><td data-page-node-id="vJxqKKOQzhMikBbaVoexmL">后续排期</td><td data-page-node-id="CzIQFJzEZ2iYEzgKwJZ7Tl">二期（宁姚）已在 10/8 前后进入预热，官方明确「下期联动内容敬请期待」</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 data-page-node-id="ET11Eui71URKhSf4NHyl8y">4.1 机制关键：五件套强耦合</h3>
+<ul data-page-node-id="ZIBAU0UhCKBk8qe2mRe9gw">
+  <li data-page-node-id="7i8FGoOSZAafGXZO8Amztm"><strong data-page-node-id="lIQLaEsCWGjN1MWOFg33PW">陈平安幻形（打底）</strong>——按场上英雄星级提供攻击力加成，全队常驻 buff 底座；</li>
+  <li data-page-node-id="09xYcuLyOYpS4urnHCGRlw"><strong data-page-node-id="Al6NsSyisx5hJSOOY5iRpn">青槐剑（叠层）</strong>——每次召唤／合成英雄叠加全队增伤，最高 16%；</li>
+  <li data-page-node-id="taLPoXxVC5hH7DV6jZOMYW"><strong data-page-node-id="lxj65pgsSmLNHLbndARu4F">初一飞剑（爆发）</strong>——主 C 每攻击 3 次触发 5 连击并多次索敌，满级伤害继承 800%；</li>
+  <li data-page-node-id="wd0qfy8TTbAYA9pfnbBzhn"><strong data-page-node-id="GMTPafbQPtD28gqlkzeeY4">剑气·长城（生存＋易伤）</strong>——城墙血量降至 75% 结阵锁血并给怪物附加高额绝对易伤，满级可二次触发；</li>
+  <li data-page-node-id="6xAvGQgP9s3FrhlmKaPzhz"><strong data-page-node-id="phA5PWHYyI5z1k8e5xkRpD">侠客葫芦（长线）</strong>——每 2 波叠加最终增伤，第 6 波后额外加成。</li>
+</ul>
+<p data-page-node-id="GENneKfBpGFNuaOX39Zzro">五件道具分属不同养成槽位、彼此咬合成一条输出链，<strong data-page-node-id="PwNCDh6lFDpAxpK5ZH0Kel">玩家想吃完整体系就必须成套购买</strong>——这是把榜单从腰部推到前三的主要引擎。</p>
+
+<h2 data-page-node-id="wagcBaqWLmPAa6AfayHMIm">五、声量端：抖音指数全面下行（最反直觉的一段）</h2>
+<p data-page-node-id="mzHpxN3TZYwf3yIpVVgDtE">数据取自抖音指数（巨量算数），周期 <strong data-page-node-id="g1XEoMeb1GVQTVnHXrDphb">2026-09-12 至 2026-10-12</strong>，环比对比前一 30 天周期：</p>
+
+<div class="bars" data-page-node-id="M4f1t4N1ZTVqjBaM4MtrB5">
+  <div class="bar" data-page-node-id="Lxij6BaCH7X3XLDcEd6eqK"><span class="lb" data-page-node-id="MpTp2GjZCyHyt72TWl1Bdb">永远的蔚蓝星球 · 搜索</span><span class="tr" data-page-node-id="TwBgPVkHTecmzuSbeLdOqE"><span class="fl b-down f-100" data-page-node-id="a8wvO8W8w2s0TmBf4p3CK0"></span></span><span class="vl" style="color:var(--down)" data-page-node-id="cZCnKxE6U83oDEvlg618wA">−26.5%</span></div>
+  <div class="bar" data-page-node-id="qmjqVzTVFBoF8t9Z2i6Yd8"><span class="lb" data-page-node-id="LZxewK5ElDsGjG9JKKpXvC">永远的蔚蓝星球 · 综合</span><span class="tr" data-page-node-id="BXjV5dBamHjT0K8Bn8z4bp"><span class="fl b-down f-100" data-page-node-id="8b7TNSp4otTnkAR7ANxyVu"></span></span><span class="vl" style="color:var(--down)" data-page-node-id="zQEhPtx65KcLplvzOrtMpO">−26.1%</span></div>
+  <div class="bar" data-page-node-id="jFLkUAsbyJpPtjUAEZNMMr"><span class="lb" data-page-node-id="C3ISJmJoJlb4Ond5FO9wPP">剑来 · 搜索</span><span class="tr" data-page-node-id="EUnanV8rFWvrnxF5Qe6gFE"><span class="fl b-down f-100" data-page-node-id="eLJyWAhxIEsEmnLTlflFyj"></span></span><span class="vl" style="color:var(--down)" data-page-node-id="VNCNDliq7Vto9nDmkEONXx">−33.5%</span></div>
+  <div class="bar" data-page-node-id="KjQMSXp266Ppfn3ZAkYweU"><span class="lb" data-page-node-id="p1nCcX7Y0H7Ujt5iTVdqcV">陈平安 · 搜索</span><span class="tr" data-page-node-id="Gwix3E86c6cm7xwq2zyLGT"><span class="fl b-down f-100" data-page-node-id="9ZS0MyfDkxSjgq4ASZ4J3S"></span></span><span class="vl" style="color:var(--down)" data-page-node-id="Zqeb2v5E6v1x0eVWGRTfs9">−24.8%</span></div>
+</div>
+
+<div class="tw" data-page-node-id="RPTgRtEEglZEpuejArdoMV">
+<table data-page-node-id="vw7qbiW0bMMXdrysR0ddBX">
+  <thead data-page-node-id="vE9sCM6UHtbfTQ0PFAl7yB"><tr data-page-node-id="kOXjbsKkXeIpdrCfd52GzI"><th data-page-node-id="2c4ij4yqXK1wtARDl24eS1">关键词</th><th class="n" data-page-node-id="J2zPiwAS7rykwARH5BVOtE">搜索指数均值</th><th class="n" data-page-node-id="dRT85qHCDgQYXOkJgcvrRJ">同比</th><th class="n" data-page-node-id="CE5JKZswR19pjaiH4eKb21">环比</th><th class="n" data-page-node-id="YNmms1red7tfVjuN62g2ZN">综合指数均值</th><th class="n" data-page-node-id="RNafegZOEpXdA3b30dK7Ra">综合指数环比</th></tr></thead>
+  <tbody data-page-node-id="la0pcT66EZT4f5vcHRCR0c">
+    <tr data-page-node-id="Bm4drCZc6NBNJgcJkJ4Sfz"><td data-page-node-id="HPTVi4vnK0H0c8zBRsnMh0">永远的蔚蓝星球</td><td class="n" data-page-node-id="MllyxqVzUXNH4Qjx5rPoSs">6.7 万</td><td class="n" data-page-node-id="SoZPY6Ezflfj2LjwD9Lcpk">−2.1%</td><td class="n" style="color:var(--down)" data-page-node-id="z1ULmz6wIOTpLnieBjSiUX">−26.5%</td><td class="n" data-page-node-id="mfaEgGa0VTgyy6zbICq1Im">2.2 万</td><td class="n" style="color:var(--down)" data-page-node-id="EVtSHYLRbyrqu24uFpvoWV">−26.1%</td></tr>
+    <tr data-page-node-id="BMRxx0RSWy7jSqojUIQdtD"><td data-page-node-id="BGAWYTGC9kcp3nmB0s5ny7">剑来</td><td class="n" data-page-node-id="y31pIAfG4twMRmJ9wy6wMF">17.2 万</td><td class="n" data-page-node-id="a1pd8QcClUQTvR9G0Ut6WH">−50.7%</td><td class="n" style="color:var(--down)" data-page-node-id="oq0mY33ic2xtJ8dphHInYI">−33.5%</td><td class="n" data-page-node-id="FTeJ3zwd0YbKKVGPuezpLV">5.9 万</td><td class="n" style="color:var(--down)" data-page-node-id="TCIqeKk15iLlEMPabvykt4">−33.4%</td></tr>
+    <tr data-page-node-id="EtF7X9C3r5qeAgVaiQP7ci"><td data-page-node-id="T5BqSS5vEvAmFaS1qhIrqe">陈平安</td><td class="n" data-page-node-id="Y69lpSZYhDKbJzHXVRn5aK">9.5 万</td><td class="n" data-page-node-id="5wP8owtrT18sqVqeE7KNMY">−57.1%</td><td class="n" style="color:var(--down)" data-page-node-id="7g1urYi2EJImlCxnyuNqBn">−24.8%</td><td class="n" data-page-node-id="X63gypViCfhs0nVNJWA7jy">3.3 万</td><td class="n" style="color:var(--down)" data-page-node-id="JhKuXkPmf7fZ2MotZS0iBB">−24.6%</td></tr>
+    <tr data-page-node-id="nYP4YCAR8wV4MvyX9fKkIC"><td data-page-node-id="X82iQqH7pmcfjMQyHHf2hf">剑来动画</td><td class="n" data-page-node-id="46gE7bSYchlW2ZAsEaiL3X">未收录</td><td class="n" data-page-node-id="sWGULJI6XxDnrdBbSxAIgD">—</td><td class="n" data-page-node-id="4J6LSH2aIKXsHUQSxxb9cZ">—</td><td class="n" data-page-node-id="LMWntXS2hxjhbA8yiyf7LG">—</td><td class="n" data-page-node-id="yWyl6bP4epHSJjzN9ZkV7l">—</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3 data-page-node-id="goLBY8TmBZ83RBcLJHeBkw">5.1 口碑与社区：两端分化</h3>
+<div class="two" data-page-node-id="oBedOPmEhcebX38S9OlKSf">
+  <div class="ch" data-page-node-id="wgXpPPGVYOP4eIAhaY2czN">
+    <h4 data-page-node-id="dWPD37bwBgQW1AeA6T1g2o">大盘评分尚可</h4>
+    <p data-page-node-id="npUoV4TMFf7izu3F5RAHk2">App Store 中国 <span class="hl" data-page-node-id="AsYMlVQ5Qx9M3f0AAU7wzO">4.8 分 / 约 29–30 万条评分</span>，属休闲品类里偏健康的水平，说明主流轻度玩家对联动版本是买账的。</p>
+  </div>
+  <div class="ch" data-page-node-id="s8mnKVnjcynx8q8Cv4tXuC">
+    <h4 data-page-node-id="VjYWNe0HN8bkwY5NlPASGa">核心社区不满集中</h4>
+    <p data-page-node-id="jGKFPYlVSySzCIoS6etVsn">B 站 6.2 分；TapTap 联动帖下出现「<span class="hl" data-page-node-id="JXa3HqWqA8Va5bsXormcAV">用脚填数值，赛季关卡至今打不过</span>」「扫荡券门票不通用」等差评，指向赛季数值与资源规则而非美术。</p>
+  </div>
+</div>
+
+<h2 data-page-node-id="TbJaySec9H2">六、横向对照：周杰伦波（6 月）vs 剑来联动（10 月）</h2>
+<div class="tw" data-page-node-id="TbJaySec9Tw">
+<table data-page-node-id="TbJaySec9Table">
+  <thead data-page-node-id="TbJaySec9Thead">
+    <tr data-page-node-id="TbJaySec9Thr"><th data-page-node-id="TbJaySec9Th1">维度</th><th data-page-node-id="TbJaySec9Th2">周杰伦波（2026-06）</th><th data-page-node-id="TbJaySec9Th3">剑来联动（2026-10）</th><th data-page-node-id="TbJaySec9Th4">读数</th></tr>
+  </thead>
+  <tbody data-page-node-id="TbJaySec9Tbody">
+    <tr data-page-node-id="TbJaySec9R1"><td data-page-node-id="TbJaySec9R1a">活动性质</td><td data-page-node-id="TbJaySec9R1b">品牌代言人 ＋ 一周年嘉年华</td><td data-page-node-id="TbJaySec9R1c">动画 IP 联动（一期 14 天）</td><td data-page-node-id="TbJaySec9R1d">品牌事件 vs 内容联动</td></tr>
+    <tr class="hi" data-page-node-id="TbJaySec9R2"><td data-page-node-id="TbJaySec9R2a">微信峰值位次</td><td data-page-node-id="TbJaySec9R2b"><strong data-page-node-id="TbJaySec9R2b1">#1</strong></td><td data-page-node-id="TbJaySec9R2c">#3</td><td data-page-node-id="TbJaySec9R2d">峰值强度约 2 倍</td></tr>
+    <tr class="hi" data-page-node-id="TbJaySec9R3"><td data-page-node-id="TbJaySec9R3a">微信头部停留</td><td data-page-node-id="TbJaySec9R3b"><strong data-page-node-id="TbJaySec9R3b1">霸榜 8–9 天</strong>（6/5–6/12）</td><td data-page-node-id="TbJaySec9R3c">仅 1 天（10/9）</td><td data-page-node-id="TbJaySec9R3d">持续性差一个量级</td></tr>
+    <tr data-page-node-id="TbJaySec9R4"><td data-page-node-id="TbJaySec9R4a">抖音峰值位次</td><td data-page-node-id="TbJaySec9R4b">#3（6/3，▲17）</td><td data-page-node-id="TbJaySec9R4c">未进前 10（最好 #12）</td><td data-page-node-id="TbJaySec9R4d">抖音端两波都弱</td></tr>
+    <tr data-page-node-id="TbJaySec9R5"><td data-page-node-id="TbJaySec9R5a">抖音头部停留</td><td data-page-node-id="TbJaySec9R5b">2 天（6/3–6/4）</td><td data-page-node-id="TbJaySec9R5c">从未进入</td><td data-page-node-id="TbJaySec9R5d">—</td></tr>
+    <tr data-page-node-id="TbJaySec9R6"><td data-page-node-id="TbJaySec9R6a">站外声量</td><td data-page-node-id="TbJaySec9R6b">首日话题播放 >1300 万、官方直播点赞 >44 万</td><td data-page-node-id="TbJaySec9R6c">抖音指数三词环比 −24.8%～−33.5%</td><td data-page-node-id="TbJaySec9R6d">一正一负，破圈分水岭</td></tr>
+    <tr data-page-node-id="TbJaySec9R7"><td data-page-node-id="TbJaySec9R7a">买量动作</td><td data-page-node-id="TbJaySec9R7b">ADX 首日新增素材 19000 组（前一日 20 倍），代言素材占比 >83%；字节-微小日耗 30–40 万 → 380 万/天</td><td data-page-node-id="TbJaySec9R7c">抖小日耗 +75%、微小 +60%，ROI7 −1.03pp</td><td data-page-node-id="TbJaySec9R7d">都在放量：一波换来话题，一波只换位次</td></tr>
+    <tr class="hi" data-page-node-id="TbJaySec9R7x"><td data-page-node-id="TbJaySec9R7xa">字节-微小首日 ROI</td><td data-page-node-id="TbJaySec9R7xb"><strong data-page-node-id="TbJaySec9R7xb1">1%+ → 1.5%</strong>（380 万/天高位）</td><td data-page-node-id="TbJaySec9R7xc">1.12% → 1.29%（16 万/天）</td><td data-page-node-id="TbJaySec9R7xd">消耗高约 24 倍，首日回收反而更高</td></tr>
+    <tr data-page-node-id="TbJaySec9R8"><td data-page-node-id="TbJaySec9R8a">游戏内承接</td><td data-page-node-id="TbJaySec9R8b">BGM 换《阳光宅男》、应援打 call、联名角色与武器</td><td data-page-node-id="TbJaySec9R8c">五件套强耦合配装体系、六重活动叠加</td><td data-page-node-id="TbJaySec9R8d">前者做粉丝情绪，后者做付费深度</td></tr>
+  </tbody>
+</table>
+</div>
+<h3 data-page-node-id="TbJaySec91H3">6.1 周杰伦波 · 字节-微小投放明细（内部口径）</h3>
+<p data-page-node-id="TbJaySec91Lead">代言官宣（4/28）前后两周的双端位次与字节-微小投放水位，逐日实记：</p>
+<div class="tw" data-page-node-id="TbJaySec91Tw">
+<table data-page-node-id="TbJaySec91Table">
+  <thead data-page-node-id="TbJaySec91Thead">
+    <tr data-page-node-id="TbJaySec91Thr"><th data-page-node-id="TbJaySec91Th1">日期</th><th class="n" data-page-node-id="TbJaySec91Th2">抖小畅销榜</th><th class="n" data-page-node-id="TbJaySec91Th3">提升</th><th class="n" data-page-node-id="TbJaySec91Th4">微小畅销榜</th><th class="n" data-page-node-id="TbJaySec91Th5">提升</th><th class="n" data-page-node-id="TbJaySec91Th6">字节-微小日均消耗</th><th class="n" data-page-node-id="TbJaySec91Th7">微小首日 ROI</th></tr>
+  </thead>
+  <tbody data-page-node-id="TbJaySec91Tbody">
+    <tr data-page-node-id="TbJaySec91D0426"><td class="n" data-page-node-id="TbJaySec91D0426a">4/26</td><td class="n" data-page-node-id="TbJaySec91D0426b">95</td><td class="n" data-page-node-id="TbJaySec91D0426c"><span class="tag t-flat" data-page-node-id="TbJaySec91D0426c1">—</span></td><td class="n" data-page-node-id="TbJaySec91D0426d">19</td><td class="n" data-page-node-id="TbJaySec91D0426e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0426e1">—</span></td><td class="n" rowspan="2" style="vertical-align:middle" data-page-node-id="TbJaySec91D0426f">30–40 万</td><td class="n" rowspan="5" style="vertical-align:middle" data-page-node-id="TbJaySec91D0426g">—</td></tr>
+    <tr data-page-node-id="TbJaySec91D0427"><td class="n" data-page-node-id="TbJaySec91D0427a">4/27</td><td class="n" data-page-node-id="TbJaySec91D0427b">78</td><td class="n" data-page-node-id="TbJaySec91D0427c"><span class="tag t-up" data-page-node-id="TbJaySec91D0427c1">▲17</span></td><td class="n" data-page-node-id="TbJaySec91D0427d">22</td><td class="n" data-page-node-id="TbJaySec91D0427e"><span class="tag t-down" data-page-node-id="TbJaySec91D0427e1">▼3</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0428"><td class="n" data-page-node-id="TbJaySec91D0428a">4/28</td><td class="n" data-page-node-id="TbJaySec91D0428b">77</td><td class="n" data-page-node-id="TbJaySec91D0428c"><span class="tag t-up" data-page-node-id="TbJaySec91D0428c1">▲1</span></td><td class="n" data-page-node-id="TbJaySec91D0428d">22</td><td class="n" data-page-node-id="TbJaySec91D0428e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0428e1">持平</span></td><td class="n" rowspan="3" style="vertical-align:middle" data-page-node-id="TbJaySec91D0428f">60 万</td></tr>
+    <tr data-page-node-id="TbJaySec91D0429"><td class="n" data-page-node-id="TbJaySec91D0429a">4/29</td><td class="n" data-page-node-id="TbJaySec91D0429b">31</td><td class="n" data-page-node-id="TbJaySec91D0429c"><span class="tag t-up" data-page-node-id="TbJaySec91D0429c1">▲46</span></td><td class="n" data-page-node-id="TbJaySec91D0429d">12</td><td class="n" data-page-node-id="TbJaySec91D0429e"><span class="tag t-up" data-page-node-id="TbJaySec91D0429e1">▲10</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0430"><td class="n" data-page-node-id="TbJaySec91D0430a">4/30</td><td class="n" data-page-node-id="TbJaySec91D0430b">39</td><td class="n" data-page-node-id="TbJaySec91D0430c"><span class="tag t-down" data-page-node-id="TbJaySec91D0430c1">▼8</span></td><td class="n" data-page-node-id="TbJaySec91D0430d">12</td><td class="n" data-page-node-id="TbJaySec91D0430e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0430e1">持平</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0501"><td class="n" data-page-node-id="TbJaySec91D0501a">5/1</td><td class="n" data-page-node-id="TbJaySec91D0501b">38</td><td class="n" data-page-node-id="TbJaySec91D0501c"><span class="tag t-up" data-page-node-id="TbJaySec91D0501c1">▲1</span></td><td class="n" data-page-node-id="TbJaySec91D0501d">8</td><td class="n" data-page-node-id="TbJaySec91D0501e"><span class="tag t-up" data-page-node-id="TbJaySec91D0501e1">▲4</span></td><td class="n" rowspan="3" style="vertical-align:middle" data-page-node-id="TbJaySec91D0501f">160 万</td><td class="n" rowspan="3" style="vertical-align:middle" data-page-node-id="TbJaySec91D0501g">1%+</td></tr>
+    <tr data-page-node-id="TbJaySec91D0502"><td class="n" data-page-node-id="TbJaySec91D0502a">5/2</td><td class="n" data-page-node-id="TbJaySec91D0502b">37</td><td class="n" data-page-node-id="TbJaySec91D0502c"><span class="tag t-up" data-page-node-id="TbJaySec91D0502c1">▲1</span></td><td class="n" data-page-node-id="TbJaySec91D0502d">9</td><td class="n" data-page-node-id="TbJaySec91D0502e"><span class="tag t-down" data-page-node-id="TbJaySec91D0502e1">▼1</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0503"><td class="n" data-page-node-id="TbJaySec91D0503a">5/3</td><td class="n" data-page-node-id="TbJaySec91D0503b">32</td><td class="n" data-page-node-id="TbJaySec91D0503c"><span class="tag t-up" data-page-node-id="TbJaySec91D0503c1">▲5</span></td><td class="n" data-page-node-id="TbJaySec91D0503d">8</td><td class="n" data-page-node-id="TbJaySec91D0503e"><span class="tag t-up" data-page-node-id="TbJaySec91D0503e1">▲1</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0504"><td class="n" data-page-node-id="TbJaySec91D0504a">5/4</td><td class="n" data-page-node-id="TbJaySec91D0504b">29</td><td class="n" data-page-node-id="TbJaySec91D0504c"><span class="tag t-up" data-page-node-id="TbJaySec91D0504c1">▲3</span></td><td class="n" data-page-node-id="TbJaySec91D0504d">8</td><td class="n" data-page-node-id="TbJaySec91D0504e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0504e1">持平</span></td><td class="n" rowspan="6" style="vertical-align:middle" data-page-node-id="TbJaySec91D0504f">380 万</td><td class="n" rowspan="6" style="vertical-align:middle" data-page-node-id="TbJaySec91D0504g">1.5%</td></tr>
+    <tr data-page-node-id="TbJaySec91D0505"><td class="n" data-page-node-id="TbJaySec91D0505a">5/5</td><td class="n" data-page-node-id="TbJaySec91D0505b">26</td><td class="n" data-page-node-id="TbJaySec91D0505c"><span class="tag t-up" data-page-node-id="TbJaySec91D0505c1">▲3</span></td><td class="n" data-page-node-id="TbJaySec91D0505d">7</td><td class="n" data-page-node-id="TbJaySec91D0505e"><span class="tag t-up" data-page-node-id="TbJaySec91D0505e1">▲1</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0506"><td class="n" data-page-node-id="TbJaySec91D0506a">5/6</td><td class="n" data-page-node-id="TbJaySec91D0506b">27</td><td class="n" data-page-node-id="TbJaySec91D0506c"><span class="tag t-down" data-page-node-id="TbJaySec91D0506c1">▼1</span></td><td class="n" data-page-node-id="TbJaySec91D0506d">4</td><td class="n" data-page-node-id="TbJaySec91D0506e"><span class="tag t-up" data-page-node-id="TbJaySec91D0506e1">▲3</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0507"><td class="n" data-page-node-id="TbJaySec91D0507a">5/7</td><td class="n" data-page-node-id="TbJaySec91D0507b">26</td><td class="n" data-page-node-id="TbJaySec91D0507c"><span class="tag t-up" data-page-node-id="TbJaySec91D0507c1">▲1</span></td><td class="n" data-page-node-id="TbJaySec91D0507d">4</td><td class="n" data-page-node-id="TbJaySec91D0507e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0507e1">持平</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0508"><td class="n" data-page-node-id="TbJaySec91D0508a">5/8</td><td class="n" data-page-node-id="TbJaySec91D0508b">23</td><td class="n" data-page-node-id="TbJaySec91D0508c"><span class="tag t-up" data-page-node-id="TbJaySec91D0508c1">▲3</span></td><td class="n" data-page-node-id="TbJaySec91D0508d">2</td><td class="n" data-page-node-id="TbJaySec91D0508e"><span class="tag t-up" data-page-node-id="TbJaySec91D0508e1">▲2</span></td></tr>
+    <tr data-page-node-id="TbJaySec91D0509"><td class="n" data-page-node-id="TbJaySec91D0509a">5/9</td><td class="n" data-page-node-id="TbJaySec91D0509b">20</td><td class="n" data-page-node-id="TbJaySec91D0509c"><span class="tag t-up" data-page-node-id="TbJaySec91D0509c1">▲3</span></td><td class="n" data-page-node-id="TbJaySec91D0509d">2</td><td class="n" data-page-node-id="TbJaySec91D0509e"><span class="tag t-flat" data-page-node-id="TbJaySec91D0509e1">持平</span></td></tr>
+  </tbody>
+</table>
+</div>
+<div class="callout co-info" data-page-node-id="TbJaySec91Callout">
+  <p data-page-node-id="TbJaySec91CalloutP"><strong data-page-node-id="TbJaySec91CalloutP1">投放侧读数：</strong>字节-微小日耗由预热期 30–40 万/天，官宣后升至 60 万、五一升至 160 万、节后峰值 <strong data-page-node-id="TbJaySec91CalloutP2">380 万/天</strong>（约日常的 10 倍）；同期微小首日 ROI 由 1%+ 抬到 <strong data-page-node-id="TbJaySec91CalloutP3">1.5%</strong>，在最高消耗档位仍未回落。榜单侧，抖小畅销榜 95 → 20、微小畅销榜 19 → 2，两端同步上行且<strong data-page-node-id="TbJaySec91CalloutP4">放量与回收同向</strong>——这是与剑来波最本质的差别：本轮是「越放越赚」，而非「放量换位次」。</p>
+</div>
+<div class="callout co-info" data-page-node-id="TbJaySec9Callout">
+  <p data-page-node-id="TbJaySec9CalloutP"><strong data-page-node-id="TbJaySec9CalloutP1">关键结论：</strong>两波共享同一条双端规律——<strong data-page-node-id="TbJaySec9CalloutP2">微信端放大倍数远高于抖音端</strong>（周杰伦波 #1 vs #3，剑来波 #3 vs 前 10 外）。差异出在「承接方式」：周杰伦波用代言人把站外声量直接转成话题与拉新（首日话题播放破千万、素材占比 83%），剑来波则主要靠买量放量与游戏内活动堆叠换取位次，站外自然关注度不升反降。因此本期位次提升<strong data-page-node-id="TbJaySec9CalloutP3">可归因、可复制性弱</strong>：预算一停，位次即回落（10/14 已跌至第 12）。</p>
+</div>
+
+</div>
+</body>
+</html>
