@@ -6339,7 +6339,64 @@ function renderSidebarList(reports) {
       var wk = this.getAttribute('data-sidebar-week');
 
 
-      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); }
+      if (!wk) return;
+
+
+      if (wk === currentKey) { if (window.innerWidth <= 768) toggleSidebar(); return; }
+
+
+      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); return; }
+
+
+      var r = reportMap[wk];
+
+
+      if (!r) return;
+
+
+      if (a.getAttribute('data-loading') === '1') return;
+
+
+      a.setAttribute('data-loading', '1');
+
+
+      var icon = a.querySelector('.nav-icon'); var iconTxt = icon ? icon.textContent : '';
+
+
+      if (icon) icon.textContent = '...';
+
+
+      fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(d) {
+
+
+        DATA[wk] = normalizeData(d, r);
+
+
+        renderPage(wk);
+
+
+      }).catch(function(err) {
+
+
+        console.warn('[workbench] 周报数据加载失败: ' + r.dirName, err);
+
+
+        renderPage(wk);
+
+
+      }).then(function() {
+
+
+        a.removeAttribute('data-loading');
+
+
+        if (icon) icon.textContent = iconTxt;
+
+
+        if (window.innerWidth <= 768) toggleSidebar();
+
+
+      });
 
 
     });
