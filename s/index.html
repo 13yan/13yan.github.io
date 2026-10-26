@@ -580,7 +580,7 @@ body { font-family: -apple-system,'PingFang SC','Microsoft YaHei','Helvetica Neu
       ① <strong>2026/7/2~9/3</strong>（抖店系数 0.764 = 85% − 8%直播服务费 − 0.6%服务费 − 15%研发分成）：X = 59.53% → 健康线 <strong>60%</strong>、高度线 (59.53+100)/2 = 79.76 → <strong>80%</strong>。分级：&lt;=60% ✅健康（抖店利润优于正常渠道）；&gt;60%~80% 🟡中度风险（抖店利润已低于正常渠道）；&gt;80% 🔴高度风险（抖店利润明显低于正常渠道）。<br>
       ② <strong>2026/9/4 ~ 10/9</strong>（无直播，免扣 8% 直播服务费，抖店系数 0.844 = 85% − 0.6%服务费 − 15%研发分成）：X = 97.18% → 健康线 <strong>97%</strong>、高度线 (97.18+100)/2 = 98.59 → <strong>99%</strong>。分级：&lt;=97% ✅健康；&gt;97%~99% 🟡中度风险；&gt;99% 🔴高度风险。<br>
       ③ <strong>2026/10/10 起</strong>（直播恢复，改扣<strong>直播月费：周二~周日每天连播 4 小时，250 元/小时、月播满 100 小时封顶 25,000 元/月，未满按实际时长结算</strong>；签约主体陕西绝峰文化传媒有限公司，合同期限 2026.06.10~2027.06.09，不自动续期）：抖店等效系数 = 0.844 − 当月月费÷当月流水，<strong>不再是常数</strong>（既随流水浮动，也随当月实际时长浮动），故临界点随当月浮动 —— <strong>X = [（安卓+iOS）×0.2065 + 0.5×UC − 当月月费] ÷（0.2125 × 支付总流水）</strong>；无 UC 时退化为 X = (0.2065 − 当月月费÷当月流水) ÷ 0.2125。档位参考（满 100h、月费 2.5 万、无 UC）：月流水 30 万 → X 57.96% → 健康线 <strong>58%</strong> / 高度线 <strong>79%</strong>；50 万 → 73.65% → <strong>74%</strong> / <strong>87%</strong>；60 万 → 77.57% → <strong>78%</strong> / <strong>89%</strong>；70 万 → 80.37% → <strong>80%</strong> / <strong>90%</strong>；100 万 → 85.41% → <strong>85%</strong> / <strong>93%</strong>。分级口径同前。天花板：安卓占比 ≥ <strong>97.2%</strong>（= 0.2065÷0.2125）时抖店恒劣，与月流水无关（UC 流水会略微抬高该天花板）。<br>
-      <strong>适用范围</strong>：单日模式按「当日」取用所属阈值（月费段按该自然月<strong>全月</strong>支付流水折算）；多日/全店汇总模式按「区间最新日期」所属阈值判定；2026/10/9 及之前的历史判定结果不变。</td></tr>
+      <strong>适用范围</strong>：单日模式按「当日」取用所属阈值（月费段按该自然月<strong>全月</strong>支付流水折算）；多日/全店汇总模式按「区间内<strong>逐场实际系数加权</strong>」判定（跨日期段区间不再套用区间最新日期的系数，否则会把 9/3 前的 8% 直播费段按免扣段计算）；2026/10/9 及之前的历史判定结果不变。</td></tr>
     </table>
 
     <h3>六、新增游戏流程</h3>
@@ -1140,9 +1140,14 @@ var RISK_TH_NEW = {ok:97, high:99, tip:''};   // 2026-09-04 ~ 2026-10-09
 var RISK_IOS_NET = 0.6375, RISK_DEN = 0.2125; // iOS 净系数 / 系数差（0.85 − 0.6375）
 // 统一计算：X = [ (安卓+iOS)×(k − 0.6375) + 0.5×UC − 月费 ] ÷ ( 0.2125 × 支付总流水 )；无流水返回 null
 //   UC 项：抖店侧 UC×k、正常渠道侧 UC×(k−0.5) ⇒ 差额恒为 0.5×UC（与 k 无关，故写死 0.5）
-function riskThresholdFrom(k, baseAmt, payTotal, fee, tip, ucAmt) {
+//   ⚠ 跨日期段区间（2026-10-26 修正）：不能把「最新日期的 k」套到整段 —— 应传 dkSum = Σ(安卓+iOS)×当日 k，
+//      用 ΣD_d·k_d − 0.6375·ΣD_d 代替 (k−0.6375)·D。k 恒定时两式完全等价，只在跨段区间有差异。
+function riskThresholdFrom(k, baseAmt, payTotal, fee, tip, ucAmt, dkSum) {
   if (!payTotal) return null;
-  var x = ((k - RISK_IOS_NET) * baseAmt + 0.5 * (ucAmt || 0) - (fee || 0)) / (RISK_DEN * payTotal);
+  var profitTerm = (dkSum === null || dkSum === undefined)
+    ? (k - RISK_IOS_NET) * baseAmt
+    : (dkSum - RISK_IOS_NET * baseAmt);
+  var x = (profitTerm + 0.5 * (ucAmt || 0) - (fee || 0)) / (RISK_DEN * payTotal);
   if (x < 0) x = 0;
   return { ok: Math.round(x * 100), high: Math.round((x * 100 + 100) / 2), tip: tip || '' };
 }
@@ -1163,18 +1168,19 @@ function riskThresholds(dateStr) {
            '（月费段动态阈值：按 '+ym+' 当月流水 '+Math.round(p/10000)+' 万折算）', Um)
          || {ok:RISK_TH_NEW.ok, high:RISK_TH_NEW.high, tip:'（当月暂无流水，暂按 97%/99% 判）'};
 }
-// 多日/区间：按「所选区间」流水（月费 = 区间内实际分摊总额），系数取区间内最新日期所属段
+// 多日/区间：按「所选区间」流水（月费 = 区间内实际分摊总额）；系数按**逐场实际系数加权**（跨段区间不再套用最新日期系数）
 function riskThresholdsOf(sessions) {
-  var maxD = '', D = 0, T = 0, F = 0, U = 0;
+  var maxD = '', D = 0, T = 0, F = 0, U = 0, DK = 0;
   (sessions || []).forEach(function(sx) {
     if (!sx) return;
     if (sx.date > maxD) maxD = sx.date;
     D += ddPayBaseOf(sx); T += ddPayTotalOf(sx); F += ddMonthFeeOf(sx); U += ucAmtOf(sx);
+    DK += ddPayBaseOf(sx) * ddRate(sx.date);   // Σ(安卓+iOS)×当日抖店系数
   });
   if (!maxD) return RISK_TH_OLD;
   var k = ddRate(maxD);
   var tip = '（动态阈值：按所选区间流水 '+Math.round(T/10000)+' 万折算'+(F>0?'，含月费 '+Math.round(F)+' 元':'')+'）';
-  return riskThresholdFrom(k, D, T, F, tip, U) || (k > 0.8 ? RISK_TH_NEW : RISK_TH_OLD);
+  return riskThresholdFrom(k, D, T, F, tip, U, DK) || (k > 0.8 ? RISK_TH_NEW : RISK_TH_OLD);
 }
 
 // 利润方案对比（三渠道卡片横排）
@@ -1337,7 +1343,7 @@ function renderOverview() {
         if (pcUsr.uc>0){ lblU.push('UC'); datU.push(pcUsr.uc); }
         if(pu) charts.ovPayUser=new Chart(pu.getContext('2d'),{type:'pie',data:{labels:lblU,datasets:[{data:datU,backgroundColor:col}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:payUserLegend,tooltip:{callbacks:{label:function(ctx){return ctx.label+': '+fmtInt(ctx.parsed)+' 人 ('+((ctx.parsed/(pcUsr.android+pcUsr.ios+pcUsr.douxiao+pcUsr.uc))*100).toFixed(2)+'%)，'+PAYUSER_LEGEND_NOTE;}}}}},plugins:[pieLabelPlugin]});
       }, 50);
-      // 数据风险评估（支付渠道）；阈值按所选区间口径取：≤9/3 → 60/80，9/4~10/9 → 97/99，≥10/10 → 随当月流水浮动（见 riskThresholds）
+      // 数据风险评估（支付渠道）；阈值按所选区间口径取：单段区间 = 该段系数（≤9/3 → 60/80，9/4~10/9 → 97/99），跨段区间按逐场实际系数加权，≥10/10 随当月流水浮动（见 riskThresholdsOf）
       var riskEl = document.getElementById('ovRiskSection');
       var ovTh = riskThresholdsOf(sessions);
       if (androidPct > ovTh.high) {
@@ -1896,7 +1902,7 @@ function assessRisk(sessions, isSingle) {
     var payTotalChk = totalAndroid + totalIOS + totalDx + totalUc;
     if (payTotalChk > 0) {
       var androidPctMulti = totalAndroid / payTotalChk * 100;
-      var thM = riskThresholdsOf(sessions);   // 多日按区间口径（取区间最新日期所属口径；≥10/10 随当月流水浮动）
+      var thM = riskThresholdsOf(sessions);   // 多日按区间口径（逐场实际系数加权，跨段区间不套用最新日期系数；≥10/10 随当月流水浮动）
       if (androidPctMulti > thM.high) {
         items.push({level:'danger', icon:'🔴', title:'安卓支付占比过高', desc:'周期内安卓渠道占比 '+androidPctMulti.toFixed(2)+'%，超过'+thM.high+'%警戒线，抖店同比正常渠道利润为负，收益存在高度风险'+thM.tip});
         high++;
