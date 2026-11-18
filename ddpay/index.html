@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>抖店充值业务分析报告 · 2026.01.01–11.17</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --line:#e6e8ec; --line2:#f0f1f4;
+  --ink:#12151b; --ink2:#4a5262; --ink3:#8b93a3;
+  --blue:#2563eb; --blue-l:#dbe6fd; --blue-d:#1a4bb8;
+  --amber:#f59e0b; --amber-l:#fdf0d5;
+  --red:#d93a3a; --red-l:#fbe4e4;
+  --green:#159a5c; --green-l:#dcf3e8;
+  --r:14px; --sh:0 1px 2px rgba(16,24,40,.04),0 4px 16px rgba(16,24,40,.045);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg); color:var(--ink); font-size:14px; line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px 80px}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 34px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.14em;color:var(--blue);font-weight:600;text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-size:clamp(25px,3.4vw,35px);line-height:1.28;font-weight:700;letter-spacing:-.02em}
+.hero .sub{margin-top:12px;font-size:clamp(13px,1.5vw,15px);color:var(--ink2);max-width:760px}
+.meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-size:12px;color:var(--ink2);background:var(--card);border:1px solid var(--line);
+     padding:4px 11px;border-radius:20px;white-space:nowrap}
+.tag b{color:var(--ink);font-weight:600}
+
+/* ---------- kpi ---------- */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px 16px;box-shadow:var(--sh)}
+.kpi .lab{font-size:12px;color:var(--ink3);letter-spacing:.02em}
+.kpi .num{font-size:clamp(20px,2.5vw,27px);font-weight:700;letter-spacing:-.02em;margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi .num small{font-size:.6em;font-weight:600;color:var(--ink2);margin-left:2px}
+.kpi .cap{font-size:12px;color:var(--ink3);margin-top:5px}
+.kpi.accent{border-left:3px solid var(--blue)}
+
+/* ---------- verdict ---------- */
+.verdict{margin-top:34px;display:grid;gap:12px}
+.vd{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh);
+    display:grid;grid-template-columns:36px 1fr;gap:6px 16px}
+.vd .n{font-size:12px;font-weight:700;color:#fff;background:var(--ink);width:26px;height:26px;border-radius:8px;
+       display:flex;align-items:center;justify-content:center;margin-top:2px}
+.vd h3{font-size:clamp(15px,1.7vw,17px);font-weight:700;line-height:1.5;text-align:left}
+.vd p{font-size:13.5px;color:var(--ink2);margin-top:7px;text-align:left}
+.vd p b{color:var(--ink);font-weight:600}
+.vd .bad b{color:var(--red)} .vd .good b{color:var(--green)}
+
+/* ---------- sections ---------- */
+section{margin-top:52px}
+.sec-head{display:flex;align-items:baseline;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:22px}
+.sec-no{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.1em}
+.sec-head h2{font-size:clamp(19px,2.3vw,24px);font-weight:700;letter-spacing:-.015em}
+.sec-head .desc{font-size:12.5px;color:var(--ink3);margin-left:auto;text-align:right}
+
+h3.blk{font-size:clamp(15px,1.7vw,16.5px);font-weight:700;margin:30px 0 12px;display:flex;align-items:center;gap:9px}
+h3.blk::before{content:"";width:3px;height:15px;background:var(--blue);border-radius:2px;display:block}
+h3.blk .hint{font-size:12px;font-weight:400;color:var(--ink3);margin-left:2px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:var(--sh)}
+.card.pad0{padding:8px 4px 6px}
+.chart{width:100%;height:330px}
+.chart.tall{height:380px}
+.chart.sm{height:270px}
+
+/* ---------- table ---------- */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -2px}
+table{width:100%;border-collapse:collapse;font-size:12.8px;font-variant-numeric:tabular-nums}
+thead th{background:#f8f9fb;color:var(--ink2);font-weight:600;font-size:11.8px;letter-spacing:.02em;
+         padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+thead th:first-child{text-align:left}
+tbody td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--line2);white-space:nowrap}
+tbody td:first-child{text-align:left;font-weight:500;color:var(--ink)}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.tot td{background:#fafbfc;font-weight:600}
+table.txt td:last-child,table.txt th:last-child{text-align:left;color:var(--ink3);font-weight:400;white-space:normal;min-width:180px}
+table.txt tbody td:last-child{color:var(--ink2)}
+.pos{color:var(--green)} .neg{color:var(--red)}
+.muted{color:var(--ink3)}
+.pill{display:inline-block;font-size:11px;padding:2px 7px;border-radius:5px;font-weight:600}
+.pill.b{background:var(--blue-l);color:var(--blue-d)}
+.pill.a{background:var(--amber-l);color:#9a6406}
+.pill.r{background:var(--red-l);color:#a72626}
+.pill.g{background:var(--green-l);color:#0d6b40}
+
+/* ---------- callout ---------- */
+.callout{border-left:3px solid var(--amber);background:#fffdf7;border-radius:0 var(--r) var(--r) 0;
+         padding:16px 18px;font-size:13px;color:var(--ink2);line-height:1.75}
+.callout.blue{border-color:var(--blue);background:#f7faff}
+.callout.red{border-color:var(--red);background:#fdf7f7}
+.callout b{color:var(--ink);font-weight:600}
+.callout .ct{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.02em;margin-bottom:6px;display:block}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.note{font-size:11.5px;color:var(--ink3);margin-top:10px;line-height:1.65}
+.note b{color:var(--ink2);font-weight:600}
+
+ul.pt{list-style:none;display:grid;gap:11px}
+ul.pt li{position:relative;padding-left:20px;font-size:13.2px;color:var(--ink2);line-height:1.7}
+ul.pt li::before{content:"";position:absolute;left:4px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--blue)}
+ul.pt li b{color:var(--ink);font-weight:600}
+ol.num{list-style:none;counter-reset:c;display:grid;gap:12px}
+ol.num li{counter-increment:c;position:relative;padding-left:32px;font-size:13.2px;color:var(--ink2);line-height:1.7}
+ol.num li::before{content:counter(c);position:absolute;left:0;top:2px;width:20px;height:20px;border-radius:6px;
+                  background:var(--blue-l);color:var(--blue-d);font-size:11px;font-weight:700;
+                  display:flex;align-items:center;justify-content:center}
+ol.num li b{color:var(--ink);font-weight:600}
+
+footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);line-height:1.8}
+
+@media (max-width:900px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .grid2,.grid3{grid-template-columns:1fr}
+  .sec-head{flex-wrap:wrap}
+  .sec-head .desc{margin-left:0;text-align:left;width:100%}
+  .chart{height:290px}
+  .chart.tall{height:330px}
+}
+@media (max-width:560px){
+  .wrap{padding:0 14px 60px}
+  .hero{padding:38px 0 26px}
+  .kpis{grid-template-columns:1fr 1fr;gap:9px}
+  .kpi{padding:14px}
+  .vd{grid-template-columns:1fr;gap:0}
+  .vd .n{margin-bottom:8px}
+  .chart{height:260px}
+  table{font-size:12px}
+  thead th,tbody td{padding:8px 9px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Payment Channel Analysis</div>
+  <h1>抖店充值业务分析：切支付承接与复播效率</h1>
+  <p class="sub">基于 2026.01.01–11.17 全量充值明细，回答两个问题：iOS 支付外置到抖店后是否接住了流水；10 月起的月播模式是否比此前的分成直播更高效。</p>
+  <div class="meta">
+    <span class="tag">数据区间 <b>321 天</b></span>
+    <span class="tag">全渠道 <b>36.26 万单 / 2,697.2 万</b></span>
+    <span class="tag">外部渠道 <b>3.98 万单 / 1,041.8 万</b></span>
+    <span class="tag">抖店 <b>7/2 起运营 · 138 天</b></span>
+    <span class="tag">口径 <b>成功支付 · 不去重</b></span>
+  </div>
+</header>
+
+<div class="kpis">
+  <div class="kpi accent">
+    <div class="lab">抖店 GMV（7/2–11/17）</div>
+    <div class="num">278.0<small>万</small></div>
+    <div class="cap">9,015 单 · 332 名付费用户</div>
+  </div>
+  <div class="kpi">
+    <div class="lab">外部渠道日均 GMV</div>
+    <div class="num">+10.4<small>%</small></div>
+    <div class="cap">3.16 万 → 3.48 万 / 日</div>
+  </div>
+  <div class="kpi">
+    <div class="lab">iOS 外部渠道 vs 反事实基线</div>
+    <div class="num">+42.9<small>%</small></div>
+    <div class="cap">2.02 万 vs 1.41 万 / 日</div>
+  </div>
+  <div class="kpi">
+    <div class="lab">抖店 GMV 中老用户贡献</div>
+    <div class="num">89.7<small>%</small></div>
+    <div class="cap">260 名切支付前已付费用户</div>
+  </div>
+  <div class="kpi">
+    <div class="lab">新付费用户首充走抖店</div>
+    <div class="num">0.5<small>%</small></div>
+    <div class="cap">10 / 1,970 人</div>
+  </div>
+  <div class="kpi">
+    <div class="lab">月播增量 ROI</div>
+    <div class="num">4.55<small>×</small></div>
+    <div class="cap">分成期 6.10× · 下降 25.4%</div>
+  </div>
+</div>
+
+<div class="verdict">
+  <div class="vd">
+    <div class="n">1</div>
+    <div>
+      <h3>切支付接住了，但功劳主要在安卓</h3>
+      <p class="good">iOS 外部渠道日均 <b>2.02 万</b>，比"不切支付"的反事实基线（按安卓衰减率推算的 1.41 万）高 <b>+42.9%</b>，说明抖店对 iOS 是净增量而非伤害。<br>
+      <span class="muted">但相对切支付前的 2.70 万仍低 25.2%；真正把外部渠道总盘从 3.16 万推到 3.48 万（+10.4%）的是安卓——安卓外部渠道从 4,346 元/日 涨到 1.42 万/日，<b>涨了 227%</b>。</span></p>
+    </div>
+  </div>
+  <div class="vd">
+    <div class="n">2</div>
+    <div>
+      <h3>抖店是存量迁移，不是拉新引擎</h3>
+      <p class="bad">抖店 278 万 GMV 中 <b>81.6%</b> 来自 139 个"平台+抖店双渠道"老用户，他们的平台消费同期从 51.6 万/月掉到 8.0 万/月（<b>−84.5%</b>）。<br>
+      <span class="muted">且集中度极高：Top1 用户占抖店 GMV <b>9.7%</b>，Top10 占 <b>50.8%</b>，Top100 占 92.8%。</span></p>
+    </div>
+  </div>
+  <div class="vd">
+    <div class="n">3</div>
+    <div>
+      <h3>月播是"广度换深度"，净效果为负</h3>
+      <p class="bad">月播期日均用户 <b>+65.2%</b>、日均单量 <b>+45.9%</b>，但日均 GMV <b>−30.9%</b>、客单价 <b>−52.6%</b>。<br>
+      <span class="muted">更值得警惕的是非直播日日均 GMV 从 1.73 万掉到 1.15 万（<b>−33.7%</b>）——直播从"增长引擎"退化成了"呼吸机"。</span></p>
+    </div>
+  </div>
+  <div class="vd">
+    <div class="n">4</div>
+    <div>
+      <h3>抖店不做拉新，只做搬家</h3>
+      <p class="bad">7/2 后新增的 1,970 名付费用户里，首笔走抖店的只有 <b>10 人（0.5%）</b>；1,000 条新增创角抽样中，44 名付费用户<b>零人</b>抖店首充。<br>
+      <span class="muted">连已经切了支付的 iOS，苹果新用户仍是 30/31 走 App Store 内购。抖店 89.7% 的 GMV 来自切支付前就在付费的老用户，首笔付费到首次抖店中位延迟 <b>224 天</b>。</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 01 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">01</span>
+    <h2>数据口径与基础盘</h2>
+    <span class="desc">三个渠道的规模、单价与人群结构</span>
+  </div>
+
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>渠道</th><th>订单数</th><th>GMV（元）</th><th>单笔均值</th><th>付费用户</th><th>人均 GMV</th><th>覆盖区间</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>全渠道（含游戏内直充）</td><td>362,552</td><td>26,972,128</td><td>74.4</td><td>8,945</td><td>3,015</td><td>1/1–11/17</td></tr>
+          <tr><td>平台（官网 / H5）</td><td>30,747</td><td>7,638,209</td><td>248.4</td><td>693</td><td>11,022</td><td>1/1–11/17</td></tr>
+          <tr><td>抖店</td><td>9,015</td><td>2,780,136</td><td>308.4</td><td>332</td><td>8,374</td><td>7/2–11/17</td></tr>
+          <tr class="tot"><td>外部渠道合计</td><td>39,762</td><td>10,418,345</td><td>262.0</td><td>886</td><td>11,759</td><td>—</td></tr>
+          <tr><td class="muted">游戏内直充（倒算）</td><td class="muted">322,790</td><td class="muted">16,553,783</td><td class="muted">51.3</td><td class="muted">—</td><td class="muted">—</td><td class="muted">1/1–11/17</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>口径说明：</b>"游戏内直充"= 文件 2 全渠道 − 文件 1 外部渠道，为倒算值，无字段可直接验证；外部渠道用户的 ARPU（11,759 元）是全体用户（3,015 元）的 <b>3.9 倍</b>，是典型的高价值人群。文件 1 有 32 个角色 ID 在文件 2 中无记录，未剔除、未归因。</p>
+  </div>
+
+  <h3 class="blk">渠道结构在 7 月被彻底改写 <span class="hint">外部渠道占大盘比重：1–6 月 27–33% → 8 月后 62–74%</span></h3>
+  <div class="card pad0"><div id="c_stack" class="chart tall"></div></div>
+  <p class="note">抖店 7/2 上线后，外部渠道占大盘的比重从三成跃升到七成。这个变化并非全部由 iOS 切支付贡献——同期游戏内直充从月均 226.8 万跌到 64.4 万，跌幅远超大盘，说明安卓侧也发生了渠道外置。</p>
+</section>
+
+<!-- ================= 02 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">02</span>
+    <h2>维度一：抖店切支付效果</h2>
+    <span class="desc">承接度 → 迁移度 → 效率 → 大盘净效应</span>
+  </div>
+
+  <h3 class="blk">2.1 承接率：iOS 补回 53%，安卓超额 4.3 倍</h3>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>渠道组</th><th>平台 1–6 月<br>日均 GMV</th><th>平台 7–11 月<br>日均 GMV</th><th>抖店 7–11 月<br>日均 GMV</th><th>外部渠道<br>实际合计</th><th>反事实基线<br>（不切支付）</th><th>相对基线</th><th>原始承接率</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>iOS</td><td>26,958</td><td>12,511</td><td>7,646</td><td><b>20,157</b></td><td>14,110</td><td class="pos">+42.9%</td><td>52.9%</td></tr>
+          <tr><td>安卓</td><td>4,346</td><td>1,398</td><td>12,828</td><td><b>14,226</b></td><td>2,275</td><td class="pos">+525.4%</td><td>435.1%</td></tr>
+          <tr><td>其他（小游戏 / 联运）</td><td>253</td><td>121</td><td>342</td><td><b>463</b></td><td>132</td><td class="pos">+249.6%</td><td>259.1%</td></tr>
+          <tr class="tot"><td>合计</td><td>31,557</td><td>14,030</td><td>20,816</td><td><b>34,846</b></td><td>16,517</td><td class="pos">+111.0%</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>两种口径答案不同，必须同时看：</b>若以"切支付前的平台规模"为分母，iOS 只承接了 <b>52.9%</b>，看似漏损一半；但 1–6 月本身就是大盘高位（全渠道月均 321.6 万，7–11 月只有 168.1 万），用高位做基线会高估缺口。<br>
+    因此引入<b>反事实基线</b>：以未切支付的安卓组同期衰减率（−47.7%）推算 iOS"如果没有切支付会掉到哪"= 14,110 元/日。iOS 实际做到 20,157，<b>高出基线 42.9%</b>——切支付是净增量。</p>
+  </div>
+
+  <div class="grid2" style="margin-top:14px">
+    <div class="card pad0"><div id="c_claim" class="chart sm"></div></div>
+    <div class="card pad0"><div id="c_did" class="chart sm"></div></div>
+  </div>
+  <p class="note">左：iOS 与安卓的外部渠道"实际 vs 反事实基线"。右：全渠道 GMV 指数化（1 月=100），iOS 与安卓几乎重合下行（−49.5% vs −47.7%），差异仅 1.8pct。</p>
+
+  <div class="callout blue" style="margin-top:16px">
+    <span class="ct">大盘净效应结论</span>
+    iOS 与安卓在全渠道口径上同步衰减，剪刀差只有 <b>1.8 个百分点</b>——<b>切支付没有对 iOS 造成额外伤害</b>。iOS 全渠道 −49.5% 是整体大盘衰退（游戏生命周期）的结果，不是支付链路的问题。把 iOS 的下滑归因于切支付，会得出错误结论。
+  </div>
+
+  <h3 class="blk">2.2 迁移度：老用户几乎整体搬家 <span class="hint">139 个双渠道用户的渠道分配变化</span></h3>
+  <div class="grid2">
+    <div class="card pad0"><div id="c_split" class="chart sm"></div></div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <ul class="pt">
+        <li>139 个双渠道用户中，<b>106 人（76%）</b>的抖店消费占比超过 50%，<b>74 人超过 80%</b>——迁移是彻底的，不是试用。</li>
+        <li>这批人 7–11 月外部渠道总消费 <b>217.7 万</b>，其中抖店 <b>177.6 万（81.6%）</b>，中位占比 82.9%。</li>
+        <li>但他们的平台消费从月均 <b>51.6 万跌到 8.0 万（−84.5%）</b>，而抖店月均 35.5 万——<b>总消费仍是下降的</b>，流失发生在渠道之外。</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="blk">2.3 效率：抖店把客单价做高了 24%</h3>
+  <div class="grid2">
+    <div class="card pad0"><div id="c_tier" class="chart sm"></div></div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <ul class="pt">
+        <li>抖店单笔均值 <b>308 元</b> vs 平台 248 元 vs 全渠道 74 元，<b>比平台高 24%</b>。</li>
+        <li>抖店 ≥1,000 元档位只占 <b>5.9% 的订单</b>，却贡献 <b>63.1% 的 GMV</b>（平台为 4.6% / 53.1%）——大额集中度更高。</li>
+        <li>≥3,000 元单一档位就撑起抖店 <b>33.6%</b> 的流水，意味着抖店 GMV 高度依赖少数大额充值行为。</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">切支付的商业价值不止在 GMV：iOS 内购要付 30% 渠道分成，抖店技术服务费通常 1–5%。同等用户实付下，抖店的毛利空间显著更高——这部分收益不体现在 GMV 表里，但应该是评估切支付的核心指标之一（本次数据无法测算，建议补财务口径）。</p>
+
+  <h3 class="blk">2.4 风险：抖店盘子高度集中</h3>
+  <div class="card pad0"><div id="c_conc" class="chart sm"></div></div>
+  <div class="callout red" style="margin-top:14px">
+    <span class="ct">单点依赖风险</span>
+    Top1 用户贡献 <b>27.1 万（9.7%）</b>，Top10 贡献 <b>141.3 万（50.8%）</b>，Top50 贡献 81.6%。<b>失去前 10 名用户中的任何一个，抖店月度 GMV 就会掉 2–5 个百分点。</b>这类结构不适合用"用户数增长"来讲故事，需要按大客维护。
+  </div>
+</section>
+
+<!-- ================= 03 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">03</span>
+    <h2>维度二：抖店复播效果</h2>
+    <span class="desc">分成直播（7/2–10/9）vs 月播（10/10–11/17）</span>
+  </div>
+
+  <div class="callout" style="margin-bottom:18px">
+    <span class="ct">口径前提</span>
+    数据中没有直播场次、开播时间、主播等字段，直播日通过<b>日 GMV 脉冲识别</b>（当日 GMV 超前 7 日均值 1.6 倍，或单量与用户双突增）推断，共识别 38 个脉冲日，占抖店 GMV 的 44.2%。<b>场次日期需与实际排期核对后修正</b>，但阶段对比结论对个别日期的敏感性较低。
+  </div>
+
+  <div class="card pad0"><div id="c_daily" class="chart tall"></div></div>
+  <p class="note">抖店日 GMV 序列（7/2–11/17）。深色点为识别出的脉冲日。<b>10/9 出现断崖</b>（GMV 从 5.44 万掉到 1,140 元），是分成直播终止的拐点；<b>11/7–11/10</b> 是最强的一波脉冲（双 11 档），4 天做出 10.77 万。</p>
+
+  <h3 class="blk">3.1 核心矛盾：广度涨了、深度掉了</h3>
+  <div class="card">
+    <div class="tw">
+      <table class="txt">
+        <thead><tr>
+          <th>指标</th><th>A｜7/2–10/9<br>GMV 8% 分成直播</th><th>B｜10/10–11/17<br>月播</th><th>变化</th><th>解读</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>天数</td><td>99</td><td>39</td><td class="muted">—</td><td class="muted">B 期仅 39 天，含 11 月未完整月</td></tr>
+          <tr><td>日均 GMV</td><td>22,076</td><td>15,245</td><td class="neg">−30.9%</td><td>盘子缩小三成</td></tr>
+          <tr><td>日均单量</td><td>57.8</td><td>84.3</td><td class="pos">+45.9%</td><td>下单频次显著提升</td></tr>
+          <tr><td>日均付费用户</td><td>25.0</td><td>41.3</td><td class="pos">+65.2%</td><td>触达面扩大 2/3</td></tr>
+          <tr><td>客单价（AOV）</td><td>381.6</td><td>180.8</td><td class="neg">−52.6%</td><td>大额充值消失，小额化明显</td></tr>
+          <tr><td>脉冲日数</td><td>29</td><td>9</td><td class="muted">—</td><td>场均密度下降</td></tr>
+          <tr><td>脉冲日 GMV 占比</td><td>44.7%</td><td>42.2%</td><td class="muted">−2.5pct</td><td>依赖度基本持平</td></tr>
+          <tr><td>脉冲日日均 GMV</td><td>33,693</td><td>27,881</td><td class="neg">−17.2%</td><td>单场绝对产出下滑</td></tr>
+          <tr><td>非脉冲日日均 GMV</td><td>17,264</td><td>11,455</td><td class="neg">−33.7%</td><td><b>日常盘衰减更快</b></td></tr>
+          <tr><td>脉冲倍数（直播日 / 平时）</td><td>1.95×</td><td>2.43×</td><td class="pos">+24.6%</td><td>相对拉动反而更强</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:14px">
+    <div class="card pad0"><div id="c_depth" class="chart sm"></div></div>
+    <div class="card pad0"><div id="c_arpu" class="chart sm"></div></div>
+  </div>
+  <p class="note">左：广度（用户 / 单量）上升与深度（GMV / 客单价）下降同时发生——典型的"小额拉新掩盖大盘萎缩"。右：抖店月活用户从 57 涨到 242（+325%），但月活 ARPU 从 5,420 元跌到 982 元（11 月仅 17 天，折算约 1,733 元）。</p>
+
+  <h3 class="blk">3.2 单场效率与 ROI</h3>
+  <div class="card">
+    <div class="tw">
+      <table class="txt">
+        <thead><tr>
+          <th>项目</th><th>A｜分成直播（99 天）</th><th>B｜月播（39 天）</th><th>说明</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>直播日 GMV</td><td>977,092</td><td>250,928</td><td>脉冲日合计</td></tr>
+          <tr><td>非直播日基线（日均 × 天数）</td><td>500,656</td><td>103,095</td><td>如无直播的预期产出</td></tr>
+          <tr><td>直播带来增量</td><td><b>476,436</b></td><td><b>147,833</b></td><td>差值</td></tr>
+          <tr><td>直播费用</td><td>78,167</td><td>32,500</td><td>A：脉冲日 GMV × 8%；B：25,000 元/月 × 39/30</td></tr>
+          <tr class="tot"><td>增量 ROI（GMV / 费用）</td><td>6.10×</td><td>4.55×</td><td class="neg">−25.4%</td></tr>
+          <tr><td>折算日均费用</td><td>790 元/天</td><td>833 元/天</td><td>成本基本持平</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">费用口径为 <b>GMV 口径的粗略折算</b>：分成期按脉冲日 GMV 的 8% 估算（若 8% 作用于全部 GMV，则费用更高、ROI 更低）；月播按 25,000 元/月折天。若需精确 ROI，需补直播实际结算单。</p>
+  </div>
+
+  <h3 class="blk">3.3 复播期单场盘点</h3>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th>窗口</th><th>天数</th><th>GMV</th><th>订单</th><th>去重用户</th><th>日均 GMV</th><th>vs 非直播日（9,993）</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>10/16 – 10/17</td><td>2</td><td>56,158</td><td>281</td><td>88</td><td>28,079</td><td class="pos">2.81×</td></tr>
+          <tr><td>10/24</td><td>1</td><td>23,784</td><td>140</td><td>52</td><td>23,784</td><td class="pos">2.38×</td></tr>
+          <tr><td>10/28</td><td>1</td><td>23,760</td><td>102</td><td>39</td><td>23,760</td><td class="pos">2.38×</td></tr>
+          <tr><td>10/31</td><td>1</td><td>39,570</td><td>188</td><td>65</td><td>39,570</td><td class="pos">3.96×</td></tr>
+          <tr><td><b>11/07 – 11/10</b></td><td>4</td><td><b>107,656</b></td><td>514</td><td>167</td><td>26,914</td><td class="pos">2.69×</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">11/7–11/10 这一场贡献了 11 月 GMV 的 <b>45.3%</b>；其余 13 天日均只有 9,993 元。<b>月播模式下，单场承担了接近一半的月度盘子</b>——场次一旦失手，整月直接腰斩。</p>
+  </div>
+
+  <h3 class="blk">3.4 拉新质量：新客多但客单薄</h3>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr><th>月份</th><th>活跃用户</th><th>新客数</th><th>新客首单 GMV</th><th>新客 GMV 占比</th><th>月活 ARPU</th></tr></thead>
+        <tbody>
+          <tr><td>7 月</td><td>57</td><td>57</td><td>42,716</td><td>20.4%</td><td>3,675</td></tr>
+          <tr><td>8 月</td><td>177</td><td>130</td><td>87,494</td><td>9.1%</td><td>5,420</td></tr>
+          <tr><td>9 月</td><td>190</td><td>49</td><td>22,794</td><td>3.3%</td><td>3,642</td></tr>
+          <tr><td>10 月</td><td>202</td><td>46</td><td>20,320</td><td>3.0%</td><td>3,375</td></tr>
+          <tr><td>11 月（17 天）</td><td>242</td><td>50</td><td>8,078</td><td>3.4%</td><td>982</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="callout blue" style="margin:0">
+        <span class="ct">复播的拉新能力很弱</span>
+        10/10–11/17 新增抖店用户仅 <b>81 人</b>，首单 GMV <b>2.35 万</b>，人均 290 元，对该期 59.5 万 GMV 的贡献仅 <b>3.9%</b>。新客 GMV 占比从 8 月的 9.1% 一路降到 3% 左右——<b>复播没有带来新的付费人群，主要是老客在直播日集中下单</b>。
+      </div>
+      <div class="callout" style="margin:0">
+        <span class="ct">但留存是健康的</span>
+        10 月活跃 202 人，11 月复充 <b>165 人（81.7%）</b>。用户没有跑，只是<b>单次充值金额下来了</b>。这说明问题不在"人"上，而在"场"上——月播频次太低，撑不住大额充值的决策节奏。
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 新章节：新增用户转化 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">04</span>
+    <h2>新增用户转化：抖店几乎不承接首充</h2>
+    <span class="desc">7/2–11/17 新增创角 × 首笔充值渠道</span>
+  </div>
+
+  <div class="callout" style="margin-bottom:18px">
+    <span class="ct">两套口径交叉验证</span>
+    创角表 1,000 条为<b>抽样数据</b>（与充值库交集 44 人，按抽样率反推全量新增创角约 <b>4.48 万人</b>，抽样率约 2.2%）。为避免抽样偏差，同时用充值库全量口径验证：7/2 后首次充值的 <b>1,970 名用户</b>。<b>两套口径结论完全一致——抖店首充占比都在 0.5% 量级。</b><br><br>
+    <b>注意区分两个"新"：</b>3.4 节的"抖店新客 81 人"指<b>首次在抖店下单</b>的人（其中多数早已在游戏内付过费）；本节说的"新付费用户"指<b>全游戏首次充值</b>发生在 7/2 之后的人。两者之差，正是"老玩家学会用抖店"的那部分。
+  </div>
+
+  <h3 class="blk">4.1 新付费用户的首充渠道：97% 落在游戏内直充</h3>
+  <div class="grid2">
+    <div class="card pad0"><div id="c_newch" class="chart sm"></div></div>
+    <div class="card">
+      <div class="tw">
+        <table class="txt">
+          <thead><tr><th>首充渠道</th><th>人数</th><th>占比</th><th>累计 GMV</th><th>人均 GMV</th></tr></thead>
+          <tbody>
+            <tr><td>游戏内直充</td><td>1,911</td><td>97.0%</td><td>703,722</td><td>368</td></tr>
+            <tr><td>平台（含同日）</td><td>49</td><td>2.5%</td><td>34,828</td><td>711</td></tr>
+            <tr><td><b>抖店（含同日）</b></td><td><b>10</b></td><td><b>0.5%</b></td><td><b>4,260</b></td><td><b>426</b></td></tr>
+            <tr class="tot"><td>合计</td><td>1,970</td><td>100%</td><td>742,810</td><td>377</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="padding:0 4px 6px">严格判定（抖店首单日 = 全渠道首单日，不含同日多渠）只有 <b>7 人</b>，累计 GMV <b>1,990 元</b>，人均 284 元——不到抖店人均 GMV（8,374 元）的 <b>3.4%</b>。</p>
+    </div>
+  </div>
+
+  <div class="callout red" style="margin-top:16px">
+    <span class="ct">这一条推翻了"抖店能拉新"的假设</span>
+    4 个多月里，1,970 名新付费用户中只有 10 人首笔走了抖店，贡献 <b>0.6% 的新客 GMV</b>。<b>抖店不是获客通道，而是存量用户的支付通道替换。</b>
+  </div>
+
+  <h3 class="blk">4.2 分注册渠道看：苹果新用户同样不走抖店</h3>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr><th>创角渠道</th><th>创角数</th><th>付费数</th><th>付费率</th><th>游戏内直充首充</th><th>平台首充</th><th>抖店首充</th></tr></thead>
+        <tbody>
+          <tr><td>安卓</td><td>551</td><td>13</td><td>2.4%</td><td>13</td><td>0</td><td class="neg">0</td></tr>
+          <tr><td>苹果</td><td>449</td><td>31</td><td>6.9%</td><td>30</td><td>1</td><td class="neg">0</td></tr>
+          <tr class="tot"><td>合计（抽样）</td><td>1,000</td><td>44</td><td>4.4%</td><td>43</td><td>1</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">这是最反直觉的一点：<b>iOS 已经切了支付，但苹果新用户的首次充值 30/31 仍走 App Store 内购，没有一个走抖店。</b><br>
+    原因不难推：新用户注册后立刻在游戏内点充值，路径就是内购；抖店需要用户主动打开抖音、搜索商品、下单、回游戏兑换——新用户没有这个动机，<b>只有被客服/活动引导过的老用户才会走</b>。这正好解释了 4.3 的延迟分布。</p>
+  </div>
+
+  <h3 class="blk">4.3 抖店用户的真实构成：89.7% 的 GMV 来自切支付前的老用户</h3>
+  <div class="grid2">
+    <div class="card pad0"><div id="c_ddstruct" class="chart sm"></div></div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center">
+      <ul class="pt">
+        <li><b>存量 260 人（78.3%）</b>，贡献 249.5 万 GMV（<b>89.7%</b>），人均 9,595 元——这批人 7/2 之前就在付费，只是换了支付入口。</li>
+        <li><b>新增 41 人（12.3%）</b>，贡献 12.4 万（4.5%），人均 3,026 元，只有存量的三分之一。</li>
+        <li><b>31 人（9.3%）</b>在充值库中查无记录，贡献 16.1 万（5.8%），属角色 ID 未匹配，暂不计入任何一侧。</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="note">图中「存量」= 全渠道首单在 2026-07-02 之前；「新增」= 全渠道首单在 7/2 之后；「未匹配」= 抖店有订单但充值库中查无此角色（角色 ID 口径差异，占 9.3%）。</p>
+
+  <h3 class="blk">4.4 首笔付费到首次抖店：中位 224 天</h3>
+  <div class="card">
+    <div class="tw">
+      <table>
+        <thead><tr><th>首笔付费 → 首次抖店下单</th><th>首日即用</th><th>1–7 天</th><th>8–30 天</th><th>31–90 天</th><th>91–180 天</th><th>&gt;180 天</th></tr></thead>
+        <tbody>
+          <tr><td>人数（n=301）</td><td>5</td><td>5</td><td>18</td><td>21</td><td>26</td><td class="neg">226</td></tr>
+          <tr><td>占比</td><td>1.7%</td><td>1.7%</td><td>6.0%</td><td>7.0%</td><td>8.6%</td><td class="neg"><b>75.1%</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">75.1% 的抖店用户是在首次付费 <b>180 天之后</b>才第一次用抖店，中位延迟 <b>224 天</b>。这说明抖店的使用高度依赖"用户已经玩很久 + 被明确引导"两个前提，<b>越新的用户越不可能走抖店</b>。</p>
+  </div>
+</section>
+
+<!-- ================= 05 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">05</span>
+    <h2>数据盲区与结论边界</h2>
+    <span class="desc">哪些结论可以拍板，哪些需要补数据</span>
+  </div>
+
+  <div class="card">
+    <div class="tw">
+      <table class="txt">
+        <thead><tr><th>盲区</th><th>影响</th><th>建议处理</th></tr></thead>
+        <tbody>
+          <tr><td>无订单号 / 流水号</td><td>无法精确去重，同日同人同金额的多笔按真实多笔计（已按你确认的口径）</td><td>导出时带上订单号</td></tr>
+          <tr><td>无直播场次字段</td><td>复播场次为推断值，边界日期可能偏差 1–2 天</td><td>补直播排期台账（场次、开播时间、主播、投放）</td></tr>
+          <tr><td>无退款状态</td><td>GMV 为毛额，若退款集中在直播日，ROI 会被高估</td><td>补退款率或净收口径</td></tr>
+          <tr><td>游戏内直充为倒算</td><td>1,655 万差额未经验证</td><td>确认文件 2 是否为全渠道全量</td></tr>
+          <tr><td>32 个角色 ID 未匹配</td><td>占比 3.6%，不足以改变结论</td><td>排查角色 ID 口径（前后台账号）</td></tr>
+          <tr><td>新增创角表为抽样</td><td>1,000 条抽样，反推全量约 4.48 万人；结论已与全量 1,970 名新付费用户交叉验证一致</td><td>如需精确值，导出全量创角表</td></tr>
+          <tr><td>文件 1 仅 886 用户</td><td>若外部渠道不止平台 + 抖店，外部渠道规模被低估</td><td>确认平台渠道是否覆盖全部自有渠道</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 ================= -->
+<section>
+  <div class="sec-head">
+    <span class="sec-no">06</span>
+    <h2>行动建议</h2>
+    <span class="desc">按优先级排序</span>
+  </div>
+
+  <div class="card">
+    <ol class="num">
+      <li><b>月播频次需要重新评估。</b>非直播日日均 GMV 已掉 33.7%，月播把单场变成月度唯一抓手（11/7–11/10 一场占 45.3%）。建议在非直播日补常态化动作（短视频挂车、私域推送、大客 1v1），否则月播救不了日常盘。</li>
+      <li><b>把大额档恢复成直播主推。</b>分成期客单价 381.6 元、月播期 180.8 元，差的就是 1,000 元以上档位。抖店 ≥3,000 元档能贡献 33.6% GMV，说明这个入口是通的，只是月播没在推。</li>
+      <li><b>别把抖店当拉新渠道做预算。</b>新增用户首充走抖店只有 0.5%，投流拉新→抖店转化的链路基本不存在。抖店的价值要按"存量用户支付成本下降"来算，不要把 GMV 增长算成获客成果。</li>
+      <li><b>安卓抖店人群要独立运营。</b>安卓外部渠道从 4,346 元/日涨到 1.42 万/日（+227%），是完全意外的增量来源，目前没有任何专属策略。这是本次分析里性价比最高的一块。</li>
+      <li><b>iOS 侧查一次充值路径漏斗。</b>iOS 外部渠道虽比基线高 42.9%，但仍低于切支付前 25.2%。需要确认抖店下单链路（跳转、档位选择、到账延迟）有没有卡点——这是唯一能解释"人迁移了但总额没回来"的技术原因。</li>
+      <li><b>Top10 用户做单独维护。</b>50.8% 的 GMV 集中在 10 个人身上，任何一人流失都是月报级别的波动。建议建立大客名单 + 分层权益。</li>
+      <li><b>补直播结算口径。</b>本次 ROI（6.10× → 4.55×）是 GMV 口径粗算，若 8% 分成作用于全量 GMV、或 25,000 元/月含投流，真实 ROI 会更低。要拿这个数字做决策，必须先对齐费用定义。</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  数据源：充值记录-平台充值&amp;抖店充值.xlsx（外部渠道 39,762 单）、充值用户0101-1117.xlsx（全渠道 362,552 单）、7月2日创角信息.csv（新增创角 1,000 条抽样）。<br>
+  口径：成功支付，不去重（同日同人多笔按实际笔数计），未扣退款。角色 ID 已去除尾部制表符后匹配。<br>
+  直播日为脉冲识别推断值（日 GMV ≥ 前 7 日均值 1.6 倍，或单量/用户双突增），共 38 天，占抖店 GMV 44.2%。<br>
+  报告生成：2026-11-18
+</footer>
+
+</div>
+
+<script>
+const D = {"meta":{"start":"2026-01-01","end":"2026-11-17","days":321,"gen":"2026-11-18"},"kpi":{"all":{"orders":362552,"gmv":26972127.64,"users":8945},"dd":{"orders":9015,"gmv":2780136.0,"users":332,"start":"2026-07-02","days":138},"pt":{"orders":30747,"gmv":7638208.64,"users":693,"days":321},"ext":{"orders":39762,"gmv":10418344.64,"users":886},"zhi":{"orders":322790,"gmv":16553783.0},"aov":{"dd":308.39,"pt":248.42,"all":74.4},"arpu":{"ext":11759.0,"all":3015.0}},"monthly":[{"m":"2026-01","days":31,"ao":47428,"ag":3949691.44,"au":3849,"do":0.0,"dg":0.0,"du":0.0,"po":3933,"pg":1061818.44,"pu":337,"zo":43495.0,"zg":2887873.0,"ext_g":1061818.44},{"m":"2026-02","days":28,"ao":42811,"ag":4261814.0,"au":3344,"do":0.0,"dg":0.0,"du":0.0,"po":4054,"pg":1205020.0,"pu":328,"zo":38757.0,"zg":3056794.0,"ext_g":1205020.0},{"m":"2026-03","days":31,"ao":42755,"ag":2886387.0,"au":3270,"do":0.0,"dg":0.0,"du":0.0,"po":4180,"pg":916287.0,"pu":306,"zo":38575.0,"zg":1970100.0,"ext_g":916287.0},{"m":"2026-04","days":30,"ao":38280,"ag":2810989.2,"au":3072,"do":0.0,"dg":0.0,"du":0.0,"po":3471,"pg":926840.2,"pu":341,"zo":34809.0,"zg":1884149.0,"ext_g":926840.2},{"m":"2026-05","days":31,"ao":37051,"ag":2717723.0,"au":2802,"do":0.0,"dg":0.0,"du":0.0,"po":3292,"pg":750411.0,"pu":307,"zo":33759.0,"zg":1967312.0,"ext_g":750411.0},{"m":"2026-06","days":30,"ao":33920,"ag":2670609.0,"au":2776,"do":0.0,"dg":0.0,"du":0.0,"po":3003,"pg":825112.0,"pu":297,"zo":30917.0,"zg":1845497.0,"ext_g":825112.0},{"m":"2026-07","days":31,"ao":28478,"ag":2141486.0,"au":2564,"do":352.0,"dg":209476.0,"du":57.0,"po":2372,"pg":583110.0,"pu":260,"zo":25754.0,"zg":1348900.0,"ext_g":792586.0},{"m":"2026-08","days":31,"ao":28427,"ag":2077337.0,"au":2616,"do":1936.0,"dg":959374.0,"du":177.0,"po":2159,"pg":526852.0,"pu":239,"zo":24332.0,"zg":591111.0,"ext_g":1486226.0},{"m":"2026-09","days":30,"ao":26597,"ag":1477954.0,"au":2663,"do":2513.0,"dg":692030.0,"du":190.0,"po":1726,"pg":395384.0,"pu":232,"zo":22358.0,"zg":390540.0,"ext_g":1087414.0},{"m":"2026-10","days":31,"ao":24397,"ag":1399418.0,"au":2362,"do":2815.0,"dg":681694.0,"du":202.0,"po":1752,"pg":327840.0,"pu":217,"zo":19830.0,"zg":389884.0,"ext_g":1009534.0},{"m":"2026-11","days":17,"ao":12408,"ag":578719.0,"au":2003,"do":1399.0,"dg":237562.0,"du":242.0,"po":805,"pg":119534.0,"pu":173,"zo":10204.0,"zg":221623.0,"ext_g":357096.0}],"chan_period":[{"ch":"平台","per":"H1","c2":"IOS","gmv":4879460.0,"orders":18803,"users":482,"gmv_d":26958.0},{"ch":"平台","per":"H1","c2":"其他","gmv":19454.0,"orders":108,"users":1,"gmv_d":253.0},{"ch":"平台","per":"H1","c2":"安卓","gmv":786575.0,"orders":3022,"users":136,"gmv_d":4346.0},{"ch":"平台","per":"H2","c2":"IOS","gmv":1751602.0,"orders":7538,"users":348,"gmv_d":12511.0},{"ch":"平台","per":"H2","c2":"其他","gmv":5464.0,"orders":55,"users":1,"gmv_d":121.0},{"ch":"平台","per":"H2","c2":"安卓","gmv":195654.0,"orders":1221,"users":69,"gmv_d":1398.0},{"ch":"抖店","per":"H2","c2":"IOS","gmv":1039864.0,"orders":3894,"users":165,"gmv_d":7646.0},{"ch":"抖店","per":"H2","c2":"其他","gmv":8548.0,"orders":88,"users":5,"gmv_d":342.0},{"ch":"抖店","per":"H2","c2":"安卓","gmv":1731724.0,"orders":5033,"users":183,"gmv_d":12828.0}],"did":[{"c2":"IOS","h1_d":54445.0,"h2_d":27515.0,"chg":-0.4946},{"c2":"安卓","h1_d":52170.0,"h2_d":27306.0,"chg":-0.4766}],"did_month":[{"m":"2026-01","ios":100.0,"and_":100.0},{"m":"2026-02","ios":106.0,"and_":109.6},{"m":"2026-03","ios":84.8,"and_":62.6},{"m":"2026-04","ios":83.7,"and_":59.9},{"m":"2026-05","ios":76.5,"and_":61.9},{"m":"2026-06","ios":77.3,"and_":58.9},{"m":"2026-07","ios":61.3,"and_":47.8},{"m":"2026-08","ios":56.8,"and_":48.8},{"m":"2026-09","ios":39.7,"and_":35.3},{"m":"2026-10","ios":34.5,"and_":36.2},{"m":"2026-11","ios":14.2,"and_":15.1}],"claim":[{"c2":"IOS","pt_h1":26958.0,"pt_h2":12511.0,"dd_h2":7646.0,"actual":20157.0,"base":14110.0,"vs_base":0.4286,"cover_raw":0.5292},{"c2":"安卓","pt_h1":4346.0,"pt_h2":1398.0,"dd_h2":12828.0,"actual":14226.0,"base":2275.0,"vs_base":5.254,"cover_raw":4.3514},{"c2":"其他","pt_h1":253.0,"pt_h2":121.0,"dd_h2":342.0,"actual":463.0,"base":132.0,"vs_base":2.4964,"cover_raw":2.5909}],"ext_daily":{"h1":31557.0,"h2":34846.0},"daily_dd":[{"d":"2026-07-02","g":1140.0,"o":5,"u":3,"lift":null,"p":false},{"d":"2026-07-03","g":3726.0,"o":6,"u":4,"lift":null,"p":false},{"d":"2026-07-04","g":3974.0,"o":3,"u":3,"lift":null,"p":false},{"d":"2026-07-05","g":3676.0,"o":3,"u":3,"lift":1.25,"p":false},{"d":"2026-07-06","g":648.0,"o":1,"u":1,"lift":0.21,"p":false},{"d":"2026-07-07","g":6510.0,"o":2,"u":2,"lift":2.47,"p":true},{"d":"2026-07-08","g":648.0,"o":1,"u":1,"lift":0.2,"p":false},{"d":"2026-07-09","g":456.0,"o":2,"u":2,"lift":0.16,"p":false},{"d":"2026-07-11","g":294.0,"o":6,"u":5,"lift":0.1,"p":true},{"d":"2026-07-12","g":196.0,"o":2,"u":1,"lift":0.08,"p":false},{"d":"2026-07-13","g":1424.0,"o":2,"u":2,"lift":0.8,"p":false},{"d":"2026-07-14","g":2012.0,"o":12,"u":5,"lift":1.38,"p":true},{"d":"2026-07-15","g":3126.0,"o":2,"u":2,"lift":1.9,"p":true},{"d":"2026-07-16","g":4290.0,"o":11,"u":5,"lift":3.68,"p":true},{"d":"2026-07-17","g":1522.0,"o":4,"u":2,"lift":0.9,"p":false},{"d":"2026-07-18","g":9122.0,"o":23,"u":8,"lift":4.96,"p":true},{"d":"2026-07-19","g":5522.0,"o":14,"u":8,"lift":1.78,"p":true},{"d":"2026-07-20","g":604.0,"o":11,"u":4,"lift":0.16,"p":false},{"d":"2026-07-21","g":10700.0,"o":41,"u":12,"lift":2.86,"p":true},{"d":"2026-07-22","g":5776.0,"o":25,"u":6,"lift":1.16,"p":false},{"d":"2026-07-23","g":11236.0,"o":14,"u":6,"lift":2.1,"p":true},{"d":"2026-07-24","g":26952.0,"o":39,"u":13,"lift":4.24,"p":true},{"d":"2026-07-25","g":19960.0,"o":23,"u":15,"lift":2.0,"p":true},{"d":"2026-07-26","g":12224.0,"o":22,"u":9,"lift":1.06,"p":false},{"d":"2026-07-27","g":17902.0,"o":5,"u":4,"lift":1.43,"p":false},{"d":"2026-07-28","g":28360.0,"o":14,"u":9,"lift":1.9,"p":true},{"d":"2026-07-29","g":2706.0,"o":22,"u":7,"lift":0.15,"p":false},{"d":"2026-07-30","g":13914.0,"o":14,"u":5,"lift":0.82,"p":false},{"d":"2026-07-31","g":10856.0,"o":23,"u":11,"lift":0.62,"p":false},{"d":"2026-08-01","g":30332.0,"o":64,"u":13,"lift":2.0,"p":true},{"d":"2026-08-02","g":17412.0,"o":65,"u":15,"lift":1.05,"p":true},{"d":"2026-08-03","g":448.0,"o":5,"u":3,"lift":0.03,"p":false},{"d":"2026-08-04","g":5236.0,"o":23,"u":10,"lift":0.35,"p":false},{"d":"2026-08-05","g":13666.0,"o":29,"u":15,"lift":1.18,"p":false},{"d":"2026-08-06","g":6760.0,"o":23,"u":12,"lift":0.52,"p":false},{"d":"2026-08-07","g":7306.0,"o":29,"u":15,"lift":0.6,"p":false},{"d":"2026-08-08","g":16694.0,"o":25,"u":17,"lift":1.44,"p":false},{"d":"2026-08-09","g":22844.0,"o":16,"u":13,"lift":2.37,"p":true},{"d":"2026-08-10","g":1626.0,"o":8,"u":7,"lift":0.16,"p":false},{"d":"2026-08-11","g":20992.0,"o":32,"u":15,"lift":1.98,"p":true},{"d":"2026-08-12","g":8340.0,"o":16,"u":10,"lift":0.65,"p":false},{"d":"2026-08-13","g":3654.0,"o":12,"u":10,"lift":0.3,"p":false},{"d":"2026-08-14","g":5416.0,"o":11,"u":7,"lift":0.47,"p":false},{"d":"2026-08-15","g":11248.0,"o":28,"u":11,"lift":0.99,"p":false},{"d":"2026-08-16","g":24698.0,"o":40,"u":19,"lift":2.33,"p":true},{"d":"2026-08-17","g":66012.0,"o":68,"u":31,"lift":6.08,"p":true},{"d":"2026-08-18","g":48446.0,"o":299,"u":28,"lift":2.42,"p":true},{"d":"2026-08-19","g":31974.0,"o":64,"u":19,"lift":1.33,"p":false},{"d":"2026-08-20","g":21846.0,"o":65,"u":25,"lift":0.8,"p":false},{"d":"2026-08-21","g":25588.0,"o":55,"u":29,"lift":0.85,"p":false},{"d":"2026-08-22","g":35400.0,"o":77,"u":39,"lift":1.08,"p":false},{"d":"2026-08-23","g":51694.0,"o":84,"u":42,"lift":1.42,"p":false},{"d":"2026-08-24","g":7994.0,"o":17,"u":15,"lift":0.2,"p":false},{"d":"2026-08-25","g":82972.0,"o":88,"u":48,"lift":2.61,"p":true},{"d":"2026-08-26","g":31910.0,"o":75,"u":40,"lift":0.87,"p":false},{"d":"2026-08-27","g":49202.0,"o":65,"u":40,"lift":1.34,"p":false},{"d":"2026-08-28","g":47710.0,"o":69,"u":38,"lift":1.17,"p":false},{"d":"2026-08-29","g":59982.0,"o":110,"u":48,"lift":1.37,"p":false},{"d":"2026-08-30","g":84146.0,"o":141,"u":60,"lift":1.78,"p":true},{"d":"2026-08-31","g":117826.0,"o":233,"u":80,"lift":2.27,"p":true},{"d":"2026-09-01","g":16108.0,"o":44,"u":21,"lift":0.24,"p":false},{"d":"2026-09-02","g":6594.0,"o":36,"u":17,"lift":0.11,"p":false},{"d":"2026-09-03","g":10004.0,"o":64,"u":24,"lift":0.18,"p":false},{"d":"2026-09-04","g":9446.0,"o":54,"u":18,"lift":0.19,"p":false},{"d":"2026-09-05","g":18378.0,"o":116,"u":40,"lift":0.42,"p":false},{"d":"2026-09-06","g":10086.0,"o":31,"u":21,"lift":0.27,"p":false},{"d":"2026-09-07","g":11736.0,"o":56,"u":25,"lift":0.44,"p":false},{"d":"2026-09-08","g":9294.0,"o":14,"u":13,"lift":0.79,"p":false},{"d":"2026-09-09","g":16198.0,"o":66,"u":29,"lift":1.5,"p":false},{"d":"2026-09-10","g":15458.0,"o":46,"u":23,"lift":1.27,"p":false},{"d":"2026-09-11","g":19766.0,"o":66,"u":31,"lift":1.53,"p":false},{"d":"2026-09-12","g":39534.0,"o":237,"u":41,"lift":2.74,"p":true},{"d":"2026-09-13","g":19114.0,"o":49,"u":30,"lift":1.1,"p":false},{"d":"2026-09-14","g":48678.0,"o":133,"u":36,"lift":2.6,"p":true},{"d":"2026-09-15","g":33480.0,"o":71,"u":35,"lift":1.39,"p":false},{"d":"2026-09-16","g":22248.0,"o":110,"u":43,"lift":0.81,"p":false},{"d":"2026-09-17","g":15606.0,"o":63,"u":33,"lift":0.55,"p":false},{"d":"2026-09-18","g":26144.0,"o":106,"u":33,"lift":0.92,"p":false},{"d":"2026-09-19","g":50020.0,"o":115,"u":52,"lift":1.71,"p":true},{"d":"2026-09-20","g":36080.0,"o":108,"u":45,"lift":1.17,"p":false},{"d":"2026-09-21","g":24032.0,"o":92,"u":37,"lift":0.72,"p":false},{"d":"2026-09-22","g":17828.0,"o":54,"u":36,"lift":0.6,"p":false},{"d":"2026-09-23","g":13944.0,"o":58,"u":32,"lift":0.51,"p":false},{"d":"2026-09-24","g":43960.0,"o":122,"u":89,"lift":1.68,"p":true},{"d":"2026-09-25","g":20646.0,"o":80,"u":63,"lift":0.68,"p":false},{"d":"2026-09-26","g":40254.0,"o":161,"u":66,"lift":1.36,"p":false},{"d":"2026-09-27","g":29158.0,"o":142,"u":82,"lift":1.04,"p":false},{"d":"2026-09-28","g":47980.0,"o":169,"u":61,"lift":1.77,"p":true},{"d":"2026-09-29","g":15086.0,"o":26,"u":16,"lift":0.49,"p":false},{"d":"2026-09-30","g":5170.0,"o":24,"u":10,"lift":0.17,"p":false},{"d":"2026-10-01","g":19852.0,"o":86,"u":41,"lift":0.69,"p":false},{"d":"2026-10-02","g":36080.0,"o":99,"u":49,"lift":1.42,"p":false},{"d":"2026-10-03","g":37140.0,"o":129,"u":65,"lift":1.34,"p":false},{"d":"2026-10-04","g":47904.0,"o":98,"u":53,"lift":1.76,"p":true},{"d":"2026-10-05","g":39058.0,"o":157,"u":56,"lift":1.31,"p":false},{"d":"2026-10-06","g":33816.0,"o":96,"u":55,"lift":1.18,"p":false},{"d":"2026-10-07","g":55252.0,"o":90,"u":55,"lift":1.77,"p":true},{"d":"2026-10-08","g":54442.0,"o":154,"u":55,"lift":1.42,"p":false},{"d":"2026-10-09","g":1140.0,"o":17,"u":9,"lift":0.03,"p":false},{"d":"2026-10-10","g":16454.0,"o":22,"u":16,"lift":0.43,"p":false},{"d":"2026-10-11","g":6020.0,"o":70,"u":25,"lift":0.17,"p":false},{"d":"2026-10-12","g":15474.0,"o":59,"u":29,"lift":0.53,"p":false},{"d":"2026-10-13","g":9218.0,"o":60,"u":30,"lift":0.35,"p":false},{"d":"2026-10-14","g":14348.0,"o":88,"u":38,"lift":0.64,"p":false},{"d":"2026-10-15","g":23970.0,"o":101,"u":44,"lift":1.43,"p":false},{"d":"2026-10-16","g":24842.0,"o":125,"u":49,"lift":2.01,"p":true},{"d":"2026-10-17","g":31316.0,"o":156,"u":67,"lift":1.99,"p":true},{"d":"2026-10-18","g":22002.0,"o":63,"u":36,"lift":1.23,"p":false},{"d":"2026-10-19","g":2788.0,"o":26,"u":13,"lift":0.14,"p":false},{"d":"2026-10-20","g":11108.0,"o":43,"u":29,"lift":0.61,"p":false},{"d":"2026-10-21","g":4516.0,"o":56,"u":28,"lift":0.24,"p":false},{"d":"2026-10-22","g":9186.0,"o":56,"u":26,"lift":0.53,"p":false},{"d":"2026-10-23","g":13722.0,"o":80,"u":45,"lift":0.91,"p":false},{"d":"2026-10-24","g":23784.0,"o":140,"u":52,"lift":1.76,"p":true},{"d":"2026-10-25","g":11594.0,"o":91,"u":53,"lift":0.93,"p":false},{"d":"2026-10-26","g":14260.0,"o":83,"u":36,"lift":1.3,"p":false},{"d":"2026-10-27","g":16318.0,"o":121,"u":52,"lift":1.3,"p":false},{"d":"2026-10-28","g":23760.0,"o":102,"u":39,"lift":1.78,"p":true},{"d":"2026-10-29","g":8430.0,"o":53,"u":23,"lift":0.52,"p":false},{"d":"2026-10-30","g":14330.0,"o":106,"u":37,"lift":0.9,"p":false},{"d":"2026-10-31","g":39570.0,"o":188,"u":65,"lift":2.46,"p":true},{"d":"2026-11-01","g":8104.0,"o":70,"u":40,"lift":0.44,"p":false},{"d":"2026-11-02","g":2546.0,"o":26,"u":14,"lift":0.14,"p":false},{"d":"2026-11-03","g":9366.0,"o":29,"u":18,"lift":0.58,"p":false},{"d":"2026-11-04","g":7854.0,"o":60,"u":36,"lift":0.52,"p":false},{"d":"2026-11-05","g":7246.0,"o":56,"u":32,"lift":0.56,"p":false},{"d":"2026-11-06","g":5460.0,"o":61,"u":41,"lift":0.43,"p":false},{"d":"2026-11-07","g":38230.0,"o":206,"u":90,"lift":3.34,"p":true},{"d":"2026-11-08","g":18856.0,"o":99,"u":65,"lift":1.67,"p":true},{"d":"2026-11-09","g":22880.0,"o":132,"u":68,"lift":1.79,"p":true},{"d":"2026-11-10","g":27690.0,"o":77,"u":59,"lift":1.76,"p":true},{"d":"2026-11-11","g":8470.0,"o":68,"u":47,"lift":0.46,"p":false},{"d":"2026-11-12","g":15390.0,"o":118,"u":60,"lift":0.84,"p":false},{"d":"2026-11-13","g":12076.0,"o":94,"u":54,"lift":0.62,"p":false},{"d":"2026-11-14","g":28992.0,"o":124,"u":60,"lift":1.41,"p":false},{"d":"2026-11-15","g":11294.0,"o":95,"u":37,"lift":0.59,"p":false},{"d":"2026-11-16","g":2334.0,"o":30,"u":21,"lift":0.13,"p":false},{"d":"2026-11-17","g":10774.0,"o":54,"u":37,"lift":0.71,"p":false}],"daily_all":[{"d":"2026-01-01","g":143644.0,"u":927},{"d":"2026-01-02","g":194414.0,"u":954},{"d":"2026-01-03","g":321463.0,"u":1040},{"d":"2026-01-04","g":50374.0,"u":480},{"d":"2026-01-05","g":65764.0,"u":461},{"d":"2026-01-06","g":73354.0,"u":463},{"d":"2026-01-07","g":87340.0,"u":523},{"d":"2026-01-08","g":79814.0,"u":579},{"d":"2026-01-09","g":103352.0,"u":613},{"d":"2026-01-10","g":144834.0,"u":737},{"d":"2026-01-11","g":48831.0,"u":509},{"d":"2026-01-12","g":104432.0,"u":581},{"d":"2026-01-13","g":89083.0,"u":682},{"d":"2026-01-14","g":74211.0,"u":693},{"d":"2026-01-15","g":55222.0,"u":623},{"d":"2026-01-16","g":178178.0,"u":868},{"d":"2026-01-17","g":179853.0,"u":811},{"d":"2026-01-18","g":138480.0,"u":724},{"d":"2026-01-19","g":130975.0,"u":1113},{"d":"2026-01-20","g":137097.0,"u":1184},{"d":"2026-01-21","g":132540.0,"u":992},{"d":"2026-01-22","g":183948.0,"u":906},{"d":"2026-01-23","g":131653.0,"u":817},{"d":"2026-01-24","g":227828.0,"u":1032},{"d":"2026-01-25","g":270761.0,"u":846},{"d":"2026-01-26","g":86386.0,"u":412},{"d":"2026-01-27","g":130855.0,"u":499},{"d":"2026-01-28","g":106827.0,"u":532},{"d":"2026-01-29","g":69359.0,"u":501},{"d":"2026-01-30","g":92391.0,"u":555},{"d":"2026-01-31","g":116428.0,"u":579},{"d":"2026-02-01","g":87031.0,"u":567},{"d":"2026-02-02","g":65322.0,"u":480},{"d":"2026-02-03","g":52627.0,"u":508},{"d":"2026-02-04","g":59271.0,"u":501},{"d":"2026-02-05","g":62868.0,"u":478},{"d":"2026-02-06","g":46477.0,"u":448},{"d":"2026-02-07","g":145908.0,"u":818},{"d":"2026-02-08","g":78676.0,"u":559},{"d":"2026-02-09","g":50256.0,"u":446},{"d":"2026-02-10","g":154142.0,"u":684},{"d":"2026-02-11","g":68237.0,"u":677},{"d":"2026-02-12","g":112310.0,"u":656},{"d":"2026-02-13","g":157699.0,"u":709},{"d":"2026-02-14","g":295715.0,"u":801},{"d":"2026-02-15","g":411701.0,"u":920},{"d":"2026-02-16","g":320098.0,"u":847},{"d":"2026-02-17","g":165470.0,"u":827},{"d":"2026-02-18","g":185920.0,"u":817},{"d":"2026-02-19","g":236561.0,"u":869},{"d":"2026-02-20","g":378957.0,"u":787},{"d":"2026-02-21","g":236422.0,"u":848},{"d":"2026-02-22","g":160953.0,"u":716},{"d":"2026-02-23","g":194104.0,"u":776},{"d":"2026-02-24","g":315425.0,"u":904},{"d":"2026-02-25","g":38836.0,"u":386},{"d":"2026-02-26","g":43741.0,"u":397},{"d":"2026-02-27","g":42802.0,"u":453},{"d":"2026-02-28","g":94285.0,"u":684},{"d":"2026-03-01","g":87736.0,"u":582},{"d":"2026-03-02","g":43951.0,"u":411},{"d":"2026-03-03","g":104122.0,"u":793},{"d":"2026-03-04","g":76323.0,"u":714},{"d":"2026-03-05","g":75759.0,"u":571},{"d":"2026-03-06","g":60344.0,"u":512},{"d":"2026-03-07","g":126222.0,"u":840},{"d":"2026-03-08","g":56965.0,"u":500},{"d":"2026-03-09","g":36003.0,"u":398},{"d":"2026-03-10","g":89555.0,"u":625},{"d":"2026-03-11","g":68378.0,"u":555},{"d":"2026-03-12","g":60283.0,"u":555},{"d":"2026-03-13","g":85544.0,"u":634},{"d":"2026-03-14","g":147706.0,"u":741},{"d":"2026-03-15","g":167556.0,"u":762},{"d":"2026-03-16","g":77466.0,"u":625},{"d":"2026-03-17","g":94385.0,"u":649},{"d":"2026-03-18","g":90964.0,"u":574},{"d":"2026-03-19","g":153619.0,"u":558},{"d":"2026-03-20","g":109864.0,"u":651},{"d":"2026-03-21","g":166981.0,"u":827},{"d":"2026-03-22","g":111272.0,"u":629},{"d":"2026-03-23","g":51261.0,"u":470},{"d":"2026-03-24","g":88108.0,"u":558},{"d":"2026-03-25","g":69933.0,"u":546},{"d":"2026-03-26","g":95721.0,"u":806},{"d":"2026-03-27","g":61624.0,"u":611},{"d":"2026-03-28","g":143277.0,"u":700},{"d":"2026-03-29","g":107826.0,"u":768},{"d":"2026-03-30","g":94475.0,"u":647},{"d":"2026-03-31","g":83164.0,"u":747},{"d":"2026-04-01","g":72346.0,"u":648},{"d":"2026-04-02","g":107071.0,"u":858},{"d":"2026-04-03","g":134848.0,"u":794},{"d":"2026-04-04","g":211822.0,"u":996},{"d":"2026-04-05","g":95115.0,"u":694},{"d":"2026-04-06","g":120372.0,"u":687},{"d":"2026-04-07","g":53590.0,"u":442},{"d":"2026-04-08","g":55535.0,"u":431},{"d":"2026-04-09","g":48482.0,"u":444},{"d":"2026-04-10","g":57662.0,"u":519},{"d":"2026-04-11","g":127025.0,"u":633},{"d":"2026-04-12","g":92723.0,"u":601},{"d":"2026-04-13","g":46895.0,"u":432},{"d":"2026-04-14","g":71553.0,"u":615},{"d":"2026-04-15","g":52039.0,"u":479},{"d":"2026-04-16","g":91926.0,"u":560},{"d":"2026-04-17","g":123988.0,"u":547},{"d":"2026-04-18","g":186686.0,"u":662},{"d":"2026-04-19","g":118934.0,"u":591},{"d":"2026-04-20","g":94128.0,"u":619},{"d":"2026-04-21","g":81938.0,"u":606},{"d":"2026-04-22","g":80492.0,"u":561},{"d":"2026-04-23","g":110114.0,"u":651},{"d":"2026-04-24","g":70077.0,"u":489},{"d":"2026-04-25","g":101247.0,"u":501},{"d":"2026-04-26","g":76739.0,"u":500},{"d":"2026-04-27","g":54433.0,"u":451},{"d":"2026-04-28","g":77850.0,"u":569},{"d":"2026-04-29","g":114078.0,"u":563},{"d":"2026-04-30","g":81280.0,"u":618},{"d":"2026-05-01","g":231344.0,"u":625},{"d":"2026-05-02","g":98460.0,"u":560},{"d":"2026-05-03","g":93336.0,"u":540},{"d":"2026-05-04","g":83352.0,"u":512},{"d":"2026-05-05","g":97499.0,"u":485},{"d":"2026-05-06","g":101564.0,"u":493},{"d":"2026-05-07","g":37862.0,"u":369},{"d":"2026-05-08","g":77385.0,"u":501},{"d":"2026-05-09","g":96077.0,"u":522},{"d":"2026-05-10","g":63285.0,"u":392},{"d":"2026-05-11","g":47240.0,"u":385},{"d":"2026-05-12","g":63272.0,"u":523},{"d":"2026-05-13","g":46632.0,"u":429},{"d":"2026-05-14","g":65207.0,"u":468},{"d":"2026-05-15","g":49936.0,"u":458},{"d":"2026-05-16","g":143710.0,"u":618},{"d":"2026-05-17","g":88398.0,"u":436},{"d":"2026-05-18","g":56028.0,"u":406},{"d":"2026-05-19","g":53308.0,"u":460},{"d":"2026-05-20","g":52505.0,"u":476},{"d":"2026-05-21","g":77760.0,"u":554},{"d":"2026-05-22","g":52857.0,"u":433},{"d":"2026-05-23","g":113306.0,"u":525},{"d":"2026-05-24","g":80387.0,"u":457},{"d":"2026-05-25","g":57777.0,"u":380},{"d":"2026-05-26","g":86912.0,"u":999},{"d":"2026-05-27","g":94902.0,"u":857},{"d":"2026-05-28","g":116222.0,"u":832},{"d":"2026-05-29","g":133144.0,"u":728},{"d":"2026-05-30","g":152375.0,"u":774},{"d":"2026-05-31","g":105682.0,"u":608},{"d":"2026-06-01","g":197291.0,"u":669},{"d":"2026-06-02","g":56611.0,"u":388},{"d":"2026-06-03","g":35102.0,"u":391},{"d":"2026-06-04","g":43267.0,"u":361},{"d":"2026-06-05","g":39266.0,"u":410},{"d":"2026-06-06","g":78586.0,"u":430},{"d":"2026-06-07","g":78556.0,"u":483},{"d":"2026-06-08","g":49188.0,"u":437},{"d":"2026-06-09","g":47205.0,"u":494},{"d":"2026-06-10","g":75883.0,"u":470},{"d":"2026-06-11","g":56607.0,"u":478},{"d":"2026-06-12","g":89125.0,"u":577},{"d":"2026-06-13","g":92935.0,"u":601},{"d":"2026-06-14","g":57849.0,"u":480},{"d":"2026-06-15","g":44157.0,"u":426},{"d":"2026-06-16","g":104759.0,"u":563},{"d":"2026-06-17","g":83991.0,"u":572},{"d":"2026-06-18","g":57782.0,"u":514},{"d":"2026-06-19","g":117064.0,"u":748},{"d":"2026-06-20","g":112310.0,"u":750},{"d":"2026-06-21","g":148302.0,"u":740},{"d":"2026-06-22","g":67936.0,"u":548},{"d":"2026-06-23","g":191800.0,"u":786},{"d":"2026-06-24","g":50995.0,"u":460},{"d":"2026-06-25","g":93658.0,"u":491},{"d":"2026-06-26","g":80422.0,"u":431},{"d":"2026-06-27","g":230072.0,"u":646},{"d":"2026-06-28","g":68504.0,"u":362},{"d":"2026-06-29","g":78639.0,"u":493},{"d":"2026-06-30","g":142747.0,"u":584},{"d":"2026-07-01","g":203994.0,"u":564},{"d":"2026-07-02","g":27240.0,"u":300},{"d":"2026-07-03","g":29132.0,"u":339},{"d":"2026-07-04","g":81338.0,"u":444},{"d":"2026-07-05","g":39232.0,"u":423},{"d":"2026-07-06","g":35642.0,"u":320},{"d":"2026-07-07","g":26262.0,"u":325},{"d":"2026-07-08","g":44666.0,"u":460},{"d":"2026-07-09","g":32210.0,"u":398},{"d":"2026-07-10","g":55184.0,"u":545},{"d":"2026-07-11","g":66776.0,"u":571},{"d":"2026-07-12","g":54210.0,"u":464},{"d":"2026-07-13","g":40740.0,"u":384},{"d":"2026-07-14","g":46544.0,"u":453},{"d":"2026-07-15","g":49973.0,"u":343},{"d":"2026-07-16","g":75497.0,"u":472},{"d":"2026-07-17","g":60204.0,"u":435},{"d":"2026-07-18","g":82163.0,"u":486},{"d":"2026-07-19","g":68763.0,"u":484},{"d":"2026-07-20","g":109691.0,"u":501},{"d":"2026-07-21","g":70378.0,"u":410},{"d":"2026-07-22","g":84867.0,"u":388},{"d":"2026-07-23","g":75492.0,"u":352},{"d":"2026-07-24","g":108028.0,"u":389},{"d":"2026-07-25","g":95006.0,"u":526},{"d":"2026-07-26","g":67757.0,"u":444},{"d":"2026-07-27","g":61084.0,"u":384},{"d":"2026-07-28","g":110208.0,"u":430},{"d":"2026-07-29","g":72112.0,"u":495},{"d":"2026-07-30","g":58926.0,"u":439},{"d":"2026-07-31","g":108167.0,"u":468},{"d":"2026-08-01","g":37720.0,"u":355},{"d":"2026-08-02","g":51470.0,"u":455},{"d":"2026-08-03","g":43765.0,"u":332},{"d":"2026-08-04","g":40481.0,"u":341},{"d":"2026-08-05","g":43789.0,"u":426},{"d":"2026-08-06","g":34950.0,"u":379},{"d":"2026-08-07","g":37810.0,"u":412},{"d":"2026-08-08","g":58608.0,"u":565},{"d":"2026-08-09","g":101786.0,"u":532},{"d":"2026-08-10","g":54908.0,"u":394},{"d":"2026-08-11","g":92643.0,"u":422},{"d":"2026-08-12","g":48427.0,"u":362},{"d":"2026-08-13","g":55067.0,"u":378},{"d":"2026-08-14","g":42614.0,"u":454},{"d":"2026-08-15","g":43464.0,"u":373},{"d":"2026-08-16","g":64239.0,"u":379},{"d":"2026-08-17","g":126690.0,"u":664},{"d":"2026-08-18","g":65762.0,"u":565},{"d":"2026-08-19","g":51621.0,"u":568},{"d":"2026-08-20","g":70297.0,"u":550},{"d":"2026-08-21","g":65492.0,"u":524},{"d":"2026-08-22","g":71242.0,"u":595},{"d":"2026-08-23","g":56896.0,"u":600},{"d":"2026-08-24","g":25307.0,"u":331},{"d":"2026-08-25","g":143630.0,"u":571},{"d":"2026-08-26","g":60117.0,"u":397},{"d":"2026-08-27","g":55465.0,"u":396},{"d":"2026-08-28","g":78806.0,"u":403},{"d":"2026-08-29","g":73622.0,"u":443},{"d":"2026-08-30","g":98909.0,"u":472},{"d":"2026-08-31","g":181740.0,"u":550},{"d":"2026-09-01","g":21582.0,"u":263},{"d":"2026-09-02","g":19921.0,"u":261},{"d":"2026-09-03","g":21325.0,"u":274},{"d":"2026-09-04","g":21802.0,"u":249},{"d":"2026-09-05","g":45832.0,"u":508},{"d":"2026-09-06","g":28330.0,"u":351},{"d":"2026-09-07","g":41134.0,"u":386},{"d":"2026-09-08","g":30979.0,"u":297},{"d":"2026-09-09","g":42467.0,"u":371},{"d":"2026-09-10","g":40490.0,"u":369},{"d":"2026-09-11","g":55723.0,"u":450},{"d":"2026-09-12","g":56820.0,"u":499},{"d":"2026-09-13","g":74106.0,"u":549},{"d":"2026-09-14","g":104410.0,"u":496},{"d":"2026-09-15","g":35192.0,"u":412},{"d":"2026-09-16","g":59324.0,"u":394},{"d":"2026-09-17","g":36832.0,"u":492},{"d":"2026-09-18","g":48735.0,"u":426},{"d":"2026-09-19","g":83653.0,"u":568},{"d":"2026-09-20","g":102598.0,"u":546},{"d":"2026-09-21","g":63961.0,"u":403},{"d":"2026-09-22","g":30895.0,"u":611},{"d":"2026-09-23","g":27918.0,"u":526},{"d":"2026-09-24","g":56762.0,"u":913},{"d":"2026-09-25","g":61913.0,"u":724},{"d":"2026-09-26","g":74571.0,"u":659},{"d":"2026-09-27","g":70279.0,"u":750},{"d":"2026-09-28","g":76881.0,"u":716},{"d":"2026-09-29","g":24903.0,"u":427},{"d":"2026-09-30","g":18616.0,"u":213},{"d":"2026-10-01","g":81462.0,"u":548},{"d":"2026-10-02","g":57090.0,"u":457},{"d":"2026-10-03","g":59414.0,"u":523},{"d":"2026-10-04","g":53058.0,"u":454},{"d":"2026-10-05","g":60732.0,"u":472},{"d":"2026-10-06","g":63712.0,"u":498},{"d":"2026-10-07","g":89424.0,"u":562},{"d":"2026-10-08","g":86496.0,"u":368},{"d":"2026-10-09","g":20478.0,"u":220},{"d":"2026-10-10","g":28533.0,"u":256},{"d":"2026-10-11","g":38391.0,"u":333},{"d":"2026-10-12","g":44770.0,"u":329},{"d":"2026-10-13","g":35227.0,"u":328},{"d":"2026-10-14","g":40553.0,"u":383},{"d":"2026-10-15","g":29096.0,"u":350},{"d":"2026-10-16","g":54111.0,"u":530},{"d":"2026-10-17","g":64479.0,"u":618},{"d":"2026-10-18","g":62171.0,"u":483},{"d":"2026-10-19","g":18582.0,"u":248},{"d":"2026-10-20","g":28412.0,"u":312},{"d":"2026-10-21","g":23318.0,"u":342},{"d":"2026-10-22","g":17751.0,"u":266},{"d":"2026-10-23","g":34156.0,"u":531},{"d":"2026-10-24","g":39152.0,"u":407},{"d":"2026-10-25","g":31966.0,"u":419},{"d":"2026-10-26","g":29590.0,"u":265},{"d":"2026-10-27","g":42885.0,"u":414},{"d":"2026-10-28","g":38431.0,"u":322},{"d":"2026-10-29","g":32172.0,"u":301},{"d":"2026-10-30","g":42156.0,"u":302},{"d":"2026-10-31","g":51650.0,"u":471},{"d":"2026-11-01","g":39703.0,"u":385},{"d":"2026-11-02","g":19140.0,"u":238},{"d":"2026-11-03","g":27790.0,"u":280},{"d":"2026-11-04","g":30494.0,"u":350},{"d":"2026-11-05","g":19878.0,"u":260},{"d":"2026-11-06","g":34358.0,"u":429},{"d":"2026-11-07","g":63574.0,"u":727},{"d":"2026-11-08","g":49021.0,"u":581},{"d":"2026-11-09","g":43437.0,"u":512},{"d":"2026-11-10","g":43112.0,"u":485},{"d":"2026-11-11","g":24226.0,"u":369},{"d":"2026-11-12","g":30471.0,"u":393},{"d":"2026-11-13","g":41453.0,"u":413},{"d":"2026-11-14","g":44009.0,"u":470},{"d":"2026-11-15","g":23208.0,"u":359},{"d":"2026-11-16","g":19542.0,"u":182},{"d":"2026-11-17","g":25303.0,"u":303}],"daily_pt":[{"d":"2026-01-01","g":19774.0},{"d":"2026-01-02","g":50292.0},{"d":"2026-01-03","g":92166.0},{"d":"2026-01-04","g":7774.0},{"d":"2026-01-05","g":8736.0},{"d":"2026-01-06","g":20782.0},{"d":"2026-01-07","g":33118.0},{"d":"2026-01-08","g":31052.0},{"d":"2026-01-09","g":38820.0},{"d":"2026-01-10","g":49682.0},{"d":"2026-01-11","g":16310.0},{"d":"2026-01-12","g":12184.0},{"d":"2026-01-13","g":22968.0},{"d":"2026-01-14","g":18886.0},{"d":"2026-01-15","g":11916.0},{"d":"2026-01-16","g":56402.0},{"d":"2026-01-17","g":59918.0},{"d":"2026-01-18","g":28742.0},{"d":"2026-01-19","g":41144.0},{"d":"2026-01-20","g":35882.0},{"d":"2026-01-21","g":22948.0},{"d":"2026-01-22","g":41508.0},{"d":"2026-01-23","g":33808.0},{"d":"2026-01-24","g":61706.0},{"d":"2026-01-25","g":58934.0},{"d":"2026-01-26","g":25644.0},{"d":"2026-01-27","g":52418.0},{"d":"2026-01-28","g":32558.0},{"d":"2026-01-29","g":12302.0},{"d":"2026-01-30","g":17888.0},{"d":"2026-01-31","g":45556.0},{"d":"2026-02-01","g":14830.0},{"d":"2026-02-02","g":11390.0},{"d":"2026-02-03","g":8514.0},{"d":"2026-02-04","g":11204.0},{"d":"2026-02-05","g":13700.0},{"d":"2026-02-06","g":12232.0},{"d":"2026-02-07","g":37723.0},{"d":"2026-02-08","g":16853.0},{"d":"2026-02-09","g":17045.0},{"d":"2026-02-10","g":42818.0},{"d":"2026-02-11","g":18262.0},{"d":"2026-02-12","g":31482.0},{"d":"2026-02-13","g":42782.0},{"d":"2026-02-14","g":96436.0},{"d":"2026-02-15","g":102944.0},{"d":"2026-02-16","g":71814.0},{"d":"2026-02-17","g":40241.0},{"d":"2026-02-18","g":69927.0},{"d":"2026-02-19","g":68690.0},{"d":"2026-02-20","g":89221.0},{"d":"2026-02-21","g":92286.0},{"d":"2026-02-22","g":55348.0},{"d":"2026-02-23","g":59774.0},{"d":"2026-02-24","g":113216.0},{"d":"2026-02-25","g":6228.0},{"d":"2026-02-26","g":10002.0},{"d":"2026-02-27","g":8170.0},{"d":"2026-02-28","g":41888.0},{"d":"2026-03-01","g":24578.0},{"d":"2026-03-02","g":8286.0},{"d":"2026-03-03","g":38748.0},{"d":"2026-03-04","g":22288.0},{"d":"2026-03-05","g":26184.0},{"d":"2026-03-06","g":8150.0},{"d":"2026-03-07","g":30946.0},{"d":"2026-03-08","g":22542.0},{"d":"2026-03-09","g":5380.0},{"d":"2026-03-10","g":36096.0},{"d":"2026-03-11","g":19450.0},{"d":"2026-03-12","g":18082.0},{"d":"2026-03-13","g":29976.0},{"d":"2026-03-14","g":52350.0},{"d":"2026-03-15","g":91148.0},{"d":"2026-03-16","g":26332.0},{"d":"2026-03-17","g":26362.0},{"d":"2026-03-18","g":19380.0},{"d":"2026-03-19","g":34941.0},{"d":"2026-03-20","g":32232.0},{"d":"2026-03-21","g":44075.0},{"d":"2026-03-22","g":11550.0},{"d":"2026-03-23","g":7387.0},{"d":"2026-03-24","g":29443.0},{"d":"2026-03-25","g":10380.0},{"d":"2026-03-26","g":31347.0},{"d":"2026-03-27","g":14924.0},{"d":"2026-03-28","g":61556.0},{"d":"2026-03-29","g":52012.0},{"d":"2026-03-30","g":43410.0},{"d":"2026-03-31","g":36752.0},{"d":"2026-04-01","g":20396.0},{"d":"2026-04-02","g":28394.0},{"d":"2026-04-03","g":46710.0},{"d":"2026-04-04","g":101944.0},{"d":"2026-04-05","g":13136.0},{"d":"2026-04-06","g":10108.0},{"d":"2026-04-07","g":25494.0},{"d":"2026-04-08","g":26754.0},{"d":"2026-04-09","g":12212.0},{"d":"2026-04-10","g":23330.0},{"d":"2026-04-11","g":57024.0},{"d":"2026-04-12","g":24684.0},{"d":"2026-04-13","g":6602.0},{"d":"2026-04-14","g":27246.0},{"d":"2026-04-15","g":15568.0},{"d":"2026-04-16","g":19340.0},{"d":"2026-04-17","g":43816.0},{"d":"2026-04-18","g":64522.0},{"d":"2026-04-19","g":28522.0},{"d":"2026-04-20","g":25352.0},{"d":"2026-04-21","g":23732.0},{"d":"2026-04-22","g":20680.0},{"d":"2026-04-23","g":29607.0},{"d":"2026-04-24","g":32041.0},{"d":"2026-04-25","g":48776.0},{"d":"2026-04-26","g":27595.0},{"d":"2026-04-27","g":10297.0},{"d":"2026-04-28","g":37908.0},{"d":"2026-04-29","g":56175.0},{"d":"2026-04-30","g":18874.0},{"d":"2026-05-01","g":52963.0},{"d":"2026-05-02","g":31794.0},{"d":"2026-05-03","g":34669.0},{"d":"2026-05-04","g":19589.0},{"d":"2026-05-05","g":31793.0},{"d":"2026-05-06","g":13637.0},{"d":"2026-05-07","g":9453.0},{"d":"2026-05-08","g":35431.0},{"d":"2026-05-09","g":38173.0},{"d":"2026-05-10","g":31528.0},{"d":"2026-05-11","g":10416.0},{"d":"2026-05-12","g":18096.0},{"d":"2026-05-13","g":19830.0},{"d":"2026-05-14","g":13726.0},{"d":"2026-05-15","g":16640.0},{"d":"2026-05-16","g":56104.0},{"d":"2026-05-17","g":32432.0},{"d":"2026-05-18","g":5818.0},{"d":"2026-05-19","g":6198.0},{"d":"2026-05-20","g":11890.0},{"d":"2026-05-21","g":12652.0},{"d":"2026-05-22","g":14974.0},{"d":"2026-05-23","g":44630.0},{"d":"2026-05-24","g":37548.0},{"d":"2026-05-25","g":13802.0},{"d":"2026-05-26","g":13782.0},{"d":"2026-05-27","g":18590.0},{"d":"2026-05-28","g":16208.0},{"d":"2026-05-29","g":40310.0},{"d":"2026-05-30","g":31800.0},{"d":"2026-05-31","g":15936.0},{"d":"2026-06-01","g":29968.0},{"d":"2026-06-02","g":33352.0},{"d":"2026-06-03","g":5652.0},{"d":"2026-06-04","g":13856.0},{"d":"2026-06-05","g":11054.0},{"d":"2026-06-06","g":35962.0},{"d":"2026-06-07","g":33086.0},{"d":"2026-06-08","g":8152.0},{"d":"2026-06-09","g":5608.0},{"d":"2026-06-10","g":10644.0},{"d":"2026-06-11","g":9738.0},{"d":"2026-06-12","g":16108.0},{"d":"2026-06-13","g":36701.0},{"d":"2026-06-14","g":18781.0},{"d":"2026-06-15","g":20348.0},{"d":"2026-06-16","g":47182.0},{"d":"2026-06-17","g":14714.0},{"d":"2026-06-18","g":14476.0},{"d":"2026-06-19","g":47532.0},{"d":"2026-06-20","g":34118.0},{"d":"2026-06-21","g":65540.0},{"d":"2026-06-22","g":11038.0},{"d":"2026-06-23","g":39166.0},{"d":"2026-06-24","g":15110.0},{"d":"2026-06-25","g":39220.0},{"d":"2026-06-26","g":25606.0},{"d":"2026-06-27","g":99942.0},{"d":"2026-06-28","g":22534.0},{"d":"2026-06-29","g":21944.0},{"d":"2026-06-30","g":37980.0},{"d":"2026-07-01","g":39340.0},{"d":"2026-07-02","g":3362.0},{"d":"2026-07-03","g":7106.0},{"d":"2026-07-04","g":44614.0},{"d":"2026-07-05","g":11810.0},{"d":"2026-07-06","g":9512.0},{"d":"2026-07-07","g":3370.0},{"d":"2026-07-08","g":8372.0},{"d":"2026-07-09","g":7946.0},{"d":"2026-07-10","g":10470.0},{"d":"2026-07-11","g":16554.0},{"d":"2026-07-12","g":11500.0},{"d":"2026-07-13","g":9046.0},{"d":"2026-07-14","g":9678.0},{"d":"2026-07-15","g":6798.0},{"d":"2026-07-16","g":22558.0},{"d":"2026-07-17","g":18794.0},{"d":"2026-07-18","g":28574.0},{"d":"2026-07-19","g":24376.0},{"d":"2026-07-20","g":42194.0},{"d":"2026-07-21","g":7138.0},{"d":"2026-07-22","g":19692.0},{"d":"2026-07-23","g":22616.0},{"d":"2026-07-24","g":50648.0},{"d":"2026-07-25","g":28592.0},{"d":"2026-07-26","g":20380.0},{"d":"2026-07-27","g":12708.0},{"d":"2026-07-28","g":35670.0},{"d":"2026-07-29","g":17442.0},{"d":"2026-07-30","g":10838.0},{"d":"2026-07-31","g":21412.0},{"d":"2026-08-01","g":9654.0},{"d":"2026-08-02","g":7350.0},{"d":"2026-08-03","g":8776.0},{"d":"2026-08-04","g":6192.0},{"d":"2026-08-05","g":9570.0},{"d":"2026-08-06","g":8804.0},{"d":"2026-08-07","g":8834.0},{"d":"2026-08-08","g":16022.0},{"d":"2026-08-09","g":22756.0},{"d":"2026-08-10","g":12470.0},{"d":"2026-08-11","g":27720.0},{"d":"2026-08-12","g":9352.0},{"d":"2026-08-13","g":4608.0},{"d":"2026-08-14","g":13830.0},{"d":"2026-08-15","g":9160.0},{"d":"2026-08-16","g":10150.0},{"d":"2026-08-17","g":69274.0},{"d":"2026-08-18","g":12414.0},{"d":"2026-08-19","g":9296.0},{"d":"2026-08-20","g":17486.0},{"d":"2026-08-21","g":16548.0},{"d":"2026-08-22","g":12892.0},{"d":"2026-08-23","g":7618.0},{"d":"2026-08-24","g":3734.0},{"d":"2026-08-25","g":52268.0},{"d":"2026-08-26","g":18500.0},{"d":"2026-08-27","g":19016.0},{"d":"2026-08-28","g":22328.0},{"d":"2026-08-29","g":24150.0},{"d":"2026-08-30","g":15446.0},{"d":"2026-08-31","g":40634.0},{"d":"2026-09-01","g":6548.0},{"d":"2026-09-02","g":4556.0},{"d":"2026-09-03","g":4858.0},{"d":"2026-09-04","g":3912.0},{"d":"2026-09-05","g":13928.0},{"d":"2026-09-06","g":6264.0},{"d":"2026-09-07","g":4290.0},{"d":"2026-09-08","g":6890.0},{"d":"2026-09-09","g":9756.0},{"d":"2026-09-10","g":9474.0},{"d":"2026-09-11","g":8158.0},{"d":"2026-09-12","g":11310.0},{"d":"2026-09-13","g":16240.0},{"d":"2026-09-14","g":58258.0},{"d":"2026-09-15","g":12770.0},{"d":"2026-09-16","g":13394.0},{"d":"2026-09-17","g":8724.0},{"d":"2026-09-18","g":14324.0},{"d":"2026-09-19","g":17594.0},{"d":"2026-09-20","g":44844.0},{"d":"2026-09-21","g":8090.0},{"d":"2026-09-22","g":4540.0},{"d":"2026-09-23","g":3826.0},{"d":"2026-09-24","g":14104.0},{"d":"2026-09-25","g":18002.0},{"d":"2026-09-26","g":22954.0},{"d":"2026-09-27","g":14128.0},{"d":"2026-09-28","g":20514.0},{"d":"2026-09-29","g":5726.0},{"d":"2026-09-30","g":7408.0},{"d":"2026-10-01","g":38876.0},{"d":"2026-10-02","g":17042.0},{"d":"2026-10-03","g":19440.0},{"d":"2026-10-04","g":12834.0},{"d":"2026-10-05","g":16282.0},{"d":"2026-10-06","g":7902.0},{"d":"2026-10-07","g":23846.0},{"d":"2026-10-08","g":12286.0},{"d":"2026-10-09","g":2276.0},{"d":"2026-10-10","g":9738.0},{"d":"2026-10-11","g":10844.0},{"d":"2026-10-12","g":8424.0},{"d":"2026-10-13","g":7628.0},{"d":"2026-10-14","g":4940.0},{"d":"2026-10-15","g":6482.0},{"d":"2026-10-16","g":5686.0},{"d":"2026-10-17","g":13328.0},{"d":"2026-10-18","g":6534.0},{"d":"2026-10-19","g":6352.0},{"d":"2026-10-20","g":6466.0},{"d":"2026-10-21","g":5330.0},{"d":"2026-10-22","g":1962.0},{"d":"2026-10-23","g":6724.0},{"d":"2026-10-24","g":10032.0},{"d":"2026-10-25","g":9444.0},{"d":"2026-10-26","g":3692.0},{"d":"2026-10-27","g":9044.0},{"d":"2026-10-28","g":7614.0},{"d":"2026-10-29","g":7908.0},{"d":"2026-10-30","g":18832.0},{"d":"2026-10-31","g":10052.0},{"d":"2026-11-01","g":6966.0},{"d":"2026-11-02","g":3152.0},{"d":"2026-11-03","g":10706.0},{"d":"2026-11-04","g":3810.0},{"d":"2026-11-05","g":3944.0},{"d":"2026-11-06","g":6330.0},{"d":"2026-11-07","g":9494.0},{"d":"2026-11-08","g":9298.0},{"d":"2026-11-09","g":12738.0},{"d":"2026-11-10","g":7650.0},{"d":"2026-11-11","g":4756.0},{"d":"2026-11-12","g":6636.0},{"d":"2026-11-13","g":10658.0},{"d":"2026-11-14","g":6356.0},{"d":"2026-11-15","g":3264.0},{"d":"2026-11-16","g":5842.0},{"d":"2026-11-17","g":7934.0}],"period":[{"name":"A｜7/2–10/9 GMV8%分成直播","days":99,"gmv":2185564.0,"gmv_d":22076.0,"ord_d":57.8,"usr_d":25.0,"aov":381.6,"pulse_days":29,"pulse_gmv":977092.0,"pulse_share":44.7,"pulse_gmv_d":33693.0,"nonpulse_gmv_d":17264.0,"lift":1.95,"pulse_aov":441.9,"nonpulse_aov":343.7,"incr":476436.0,"fee":78167.0,"roi":6.1},{"name":"B｜10/10–11/17 月播","days":39,"gmv":594572.0,"gmv_d":15245.0,"ord_d":84.3,"usr_d":41.3,"aov":180.8,"pulse_days":9,"pulse_gmv":250928.0,"pulse_share":42.2,"pulse_gmv_d":27881.0,"nonpulse_gmv_d":11455.0,"lift":2.43,"pulse_aov":204.8,"nonpulse_aov":166.6,"incr":147833.0,"fee":32500.0,"roi":4.55}],"windows":[{"start":"2026-10-16","end":"2026-10-17","days":2,"gmv":56158.0,"orders":281,"users":88,"gmv_d":28079.0},{"start":"2026-10-24","end":"2026-10-24","days":1,"gmv":23784.0,"orders":140,"users":52,"gmv_d":23784.0},{"start":"2026-10-28","end":"2026-10-28","days":1,"gmv":23760.0,"orders":102,"users":39,"gmv_d":23760.0},{"start":"2026-10-31","end":"2026-10-31","days":1,"gmv":39570.0,"orders":188,"users":65,"gmv_d":39570.0},{"start":"2026-11-07","end":"2026-11-10","days":4,"gmv":107656.0,"orders":514,"users":167,"gmv_d":26914.0}],"newuser":[{"m":"2026-07","orders":352,"gmv":209476.0,"act":57,"newu":57,"newg":42716.0,"new_ord":92,"arpu":3675.02,"new_gmv_pct":20.39},{"m":"2026-08","orders":1936,"gmv":959374.0,"act":177,"newu":130,"newg":87494.0,"new_ord":260,"arpu":5420.19,"new_gmv_pct":9.12},{"m":"2026-09","orders":2513,"gmv":692030.0,"act":190,"newu":49,"newg":22794.0,"new_ord":64,"arpu":3642.26,"new_gmv_pct":3.29},{"m":"2026-10","orders":2815,"gmv":681694.0,"act":202,"newu":46,"newg":20320.0,"new_ord":68,"arpu":3374.72,"new_gmv_pct":2.98},{"m":"2026-11","orders":1399,"gmv":237562.0,"act":242,"newu":50,"newg":8078.0,"new_ord":62,"arpu":981.66,"new_gmv_pct":3.4}],"rebuy":{"oct":202,"nov":242,"both":165,"rate":81.7},"conc":[{"k":1,"gmv":270842.0,"pct":9.7},{"k":5,"gmv":1079066.0,"pct":38.8},{"k":10,"gmv":1413380.0,"pct":50.8},{"k":20,"gmv":1799410.0,"pct":64.7},{"k":50,"gmv":2269888.0,"pct":81.6},{"k":100,"gmv":2580598.0,"pct":92.8}],"split_month":[{"m":"2026-01","dd":0,"pt":591642.0},{"m":"2026-02","dd":0,"pt":677611.0},{"m":"2026-03","dd":0,"pt":471305.0},{"m":"2026-04","dd":0,"pt":559875.0},{"m":"2026-05","dd":0,"pt":381793.0},{"m":"2026-06","dd":0,"pt":416746.0},{"m":"2026-07","dd":206732.0,"pt":200972.0},{"m":"2026-08","dd":643594.0,"pt":106812.0},{"m":"2026-09","dd":394740.0,"pt":53156.0},{"m":"2026-10","dd":387224.0,"pt":36652.0},{"m":"2026-11","dd":143892.0,"pt":3664.0}],"split":{"n":139,"mean_share":71.5,"med_share":82.9,"gt50":106,"gt80":74,"lt20":13,"total":2177438.0,"dd":1776182.0},"tier":{"dd":[{"tier":"<50","orders":4364,"gmv":125376.0,"opct":48.41,"gpct":4.51},{"tier":"50–99","orders":1166,"gmv":79288.0,"opct":12.93,"gpct":2.85},{"tier":"100–199","orders":1470,"gmv":188160.0,"opct":16.31,"gpct":6.77},{"tier":"200–499","orders":1026,"gmv":336528.0,"opct":11.38,"gpct":12.1},{"tier":"500–999","orders":459,"gmv":297432.0,"opct":5.09,"gpct":10.7},{"tier":"1000–2999","orders":386,"gmv":820232.0,"opct":4.28,"gpct":29.5},{"tier":"≥3000","orders":144,"gmv":933120.0,"opct":1.6,"gpct":33.56}],"pt":[{"tier":"<50","orders":14544,"gmv":347772.0,"opct":47.3,"gpct":4.55},{"tier":"50–99","orders":7058,"gmv":594937.0,"opct":22.96,"gpct":7.79},{"tier":"100–199","orders":3262,"gmv":591425.0,"opct":10.61,"gpct":7.74},{"tier":"200–499","orders":2584,"gmv":856746.0,"opct":8.4,"gpct":11.22},{"tier":"500–999","orders":1879,"gmv":1193500.0,"opct":6.11,"gpct":15.63},{"tier":"1000–2999","orders":1025,"gmv":1893081.0,"opct":3.33,"gpct":24.78},{"tier":"≥3000","orders":395,"gmv":2160749.0,"opct":1.28,"gpct":28.29}],"all":[{"tier":"<50","orders":262284,"gmv":5637999.0,"opct":72.34,"gpct":20.9},{"tier":"50–99","orders":56863,"gmv":4241977.0,"opct":15.68,"gpct":15.73},{"tier":"100–199","orders":22907,"gmv":3476842.0,"opct":6.32,"gpct":12.89},{"tier":"200–499","orders":12776,"gmv":4199723.0,"opct":3.52,"gpct":15.57},{"tier":"500–999","orders":5945,"gmv":3828124.0,"opct":1.64,"gpct":14.19},{"tier":"1000–2999","orders":1248,"gmv":2561635.0,"opct":0.34,"gpct":9.5},{"tier":"≥3000","orders":529,"gmv":3025829.0,"opct":0.15,"gpct":11.22}]},"squeeze":{"a":{"days":39,"orders":2319,"gmv":546168.0,"gmv_d":14004.0},"b":{"days":39,"orders":1964,"gmv":296590.0,"gmv_d":7605.0}},"newconv":{"reg":{"total":1000,"paid":44,"pay_rate":4.4,"android":551,"ios":449,"android_paid":13,"ios_paid":31,"android_rate":2.36,"ios_rate":6.9},"reg_first_ch":{"游戏内直充":43,"平台":1},"reg_gmv":{"total":35908.0,"mean":816.1},"reg_gap_median":2.0,"sample":{"reg_n":1000,"hit_paid":44,"f2_new_payers":1970,"est_total_reg":44773},"new_payers":{"total":1970,"dist":{"游戏内直充":1911,"平台":43,"抖店":7,"同日多渠(平台/游戏内直充)":6,"同日多渠(抖店/游戏内直充)":2,"同日多渠(抖店/平台)":1},"dd_strict":7,"dd_gmv":1990.0,"dd_mean":284.0,"by_ch":[{"ch":"平台(含同日)","n":49.0,"gmv":34828.0,"mean":710.8,"med":60.0,"ordn":9.8},{"ch":"抖店(含同日)","n":10.0,"gmv":4260.0,"mean":426.0,"med":142.0,"ordn":8.7},{"ch":"游戏内直充","n":1911.0,"gmv":703722.0,"mean":368.2,"med":18.0,"ordn":9.2}]},"dd_struct":[{"name":"存量（7/2 前已付费）","users":260,"gmv":2494670.0,"mean":9595.0,"ord":8033,"share_user":78.3,"share_gmv":89.7},{"name":"新增（7/2 后首充）","users":41,"gmv":124080.0,"mean":3026.0,"ord":545,"share_user":12.3,"share_gmv":4.5},{"name":"F2 未匹配","users":31,"gmv":161386.0,"mean":5206.0,"ord":437,"share_user":9.3,"share_gmv":5.8}],"dd_lag":{"median":224.0,"mean":196.9,"within0":5,"within30":28,"over90":252,"n":301},"dd_lag_bins":[{"bin":"首日即用","n":5},{"bin":"1–7 天","n":5},{"bin":"8–30 天","n":18},{"bin":"31–90 天","n":21},{"bin":"91–180 天","n":26},{"bin":">180 天","n":226}],"monthly_reg":[{"m":"2026-07","reg_n":234,"reg_paid":7,"reg_rate":2.99,"all_new_payers":468,"all_dd_lag":0},{"m":"2026-08","reg_n":264,"reg_paid":12,"reg_rate":4.55,"all_new_payers":516,"all_dd_lag":4},{"m":"2026-09","reg_n":251,"reg_paid":16,"reg_rate":6.37,"all_new_payers":434,"all_dd_lag":1},{"m":"2026-10","reg_n":176,"reg_paid":6,"reg_rate":3.41,"all_new_payers":352,"all_dd_lag":1},{"m":"2026-11","reg_n":75,"reg_paid":3,"reg_rate":4.0,"all_new_payers":219,"all_dd_lag":1}],"reg_ch_break":[{"ch":"安卓","游戏内直充":13,"平台":0,"抖店":0,"total":551},{"ch":"苹果","游戏内直充":30,"平台":1,"抖店":0,"total":449}]}};
+
+const $ = id => document.getElementById(id);
+const charts = [];
+function mk(id, opt){
+  const el = $(id); if(!el) return;
+  try{
+    const c = echarts.init(el, null, {renderer:'canvas'});
+    c.setOption(opt); charts.push(c);
+  }catch(e){ console.error('[chart]', id, e); }
+}
+const AXIS = {color:'#8b93a3', fontSize:11};
+const GRID = {left:8, right:14, top:34, bottom:6, containLabel:true};
+const TIP = {trigger:'axis', backgroundColor:'rgba(255,255,255,.97)', borderColor:'#e6e8ec',
+  borderWidth:1, textStyle:{color:'#12151b', fontSize:12}, extraCssText:'box-shadow:0 4px 16px rgba(16,24,40,.09);border-radius:8px;'};
+const MLAB = m => m.slice(5).replace(/^0/,'') + '月';
+const wan = v => (v/10000).toFixed(1) + '万';
+
+// 1. 月度渠道结构
+(function(){
+  const M = D.monthly;
+  mk('c_stack', {
+    tooltip: Object.assign({}, TIP, {valueFormatter: v => wan(v)}),
+    legend:{data:['游戏内直充','平台','抖店','外部渠道占比'], top:0, itemGap:16, textStyle:{color:'#4a5262',fontSize:12}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:44, right:46}),
+    xAxis:{type:'category', data:M.map(r=>MLAB(r.m)), axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:AXIS},
+    yAxis:[
+      {type:'value', name:'GMV（万元）', nameTextStyle:{color:'#8b93a3',fontSize:11,padding:[0,0,6,0]},
+       splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:v=>v/10000})},
+      {type:'value', name:'外部占比', max:100, nameTextStyle:{color:'#8b93a3',fontSize:11,padding:[0,0,6,0]},
+       splitLine:{show:false}, axisLabel:Object.assign({},AXIS,{formatter:'{value}%'})}
+    ],
+    series:[
+      {name:'游戏内直充', type:'bar', stack:'g', data:M.map(r=>Math.max(r.zg,0)), itemStyle:{color:'#dfe3ea'}, barWidth:'52%'},
+      {name:'平台', type:'bar', stack:'g', data:M.map(r=>r.pg), itemStyle:{color:'#93b4f5'}},
+      {name:'抖店', type:'bar', stack:'g', data:M.map(r=>r.dg), itemStyle:{color:'#2563eb'}},
+      {name:'外部渠道占比', type:'line', yAxisIndex:1, data:M.map(r=>+(r.ext_g/r.ag*100).toFixed(1)),
+       lineStyle:{color:'#f59e0b',width:2}, itemStyle:{color:'#f59e0b'}, symbol:'circle', symbolSize:5,
+       label:{show:true, position:'top', color:'#9a6406', fontSize:10, formatter:p=>p.value+'%'},
+       labelLayout:{hideOverlap:true}}
+    ]
+  });
+})();
+
+// 2. 承接率
+(function(){
+  const C = D.claim;
+  const pick = k => (C.find(r=>r.c2===k) || {actual:0, base:0});
+  const act = ['IOS','安卓'].map(k => pick(k).actual);
+  const base = ['IOS','安卓'].map(k => pick(k).base);
+  mk('c_claim', {
+    tooltip: Object.assign({}, TIP, {axisPointer:{type:'shadow'}, valueFormatter: v => v.toLocaleString() + ' 元/日'}),
+    legend:{data:['实际（切支付后）','反事实基线（不切支付）'], top:0, itemGap:14, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:40}),
+    xAxis:{type:'category', data:['iOS','安卓'], axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:Object.assign({},AXIS,{fontSize:12})},
+    yAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:v=>v/10000+'万'})},
+    series:[
+      {name:'实际（切支付后）', type:'bar', data:act, barWidth:'26%', itemStyle:{color:'#2563eb', borderRadius:[4,4,0,0]},
+       label:{show:true, position:'top', color:'#12151b', fontSize:11, fontWeight:600, formatter:p=>wan(p.value)}},
+      {name:'反事实基线（不切支付）', type:'bar', data:base, barWidth:'26%', itemStyle:{color:'#d7dbe3', borderRadius:[4,4,0,0]},
+       label:{show:true, position:'top', color:'#8b93a3', fontSize:11, formatter:p=>wan(p.value)}}
+    ]
+  });
+})();
+
+// 3. DID 指数化
+(function(){
+  const M = D.did_month;
+  mk('c_did', {
+    tooltip: Object.assign({}, TIP, {valueFormatter: v => v + '（1月=100）'}),
+    legend:{data:['iOS','安卓'], top:0, itemGap:16, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:40}),
+    xAxis:{type:'category', data:M.map(r=>MLAB(r.m)), boundaryGap:false, axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:AXIS},
+    yAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:AXIS},
+    series:[
+      {name:'iOS', type:'line', data:M.map(r=>r.ios), smooth:true, symbol:'circle', symbolSize:5,
+       lineStyle:{color:'#2563eb',width:2.2}, itemStyle:{color:'#2563eb'}, areaStyle:{color:'rgba(37,99,235,.06)'},
+       markLine:{silent:true, symbol:'none', lineStyle:{color:'#c9ced8',type:'dashed'},
+         data:[{xAxis:'7月', label:{formatter:'抖店上线 7/2', position:'insideEndTop', color:'#8b93a3', fontSize:10, rotate:0, distance:4}}]}},
+      {name:'安卓', type:'line', data:M.map(r=>r.and_), smooth:true, symbol:'circle', symbolSize:5,
+       lineStyle:{color:'#f59e0b',width:2.2}, itemStyle:{color:'#f59e0b'}}
+    ]
+  });
+})();
+
+// 4. 双渠道用户分流
+(function(){
+  const S = D.split_month;
+  mk('c_split', {
+    tooltip: Object.assign({}, TIP, {valueFormatter: v => wan(v)}),
+    legend:{data:['平台','抖店'], top:0, itemGap:16, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:40}),
+    xAxis:{type:'category', data:S.map(r=>MLAB(r.m)), axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:AXIS},
+    yAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:v=>v/10000+'万'})},
+    series:[
+      {name:'平台', type:'bar', stack:'s', data:S.map(r=>r.pt), itemStyle:{color:'#93b4f5'}, barWidth:'58%'},
+      {name:'抖店', type:'bar', stack:'s', data:S.map(r=>r.dd), itemStyle:{color:'#2563eb', borderRadius:[4,4,0,0]}}
+    ]
+  });
+})();
+
+// 5. 档位结构
+(function(){
+  const T = D.tier;
+  const tiers = T.dd.map(r=>r.tier);
+  mk('c_tier', {
+    tooltip: Object.assign({}, TIP, {axisPointer:{type:'shadow'}, valueFormatter: v => v + '%'}),
+    legend:{data:['抖店 GMV 占比','平台 GMV 占比'], top:0, itemGap:14, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:40}),
+    xAxis:{type:'category', data:tiers, axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:Object.assign({},AXIS,{fontSize:10.5,rotate:0,interval:0})},
+    yAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:'{value}%'})},
+    series:[
+      {name:'抖店 GMV 占比', type:'bar', data:T.dd.map(r=>r.gpct), barWidth:'34%', itemStyle:{color:'#2563eb', borderRadius:[3,3,0,0]}},
+      {name:'平台 GMV 占比', type:'bar', data:T.pt.map(r=>r.gpct), barWidth:'34%', itemStyle:{color:'#c9ced8', borderRadius:[3,3,0,0]}}
+    ]
+  });
+})();
+
+// 6. 集中度
+(function(){
+  const C = D.conc;
+  mk('c_conc', {
+    tooltip: Object.assign({}, TIP, {valueFormatter: v => v + '%'}),
+    grid: Object.assign({}, GRID, {top:30, bottom:10}),
+    xAxis:{type:'category', data:['Top1','Top5','Top10','Top20','Top50','Top100'], axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:Object.assign({},AXIS,{fontSize:11})},
+    yAxis:{type:'value', max:100, splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:'{value}%'})},
+    series:[{
+      type:'line', data:C.map(r=>r.pct), smooth:true, symbol:'circle', symbolSize:6,
+      lineStyle:{color:'#d93a3a', width:2.2}, itemStyle:{color:'#d93a3a'},
+      areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(217,58,58,.18)'},{offset:1,color:'rgba(217,58,58,.01)'}])},
+      label:{show:true, position:'top', color:'#a72626', fontSize:11, fontWeight:600, formatter:p=>p.value+'%'}
+    }]
+  });
+})();
+
+// 7. 抖店日 GMV + 脉冲
+(function(){
+  const A = D.daily_dd;
+  const pulse = A.filter(r=>r.p);
+  mk('c_daily', {
+    tooltip: Object.assign({}, TIP, {formatter: p=>{
+      const i = p[0].dataIndex, r = A[i];
+      return `<b>${r.d}</b><br/>GMV ${r.g.toLocaleString()} 元<br/>订单 ${r.o} 笔 · 用户 ${r.u} 人${r.p?'<br/><span style="color:#d93a3a;font-weight:600">● 直播脉冲日</span>':''}`;
+    }}),
+    grid: Object.assign({}, GRID, {top:40, right:20}),
+    xAxis:{type:'category', data:A.map(r=>r.d.slice(5)), axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false},
+      axisLabel:Object.assign({},AXIS,{interval:13})},
+    yAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:v=>v/10000+'万'})},
+    series:[
+      {type:'line', data:A.map(r=>r.g), smooth:.25, symbol:'none', lineStyle:{color:'#2563eb', width:1.8},
+       areaStyle:{color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(37,99,235,.14)'},{offset:1,color:'rgba(37,99,235,.01)'}])},
+       markLine:{silent:true, symbol:'none', lineStyle:{color:'#d93a3a', type:'dashed', width:1},
+         data:[{xAxis:A.findIndex(r=>r.d==='2026-10-09'), label:{formatter:'10/9 分成直播终止', position:'insideEndTop', color:'#d93a3a', fontSize:10.5, rotate:0, distance:4}}]}},
+      {type:'scatter', data:A.map((r,i)=>r.p?[i,r.g]:null).filter(Boolean), symbolSize:7,
+       itemStyle:{color:'#f59e0b', borderColor:'#fff', borderWidth:1.5}, z:5}
+    ]
+  });
+})();
+
+// 8. 广度 vs 深度（变化率）
+(function(){
+  const A = D.period[0], B = D.period[1];
+  const ch = (a,b) => +(((b/a)-1)*100).toFixed(1);
+  const items = [
+    {n:'日均付费用户', v:ch(A.usr_d,B.usr_d), abs:`${A.usr_d} → ${B.usr_d} 人`},
+    {n:'日均单量',     v:ch(A.ord_d,B.ord_d), abs:`${A.ord_d} → ${B.ord_d} 笔`},
+    {n:'客单价 AOV',   v:ch(A.aov,B.aov),     abs:`${A.aov} → ${B.aov} 元`},
+    {n:'日均 GMV',     v:ch(A.gmv_d,B.gmv_d), abs:`${wan(A.gmv_d)} → ${wan(B.gmv_d)}`}
+  ];
+  mk('c_depth', {
+    tooltip:{trigger:'item', backgroundColor:'rgba(255,255,255,.97)', borderColor:'#e6e8ec', borderWidth:1,
+      textStyle:{color:'#12151b',fontSize:12}, extraCssText:'box-shadow:0 4px 16px rgba(16,24,40,.09);border-radius:8px;',
+      formatter:p=>{const it=items[p.dataIndex];return `<b>${it.n}</b><br/>${it.abs}<br/>变化 <b>${it.v>0?'+':''}${it.v}%</b>`;}},
+    grid:{left:8,right:70,top:16,bottom:8,containLabel:true},
+    xAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLine:{show:false},
+      axisLabel:Object.assign({},AXIS,{formatter:'{value}%'})},
+    yAxis:{type:'category', data:items.map(i=>i.n), axisLine:{show:false}, axisTick:{show:false},
+      axisLabel:Object.assign({},AXIS,{fontSize:11.5})},
+    series:[{
+      type:'bar', barWidth:'44%',
+      data:items.map(i=>({value:i.v,
+        itemStyle:{color: i.v>=0 ? '#2563eb' : '#d93a3a', borderRadius: i.v>=0 ? [0,4,4,0] : [4,0,0,4]},
+        label:{show:true, position: i.v>=0 ? 'right' : 'insideLeft', fontSize:11.5, fontWeight:600,
+               color: i.v>=0 ? '#14532d' : '#fff', formatter:(p=>p.value>0?'+'+p.value+'%':p.value+'%')}}))
+    }]
+  });
+})();
+
+// 9. 月活 vs ARPU
+(function(){
+  const N = D.newuser;
+  mk('c_arpu', {
+    tooltip: Object.assign({}, TIP),
+    legend:{data:['月活用户','月活 ARPU'], top:0, itemGap:14, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid: Object.assign({}, GRID, {top:40, right:62}),
+    xAxis:{type:'category', data:N.map(r=>MLAB(r.m)), axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:AXIS},
+    yAxis:[
+      {type:'value', name:'人', nameTextStyle:{color:'#8b93a3',fontSize:10.5}, splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:AXIS},
+      {type:'value', name:'元', nameTextStyle:{color:'#8b93a3',fontSize:10.5}, splitLine:{show:false}, axisLabel:AXIS}
+    ],
+    series:[
+      {name:'月活用户', type:'bar', data:N.map(r=>r.act), barWidth:'42%', itemStyle:{color:'rgba(37,99,235,.18)', borderRadius:[4,4,0,0]}},
+      {name:'月活 ARPU', type:'line', yAxisIndex:1, data:N.map(r=>Math.round(r.arpu)), smooth:true, symbol:'circle', symbolSize:6, z:10,
+       lineStyle:{color:'#2563eb', width:2.2}, itemStyle:{color:'#2563eb'},
+       label:{show:true, position:'top', color:'#2563eb', fontSize:10.5, formatter:p=>p.value, z:11},
+       labelLayout:p=>p.dataIndex===N.length-1?{dx:-2,dy:-6}:{}}
+    ]
+  });
+})();
+
+// 10. 新付费用户首充渠道
+(function(){
+  const N = D.newconv.new_payers;
+  const rows = N.by_ch || [];
+  const pick = k => (rows.find(r=>r.ch===k) || {n:0, gmv:0});
+  const zc = pick('游戏内直充'), ptl = pick('平台(含同日)'), ddp = pick('抖店(含同日)');
+  const total = N.total;
+  const cats = ['游戏内直充','平台','抖店'];
+  const vals = [zc.n, ptl.n, ddp.n];
+  const cols = ['#93b4f5','#f59e0b','#d93a3a'];
+  mk('c_newch', {
+    tooltip:{trigger:'item', backgroundColor:'rgba(255,255,255,.97)', borderColor:'#e6e8ec', borderWidth:1,
+      textStyle:{color:'#12151b',fontSize:12}, extraCssText:'box-shadow:0 4px 16px rgba(16,24,40,.09);border-radius:8px;',
+      formatter:p=>`<b>${p.name}</b><br/>${p.value.toLocaleString()} 人 · ${(p.value/total*100).toFixed(1)}%`},
+    grid:{left:8, right:88, top:26, bottom:8, containLabel:true},
+    xAxis:{type:'value', splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLine:{show:false},
+      axisLabel:Object.assign({},AXIS,{formatter:v=>v>=1000?(v/1000)+'k':v})},
+    yAxis:{type:'category', data:cats, inverse:true, axisLine:{show:false}, axisTick:{show:false},
+      axisLabel:Object.assign({},AXIS,{fontSize:11.5})},
+    series:[{
+      type:'bar', barWidth:'46%',
+      data:vals.map((v,i)=>({value:v, itemStyle:{color:cols[i], borderRadius:[0,4,4,0]},
+        label:{show:true, position:'right', fontSize:11, fontWeight:600, color:'#12151b',
+               formatter:()=>`${v.toLocaleString()} 人 · ${(v/total*100).toFixed(1)}%`}}))
+    }]
+  });
+})();
+
+// 11. 抖店用户构成
+(function(){
+  const S = D.newconv.dd_struct;
+  const names = ['存量','新增','未匹配'];
+  mk('c_ddstruct', {
+    tooltip:{trigger:'axis', backgroundColor:'rgba(255,255,255,.97)', borderColor:'#e6e8ec', borderWidth:1,
+      textStyle:{color:'#12151b',fontSize:12}, extraCssText:'box-shadow:0 4px 16px rgba(16,24,40,.09);border-radius:8px;'},
+    legend:{data:['人数占比','GMV 占比'], top:0, itemGap:14, textStyle:{color:'#4a5262',fontSize:11.5}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    grid:{left:8, right:14, top:40, bottom:4, containLabel:true},
+    xAxis:{type:'category', data:names, axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false},
+      axisLabel:{color:'#4a5262', fontSize:10.5, lineHeight:15, interval:0}},
+    yAxis:{type:'value', max:100, splitLine:{lineStyle:{color:'#f0f1f4'}}, axisLabel:Object.assign({},AXIS,{formatter:'{value}%'})},
+    series:[
+      {name:'人数占比', type:'bar', data:S.map(r=>r.share_user), barWidth:'30%',
+       itemStyle:{color:'#93b4f5', borderRadius:[4,4,0,0]},
+       label:{show:true, position:'top', fontSize:11, fontWeight:600, color:'#12151b', formatter:p=>p.value+'%'}},
+      {name:'GMV 占比', type:'bar', data:S.map(r=>r.share_gmv), barWidth:'30%',
+       itemStyle:{color:'#2563eb', borderRadius:[4,4,0,0]},
+       label:{show:true, position:'top', fontSize:11, fontWeight:600, color:'#2563eb', formatter:p=>p.value+'%'}}
+    ]
+  });
+})();
+
+let rt;
+window.addEventListener('resize', ()=>{ clearTimeout(rt); rt=setTimeout(()=>charts.forEach(c=>c.resize()), 120); });
+</script>
+</body>
+</html>
