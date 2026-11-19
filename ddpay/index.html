@@ -179,9 +179,9 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
     <div class="cap">260 名切支付前已付费用户</div>
   </div>
   <div class="kpi">
-    <div class="lab">新付费用户首充走抖店</div>
+    <div class="lab">7/2 后首次付费 · 首充走抖店</div>
     <div class="num">0.5<small>%</small></div>
-    <div class="cap">10 / 1,970 人</div>
+    <div class="cap">10 / 1,970 人（非新增创角）</div>
   </div>
   <div class="kpi">
     <div class="lab">月播增量 ROI</div>
@@ -219,7 +219,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
     <div class="n">4</div>
     <div>
       <h3>抖店不做拉新，只做搬家</h3>
-      <p class="bad">7/2 后新增的 1,970 名付费用户里，首笔走抖店的只有 <b>10 人（0.5%）</b>；1,000 条新增创角抽样中，44 名付费用户<b>零人</b>抖店首充。<br>
+      <p class="bad">7/2 后首次充值的 1,970 名用户里，首笔走抖店的只有 <b>10 人（0.5%）</b>；1,000 条新增创角抽样中，44 名付费用户<b>零人</b>抖店首充。<br>
       <span class="muted">连已经切了支付的 iOS，苹果新用户仍是 30/31 走 App Store 内购。抖店 89.7% 的 GMV 来自切支付前就在付费的老用户，首笔付费到首次抖店中位延迟 <b>224 天</b>。</span></p>
     </div>
   </div>
@@ -299,8 +299,10 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
         </tbody>
       </table>
     </div>
-    <p class="note"><b>两种口径答案不同，必须同时看：</b>若以"切支付前的平台规模"为分母，iOS 只承接了 <b>52.9%</b>，看似漏损一半；但 1–6 月本身就是大盘高位（全渠道月均 321.6 万，7–11 月只有 168.1 万），用高位做基线会高估缺口。<br>
-    因此引入<b>反事实基线</b>：以未切支付的安卓组同期衰减率（−47.7%）推算 iOS"如果没有切支付会掉到哪"= 14,110 元/日。iOS 实际做到 20,157，<b>高出基线 42.9%</b>——切支付是净增量。</p>
+    <p class="note"><b>「原始承接率」怎么算：</b>承接率 = <b>抖店日均 GMV ÷ 平台日均流失额</b>。以 iOS 为例：平台从 26,958 掉到 12,511，漏出去 <b>14,447 元/日</b>，抖店补回 <b>7,646 元/日</b> → 52.9%。分母取"流失额"而不是"切前平台总量"，是因为要回答的是"漏出去的补回来多少"——被漏掉的那部分才是分母。<br>
+    <b>但这个口径只能当过程参考，不能用来下结论：</b>它默认"平台掉的每一分钱都应该由抖店补回来"，可 1–6 月本身处在高位（全渠道月均 321.6 万 → 7–11 月 168.1 万），平台下滑里有相当一部分是<b>大盘自然衰退</b>，本就不需要被承接。分母被放大，承接率就被系统性压低——iOS 的 52.9% 是这么来的，<b>不是真的漏了一半</b>。<br>
+    安卓的 435.1% 同理不能读成"接了 4.3 倍"：安卓平台切前日均只有 4,346 元（iOS 为 26,958），说明平台通道<b>本来就不是安卓的主通道</b>（安卓主战场是游戏内 SDK 直充），分母仅 2,948 元，这个百分比与 iOS 没有可比性。<br>
+    <b>因此主结论改用反事实基线：</b>安卓未切支付，其全渠道 GMV 同期衰减 −47.7%（含大盘衰退与自身生命周期，但不含支付链路变化）。假设 iOS 承受同样的市场环境，不切支付应剩 26,958 × (1−47.7%) = <b>14,110 元/日</b>。iOS 实际做到 <b>20,157</b>（平台 12,511 + 抖店 7,646），高出基线 <b>42.9%</b>——切支付是净增量，不是漏损。</p>
   </div>
 
   <div class="grid2" style="margin-top:14px">
@@ -435,7 +437,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
   <div class="card">
     <div class="tw">
       <table>
-        <thead><tr><th>月份</th><th>活跃用户</th><th>新客数</th><th>新客首单 GMV</th><th>新客 GMV 占比</th><th>月活 ARPU</th></tr></thead>
+        <thead><tr><th>月份</th><th>活跃用户</th><th>抖店新客<br>（首次下单）</th><th>新客首单 GMV</th><th>新客 GMV 占比</th><th>月活 ARPU</th></tr></thead>
         <tbody>
           <tr><td>7 月</td><td>57</td><td>57</td><td>42,716</td><td>20.4%</td><td>3,675</td></tr>
           <tr><td>8 月</td><td>177</td><td>130</td><td>87,494</td><td>9.1%</td><td>5,420</td></tr>
@@ -448,7 +450,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
     <div class="grid2" style="margin-top:14px">
       <div class="callout blue" style="margin:0">
         <span class="ct">复播的拉新能力很弱</span>
-        10/10–11/17 新增抖店用户仅 <b>81 人</b>，首单 GMV <b>2.35 万</b>，人均 290 元，对该期 59.5 万 GMV 的贡献仅 <b>3.9%</b>。新客 GMV 占比从 8 月的 9.1% 一路降到 3% 左右——<b>复播没有带来新的付费人群，主要是老客在直播日集中下单</b>。
+        10/10–11/17 <b>首次在抖店下单</b>的用户仅 <b>81 人</b>（含早已在游戏内付过费的老玩家），首单 GMV <b>2.35 万</b>，人均 290 元，对该期 59.5 万 GMV 的贡献仅 <b>3.9%</b>。新客 GMV 占比从 8 月的 9.1% 一路降到 3% 左右——<b>复播没有带来新的付费人群，主要是老客在直播日集中下单</b>。
       </div>
       <div class="callout" style="margin:0">
         <span class="ct">但留存是健康的</span>
@@ -463,16 +465,22 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
   <div class="sec-head">
     <span class="sec-no">04</span>
     <h2>新增用户转化：抖店几乎不承接首充</h2>
-    <span class="desc">7/2–11/17 新增创角 × 首笔充值渠道</span>
+    <span class="desc">首笔钱落在哪条通道：新增创角抽样 + 全量首次付费双口径</span>
   </div>
 
   <div class="callout" style="margin-bottom:18px">
     <span class="ct">两套口径交叉验证</span>
-    创角表 1,000 条为<b>抽样数据</b>（与充值库交集 44 人，按抽样率反推全量新增创角约 <b>4.48 万人</b>，抽样率约 2.2%）。为避免抽样偏差，同时用充值库全量口径验证：7/2 后首次充值的 <b>1,970 名用户</b>。<b>两套口径结论完全一致——抖店首充占比都在 0.5% 量级。</b><br><br>
-    <b>注意区分两个"新"：</b>3.4 节的"抖店新客 81 人"指<b>首次在抖店下单</b>的人（其中多数早已在游戏内付过费）；本节说的"新付费用户"指<b>全游戏首次充值</b>发生在 7/2 之后的人。两者之差，正是"老玩家学会用抖店"的那部分。
+    <b>口径 A（创角表，严格"新增用户"）：</b>1,000 条为<b>抽样数据</b>（与充值库交集 44 人，按抽样率反推全量新增创角约 <b>4.48 万人</b>，抽样率约 2.2%），能直接回答"7/2 后新建账号的首充走哪"。<br>
+    <b>口径 B（充值库，全量"首次付费"）：</b>7/2 后<b>首次充值</b>的 <b>1,970 名用户</b>，覆盖完整、无需抽样。两套口径结论一致——抖店首充占比都在 0.5% 量级。<br><br>
+    <b>三个"新"必须分清，混用会得出完全不同的结论：</b>
+    <div style="margin-top:7px;line-height:2">
+    ① 3.4 节的"抖店新客 81 人" = <b>首次在抖店下单</b>的人，其中多数早已在游戏内付过费；<br>
+    ② 本节的 1,970 人 = <b>全游戏首次充值</b>发生在 7/2 之后，<b>但不等于 7/2 后新增创角</b>——其中混有 7/2 前已注册、直到此后才首次付费的沉默 / 回流用户；充值库没有创角时间字段，这两类<b>拆不开</b>；<br>
+    ③ 4.2 节的 44 人 = <b>确实是 7/2 后新建的账号</b>，是唯一能严格回答"新增用户首充走哪"的口径，但受抽样量限制。
+    </div>
   </div>
 
-  <h3 class="blk">4.1 新付费用户的首充渠道：97% 落在游戏内直充</h3>
+  <h3 class="blk">4.1 全量首次付费用户的首充渠道：97% 落在游戏内直充</h3>
   <div class="grid2">
     <div class="card pad0"><div id="c_newch" class="chart sm"></div></div>
     <div class="card">
@@ -493,7 +501,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
 
   <div class="callout red" style="margin-top:16px">
     <span class="ct">这一条推翻了"抖店能拉新"的假设</span>
-    4 个多月里，1,970 名新付费用户中只有 10 人首笔走了抖店，贡献 <b>0.6% 的新客 GMV</b>。<b>抖店不是获客通道，而是存量用户的支付通道替换。</b>
+    4 个多月里，1,970 名 7/2 后首次付费的用户中只有 10 人首笔走了抖店，贡献 <b>0.6% 的新客 GMV</b>。<b>抖店不是获客通道，而是存量用户的支付通道替换。</b>
   </div>
 
   <h3 class="blk">4.2 分注册渠道看：苹果新用户同样不走抖店</h3>
@@ -559,7 +567,8 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);font-si
           <tr><td>无退款状态</td><td>GMV 为毛额，若退款集中在直播日，ROI 会被高估</td><td>补退款率或净收口径</td></tr>
           <tr><td>游戏内直充为倒算</td><td>1,655 万差额未经验证</td><td>确认文件 2 是否为全渠道全量</td></tr>
           <tr><td>32 个角色 ID 未匹配</td><td>占比 3.6%，不足以改变结论</td><td>排查角色 ID 口径（前后台账号）</td></tr>
-          <tr><td>新增创角表为抽样</td><td>1,000 条抽样，反推全量约 4.48 万人；结论已与全量 1,970 名新付费用户交叉验证一致</td><td>如需精确值，导出全量创角表</td></tr>
+          <tr><td>新增创角表为抽样</td><td>1,000 条抽样，反推全量约 4.48 万人；结论已与全量 1,970 名"7/2 后首次付费"用户交叉验证一致</td><td>如需精确值，导出全量创角表</td></tr>
+          <tr><td>充值库无创角时间</td><td>1,970 人中混有"7/2 前已注册、7/2 后才首次付费"的沉默用户，无法拆出纯新增占比</td><td>充值明细带上创角时间或账号 ID</td></tr>
           <tr><td>文件 1 仅 886 用户</td><td>若游戏外支付渠道不止平台 + 抖店，游戏外支付渠道规模被低估</td><td>确认平台渠道是否覆盖全部自有渠道</td></tr>
         </tbody>
       </table>
@@ -808,7 +817,7 @@ const wan = v => (v/10000).toFixed(1) + '万';
   });
 })();
 
-// 10. 新付费用户首充渠道
+// 10. 7/2 后首次付费用户的首充渠道
 (function(){
   const N = D.newconv.new_payers;
   const rows = N.by_ch || [];
