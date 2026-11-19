@@ -2148,15 +2148,6 @@ button { font-family: inherit; cursor: pointer; }
 .policy-body a { color: var(--primary); border-bottom: 1px dashed var(--primary); }
 
 
-.policy-card.policy-combined a { color: var(--primary); border-bottom: 1px dashed rgba(30, 58, 138, 0.45); font-weight: 500; text-decoration: none; transition: all 0.15s; }
-
-
-.policy-card.policy-combined a:hover { border-bottom-style: solid; }
-
-
-.policy-card.policy-combined .hl { color: var(--red); font-weight: 700; background: rgba(229, 62, 62, 0.06); padding: 1px 4px; border-radius: 3px; }
-
-
 
 
 
@@ -6339,64 +6330,7 @@ function renderSidebarList(reports) {
       var wk = this.getAttribute('data-sidebar-week');
 
 
-      if (!wk) return;
-
-
-      if (wk === currentKey) { if (window.innerWidth <= 768) toggleSidebar(); return; }
-
-
-      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); return; }
-
-
-      var r = reportMap[wk];
-
-
-      if (!r) return;
-
-
-      if (a.getAttribute('data-loading') === '1') return;
-
-
-      a.setAttribute('data-loading', '1');
-
-
-      var icon = a.querySelector('.nav-icon'); var iconTxt = icon ? icon.textContent : '';
-
-
-      if (icon) icon.textContent = '...';
-
-
-      fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(d) {
-
-
-        DATA[wk] = normalizeData(d, r);
-
-
-        renderPage(wk);
-
-
-      }).catch(function(err) {
-
-
-        console.warn('[workbench] 周报数据加载失败: ' + r.dirName, err);
-
-
-        renderPage(wk);
-
-
-      }).then(function() {
-
-
-        a.removeAttribute('data-loading');
-
-
-        if (icon) icon.textContent = iconTxt;
-
-
-        if (window.innerWidth <= 768) toggleSidebar();
-
-
-      });
+      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); }
 
 
     });
@@ -6643,7 +6577,7 @@ function fetchJSON(url, timeout) {
   var timer = setTimeout(function() { controller.abort(); }, timeout);
 
 
-  return fetch(url, { signal: controller.signal, cache: 'no-store' }).then(function(r) {
+  return fetch(url, { signal: controller.signal }).then(function(r) {
 
 
     clearTimeout(timer);
