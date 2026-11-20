@@ -2997,10 +2997,18 @@ var _surgeTab = 'all';
 function getPrevWeekKey(key) {
 
 
-  var idx = weekKeys.indexOf(key);
+  var order = weekKeys;
+
+  if (order.indexOf(key) < 0) {
+
+    order = Object.keys(reportMap).sort(function(a, b) { return b.localeCompare(a); });
+
+  }
+
+  var idx = order.indexOf(key);
 
 
-  return (idx >= 0 && idx < weekKeys.length - 1) ? weekKeys[idx + 1] : null;
+  return (idx >= 0 && idx < order.length - 1) ? order[idx + 1] : null;
 
 
 }
@@ -6347,8 +6355,6 @@ function renderSidebarList(reports) {
       fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(d) {
 
         DATA[wk] = normalizeData(d, r);
-
-        if (weekKeys.indexOf(wk) < 0) weekKeys.push(wk);
 
         self.classList.remove('loading');
 
