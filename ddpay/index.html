@@ -701,7 +701,7 @@ const wan = v => (v/10000).toFixed(1) + '万';
   const M = D.monthly;
   mk('c_stack', {
     tooltip: Object.assign({}, TIP, {valueFormatter: v => wan(v)}),
-    legend:{data:['游戏内直充','平台','抖店','第三方联运','游戏外占比'], top:0, itemGap:16, textStyle:{color:'#4a5262',fontSize:12}, icon:'roundRect', itemWidth:10, itemHeight:10},
+    legend:{data:['游戏内直充','平台','抖店','游戏外占比'], top:0, itemGap:16, textStyle:{color:'#4a5262',fontSize:12}, icon:'roundRect', itemWidth:10, itemHeight:10},
     grid: Object.assign({}, GRID, {top:44, right:46}),
     xAxis:{type:'category', data:M.map(r=>MLAB(r.m)), axisLine:{lineStyle:{color:'#e6e8ec'}}, axisTick:{show:false}, axisLabel:AXIS},
     yAxis:[
@@ -714,8 +714,7 @@ const wan = v => (v/10000).toFixed(1) + '万';
       {name:'游戏内直充', type:'bar', stack:'g', data:M.map(r=>Math.max(r.zg,0)), itemStyle:{color:'#e4e8ef'}, barWidth:'52%'},
       {name:'平台', type:'bar', stack:'g', data:M.map(r=>r.pg), itemStyle:{color:'#93b4f5'}},
       {name:'抖店', type:'bar', stack:'g', data:M.map(r=>r.dg), itemStyle:{color:'#2563eb'}},
-      {name:'第三方联运', type:'bar', stack:'g', data:M.map(r=>r.tg||0), itemStyle:{color:'#d4d9e1'}},
-      {name:'游戏外占比', type:'line', yAxisIndex:1, data:M.map(r=>+(r.ext_g/r.ag*100).toFixed(1)),
+      {name:'游戏外占比', type:'line', yAxisIndex:1, data:M.map(r=>+(r.ext_g/(r.ag-(r.tg||0))*100).toFixed(1)),
        lineStyle:{color:'#f59e0b',width:2}, itemStyle:{color:'#f59e0b'}, symbol:'circle', symbolSize:5,
        label:{show:true, position:'top', color:'#9a6406', fontSize:10, formatter:p=>p.value+'%'},
        labelLayout:{hideOverlap:true}}
