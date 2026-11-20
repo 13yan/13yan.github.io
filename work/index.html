@@ -4149,7 +4149,7 @@ function renderSummary(d) {
     if (summary.core) {
 
 
-      var html = summary.core;
+      var html = typeof summary.core === 'string' ? summary.core : (Array.isArray(summary.core) ? summary.core.join('<br>') : '');
 
 
       // 按 <br><strong>【...】 拆段（只匹配标签开头，避免匹配内部序号<strong>数字</strong>）
