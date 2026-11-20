@@ -2766,7 +2766,6 @@ button { font-family: inherit; cursor: pointer; }
 
 
 
-.nav-item.loading{opacity:.5;pointer-events:none}
 </style>
 
 
@@ -2997,18 +2996,10 @@ var _surgeTab = 'all';
 function getPrevWeekKey(key) {
 
 
-  var order = weekKeys;
-
-  if (order.indexOf(key) < 0) {
-
-    order = Object.keys(reportMap).sort(function(a, b) { return b.localeCompare(a); });
-
-  }
-
-  var idx = order.indexOf(key);
+  var idx = weekKeys.indexOf(key);
 
 
-  return (idx >= 0 && idx < order.length - 1) ? order[idx + 1] : null;
+  return (idx >= 0 && idx < weekKeys.length - 1) ? weekKeys[idx + 1] : null;
 
 
 }
@@ -4158,7 +4149,7 @@ function renderSummary(d) {
     if (summary.core) {
 
 
-      var html = typeof summary.core === 'string' ? summary.core : (Array.isArray(summary.core) ? summary.core.join('<br>') : '');
+      var html = summary.core;
 
 
       // 按 <br><strong>【...】 拆段（只匹配标签开头，避免匹配内部序号<strong>数字</strong>）
@@ -6338,39 +6329,8 @@ function renderSidebarList(reports) {
 
       var wk = this.getAttribute('data-sidebar-week');
 
-      if (wk === currentKey) { if (window.innerWidth <= 768) toggleSidebar(); return; }
 
-      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); return; }
-
-      var r = reportMap[wk];
-
-      if (!r) return;
-
-      if (this.getAttribute('data-hasdata') === 'false') { window.open(BASE + 'index.html', '_blank'); return; }
-
-      var self = this;
-
-      self.classList.add('loading');
-
-      fetchJSON(BASE + r.dirName + '/report-data.enc').then(function(d) {
-
-        DATA[wk] = normalizeData(d, r);
-
-        self.classList.remove('loading');
-
-        renderPage(wk);
-
-        if (window.innerWidth <= 768) toggleSidebar();
-
-      }).catch(function(err) {
-
-        self.classList.remove('loading');
-
-        console.error('周报加载失败', wk, err);
-
-        alert('《' + r.label + '》数据加载失败，请刷新后重试');
-
-      });
+      if (DATA[wk]) { renderPage(wk); if (window.innerWidth <= 768) toggleSidebar(); }
 
 
     });
